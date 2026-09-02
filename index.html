@@ -1338,6 +1338,28 @@ th{background:linear-gradient(180deg,#0f633f,#0b5435)!important;color:#fff!impor
   }
 }
 
+
+/* ===== EDIT MANUAL DENAH: BLOK PESERTA YANG SUDAH DIPAKAI ===== */
+.seat-edit-select option:disabled{
+  color:#999;
+}
+.seat-editor-status{
+  margin:10px 0;
+  padding:9px 12px;
+  border:1px solid #b9d8c4;
+  border-radius:8px;
+  background:#eef8f1;
+  color:#214b38;
+  font-size:12px;
+  font-weight:700;
+}
+.seat-manual-toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:14px;
+}
+
 </style>
 
 <script type="module">
@@ -2330,15 +2352,108 @@ function seatStudentOptions(r,selectedId){
  let rows=sortSeatStudents(r);
  return `<option value="">-- Kosong --</option>`+rows.map(s=>{
    let id=String(s.id),sel=id===String(selectedId||'')?'selected':'';
-   return `<option value="${esc(id)}" ${sel}>${esc(participantNoForStudent(r,s))} — ${esc(s.name)} (${esc(s.class)})</option>`;
+   let label=`${participantNoForStudent(r,s)} — ${s.name} (${s.class})`;
+   return `<option value="${esc(id)}" data-base-label="${esc(label)}" ${sel}>${esc(label)}</option>`;
  }).join('');
 }
+
 function seatEditBoxHtml(r,desk,c,row){
  return `<div class="seat-box editing">
-   <select class="seat-edit-select" id="seat_${r.no}_${c}_${row}_left">${seatStudentOptions(r,desk?.left?.id)}</select>
-   <select class="seat-edit-select" id="seat_${r.no}_${c}_${row}_right">${seatStudentOptions(r,desk?.right?.id)}</select>
+   <select class="seat-edit-select"
+     id="seat_${r.no}_${c}_${row}_left"
+     data-room="${r.no}" data-col="${c}" data-row="${row}" data-side="left"
+     onchange="refreshSeatEditorAvailability(${r.no},this)">
+     ${seatStudentOptions(r,desk?.left?.id)}
+   </select>
+   <select class="seat-edit-select"
+     id="seat_${r.no}_${c}_${row}_right"
+     data-room="${r.no}" data-col="${c}" data-row="${row}" data-side="right"
+     onchange="refreshSeatEditorAvailability(${r.no},this)">
+     ${seatStudentOptions(r,desk?.right?.id)}
+   </select>
  </div>`;
 }
+
+function seatEditorSelects(no){
+ return [...document.querySelectorAll(`.seat-edit-select[data-room="${no}"]`)];
+}
+
+function seatEditorCounterpart(select){
+ if(!select)return null;
+ let no=select.dataset.room,col=select.dataset.col,row=select.dataset.row;
+ let side=select.dataset.side==='left'?'right':'left';
+ return document.getElementById(`seat_${no}_${col}_${row}_${side}`);
+}
+
+function refreshSeatEditorAvailability(no,changedSelect=null){
+ let r=db.rooms.find(x=>String(x.no)===String(no));if(!r)return;
+ let selects=seatEditorSelects(no);
+ let map=new Map((r.students||[]).map(s=>[String(s.id),s]));
+
+ // Semua peserta yang sedang dipakai pada posisi lain.
+ let selectedIds=selects.map(s=>s.value).filter(Boolean);
+
+ selects.forEach(sel=>{
+   let own=sel.value;
+   [...sel.options].forEach(opt=>{
+     if(!opt.value)return;
+     let usedElsewhere=selectedIds.some(id=>id===opt.value && opt.value!==own);
+     opt.disabled=usedElsewhere;
+     let base=opt.dataset.baseLabel||opt.textContent.replace(/\s+•\s+SUDAH DIPAKAI$/,'');
+     opt.dataset.baseLabel=base;
+     opt.textContent=usedElsewhere?`${base} • SUDAH DIPAKAI`:base;
+   });
+ });
+
+ // Terapkan juga aturan tingkatan untuk pasangan KIRI/KANAN pada meja yang sama.
+ selects.forEach(sel=>{
+   let pair=seatEditorCounterpart(sel);
+   if(!pair)return;
+   let ownStudent=map.get(String(sel.value||''));
+   let ownGrade=ownStudent?studentGradeForSeat(r,ownStudent):null;
+   let mode=db.seatPairingMode||'different_grade';
+
+   [...pair.options].forEach(opt=>{
+     if(!opt.value)return;
+     let candidate=map.get(String(opt.value));
+     let candidateGrade=candidate?studentGradeForSeat(r,candidate):null;
+     let alreadyUsed=opt.disabled;
+
+     let wrongGrade=false;
+     if(ownGrade!==null && candidateGrade!==null){
+       if(mode==='different_grade')wrongGrade=(candidateGrade===ownGrade);
+       if(mode==='same_grade')wrongGrade=(candidateGrade!==ownGrade);
+     }
+
+     if(wrongGrade && opt.value!==pair.value){
+       opt.disabled=true;
+       let base=opt.dataset.baseLabel||opt.textContent.replace(/\s+•\s+(?:SUDAH DIPAKAI|TINGKATAN TIDAK SESUAI)$/,'');
+       opt.dataset.baseLabel=base;
+       if(!alreadyUsed)opt.textContent=`${base} • TINGKATAN TIDAK SESUAI`;
+     }
+   });
+ });
+
+ // Kalau ada peserta yang dipilih dua kali akibat data lama, tandai status.
+ let unique=new Set(selectedIds);
+ let duplicateCount=selectedIds.length-unique.size;
+ let status=document.getElementById(`seatEditorStatus_${no}`);
+ if(status){
+   let total=(r.students||[]).length;
+   status.innerHTML=`Terisi: <b>${unique.size}</b> dari <b>${total}</b> peserta`+
+     (duplicateCount?` &nbsp; • &nbsp; <span style="color:#a32626">Duplikat: ${duplicateCount}</span>`:
+     ` &nbsp; • &nbsp; Peserta yang sudah dipilih otomatis diblokir pada kursi lain.`);
+ }
+}
+
+function resetSeatEditor(no){
+ if(!confirm('Reset edit manual Ruang '+String(no).padStart(2,'0')+' ke susunan otomatis?'))return;
+ db.seatManualPlans=db.seatManualPlans||{};
+ delete db.seatManualPlans[no];
+ save();
+ showSeatEditor(no);
+}
+
 function showSeatEditor(no){
  let r=db.rooms.find(x=>x.no===no);if(!r)return;
  if((r.students||[]).length>40)return alert('Edit manual tidak dapat digunakan karena ruang ini berisi lebih dari 40 peserta. Denah 20 meja hanya menyediakan 40 kursi.');
@@ -2346,20 +2461,22 @@ function showSeatEditor(no){
  document.getElementById('seatOut').innerHTML=`<div class="card">
    <h3>Edit Manual Denah — Ruang ${String(r.no).padStart(2,'0')}</h3>
    <div class="notice">
-     Edit manual menggunakan <b>20 meja (4 × 5)</b>. Setiap peserta hanya boleh dipilih satu kali.
+     Edit manual menggunakan <b>20 meja (4 × 5)</b>. Setiap peserta hanya boleh dipilih satu kali. Setelah nomor/nama dipilih, peserta tersebut otomatis <b>diblokir</b> pada pilihan kursi lainnya.
      ${db.seatPairingMode==='different_grade'
        ? 'Aturan aktif: peserta kiri dan kanan dalam satu meja wajib berbeda tingkatan.'
        : 'Aturan aktif: peserta kiri dan kanan dalam satu meja wajib satu tingkatan yang sama.'}
    </div>
    <div class="board">DEPAN / PAPAN TULIS</div><div class="seat-supervisor">Meja Pengawas</div>
    <div class="seat-layout">${layout.columns.map((col,c)=>`<div class="seat-column">${col.map((desk,row)=>seatEditBoxHtml(r,desk,c,row)).join('')}</div>`).join('')}</div>
+   <div class="seat-editor-status" id="seatEditorStatus_${r.no}"></div>
    <div class="seat-manual-toolbar">
-     <button class="success" onclick="saveManualSeatPlan(${r.no},4)">💾 Simpan Edit Manual</button>
-     <button class="danger" onclick="resetManualSeatPlan(${r.no})">↺ Kembali ke Denah Otomatis</button>
+     <button class="success" onclick="saveManualSeatPlan(${r.no},4)">💾 Simpan</button>
+     <button class="danger" onclick="resetSeatEditor(${r.no})">↺ Reset</button>
      <button class="secondary" onclick="showSeat(${r.no})">Batal</button>
    </div>
    ${seatControlInfo(r)}
  </div>`;
+ setTimeout(()=>refreshSeatEditorAvailability(no),0);
 }
 function saveManualSeatPlan(no,colCount){
  let r=db.rooms.find(x=>x.no===no);if(!r)return;
@@ -2392,7 +2509,9 @@ function saveManualSeatPlan(no,colCount){
  if(errors.length)return alert('Edit manual belum dapat disimpan:\n\n'+[...new Set(errors)].join('\n'));
  db.seatManualPlans=db.seatManualPlans||{};
  db.seatManualPlans[no]={signature:roomStudentSignature(r),pairingMode:db.seatPairingMode||'different_grade',columns,savedAt:new Date().toISOString()};
- save();showSeat(no);
+ save();
+ showSeat(no);
+ setTimeout(()=>alert('Edit manual denah Ruang '+String(no).padStart(2,'0')+' berhasil disimpan.'),60);
 }
 function resetManualSeatPlan(no){
  db.seatManualPlans=db.seatManualPlans||{};
