@@ -1589,6 +1589,171 @@ th{background:linear-gradient(180deg,#0f633f,#0b5435)!important;color:#fff!impor
   .desk-landscape-card .participant{font-size:27pt!important}
 }
 
+
+/* ===== NOMOR MEJA PESERTA: F4 33x29 cm DIMAKSIMALKAN ===== */
+.desk-landscape-page{
+  width:330mm!important;
+  height:290mm!important;
+  min-height:290mm!important;
+  padding:6mm 8mm 7mm!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+}
+.desk-print-title{
+  font-size:21pt!important;
+  font-weight:900!important;
+  line-height:1.08!important;
+  margin:0 0 1.8mm!important;
+  text-align:center!important;
+  color:#000!important;
+}
+.desk-print-title span{
+  display:block!important;
+  font-size:10.5pt!important;
+  font-weight:700!important;
+  margin-top:1mm!important;
+}
+.desk-cut-note{
+  text-align:center!important;
+  font-size:7.8pt!important;
+  color:#666!important;
+  margin:0 0 3mm!important;
+}
+
+/* Area grid dibuat maksimal untuk 20 nomor meja */
+.desk-landscape-grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,55mm)!important;
+  grid-template-rows:repeat(5,50mm)!important;
+  justify-content:center!important;
+  align-content:start!important;
+  column-gap:7mm!important;
+  row-gap:5mm!important;
+  width:100%!important;
+  height:auto!important;
+  margin:0 auto!important;
+}
+.desk-landscape-card{
+  width:55mm!important;
+  height:50mm!important;
+  min-width:55mm!important;
+  min-height:50mm!important;
+  max-width:55mm!important;
+  max-height:50mm!important;
+  border:0.55mm solid #000!important;
+  border-radius:1.5mm!important;
+  padding:2.2mm 2.5mm!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  align-items:center!important;
+  text-align:center!important;
+  overflow:hidden!important;
+  background:#fff!important;
+}
+
+/* Isi di dalam kotak dipaksa tetap rapi */
+.desk-landscape-card .assessment{
+  width:100%!important;
+  font-size:13.8pt!important;
+  font-weight:900!important;
+  line-height:1.08!important;
+  margin:0 0 1.4mm!important;
+  color:#000!important;
+  overflow-wrap:anywhere!important;
+  word-break:break-word!important;
+}
+.desk-landscape-card .label{
+  width:100%!important;
+  font-size:9.2pt!important;
+  font-weight:800!important;
+  line-height:1.05!important;
+  margin:0 0 1.1mm!important;
+  color:#000!important;
+}
+.desk-landscape-card .participant{
+  width:100%!important;
+  font-size:26.5pt!important;
+  font-weight:900!important;
+  line-height:1!important;
+  margin:0 0 1.2mm!important;
+  color:#000!important;
+  letter-spacing:.2px!important;
+}
+.desk-landscape-card .name{
+  width:100%!important;
+  font-size:9.2pt!important;
+  font-weight:800!important;
+  line-height:1.05!important;
+  margin:0 0 0.8mm!important;
+  color:#000!important;
+  overflow-wrap:anywhere!important;
+  word-break:break-word!important;
+}
+.desk-landscape-card .room{
+  width:100%!important;
+  font-size:9pt!important;
+  font-weight:800!important;
+  line-height:1.02!important;
+  color:#000!important;
+}
+
+/* panduan potong tetap di tengah jarak antar kotak */
+.desk-landscape-card::before{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  top:-0.8mm!important;
+  bottom:-0.8mm!important;
+  right:-3.5mm!important;
+  border-left:0.25mm dashed #9a9a9a!important;
+  pointer-events:none!important;
+}
+.desk-landscape-card::after{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  left:-0.8mm!important;
+  right:-0.8mm!important;
+  bottom:-2.5mm!important;
+  border-top:0.25mm dashed #9a9a9a!important;
+  pointer-events:none!important;
+}
+.desk-landscape-card:nth-child(4n)::before{
+  display:none!important;
+}
+.desk-landscape-card:nth-child(n+17)::after{
+  display:none!important;
+}
+
+@page deskLandscape{
+  size:330mm 290mm!important;
+  margin:0!important;
+}
+@media print{
+  .desk-landscape-page{
+    width:330mm!important;
+    height:290mm!important;
+    min-height:290mm!important;
+    padding:6mm 8mm 7mm!important;
+  }
+  .desk-landscape-grid{
+    grid-template-columns:repeat(4,55mm)!important;
+    grid-template-rows:repeat(5,50mm)!important;
+    column-gap:7mm!important;
+    row-gap:5mm!important;
+  }
+  .desk-landscape-card{
+    width:55mm!important;
+    height:50mm!important;
+    min-width:55mm!important;
+    min-height:50mm!important;
+    max-width:55mm!important;
+    max-height:50mm!important;
+  }
+}
+
 </style>
 
 <script type="module">
@@ -2797,7 +2962,7 @@ function deskNo(pos){return String(pos).padStart(2,'0')}
 function deskNumbers(){
  let total=db.rooms.reduce((a,r)=>a+r.students.length,0);
  return `<div class="card"><h2>6. Nomor Meja Peserta</h2>
- <div class="notice">Nomor meja dibuat otomatis dari hasil <b>Pembagian Ruang Peserta</b>. Saat dicetak, kertas menggunakan ukuran <b>33 cm × 29 cm landscape</b> dengan maksimal <b>20 nomor peserta per lembar</b>. Kotak nomor tetap menggunakan <b>garis tebal</b>. Antar kotak dibuat lebih renggang dan di tengah jaraknya diberi <b>garis putus-putus samar</b> sebagai panduan potong. Khusus halaman ini menggunakan <b>kertas polos tanpa KOP madrasah</b>. Bagian kartu menampilkan nama asesmen, Nomor Peserta, Nama Peserta, dan Ruang Peserta.</div>
+ <div class="notice">Nomor meja dibuat otomatis dari hasil <b>Pembagian Ruang Peserta</b>. Saat dicetak, kertas menggunakan ukuran <b>33 cm × 29 cm landscape</b> dengan maksimal <b>20 nomor meja per lembar</b>. Kotak nomor tetap menggunakan <b>garis tebal</b>. Antar kotak dibuat lebih renggang dan di tengah jaraknya diberi <b>garis putus-putus samar</b> sebagai panduan potong. Khusus halaman ini menggunakan <b>kertas polos tanpa KOP madrasah</b>. Bagian kartu menampilkan nama asesmen, Nomor Peserta, Nama Peserta, dan Ruang Peserta.</div>
  <div class="grid"><div class="stat">Total Peserta<b>${total}</b></div><div class="stat">Jumlah Ruang<b>${db.rooms.length}</b></div></div>
  <div class="actions"><button onclick="printDeskNumbersAll()">🖨 Cetak Nomor Meja ke Printer</button><button class="secondary" onclick="exportDeskNumbers()">⬇ Export Excel</button></div>
  ${db.rooms.filter(r=>r.students.length).map(r=>`<div class="card"><h3>Ruang ${r.no}</h3><div class="desknum-grid">
@@ -2835,9 +3000,9 @@ function printDeskNumbersAll(roomNo='all'){
 
   let html=pages.map((pageItems,pageIndex)=>`
     <div class="desk-landscape-page desk-plain-paper">
-      <div class="desk-print-title">NOMOR MEJA PESERTA — ${esc(db.assessment)}<br>
-      <span style="font-size:9pt;font-weight:normal">Halaman ${pageIndex+1} dari ${pages.length}</span></div>
-      <div class="desk-cut-note">Kotak nomor menggunakan garis tebal. Setiap lembar berisi 20 nomor peserta. Garis putus-putus di tengah jarak antar-kotak digunakan sebagai panduan potong.</div>
+      <div class="desk-print-title">${esc(db.assessment)}<br>
+      <span>Halaman ${pageIndex+1} dari ${pages.length}</span></div>
+      <div class="desk-cut-note">Kotak nomor menggunakan garis tebal. Setiap lembar berisi 20 nomor meja. Garis putus-putus di tengah jarak antar-kotak digunakan sebagai panduan potong.</div>
       <div class="desk-landscape-grid">${pageItems.map(item=>deskPrintCard(item)).join('')}</div>
     </div>`).join('');
 
