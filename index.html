@@ -1474,6 +1474,121 @@ th{background:linear-gradient(180deg,#0f633f,#0b5435)!important;color:#fff!impor
   }
 }
 
+
+/* ===== NOMOR MEJA: 20 PER LEMBAR, MAKSIMAL 33 x 29 cm ===== */
+.desk-landscape-page{
+  width:330mm!important;
+  height:290mm!important;
+  min-height:290mm!important;
+  padding:7mm 9mm!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+.desk-print-title{
+  font-size:18.5pt!important;
+  font-weight:900!important;
+  line-height:1.1!important;
+  margin-bottom:1.8mm!important;
+  color:#000!important;
+}
+.desk-print-title span{
+  font-size:10.8pt!important;
+  font-weight:700!important;
+}
+.desk-cut-note{
+  font-size:8.2pt!important;
+  margin:0 0 2.8mm!important;
+  color:#666!important;
+}
+.desk-landscape-grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,1fr)!important;
+  grid-template-rows:repeat(5,1fr)!important;
+  column-gap:7mm!important;
+  row-gap:6mm!important;
+  height:245mm!important;
+}
+.desk-landscape-card{
+  border:0.55mm solid #000!important;
+  border-radius:2mm!important;
+  padding:3mm 3.8mm!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  align-items:center!important;
+  text-align:center!important;
+  box-sizing:border-box!important;
+  background:#fff!important;
+  overflow:hidden!important;
+}
+.desk-landscape-card .assessment{
+  font-size:14.6pt!important;
+  font-weight:900!important;
+  line-height:1.14!important;
+  margin-bottom:2mm!important;
+  color:#000!important;
+  width:100%!important;
+  text-align:center!important;
+  overflow-wrap:anywhere!important;
+}
+.desk-landscape-card .label{
+  font-size:10.5pt!important;
+  font-weight:800!important;
+  line-height:1.1!important;
+  margin-bottom:1.6mm!important;
+  color:#000!important;
+  width:100%!important;
+}
+.desk-landscape-card .participant{
+  font-size:27pt!important;
+  font-weight:900!important;
+  line-height:1.02!important;
+  margin-bottom:1.8mm!important;
+  color:#000!important;
+  letter-spacing:.2px!important;
+  width:100%!important;
+}
+.desk-landscape-card .name{
+  font-size:11.3pt!important;
+  font-weight:800!important;
+  line-height:1.12!important;
+  margin-bottom:1.4mm!important;
+  color:#000!important;
+  width:100%!important;
+  overflow-wrap:anywhere!important;
+}
+.desk-landscape-card .room{
+  font-size:10.6pt!important;
+  font-weight:800!important;
+  line-height:1.08!important;
+  color:#000!important;
+  width:100%!important;
+}
+@media print{
+  .desk-landscape-page{
+    width:330mm!important;
+    height:290mm!important;
+    min-height:290mm!important;
+    padding:7mm 9mm!important;
+  }
+  .desk-print-title{
+    font-size:18.5pt!important;
+  }
+  .desk-landscape-grid{
+    grid-template-columns:repeat(4,1fr)!important;
+    grid-template-rows:repeat(5,1fr)!important;
+    column-gap:7mm!important;
+    row-gap:6mm!important;
+    height:245mm!important;
+  }
+  .desk-landscape-card{
+    border:0.55mm solid #000!important;
+    padding:3mm 3.8mm!important;
+  }
+  .desk-landscape-card .assessment{font-size:14.6pt!important}
+  .desk-landscape-card .participant{font-size:27pt!important}
+}
+
 </style>
 
 <script type="module">
@@ -2682,7 +2797,7 @@ function deskNo(pos){return String(pos).padStart(2,'0')}
 function deskNumbers(){
  let total=db.rooms.reduce((a,r)=>a+r.students.length,0);
  return `<div class="card"><h2>6. Nomor Meja Peserta</h2>
- <div class="notice">Nomor meja dibuat otomatis dari hasil <b>Pembagian Ruang Peserta</b>. Saat dicetak, kertas menggunakan ukuran <b>33 cm × 29 cm landscape</b> dengan maksimal <b>19 nomor peserta per lembar</b>. Kotak nomor tetap menggunakan <b>garis tebal</b>. Antar kotak dibuat lebih renggang dan di tengah jaraknya diberi <b>garis putus-putus samar</b> sebagai panduan potong. Khusus halaman ini menggunakan <b>kertas polos tanpa KOP madrasah</b>. Bagian kartu menampilkan nama asesmen, Nomor Peserta, Nama Peserta, dan Ruang Peserta.</div>
+ <div class="notice">Nomor meja dibuat otomatis dari hasil <b>Pembagian Ruang Peserta</b>. Saat dicetak, kertas menggunakan ukuran <b>33 cm × 29 cm landscape</b> dengan maksimal <b>20 nomor peserta per lembar</b>. Kotak nomor tetap menggunakan <b>garis tebal</b>. Antar kotak dibuat lebih renggang dan di tengah jaraknya diberi <b>garis putus-putus samar</b> sebagai panduan potong. Khusus halaman ini menggunakan <b>kertas polos tanpa KOP madrasah</b>. Bagian kartu menampilkan nama asesmen, Nomor Peserta, Nama Peserta, dan Ruang Peserta.</div>
  <div class="grid"><div class="stat">Total Peserta<b>${total}</b></div><div class="stat">Jumlah Ruang<b>${db.rooms.length}</b></div></div>
  <div class="actions"><button onclick="printDeskNumbersAll()">🖨 Cetak Nomor Meja ke Printer</button><button class="secondary" onclick="exportDeskNumbers()">⬇ Export Excel</button></div>
  ${db.rooms.filter(r=>r.students.length).map(r=>`<div class="card"><h3>Ruang ${r.no}</h3><div class="desknum-grid">
@@ -2714,7 +2829,7 @@ function printDeskNumbersAll(roomNo='all'){
   });
   if(!items.length){alert('Belum ada peserta pada ruang yang dipilih.');return false;}
 
-  const perPage=19;
+  const perPage=20;
   let pages=[];
   for(let i=0;i<items.length;i+=perPage)pages.push(items.slice(i,i+perPage));
 
@@ -2722,7 +2837,7 @@ function printDeskNumbersAll(roomNo='all'){
     <div class="desk-landscape-page desk-plain-paper">
       <div class="desk-print-title">NOMOR MEJA PESERTA — ${esc(db.assessment)}<br>
       <span style="font-size:9pt;font-weight:normal">Halaman ${pageIndex+1} dari ${pages.length}</span></div>
-      <div class="desk-cut-note">Kotak nomor menggunakan garis tebal. Setiap lembar berisi 19 nomor peserta. Garis putus-putus di tengah jarak antar-kotak digunakan sebagai panduan potong.</div>
+      <div class="desk-cut-note">Kotak nomor menggunakan garis tebal. Setiap lembar berisi 20 nomor peserta. Garis putus-putus di tengah jarak antar-kotak digunakan sebagai panduan potong.</div>
       <div class="desk-landscape-grid">${pageItems.map(item=>deskPrintCard(item)).join('')}</div>
     </div>`).join('');
 
@@ -3842,7 +3957,7 @@ function printPage(){
    ${printChoiceRow('Daftar Siswa tiap Ruang','Pilih semua ruang atau satu ruang.','pr_students',printRoomOptions(),'students')}
    ${printChoiceRow('Denah','Kertas A4 portrait; nama kegiatan asesmen tampil otomatis di bawah judul.','pr_seats',printRoomOptions(),'seats')}
    ${printChoiceRow('Daftar Peserta','Kertas A4 portrait; nama kegiatan asesmen tampil otomatis di bawah judul dan tanda tangan Ketua Panitia di kanan bawah.','pr_participants',printRoomOptions(),'participants')}
-   ${printChoiceRow('Nomor Meja Peserta','33 × 29 cm landscape, 19 nomor per lembar.','pr_desks',printRoomOptions(),'desks')}
+   ${printChoiceRow('Nomor Meja Peserta','33 × 29 cm landscape, 20 nomor per lembar.','pr_desks',printRoomOptions(),'desks')}
    ${printChoiceRow('Kartu Peserta','33 × 29 cm landscape, 3 kartu per lembar.','pr_cards',printRoomOptions(),'cards')}
    ${printSingleRow('Jadwal Asesmen','Mencetak jadwal asesmen yang aktif.','schedule')}
    ${printSingleRow('Jadwal Pengawas','Mencetak jadwal pengawas yang aktif.','supervisors')}
