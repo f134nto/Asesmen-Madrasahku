@@ -1914,6 +1914,147 @@ th{background:linear-gradient(180deg,#0f633f,#0b5435)!important;color:#fff!impor
   }
 }
 
+
+/* ===== FINAL OVERRIDE: NOMOR MEJA 16 PER LEMBAR, KOTAK 6x5 cm ===== */
+.desk-landscape-page{
+  page:deskLandscape!important;
+  width:330mm!important;
+  height:290mm!important;
+  min-height:290mm!important;
+  margin:0 auto!important;
+  padding:10mm 12mm!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+  background:#fff!important;
+}
+.desk-print-title,.desk-cut-note{display:none!important;}
+.desk-landscape-grid{
+  display:grid!important;
+  grid-template-columns:repeat(4, 60mm)!important;
+  grid-template-rows:repeat(4, 50mm)!important;
+  justify-content:center!important;
+  align-content:start!important;
+  column-gap:12mm!important;
+  row-gap:10mm!important;
+  width:100%!important;
+  height:auto!important;
+  margin:0 auto!important;
+}
+.desk-landscape-card{
+  width:60mm!important;
+  height:50mm!important;
+  min-width:60mm!important;
+  min-height:50mm!important;
+  max-width:60mm!important;
+  max-height:50mm!important;
+  border:0.55mm solid #000!important;
+  border-radius:1.6mm!important;
+  padding:2.2mm 2.3mm!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  align-items:center!important;
+  text-align:center!important;
+  overflow:hidden!important;
+  background:#fff!important;
+  position:relative!important;
+}
+.desk-landscape-card .assessment{
+  width:100%!important;
+  font-size:9.8pt!important;
+  font-weight:800!important;
+  line-height:1.02!important;
+  margin:0 0 1.1mm!important;
+  color:#000!important;
+  overflow-wrap:anywhere!important;
+  word-break:break-word!important;
+  text-transform:uppercase!important;
+}
+.desk-landscape-card .label{
+  width:100%!important;
+  font-size:7.7pt!important;
+  font-weight:800!important;
+  line-height:1.0!important;
+  margin:0 0 1mm!important;
+  color:#000!important;
+}
+.desk-landscape-card .participant{
+  width:100%!important;
+  font-size:24pt!important;
+  font-weight:900!important;
+  line-height:1!important;
+  margin:0 0 1.1mm!important;
+  color:#000!important;
+  letter-spacing:.1px!important;
+}
+.desk-landscape-card .name{
+  width:100%!important;
+  font-size:8.4pt!important;
+  font-weight:800!important;
+  line-height:1.0!important;
+  margin:0 0 .8mm!important;
+  color:#000!important;
+  overflow-wrap:anywhere!important;
+  word-break:break-word!important;
+}
+.desk-landscape-card .room{
+  width:100%!important;
+  font-size:8.2pt!important;
+  font-weight:800!important;
+  line-height:1.0!important;
+  color:#000!important;
+}
+/* garis putus-putus di tengah jarak antarkotak sebagai panduan potong */
+.desk-landscape-card::before{
+  content:""!important;
+  position:absolute!important;
+  top:-1mm!important;
+  bottom:-1mm!important;
+  right:-6mm!important;
+  border-left:0.25mm dashed #a8a8a8!important;
+  pointer-events:none!important;
+}
+.desk-landscape-card::after{
+  content:""!important;
+  position:absolute!important;
+  left:-1mm!important;
+  right:-1mm!important;
+  bottom:-5mm!important;
+  border-top:0.25mm dashed #a8a8a8!important;
+  pointer-events:none!important;
+}
+.desk-landscape-card:nth-child(4n)::before{display:none!important;}
+.desk-landscape-card:nth-child(n+13)::after{display:none!important;}
+@page deskLandscape{size:330mm 290mm!important;margin:0!important;}
+@media print{
+  html,body{margin:0!important;padding:0!important;background:#fff!important;}
+  .desk-landscape-page{
+    width:330mm!important;
+    height:290mm!important;
+    min-height:290mm!important;
+    margin:0!important;
+    padding:10mm 12mm!important;
+    break-after:page!important;
+    page-break-after:always!important;
+  }
+  .desk-landscape-grid{
+    grid-template-columns:repeat(4, 60mm)!important;
+    grid-template-rows:repeat(4, 50mm)!important;
+    column-gap:12mm!important;
+    row-gap:10mm!important;
+  }
+  .desk-landscape-card{
+    width:60mm!important;
+    height:50mm!important;
+    min-width:60mm!important;
+    min-height:50mm!important;
+    max-width:60mm!important;
+    max-height:50mm!important;
+  }
+  .actions,.no-print{display:none!important;}
+}
+
 </style>
 
 <script type="module">
@@ -3154,7 +3295,7 @@ function printDeskNumbersAll(roomNo='all'){
   });
   if(!items.length){alert('Belum ada peserta pada ruang yang dipilih.');return false;}
 
-  const perPage=20;
+  const perPage=16;
   let pages=[];
   for(let i=0;i<items.length;i+=perPage)pages.push(items.slice(i,i+perPage));
 
