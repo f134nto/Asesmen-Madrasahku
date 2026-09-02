@@ -1221,6 +1221,79 @@ th{background:linear-gradient(180deg,#0f633f,#0b5435)!important;color:#fff!impor
   }
 }
 
+
+/* ===== DENAH 20 MEJA: 4 KE SAMPING × 5 KE BELAKANG ===== */
+.seat-area-wrap{
+  overflow-x:auto;
+}
+.seat-layout{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  grid-template-rows:1fr!important;
+  gap:7mm!important;
+  width:min(100%,920px)!important;
+  margin:4mm auto 0!important;
+  align-items:start!important;
+}
+.seat-column{
+  display:grid!important;
+  grid-template-rows:repeat(5,1fr)!important;
+  gap:5mm!important;
+  min-width:0!important;
+}
+.seat-box{
+  min-width:0!important;
+}
+.seat-layout-info{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:8px 0 4px;
+  font-size:12px;
+  color:#4c6255;
+}
+.seat-layout-info .badge-seat{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:999px;
+  border:1px solid #d4bd68;
+  background:#fff8dc;
+  font-weight:800;
+  color:#0f5c3a;
+}
+.seat-rule-panel{
+  margin:12px 0;
+  padding:12px;
+  border:1px solid #d5bd68;
+  border-radius:10px;
+  background:linear-gradient(90deg,#f3fbf6,#fff8dc);
+}
+.seat-rule-panel .grid{
+  align-items:end;
+}
+.seat-capacity-warning{
+  margin:8px 0;
+  padding:9px 11px;
+  border:1px solid #e0a2a2;
+  border-radius:8px;
+  background:#fff1f1;
+  color:#8c2525;
+  font-weight:700;
+}
+@media print{
+  .seat-layout{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+    gap:3.5mm!important;
+    width:100%!important;
+    margin-top:2mm!important;
+  }
+  .seat-column{
+    grid-template-rows:repeat(5,1fr)!important;
+    gap:3mm!important;
+  }
+}
+
 </style>
 
 <script type="module">
@@ -1946,25 +2019,75 @@ function resetRoomDistribution(){if(!confirm('Reset Pembagian Ruang Peserta?\\n\
 function restoreRoomDistributionSnapshot(){let s=db.savedRoomDistribution;if(!s)return alert('Belum ada simpanan Pembagian Ruang Peserta.');if(!confirm('Pulihkan pembagian ruang dari simpanan terakhir?'))return;db.gradeRoomPlan=JSON.parse(JSON.stringify(s.gradeRoomPlan||{}));let map={};(s.rooms||[]).forEach(r=>map[String(r.no)]=r);(db.rooms||[]).forEach(r=>{let old=map[String(r.no)];if(old){r.capacity=old.capacity??r.capacity;if(old.roomName!==undefined){if('roomName' in r)r.roomName=old.roomName;else if('location' in r)r.location=old.roomName}r.students=JSON.parse(JSON.stringify(old.students||[]))}else r.students=[]});save();render('participants');setTimeout(()=>alert('Pembagian ruang berhasil dipulihkan dari simpanan terakhir.'),50)}
 function seats(){
  db.seatManualPlans=db.seatManualPlans||{};
+ db.seatPairingMode=db.seatPairingMode||'different_grade';
+
+ let overCapacity=(db.rooms||[]).filter(r=>(r.students||[]).length>40);
  return `<div class="card">
    <h2>4. Denah Tempat Duduk</h2>
+
    <div class="notice">
-     Denah otomatis mengikuti peserta pada <b>Pembagian Ruang Peserta</b>. Satu meja diusahakan berisi
-     <b>dua peserta dari tingkatan yang berbeda</b>, misalnya Kelas 7 dengan Kelas 8 atau Kelas 9.
-     Jika jumlah salah satu tingkatan lebih banyak dan tidak memiliki pasangan beda tingkat, peserta sisanya
-     ditempatkan <b>sendiri pada satu meja</b>, bukan dipasangkan dengan tingkatan yang sama.
-     Urutan tetap dimulai dari depan dan bergerak dengan pola ular maksimal 5 meja ke belakang.
+     Setiap ruang menggunakan denah tetap <b>20 meja</b>: <b>4 meja ke samping</b> dari kiri ke kanan
+     dan <b>5 meja ke belakang</b>. Setiap meja mempunyai maksimal <b>2 kursi</b>, sehingga satu denah
+     menampung maksimal <b>40 peserta</b>. Nomor peserta otomatis mengikuti hasil Pembagian Ruang Peserta.
    </div>
+
+   <div class="seat-rule-panel">
+     <div class="grid">
+       <div>
+         <label>Aturan Pasangan dalam 1 Meja</label>
+         <select id="seatPairingMode">
+           <option value="different_grade" ${db.seatPairingMode==='different_grade'?'selected':''}>Wajib berbeda tingkatan (contoh Kelas 7 dengan Kelas 8/9)</option>
+           <option value="allow_same_grade" ${db.seatPairingMode==='allow_same_grade'?'selected':''}>Boleh satu tingkatan yang sama dalam 1 meja</option>
+         </select>
+       </div>
+       <div>
+         <button onclick="saveSeatPairingMode()">💾 Simpan Aturan Denah</button>
+       </div>
+     </div>
+     <div class="seat-layout-info">
+       <span class="badge-seat">20 Meja</span>
+       <span class="badge-seat">4 Meja ke Samping</span>
+       <span class="badge-seat">5 Meja ke Belakang</span>
+       <span class="badge-seat">Maks. 40 Peserta</span>
+     </div>
+   </div>
+
+   ${overCapacity.length?`<div class="seat-capacity-warning">
+      Perhatian: ${overCapacity.map(r=>`Ruang ${String(r.no).padStart(2,'0')} berisi ${r.students.length} peserta`).join(', ')}.
+      Denah 20 meja hanya menampung maksimal 40 peserta per ruang.
+   </div>`:''}
+
    <div class="seat-manual-note">
-     <b>Edit Manual:</b> setelah denah otomatis terbentuk, pilih ruang lalu klik <b>Edit Manual</b> untuk menukar posisi peserta.
-     Aplikasi akan menolak jika satu peserta dipasang dua kali atau dua peserta dari tingkatan yang sama ditempatkan pada satu meja.
+     <b>Edit Manual:</b> denah otomatis tetap dapat diubah secara manual per ruang.
+     Validasi pasangan akan mengikuti aturan yang dipilih di atas.
    </div>
+
    <div class="actions">
      ${db.rooms.map(r=>`<button onclick="showSeat(${r.no})">Ruang ${String(r.no).padStart(2,'0')}</button>`).join('')}
      <button class="secondary" onclick="printAllSeats()">Cetak Semua Denah</button>
    </div>
    <div id="seatOut"></div>
  </div>`;
+}
+
+function saveSeatPairingMode(){
+ let mode=document.getElementById('seatPairingMode')?.value||'different_grade';
+ if(mode===db.seatPairingMode){
+   alert('Aturan denah tidak berubah.');
+   return;
+ }
+ let hasManual=Object.keys(db.seatManualPlans||{}).length>0;
+ if(hasManual && !confirm('Mengubah aturan pasangan akan menghapus edit manual denah yang sudah tersimpan agar denah dihitung ulang. Lanjutkan?')){
+   render('seats');
+   return;
+ }
+ db.seatPairingMode=mode;
+ db.seatManualPlans={};
+ save();
+ render('seats');
+ alert(mode==='different_grade'
+   ? 'Aturan denah disimpan: satu meja wajib berisi peserta dari tingkatan berbeda.'
+   : 'Aturan denah disimpan: satu meja boleh berisi peserta dari tingkatan yang sama.');
 }
 
 function participantNoForStudent(r,s){
@@ -2001,46 +2124,74 @@ function roomStudentSignature(r){
   - pasangan meja lalu disusun pola ular per 5 baris.
 */
 function buildAutoSeatDeskList(r){
+ let mode=db.seatPairingMode||'different_grade';
+ let students=sortSeatStudents(r).slice(0,40);
+ let desks=[];
+
+ // Mode 1: boleh satu meja dengan tingkatan yang sama.
+ // Peserta dipasangkan berurutan sesuai nomor peserta.
+ if(mode==='allow_same_grade'){
+   for(let i=0;i<students.length;i+=2){
+     desks.push({left:students[i]||null,right:students[i+1]||null});
+   }
+   return desks;
+ }
+
+ // Mode 2: wajib berbeda tingkatan.
  let groups={7:[],8:[],9:[],0:[]};
- sortSeatStudents(r).forEach(s=>{
+ students.forEach(s=>{
    let g=studentGradeForSeat(r,s);
    (groups[g]||groups[0]).push(s);
  });
+
  let order=[7,8,9,0];
- let desks=[];
  const remaining=g=>(groups[g]||[]).length;
 
- while(order.some(g=>remaining(g)>0)){
+ while(order.some(g=>remaining(g)>0) && desks.length<20){
    let available=order.filter(g=>remaining(g)>0)
      .sort((a,b)=>remaining(b)-remaining(a) || a-b);
-   let g1=available[0], g2=available.find(g=>g!==g1);
-   let a=g1!==undefined?groups[g1].shift():null;
-   let b=g2!==undefined?groups[g2].shift():null;
 
-   if(a&&b){
-     let ga=studentGradeForSeat(r,a), gb=studentGradeForSeat(r,b);
-     if(ga>gb){let tmp=a;a=b;b=tmp;}
-     desks.push({left:a,right:b});
-   }else if(a){
-     desks.push({left:a,right:null});
+   let g1=available[0];
+   let g2=available.find(g=>g!==g1);
+   let left=g1!==undefined?groups[g1].shift():null;
+   let right=g2!==undefined?groups[g2].shift():null;
+
+   if(left&&right){
+     let gl=studentGradeForSeat(r,left),gr=studentGradeForSeat(r,right);
+     if(gl>gr){let tmp=left;left=right;right=tmp;}
+     desks.push({left,right});
+   }else if(left){
+     // Tidak dipasangkan dengan tingkat yang sama; kursi sebelah dibiarkan kosong.
+     desks.push({left,right:null});
    }
  }
  return desks;
 }
-function desksToSeatColumns(desks,depth=5){
+
+function desksToSeatColumns(desks){
+ const depth=5;
+ const colCount=4;
+ const totalDesks=20;
+
+ let fixed=[];
+ for(let i=0;i<totalDesks;i++){
+   fixed.push(desks[i]||{left:null,right:null});
+ }
+
  let columns=[];
- for(let i=0;i<desks.length;i+=depth){
-   let chunk=desks.slice(i,i+depth);
-   while(chunk.length<depth)chunk.push({left:null,right:null});
-   let colIndex=Math.floor(i/depth);
-   if(colIndex%2===1)chunk=chunk.reverse();
+ for(let c=0;c<colCount;c++){
+   let chunk=fixed.slice(c*depth,(c+1)*depth);
+   // Pola ular: kolom 1 dari depan->belakang, kolom 2 belakang->depan, dst.
+   if(c%2===1)chunk=chunk.reverse();
    columns.push(chunk);
  }
- if(!columns.length)columns=[[...Array(depth)].map(()=>({left:null,right:null}))];
  return columns;
 }
+
 function manualSeatPlanValid(r,plan){
  if(!plan||plan.signature!==roomStudentSignature(r)||!Array.isArray(plan.columns))return false;
+ if(plan.columns.length!==4 || plan.columns.some(col=>!Array.isArray(col)||col.length!==5))return false;
+ if(plan.pairingMode && plan.pairingMode!==(db.seatPairingMode||'different_grade'))return false;
  let ids=[];
  plan.columns.forEach(col=>col.forEach(d=>{
    if(d?.leftId)ids.push(String(d.leftId));
@@ -2060,10 +2211,10 @@ function buildSeatColumns(r){
  db.seatManualPlans=db.seatManualPlans||{};
  let plan=db.seatManualPlans[r.no];
  if(manualSeatPlanValid(r,plan)){
-   return {columns:resolveManualSeatColumns(r,plan),depth:5,manual:true};
+   return {columns:resolveManualSeatColumns(r,plan),depth:5,cols:4,totalDesks:20,manual:true};
  }
  let desks=buildAutoSeatDeskList(r);
- return {columns:desksToSeatColumns(desks,5),depth:5,manual:false};
+ return {columns:desksToSeatColumns(desks),depth:5,cols:4,totalDesks:20,manual:false};
 }
 function seatBoxHtml(r,desk){
  let left=desk?.left||null, right=desk?.right||null;
@@ -2102,6 +2253,11 @@ function seatHtml(r){
    <div class="print-title">DENAH<br>${esc(db.assessment)}<br>RUANG ${String(r.no).padStart(2,'0')}</div>
    <div class="board">DEPAN / PAPAN TULIS</div>
    <div class="seat-supervisor">Meja Pengawas</div>
+   <div class="seat-layout-info no-print">
+     <span class="badge-seat">20 Meja • 4 × 5</span>
+     <span class="badge-seat">${db.seatPairingMode==='different_grade'?'Pasangan berbeda tingkatan':'Pasangan boleh satu tingkatan'}</span>
+   </div>
+   ${(r.students||[]).length>40?`<div class="seat-capacity-warning">Peserta ruang ini ${r.students.length}; denah 20 meja hanya menampilkan maksimal 40 peserta.</div>`:''}
    <div class="seat-area-wrap">
      <div class="seat-layout">
        ${layout.columns.map(col=>`<div class="seat-column">${col.map(desk=>seatBoxHtml(r,desk)).join('')}</div>`).join('')}
@@ -2125,14 +2281,20 @@ function seatEditBoxHtml(r,desk,c,row){
 }
 function showSeatEditor(no){
  let r=db.rooms.find(x=>x.no===no);if(!r)return;
+ if((r.students||[]).length>40)return alert('Edit manual tidak dapat digunakan karena ruang ini berisi lebih dari 40 peserta. Denah 20 meja hanya menyediakan 40 kursi.');
  let layout=buildSeatColumns(r);
  document.getElementById('seatOut').innerHTML=`<div class="card">
    <h3>Edit Manual Denah — Ruang ${String(r.no).padStart(2,'0')}</h3>
-   <div class="notice">Pilih peserta untuk kursi kiri dan kanan setiap meja. Dua peserta pada satu meja wajib berbeda tingkat. Setiap peserta hanya boleh dipilih satu kali.</div>
+   <div class="notice">
+     Edit manual menggunakan <b>20 meja (4 × 5)</b>. Setiap peserta hanya boleh dipilih satu kali.
+     ${db.seatPairingMode==='different_grade'
+       ? 'Aturan aktif: dua peserta dalam satu meja wajib berbeda tingkatan.'
+       : 'Aturan aktif: dua peserta dalam satu meja boleh berasal dari tingkatan yang sama.'}
+   </div>
    <div class="board">DEPAN / PAPAN TULIS</div><div class="seat-supervisor">Meja Pengawas</div>
    <div class="seat-layout">${layout.columns.map((col,c)=>`<div class="seat-column">${col.map((desk,row)=>seatEditBoxHtml(r,desk,c,row)).join('')}</div>`).join('')}</div>
    <div class="seat-manual-toolbar">
-     <button class="success" onclick="saveManualSeatPlan(${r.no},${layout.columns.length})">💾 Simpan Edit Manual</button>
+     <button class="success" onclick="saveManualSeatPlan(${r.no},4)">💾 Simpan Edit Manual</button>
      <button class="danger" onclick="resetManualSeatPlan(${r.no})">↺ Kembali ke Denah Otomatis</button>
      <button class="secondary" onclick="showSeat(${r.no})">Batal</button>
    </div>
@@ -2150,7 +2312,7 @@ function saveManualSeatPlan(no,colCount){
      let rightId=document.getElementById(`seat_${no}_${c}_${row}_right`)?.value||'';
      if(leftId){if(used.has(leftId))errors.push(`Peserta ${participantNoForStudent(r,map.get(leftId))} dipilih lebih dari satu kali.`);used.add(leftId);}
      if(rightId){if(used.has(rightId))errors.push(`Peserta ${participantNoForStudent(r,map.get(rightId))} dipilih lebih dari satu kali.`);used.add(rightId);}
-     if(leftId&&rightId){
+     if(leftId&&rightId && (db.seatPairingMode||'different_grade')==='different_grade'){
        let gl=studentGradeForSeat(r,map.get(leftId)),gr=studentGradeForSeat(r,map.get(rightId));
        if(gl===gr)errors.push(`Satu meja tidak boleh berisi dua peserta tingkat ${gl}.`);
      }
@@ -2163,7 +2325,7 @@ function saveManualSeatPlan(no,colCount){
  if(missing.length)errors.push(`${missing.length} peserta belum ditempatkan pada denah.`);
  if(errors.length)return alert('Edit manual belum dapat disimpan:\n\n'+[...new Set(errors)].join('\n'));
  db.seatManualPlans=db.seatManualPlans||{};
- db.seatManualPlans[no]={signature:roomStudentSignature(r),columns,savedAt:new Date().toISOString()};
+ db.seatManualPlans[no]={signature:roomStudentSignature(r),pairingMode:db.seatPairingMode||'different_grade',columns,savedAt:new Date().toISOString()};
  save();showSeat(no);
 }
 function resetManualSeatPlan(no){
