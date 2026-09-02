@@ -2397,6 +2397,65 @@ th{background:linear-gradient(180deg,#0f633f,#0b5435)!important;color:#fff!impor
   }
 }
 
+
+/* ===== FINAL TUNING: HAPUS TULISAN NOMOR PESERTA, GESER ISI KE BAWAH ===== */
+.desk-landscape-page.desk-plain-paper .desk-landscape-card{
+  justify-content:flex-start !important;
+  padding:3.6mm 3.2mm 3.2mm !important;
+}
+.desk-landscape-page.desk-plain-paper .desk-landscape-card .assessment{
+  font-size:9.1pt !important;
+  line-height:1.03 !important;
+  margin:0 0 0.8mm !important;
+}
+.desk-landscape-page.desk-plain-paper .desk-landscape-card .label{
+  display:none !important;
+}
+.desk-landscape-page.desk-plain-paper .desk-landscape-card .desk-spacer{
+  display:block !important;
+  width:100% !important;
+  height:7.5mm !important;
+  flex:0 0 7.5mm !important;
+}
+.desk-landscape-page.desk-plain-paper .desk-landscape-card .participant{
+  font-size:35pt !important;
+  margin:0 0 1.2mm !important;
+  padding-top:2.4mm !important;
+  border-top:0.28mm solid #000 !important;
+}
+.desk-landscape-page.desk-plain-paper .desk-landscape-card .name{
+  font-size:10pt !important;
+  font-weight:800 !important;
+  line-height:1.08 !important;
+  margin:0 0 1.4mm !important;
+}
+.desk-landscape-page.desk-plain-paper .desk-landscape-card .room{
+  font-size:9.6pt !important;
+  font-weight:800 !important;
+  line-height:1.05 !important;
+}
+@media print{
+  .desk-landscape-page.desk-plain-paper .desk-landscape-card{
+    justify-content:flex-start !important;
+    padding:3.6mm 3.2mm 3.2mm !important;
+  }
+  .desk-landscape-page.desk-plain-paper .desk-landscape-card .label{
+    display:none !important;
+  }
+  .desk-landscape-page.desk-plain-paper .desk-landscape-card .desk-spacer{
+    display:block !important;
+    width:100% !important;
+    height:7.5mm !important;
+    flex:0 0 7.5mm !important;
+  }
+  .desk-landscape-page.desk-plain-paper .desk-landscape-card .name{
+    font-size:10pt !important;
+  }
+  .desk-landscape-page.desk-plain-paper .desk-landscape-card .room{
+    font-size:9.6pt !important;
+  }
+}
+
 </style>
 
 <script type="module">
@@ -3623,7 +3682,7 @@ function deskPrintCard(item){
   let r=item.room, s=item.student, i=item.position;
   return `<div class="desk-landscape-card">
     <div class="assessment">${esc(db.assessment)}</div>
-    <div class="label">NOMOR PESERTA</div>
+    <div class="desk-spacer"></div>
     <div class="participant">${participantNo(r.no,i+1)}</div>
     <div class="name">${esc(s.name)}</div>
     <div class="room">RUANG ${r.no}</div>
