@@ -840,7 +840,7 @@ th{background:linear-gradient(180deg,#0f633f,#0b5435)!important;color:#fff!impor
 .seat-column{direction:ltr!important}
 
 
-/* ===== DENAH: PASANGAN BEDA TINGKAT + EDIT MANUAL + KONTROL PESERTA ===== */
+/* ===== DENAH: PASANGAN BEDA TINGKAT + EDIT MANUAL + PESERTA ===== */
 .seat-manual-toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}
 .seat-edit-select{width:100%!important;min-width:0!important;padding:5px!important;font-size:9px!important;color:#173d2d!important;background:#fff!important}
 .seat-box.editing{min-height:28mm!important;gap:2mm}
@@ -1358,6 +1358,23 @@ th{background:linear-gradient(180deg,#0f633f,#0b5435)!important;color:#fff!impor
   flex-wrap:wrap;
   gap:8px;
   margin-top:14px;
+}
+
+
+/* ===== DEPAN / PAPAN TULIS TANPA KOTAK ===== */
+.board{
+  border:none!important;
+  box-shadow:none!important;
+  background:transparent!important;
+  border-radius:0!important;
+  padding:1mm 0!important;
+}
+@media print{
+  .board{
+    border:none!important;
+    box-shadow:none!important;
+    background:transparent!important;
+  }
 }
 
 </style>
@@ -2090,7 +2107,7 @@ if(db.seatPairingMode==='allow_same_grade')db.seatPairingMode='same_grade';
 
  let overCapacity=(db.rooms||[]).filter(r=>(r.students||[]).length>40);
  return `<div class="card">
-   <h2>4. Denah Tempat Duduk</h2>
+   <h2>4. Denah Tempat Duduk Peserta</h2>
 
    <div class="notice">
      Setiap ruang menggunakan denah tetap <b>20 meja</b>: <b>4 meja ke samping</b> dari kiri ke kanan
@@ -2322,7 +2339,7 @@ function seatControlInfo(r){
  });
  let summary=rows.map(x=>`${x.first}${x.first!==x.last?' - '+x.last:''}`).join(' dan ')||'-';
  return `<div class="seat-control">
-   <div class="seat-control-title">KONTROL PESERTA RUANG ${String(r.no).padStart(2,'0')}</div>
+   <div class="seat-control-title">PESERTA RUANG ${String(r.no).padStart(2,'0')}</div>
    <div class="seat-control-summary">Nomor: ${esc(summary)} &nbsp; • &nbsp; Jumlah Peserta: ${r.students?.length||0}</div>
    <table><thead><tr><th>Kelas</th><th>Nomor Awal</th><th>Nomor Akhir</th><th>Jumlah</th></tr></thead>
    <tbody>${rows.map(x=>`<tr><td>${esc(x.cls)}</td><td>${esc(x.first)}</td><td>${esc(x.last)}</td><td>${x.count}</td></tr>`).join('')}</tbody></table>
@@ -2332,7 +2349,7 @@ function seatHtml(r){
  let layout=buildSeatColumns(r);
  return `<div class="print-page seat-print-page">
    ${printHeader()}
-   <div class="print-title">DENAH<br>${esc(db.assessment)}<br>RUANG ${String(r.no).padStart(2,'0')}</div>
+   <div class="print-title">DENAH TEMPAT DUDUK PESERTA<br>${esc(db.assessment)}<br>RUANG ${String(r.no).padStart(2,'0')}</div>
    <div class="board">DEPAN / PAPAN TULIS</div>
    <div class="seat-supervisor">Meja Pengawas</div>
    <div class="seat-layout-info no-print">
