@@ -2456,6 +2456,180 @@ th{background:linear-gradient(180deg,#0f633f,#0b5435)!important;color:#fff!impor
   }
 }
 
+
+/* ===== JADWAL ASESMEN: PORTRAIT 290 x 330 mm ===== */
+.schedule-print-page{
+  page:schedulePortrait!important;
+  width:290mm!important;
+  min-height:330mm!important;
+  height:auto!important;
+  margin:0 auto!important;
+  padding:12mm 14mm!important;
+  box-sizing:border-box!important;
+  background:#fff!important;
+  color:#000!important;
+}
+.schedule-print-page .print-header.simple-kop{
+  width:100%!important;
+  margin-bottom:4mm!important;
+}
+.schedule-print-page .print-title{
+  font-size:14pt!important;
+  line-height:1.25!important;
+  margin:4mm 0 5mm!important;
+  color:#000!important;
+}
+.schedule-print-page .schedule-assessment-table{
+  width:100%!important;
+  table-layout:fixed!important;
+  border-collapse:collapse!important;
+  font-size:10.5pt!important;
+  color:#000!important;
+}
+.schedule-print-page .schedule-assessment-table th,
+.schedule-print-page .schedule-assessment-table td{
+  border:0.42mm solid #000!important;
+  padding:2.4mm 2.2mm!important;
+  vertical-align:middle!important;
+  color:#000!important;
+}
+.schedule-print-page .schedule-assessment-table th{
+  text-align:center!important;
+  font-weight:900!important;
+  background:#f2f2f2!important;
+}
+.schedule-print-page .schedule-assessment-table .col-no{width:9mm!important;text-align:center!important}
+.schedule-print-page .schedule-assessment-table .col-date{width:55mm!important;text-align:center!important}
+.schedule-print-page .schedule-assessment-table .col-time{width:38mm!important;text-align:center!important}
+.schedule-print-page .schedule-assessment-table .col-allocation{width:31mm!important;text-align:center!important}
+.schedule-print-page .schedule-assessment-table .col-subject{text-align:center!important}
+.schedule-print-page .schedule-day-cell{
+  text-align:center!important;
+  font-weight:700!important;
+  line-height:1.3!important;
+}
+.schedule-print-page .schedule-no-cell{
+  text-align:center!important;
+  font-weight:700!important;
+}
+.schedule-print-page .schedule-subject-cell{
+  text-align:center!important;
+}
+.schedule-print-page .signature{
+  margin-top:10mm!important;
+}
+@page schedulePortrait{
+  size:290mm 330mm;
+  margin:0;
+}
+@media print{
+  .schedule-print-page{
+    width:290mm!important;
+    min-height:330mm!important;
+    margin:0!important;
+    padding:12mm 14mm!important;
+  }
+}
+
+/* ===== TABEL JADWAL DI LAYAR: MERGE NO & HARI/TANGGAL ===== */
+.schedule-assessment-table{
+  width:100%;
+  border-collapse:collapse;
+}
+.schedule-assessment-table th,
+.schedule-assessment-table td{
+  vertical-align:middle;
+}
+.schedule-assessment-table .schedule-no-cell,
+.schedule-assessment-table .schedule-day-cell{
+  text-align:center;
+  font-weight:700;
+}
+
+
+/* ===== KODE PENGAWAS MANUAL ===== */
+.supervisor-code-table .code-edit-input{
+  width:90px!important;
+  min-width:90px!important;
+  padding:7px 8px!important;
+  text-align:center!important;
+  font-weight:900!important;
+  letter-spacing:.4px!important;
+}
+.supervisor-code-table td{
+  vertical-align:middle!important;
+}
+
+
+/* ===== SUPABASE CLOUD SYNC ===== */
+.cloud-status{
+  display:inline-flex;
+  align-items:center;
+  min-height:34px;
+  padding:0 10px;
+  margin:0 6px;
+  border-radius:9px;
+  border:1px solid rgba(255,255,255,.28);
+  background:rgba(255,255,255,.10);
+  color:#fff;
+  font-size:12px;
+  font-weight:800;
+  white-space:nowrap;
+}
+.cloud-status.ok{background:#e8f7ee!important;color:#145c31!important;border-color:#a9d9ba!important}
+.cloud-status.saving{background:#fff5d8!important;color:#725500!important;border-color:#e8cd77!important}
+.cloud-status.error{background:#feecec!important;color:#8d1b1b!important;border-color:#e5aaaa!important}
+.cloud-card{border:1px solid #d9e8df;background:#f8fcf9;border-radius:12px;padding:14px;margin:12px 0}
+.cloud-card .cloud-email{font-weight:900;color:#145c31}
+@media print{.cloud-status{display:none!important}}
+
+
+/* ===== PASSWORD RECOVERY SUPABASE ===== */
+#recoveryPanel .login-field{margin-bottom:12px}
+#recoveryPanel .login-submit{width:100%}
+#recoveryMessage.success{
+  display:block!important;
+  border-color:#a9d9ba!important;
+  background:#edf9f1!important;
+  color:#145c31!important;
+}
+#recoveryMessage.warning{
+  display:block!important;
+  border-color:#e1c96d!important;
+  background:#fff8dc!important;
+  color:#5c4a13!important;
+}
+
+
+/* ===== HALAMAN 13: CETAK + UNDUH EXCEL / CSV ===== */
+.print-choice-row{
+  grid-template-columns:minmax(220px,1fr) minmax(190px,250px) minmax(300px,auto)!important;
+}
+.print-export-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  justify-content:flex-end;
+}
+.print-export-actions button{
+  white-space:nowrap;
+  min-width:88px;
+}
+.print-export-actions .excel-btn{
+  background:#14753d!important;
+  border-color:#14753d!important;
+  color:#fff!important;
+}
+.print-export-actions .csv-btn{
+  background:#fff!important;
+  border:1px solid #14753d!important;
+  color:#14753d!important;
+}
+@media(max-width:1050px){
+  .print-choice-row{grid-template-columns:1fr!important}
+  .print-export-actions{justify-content:flex-start}
+}
+
 </style>
 
 <script type="module">
@@ -2464,10 +2638,41 @@ pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/p
 window.pdfjsLibBridge=pdfjsLib;
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-<div id="loginScreen"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen terpadu untuk pengelolaan data siswa, pembagian ruang, kartu peserta, jadwal, pengawas, daftar hadir, dan dokumen cetak.</p></div><div style="font-size:12px;color:#d9eadf">Sistem Administrasi Asesmen Madrasah</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">LOGIN ADMINISTRATOR</div><h2>Selamat Datang</h2><div class="sub">Masukkan username dan password untuk masuk ke aplikasi.</div><div id="loginError" class="login-error">Username atau password salah.</div><div class="login-field"><label>Username</label><input id="loginUsername" autocomplete="username" placeholder="Masukkan username"></div><div class="login-field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Masukkan password"></div><button class="login-submit" onclick="doLogin()">Masuk ke Aplikasi</button><div class="login-foot">Akses khusus administrator/operator asesmen.</div></section></div></div>
-<header><div><h1>Administrasi Asesmen</h1><small>Sistem Administrasi Asesmen Madrasah</small></div><div class="no-print"><select id="assessment" onchange="setAssessment(this.value)"><option>Asesmen Sumatif Tengah Semester Gasal</option><option>Asesmen Sumatif Akhir Semester Gasal</option><option>Asesmen Sumatif Tengah Semester Genap</option><option>Asesmen Sumatif Akhir Tahun</option><option>Ujian Madrasah</option></select><button class="logout-btn" onclick="logoutApp()">Keluar</button></div></header>
+<div id="loginScreen"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan penyimpanan Supabase. Gunakan akun cloud yang sama agar data dapat dibuka dari komputer/laptop lain.</p></div><div style="font-size:12px;color:#d9eadf">Database Cloud Supabase • Sinkron Otomatis</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">LOGIN ADMIN CLOUD</div><h2>Selamat Datang</h2><div class="sub">Masukkan email dan password Supabase. Akun yang sama dapat digunakan di perangkat lain.</div><div id="loginError" class="login-error">Login gagal.</div><div class="login-field"><label>Email Admin</label><input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com"></div><div class="login-field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+<div style="display:flex;align-items:center;gap:8px;margin:-4px 0 12px;font-size:13px;color:#355b45">
+  <input id="showLoginPassword" type="checkbox" onchange="toggleLoginPassword()" style="width:auto;margin:0">
+  <label for="showLoginPassword" style="margin:0;cursor:pointer">Tampilkan Password</label>
+</div>
+<button class="login-submit" id="loginSubmitBtn" onclick="doLogin()">Masuk ke Aplikasi</button>
+<div class="actions" style="margin-top:10px;display:grid;grid-template-columns:1fr;gap:8px">
+  <button class="secondary" style="width:100%" onclick="forgotCloudPassword()">🔑 Lupa Password</button>
+  <button class="secondary" style="width:100%" onclick="signUpCloudAdmin()">Buat Akun Admin Cloud Pertama</button>
+</div>
+<div id="recoveryMessage" class="login-foot" style="display:none;margin-top:12px;padding:10px;border:1px solid #d6c26e;border-radius:10px;background:#fff8dc;color:#5c4a13"></div>
+
+<div id="recoveryPanel" style="display:none;margin-top:14px;padding:14px;border:1px solid #bdd8c6;border-radius:12px;background:#f7fbf8">
+  <div style="font-weight:900;color:#145c31;font-size:17px;margin-bottom:5px">Buat Password Baru</div>
+  <div style="font-size:13px;color:#5b6f61;margin-bottom:12px">Link pemulihan sudah diverifikasi. Masukkan password baru untuk akun admin cloud.</div>
+  <div class="login-field">
+    <label>Password Baru</label>
+    <input id="recoveryNewPassword" type="password" autocomplete="new-password" placeholder="Minimal 6 karakter">
+  </div>
+  <div class="login-field">
+    <label>Ulangi Password Baru</label>
+    <input id="recoveryConfirmPassword" type="password" autocomplete="new-password" placeholder="Ketik ulang password baru" onkeydown="if(event.key==='Enter')completePasswordRecovery()">
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;margin:-4px 0 12px;font-size:13px;color:#355b45">
+    <input id="showRecoveryPassword" type="checkbox" onchange="toggleRecoveryPassword()" style="width:auto;margin:0">
+    <label for="showRecoveryPassword" style="margin:0;cursor:pointer">Tampilkan Password Baru</label>
+  </div>
+  <button class="login-submit" id="recoverySaveBtn" onclick="completePasswordRecovery()">Simpan Password Baru</button>
+</div>
+
+<div id="cloudLoginNote" class="login-foot">Untuk login biasa, isi email + password lalu klik <b>Masuk ke Aplikasi</b>. Jika lupa password, klik <b>🔑 Lupa Password</b>; Supabase akan mengirim email pemulihan.</div></section></div></div>
+<header><div><h1>Administrasi Asesmen</h1><small>Sistem Administrasi Asesmen Madrasah</small></div><div class="no-print"><select id="assessment" onchange="setAssessment(this.value)"><option>Asesmen Sumatif Tengah Semester Gasal</option><option>Asesmen Sumatif Akhir Semester Gasal</option><option>Asesmen Sumatif Tengah Semester Genap</option><option>Asesmen Sumatif Akhir Tahun</option><option>Ujian Madrasah</option></select><span id="cloudStatus" class="cloud-status">☁ Cloud: memuat...</span><button class="logout-btn" onclick="logoutApp()">Keluar</button></div></header>
 <div class="layout"><aside class="no-print" id="menu"></aside><main id="app"></main></div>
 <script>
 const KEY='administrasi_asesmen_madrasah_v4';
@@ -2486,13 +2691,373 @@ db.school.signatureDate=db.school.signatureDate||'';
 db.school.signatureTitle=db.school.signatureTitle||'Ketua Panitia';
 db.school.printMonth=db.school.printMonth||'';
 
-const AUTH_KEY='administrasi_asesmen_auth';
-const DEFAULT_USER='admin';
-const DEFAULT_PASS='admin123';
-function doLogin(){let u=(document.getElementById('loginUsername')?.value||'').trim();let p=(document.getElementById('loginPassword')?.value||'').trim();let saved=JSON.parse(localStorage.getItem(AUTH_KEY)||'null')||{username:DEFAULT_USER,password:DEFAULT_PASS};if(u===saved.username&&p===saved.password){sessionStorage.setItem('asesmen_logged_in','1');document.getElementById('loginScreen').style.display='none';render('dashboard')}else{let e=document.getElementById('loginError');if(e)e.style.display='block'}}
-function logoutApp(){sessionStorage.removeItem('asesmen_logged_in');document.getElementById('loginScreen').style.display='flex';let p=document.getElementById('loginPassword');if(p)p.value=''}
-function checkLogin(){document.getElementById('loginScreen').style.display=sessionStorage.getItem('asesmen_logged_in')==='1'?'none':'flex'}
-function saveLoginAccount(){let u=v('newLoginUser'),p=v('newLoginPass');if(!u||!p)return alert('Username dan password baru wajib diisi.');localStorage.setItem(AUTH_KEY,JSON.stringify({username:u,password:p}));alert('Akun login berhasil diperbarui.')}
+const SUPABASE_URL='https://zqitkcfndzfzjfttpqcb.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_4Eua8DlQoPknrnhxAHvUqA_M58NwOhH';
+const CLOUD_TABLE='administrasi_asesmen_state';
+const cloudClient=(window.supabase&&window.supabase.createClient)
+ ? window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}})
+ : null;
+let cloudUser=null;
+let cloudLoading=false;
+let cloudSaveTimer=null;
+let cloudSaveBusy=false;
+let cloudSavePending=false;
+let cloudLastSavedAt='';
+
+function setCloudStatus(text,type=''){
+ let el=document.getElementById('cloudStatus');
+ if(!el)return;
+ el.className='cloud-status'+(type?' '+type:'');
+ el.textContent=text;
+}
+function showLoginError(message){
+ let el=document.getElementById('loginError');
+ if(!el)return;
+ el.textContent=message||'Login gagal.';
+ el.style.display='block';
+}
+function hideLoginError(){let el=document.getElementById('loginError');if(el)el.style.display='none'}
+function setLoginBusy(busy,label='Masuk ke Aplikasi'){
+ let b=document.getElementById('loginSubmitBtn');
+ if(b){b.disabled=!!busy;b.textContent=busy?'Menghubungkan Cloud...':label;}
+}
+function normalizeLoadedCloudDb(value){
+ if(!value||typeof value!=='object')return null;
+ value.school=value.school||{};
+ value.students=Array.isArray(value.students)?value.students:[];
+ value.rooms=Array.isArray(value.rooms)?value.rooms:[];
+ value.schedules=Array.isArray(value.schedules)?value.schedules:[];
+ value.supervisors=Array.isArray(value.supervisors)?value.supervisors:[];
+ value.berita=Array.isArray(value.berita)?value.berita:[];
+ value.compositionPlan=value.compositionPlan||{};
+ value.pairPlan=value.pairPlan||{};
+ value.scheduleFiles=Array.isArray(value.scheduleFiles)?value.scheduleFiles:[];
+ value.supervisorFiles=Array.isArray(value.supervisorFiles)?value.supervisorFiles:[];
+ value.supervisorNames=Array.isArray(value.supervisorNames)?value.supervisorNames:[];
+ value.supervisorMatrix=value.supervisorMatrix||{};
+ value.supervisorCodes=value.supervisorCodes||{};
+ value.supervisorScheduleOverrides=value.supervisorScheduleOverrides||{};
+ value.savedAssessmentSchedule=value.savedAssessmentSchedule||null;
+ value.savedSupervisorSchedule=value.savedSupervisorSchedule||null;
+ value.assessment=value.assessment||'Asesmen Sumatif Tengah Semester Gasal';
+ return value;
+}
+async function loadCloudState(){
+ if(!cloudClient||!cloudUser)return false;
+ cloudLoading=true;
+ setCloudStatus('☁ Cloud: mengambil data','saving');
+ try{
+   const {data,error}=await cloudClient.from(CLOUD_TABLE).select('data,updated_at').eq('user_id',cloudUser.id).maybeSingle();
+   if(error)throw error;
+   if(data&&data.data){
+     const loaded=normalizeLoadedCloudDb(data.data);
+     if(loaded){db=loaded;localStorage.setItem(KEY,JSON.stringify(db));}
+     cloudLastSavedAt=data.updated_at||'';
+     setCloudStatus('☁ Cloud: tersinkron','ok');
+   }else{
+     // Baris cloud belum ada: migrasikan data lokal yang sudah ada sebagai data awal.
+     await saveCloudNow(true);
+   }
+   return true;
+ }catch(err){
+   console.error('loadCloudState',err);
+   setCloudStatus('☁ Cloud: gagal membaca','error');
+   alert('Data cloud belum dapat dibaca. Pastikan file SQL setup Supabase sudah dijalankan.\n\n'+(err?.message||err));
+   return false;
+ }finally{cloudLoading=false;}
+}
+function scheduleCloudSave(){
+ if(cloudLoading||!cloudClient||!cloudUser)return;
+ clearTimeout(cloudSaveTimer);
+ setCloudStatus('☁ Cloud: menunggu simpan','saving');
+ cloudSaveTimer=setTimeout(()=>saveCloudNow(false),650);
+}
+async function saveCloudNow(silent=false){
+ if(!cloudClient||!cloudUser)return false;
+ if(cloudSaveBusy){cloudSavePending=true;return false;}
+ cloudSaveBusy=true;
+ cloudSavePending=false;
+ if(!silent)setCloudStatus('☁ Cloud: menyimpan...','saving');
+ try{
+   const payload={user_id:cloudUser.id,data:db,updated_at:new Date().toISOString()};
+   const {error}=await cloudClient.from(CLOUD_TABLE).upsert(payload,{onConflict:'user_id'});
+   if(error)throw error;
+   cloudLastSavedAt=payload.updated_at;
+   setCloudStatus('☁ Cloud: tersimpan','ok');
+   return true;
+ }catch(err){
+   console.error('saveCloudNow',err);
+   setCloudStatus('☁ Cloud: gagal simpan','error');
+   if(!silent)alert('Perubahan tersimpan di komputer ini, tetapi belum berhasil dikirim ke Supabase.\n\n'+(err?.message||err));
+   return false;
+ }finally{
+   cloudSaveBusy=false;
+   if(cloudSavePending){cloudSavePending=false;setTimeout(()=>saveCloudNow(true),120);}
+ }
+}
+async function pullCloudNow(){
+ if(!cloudUser)return alert('Belum login ke cloud.');
+ if(!confirm('Ambil data terbaru dari Supabase? Data lokal yang belum tersinkron akan diganti oleh data cloud.'))return;
+ const ok=await loadCloudState();
+ if(ok){render('dashboard');alert('Data terbaru dari Supabase berhasil dimuat.');}
+}
+
+const CLOUD_RECOVERY_FLAG='administrasi_asesmen_recovery_requested';
+let cloudRecoveryMode=false;
+
+function showRecoveryMessage(message,type='warning'){
+ let el=document.getElementById('recoveryMessage');
+ if(!el)return;
+ el.className='login-foot '+type;
+ el.textContent=message||'';
+ el.style.display=message?'block':'none';
+}
+
+function clearRecoveryMessage(){
+ let el=document.getElementById('recoveryMessage');
+ if(el){el.style.display='none';el.textContent='';el.className='login-foot';}
+}
+
+function toggleRecoveryPassword(){
+ let show=!!document.getElementById('showRecoveryPassword')?.checked;
+ let a=document.getElementById('recoveryNewPassword');
+ let b=document.getElementById('recoveryConfirmPassword');
+ if(a)a.type=show?'text':'password';
+ if(b)b.type=show?'text':'password';
+}
+
+function recoveryUrlHint(){
+ let href=String(location.href||'');
+ return /(?:[?#&]type=recovery(?:[&#]|$))/i.test(href)
+   || /(?:[?#&]access_token=)/i.test(href)
+   || /(?:[?&]code=)/i.test(href) && localStorage.getItem(CLOUD_RECOVERY_FLAG)==='1';
+}
+
+function showRecoveryPasswordPanel(email=''){
+ cloudRecoveryMode=true;
+ document.getElementById('loginScreen').style.display='flex';
+ let panel=document.getElementById('recoveryPanel');
+ if(panel)panel.style.display='block';
+ let emailInput=document.getElementById('loginEmail');
+ if(email && emailInput)emailInput.value=email;
+ hideLoginError();
+ showRecoveryMessage('Link pemulihan berhasil diverifikasi. Silakan buat password baru di bawah ini.','success');
+ setTimeout(()=>document.getElementById('recoveryNewPassword')?.focus(),100);
+}
+
+function hideRecoveryPasswordPanel(){
+ cloudRecoveryMode=false;
+ let panel=document.getElementById('recoveryPanel');
+ if(panel)panel.style.display='none';
+}
+
+async function forgotCloudPassword(){
+ hideLoginError();
+ clearRecoveryMessage();
+ if(!cloudClient)return showLoginError('Library Supabase belum termuat. Pastikan perangkat terhubung internet.');
+
+ let email=(document.getElementById('loginEmail')?.value||'').trim().toLowerCase();
+ if(!email)return showLoginError('Masukkan Email Admin terlebih dahulu, lalu klik Lupa Password.');
+
+ try{
+   localStorage.setItem(CLOUD_RECOVERY_FLAG,'1');
+
+   let options={};
+   // Jika aplikasi sudah di-host http/https, link recovery kembali ke halaman aplikasi yang sama.
+   // Untuk file lokal, Supabase menggunakan Site URL yang disetel pada dashboard.
+   if(/^https?:$/.test(location.protocol)){
+     options.redirectTo=location.origin+location.pathname;
+   }
+
+   const {error}=await cloudClient.auth.resetPasswordForEmail(email,options);
+   if(error)throw error;
+
+   let localNote = location.protocol==='file:'
+     ? ' Karena aplikasi masih dibuka sebagai file lokal, setelah klik link email Supabase akan mengikuti Site URL pada Auth → URL Configuration. Jika halaman tujuan belum benar, nanti URL tersebut perlu diarahkan ke alamat hosting aplikasi.'
+     : ' Setelah link di email diklik, Anda akan kembali ke aplikasi ini dan form Password Baru akan tampil otomatis.';
+
+   showRecoveryMessage(
+     'Email pemulihan password sudah dikirim ke '+email+'. Buka Inbox/Spam, cari email dari Supabase, lalu klik link pemulihan.'+localNote,
+     'success'
+   );
+ }catch(err){
+   localStorage.removeItem(CLOUD_RECOVERY_FLAG);
+   showLoginError('Gagal mengirim email pemulihan: '+(err?.message||err));
+ }
+}
+
+async function completePasswordRecovery(){
+ hideLoginError();
+ if(!cloudClient)return showLoginError('Supabase belum termuat.');
+
+ let p=document.getElementById('recoveryNewPassword')?.value||'';
+ let c=document.getElementById('recoveryConfirmPassword')?.value||'';
+ if(p.length<6)return showLoginError('Password baru minimal 6 karakter.');
+ if(p!==c)return showLoginError('Password baru dan konfirmasi password belum sama.');
+
+ let btn=document.getElementById('recoverySaveBtn');
+ let old=btn?.textContent;
+ if(btn){btn.disabled=true;btn.textContent='Menyimpan Password...';}
+
+ try{
+   const {data:sessionData,error:sessionError}=await cloudClient.auth.getSession();
+   if(sessionError)throw sessionError;
+   if(!sessionData?.session?.user){
+     throw new Error('Sesi recovery belum aktif. Buka kembali link pemulihan dari email Supabase.');
+   }
+
+   const {data,error}=await cloudClient.auth.updateUser({password:p});
+   if(error)throw error;
+
+   localStorage.removeItem(CLOUD_RECOVERY_FLAG);
+   cloudRecoveryMode=false;
+   let panel=document.getElementById('recoveryPanel');
+   if(panel)panel.style.display='none';
+   let lp=document.getElementById('loginPassword');
+   if(lp)lp.value='';
+   let a=document.getElementById('recoveryNewPassword');if(a)a.value='';
+   let b=document.getElementById('recoveryConfirmPassword');if(b)b.value='';
+
+   showRecoveryMessage('Password baru berhasil disimpan. Anda sekarang masuk ke aplikasi dengan akun cloud.','success');
+
+   if(data?.user){
+     setTimeout(()=>enterCloudSession(data.user),350);
+   }else{
+     const {data:userData}=await cloudClient.auth.getUser();
+     if(userData?.user)setTimeout(()=>enterCloudSession(userData.user),350);
+   }
+ }catch(err){
+   showLoginError('Password baru belum berhasil disimpan: '+(err?.message||err));
+ }finally{
+   if(btn){btn.disabled=false;btn.textContent=old||'Simpan Password Baru';}
+ }
+}
+
+function toggleLoginPassword(){
+ let p=document.getElementById('loginPassword');
+ if(p)p.type=document.getElementById('showLoginPassword')?.checked?'text':'password';
+}
+
+function cloudAuthErrorMessage(err,email=''){
+ let code=String(err?.code||'').toLowerCase();
+ let msg=String(err?.message||err||'').trim();
+ if(code==='invalid_credentials' || /invalid login credentials/i.test(msg)){
+   return `Login ditolak Supabase untuk ${email||'email tersebut'}. Koneksi cloud sudah berhasil, tetapi email/password tidak cocok dengan akun di Authentication → Users. Pastikan email sama persis dan password diketik persis. Gunakan "Tampilkan Password" untuk mengecek pengetikan.`;
+ }
+ if(code==='email_not_confirmed' || /email not confirmed/i.test(msg)){
+   return 'Email akun Supabase belum dikonfirmasi. Buka email konfirmasi Supabase lalu klik tautannya, setelah itu coba login lagi.';
+ }
+ if(code==='user_banned'){
+   return 'Akun Supabase sedang dinonaktifkan/banned. Periksa Authentication → Users di Supabase.';
+ }
+ return 'Login cloud gagal: '+(msg||'Kesalahan tidak diketahui.');
+}
+
+async function doLogin(){
+ hideLoginError();
+ if(!cloudClient)return showLoginError('Library Supabase belum termuat. Pastikan perangkat terhubung internet.');
+ let email=(document.getElementById('loginEmail')?.value||'').trim().toLowerCase();
+ // PENTING: password TIDAK di-trim agar karakter/spasi yang memang menjadi bagian password tidak berubah.
+ let password=(document.getElementById('loginPassword')?.value||'');
+ if(!email||!password)return showLoginError('Email dan password wajib diisi.');
+ setLoginBusy(true);
+ try{
+   const {data,error}=await cloudClient.auth.signInWithPassword({email,password});
+   if(error)throw error;
+   if(!data?.user)throw new Error('Akun tidak ditemukan.');
+   localStorage.removeItem(CLOUD_RECOVERY_FLAG);
+   cloudRecoveryMode=false;
+   hideRecoveryPasswordPanel();
+   await enterCloudSession(data.user);
+ }catch(err){
+   showLoginError(cloudAuthErrorMessage(err,email));
+ }finally{
+   setLoginBusy(false);
+ }
+}
+async function signUpCloudAdmin(){
+ hideLoginError();
+ if(!cloudClient)return showLoginError('Library Supabase belum termuat.');
+ let email=(document.getElementById('loginEmail')?.value||'').trim();
+ let password=(document.getElementById('loginPassword')?.value||'');
+ if(!email||!password)return showLoginError('Isi Email Admin dan Password terlebih dahulu.');
+ if(password.length<6)return showLoginError('Password minimal 6 karakter.');
+ if(!confirm('Buat akun admin cloud dengan email '+email+'?'))return;
+ try{
+   const {data,error}=await cloudClient.auth.signUp({email,password});
+   if(error)throw error;
+   if(data?.session&&data?.user){
+     await enterCloudSession(data.user);
+     alert('Akun admin cloud berhasil dibuat dan sudah login.');
+   }else{
+     alert('Akun berhasil didaftarkan. Supabase meminta konfirmasi email. Buka email '+email+', klik tautan konfirmasi, lalu kembali dan login.');
+   }
+ }catch(err){showLoginError('Pembuatan akun gagal: '+(err?.message||err));}
+}
+async function enterCloudSession(user){
+ cloudUser=user;
+ document.getElementById('loginScreen').style.display='none';
+ setCloudStatus('☁ Cloud: login','saving');
+ await loadCloudState();
+ render('dashboard');
+ setCloudStatus('☁ Cloud: tersinkron','ok');
+}
+async function logoutApp(){
+ clearTimeout(cloudSaveTimer);
+ if(cloudUser)await saveCloudNow(true);
+ if(cloudClient)await cloudClient.auth.signOut();
+ cloudUser=null;
+ document.getElementById('loginScreen').style.display='flex';
+ let p=document.getElementById('loginPassword');if(p)p.value='';
+ setCloudStatus('☁ Cloud: belum login');
+}
+async function checkLogin(){
+ if(!cloudClient){document.getElementById('loginScreen').style.display='flex';showLoginError('Supabase belum dapat dimuat. Periksa koneksi internet.');return;}
+ try{
+   const {data,error}=await cloudClient.auth.getSession();
+   if(error)throw error;
+   const session=data?.session;
+
+   const recoveryRequested=localStorage.getItem(CLOUD_RECOVERY_FLAG)==='1';
+   if(session?.user && (cloudRecoveryMode || recoveryUrlHint() || recoveryRequested)){
+     showRecoveryPasswordPanel(session.user.email||'');
+     setCloudStatus('☁ Cloud: mode pemulihan','saving');
+     return;
+   }
+
+   if(session?.user)await enterCloudSession(session.user);
+   else{
+     document.getElementById('loginScreen').style.display='flex';
+     setCloudStatus('☁ Cloud: belum login');
+     if(recoveryRequested){
+       showRecoveryMessage('Email pemulihan sudah diminta. Buka email dari Supabase dan klik link pemulihan untuk melanjutkan.','warning');
+     }
+   }
+ }catch(err){
+   document.getElementById('loginScreen').style.display='flex';
+   showLoginError('Tidak dapat memeriksa sesi cloud: '+(err?.message||err));
+ }
+}
+
+if(cloudClient){
+ cloudClient.auth.onAuthStateChange((event,session)=>{
+   if(event==='PASSWORD_RECOVERY'){
+     cloudRecoveryMode=true;
+     localStorage.setItem(CLOUD_RECOVERY_FLAG,'1');
+     setTimeout(()=>showRecoveryPasswordPanel(session?.user?.email||''),0);
+   }
+ });
+}
+
+async function changeCloudPassword(){
+ if(!cloudClient||!cloudUser)return alert('Belum login ke cloud.');
+ let p=v('newCloudPass');
+ if(!p||p.length<6)return alert('Password baru minimal 6 karakter.');
+ const {error}=await cloudClient.auth.updateUser({password:p});
+ if(error)return alert('Password belum berhasil diubah: '+error.message);
+ let el=document.getElementById('newCloudPass');if(el)el.value='';
+ alert('Password akun cloud berhasil diubah. Gunakan password baru saat login di perangkat lain.');
+}
 db.scheduleFiles=db.scheduleFiles||[];
 db.supervisorFiles=db.supervisorFiles||[];
 db.supervisorNames=db.supervisorNames||[];
@@ -2513,7 +3078,7 @@ function systemPrint(){
     alert('Dialog printer tidak dapat dibuka. Coba tekan Ctrl+P pada tampilan cetak ini.');
   }
 }
-function save(){localStorage.setItem(KEY,JSON.stringify(db))}function esc(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}function v(id){return(document.getElementById(id)?.value||'').trim()}function sortStudent(a,b){return String(a.class).localeCompare(String(b.class),undefined,{numeric:true})||(a.order-b.order)||a.name.localeCompare(b.name)}function participantNo(room,pos){
+function save(){localStorage.setItem(KEY,JSON.stringify(db));scheduleCloudSave()}function esc(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}function v(id){return(document.getElementById(id)?.value||'').trim()}function sortStudent(a,b){return String(a.class).localeCompare(String(b.class),undefined,{numeric:true})||(a.order-b.order)||a.name.localeCompare(b.name)}function participantNo(room,pos){
  let r=db.rooms.find(x=>x.no===room), s=r?.students?.[pos-1];
  if(!s)return String(room).padStart(2,'0')+'-'+String(pos).padStart(3,'0');
 
@@ -3807,6 +4372,7 @@ function printParticipantCards(roomNo='all'){
 }
 
 function schedule(){
+ db.schedules=db.schedules||[];
  db.scheduleFiles=db.scheduleFiles||[];
 db.supervisorFiles=db.supervisorFiles||[];
  return `<div class="card"><h2>Jadwal Asesmen</h2>
@@ -3818,16 +4384,16 @@ db.supervisorFiles=db.supervisorFiles||[];
    </div>
    <small>${db.savedAssessmentSchedule?.savedAt?`Simpan terakhir: ${new Date(db.savedAssessmentSchedule.savedAt).toLocaleString('id-ID')}`:'Belum ada simpanan khusus Jadwal Asesmen.'}</small>
  </div>
- <div class="notice"><b>Kolom Mata Pelajaran hanya untuk nama mapel</b>, contoh: <b>Bahasa Inggris</b>. Waktu dan alokasi seperti <b>07.30 - 09.30</b> atau <b>120 menit</b> ditempatkan pada kolom Waktu/Alokasi dan tidak digabung ke nama mapel.<br><br><b>Tambah Jadwal</b> dapat dilakukan secara manual atau dengan mengunggah file <b>Word (.doc/.docx), PDF, JPEG/JPG, atau PNG</b>. File yang diunggah disimpan sebagai lampiran jadwal di aplikasi.</div>
+ <div class="notice"><b>Format 2 mapel per hari:</b> masukkan dua jadwal dengan Hari/Tanggal yang sama. Tabel akan otomatis menggabungkan kolom <b>No</b> dan <b>Hari/Tanggal</b> menjadi satu sel untuk dua baris jam ke-1 dan jam ke-2. File Excel dengan sel tanggal yang di-merge juga akan dibaca dengan pola yang sama.<br><br><b>Kolom Mata Pelajaran hanya untuk nama mapel</b>, contoh: <b>Bahasa Inggris</b>. Waktu dan alokasi seperti <b>07.30 - 09.30</b> atau <b>120 menit</b> ditempatkan pada kolom Waktu/Alokasi dan tidak digabung ke nama mapel.<br><br><b>Tambah Jadwal</b> dapat dilakukan secara manual atau dengan mengunggah file <b>Word (.doc/.docx), PDF, JPEG/JPG, atau PNG</b>. File yang diunggah disimpan sebagai lampiran jadwal di aplikasi.</div>
 
  <div class="card">
    <h3>Upload File Jadwal</h3>
    <div class="grid">
      <div><label>Judul/Keterangan File</label><input id="scheduleFileTitle" placeholder="Contoh: Jadwal ASTS Gasal"></div>
-     <div><label>Pilih File</label><input id="scheduleUpload" type="file" accept=".doc,.docx,.pdf,.jpg,.jpeg,.png,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png"></div>
+     <div><label>Pilih File Jadwal</label><input id="scheduleUpload" type="file" accept=".xlsx,.xls,.csv,.pdf,.doc,.docx"></div>
    </div>
-   <div class="actions"><button onclick="uploadScheduleFile()">⬆ Upload Jadwal</button></div>
-   <div class="notice"><small>PDF dan gambar dapat dipreview langsung. File Word dapat disimpan dan dibuka/download kembali. Isi file Word/PDF/JPEG tidak diubah otomatis menjadi baris jadwal; tabel jadwal terstruktur tetap dapat ditambahkan melalui form manual di bawah.</small></div>
+   <div class="actions"><button onclick="uploadScheduleFile(this)">⬆ Upload & Baca Jadwal Otomatis</button></div>
+   <div class="notice"><small>File <b>Excel/CSV, PDF berbasis teks, dan Word .docx</b> akan dibaca otomatis. Hasilnya langsung masuk ke kolom <b>Hari/Tanggal, Waktu, Alokasi, Mata Pelajaran</b> dan otomatis digunakan juga pada halaman <b>Jadwal Pengawas</b>.</small></div>
  </div>
 
  <div class="card">
@@ -3858,30 +4424,40 @@ db.supervisorFiles=db.supervisorFiles||[];
  </div>`;
 }
 
-function uploadScheduleFile(){
+async function uploadScheduleFile(btn){
  let input=document.getElementById('scheduleUpload');
  let file=input?.files?.[0];
- if(!file)return alert('Pilih file Word, PDF, JPEG/JPG, atau PNG terlebih dahulu.');
- let okExt=/\.(doc|docx|pdf|jpg|jpeg|png)$/i.test(file.name);
- if(!okExt)return alert('Format file belum didukung. Gunakan Word, PDF, JPEG/JPG, atau PNG.');
- if(file.size>8*1024*1024)return alert('Ukuran file terlalu besar. Maksimal 8 MB per file.');
+ if(!file)return alert('Pilih file jadwal Excel/CSV, PDF, atau Word terlebih dahulu.');
+ if(file.size>8*1024*1024)return alert('Ukuran file terlalu besar. Maksimal 8 MB.');
+ if(!/\.(xlsx|xls|csv|pdf|doc|docx)$/i.test(file.name))return alert('Format yang dapat dibaca otomatis: Excel/CSV, PDF berbasis teks, atau Word .docx.');
 
- let rd=new FileReader();
- rd.onload=()=>{
-   db.scheduleFiles=db.scheduleFiles||[];
-db.supervisorFiles=db.supervisorFiles||[];
-   db.scheduleFiles.push({
-     id:Date.now()+Math.floor(Math.random()*1000),
-     title:v('scheduleFileTitle')||file.name,
-     name:file.name,
-     type:file.type||'application/octet-stream',
-     data:rd.result,
-     uploadedAt:new Date().toISOString()
-   });
-   try{save();alert('File jadwal berhasil diunggah.');render('schedule')}
-   catch(e){db.scheduleFiles.pop();alert('File terlalu besar untuk penyimpanan browser. Coba file yang lebih kecil.')}
- };
- rd.readAsDataURL(file);
+ if(btn){btn.disabled=true;btn.textContent='Membaca jadwal...';}
+ try{
+   let rows=await parseSupervisorScheduleFile(file);
+
+   // Simpan lampiran jika ukurannya masih aman untuk localStorage.
+   if(file.size<=2500000){
+     let data=await new Promise((resolve,reject)=>{
+       let rd=new FileReader();rd.onload=()=>resolve(rd.result);rd.onerror=reject;rd.readAsDataURL(file);
+     });
+     db.scheduleFiles=db.scheduleFiles||[];
+     db.scheduleFiles.push({
+       id:Date.now()+Math.floor(Math.random()*1000),
+       title:v('scheduleFileTitle')||file.name,
+       name:file.name,
+       type:file.type||'application/octet-stream',
+       data,
+       uploadedAt:new Date().toISOString()
+     });
+   }
+
+   let ok=commitImportedSchedules(rows,file.name,'schedule');
+   if(!ok)throw new Error('Tidak ada baris jadwal yang berhasil dikenali.');
+ }catch(err){
+   alert('Jadwal belum dapat dibaca otomatis: '+err.message);
+ }finally{
+   if(btn){btn.disabled=false;btn.textContent='⬆ Upload & Baca Jadwal Otomatis';}
+ }
 }
 
 function previewScheduleFile(id){
@@ -3986,18 +4562,96 @@ function deriveAllocationFromTime(value){
  return mins>0?`${mins} menit`:'';
 }
 function addSchedule(){
- let time=v('jt');
- db.schedules.push({id:Date.now(),date:v('jd'),time,allocation:v('ja')||deriveAllocationFromTime(time),subject:cleanScheduleSubject(v('js')),note:''});
- save();render('schedule');
+ db.schedules=db.schedules||[];
+ let date=v('jd'),time=v('jt'),allocation=v('ja'),subject=cleanScheduleSubject(v('js'));
+ if(!date)return alert('Hari / Tanggal belum diisi.');
+ if(!time)return alert('Waktu belum diisi.');
+ if(!subject)return alert('Mata Pelajaran belum diisi. Isi nama mapel saja, misalnya Bahasa Inggris.');
+
+ let row={
+   id:Date.now()+Math.floor(Math.random()*1000),
+   date,
+   time,
+   allocation:allocation||deriveAllocationFromTime(time),
+   subject,
+   note:''
+ };
+ db.schedules.push(row);
+ try{
+   save();
+   // Jadwal Pengawas membaca db.schedules yang sama, jadi langsung tersinkron.
+   render('schedule');
+   setTimeout(()=>alert('Jadwal berhasil ditambahkan dan otomatis tersinkron ke Jadwal Pengawas.'),50);
+ }catch(err){
+   db.schedules.pop();
+   alert('Jadwal gagal disimpan: '+err.message);
+ }
 }
+
+function normalizedScheduleDate(value){
+ return String(value||'').replace(/\s+/g,' ').trim().toLowerCase();
+}
+
+function schedulesWithInheritedDate(){
+ let lastDate='';
+ return (db.schedules||[]).map(s=>{
+   let date=String(s.date||'').trim();
+   if(date)lastDate=date;
+   else if((s.time||s.subject||s.allocation) && lastDate)date=lastDate;
+   return {...s,date};
+ });
+}
+
+function groupedAssessmentSchedules(){
+ let rows=schedulesWithInheritedDate();
+ let groups=[];
+ rows.forEach(s=>{
+   let key=normalizedScheduleDate(s.date);
+   let last=groups[groups.length-1];
+   if(last && key && last.key===key){
+     last.rows.push(s);
+   }else{
+     groups.push({key:key||`__${groups.length}`,date:s.date||'',rows:[s]});
+   }
+ });
+ return groups;
+}
+
+function scheduleTableRows(showActions=true){
+ let groups=groupedAssessmentSchedules();
+ if(!groups.length){
+   return `<tr><td colspan="${showActions?6:5}" style="text-align:center">Belum ada jadwal asesmen.</td></tr>`;
+ }
+
+ return groups.map((g,groupIndex)=>{
+   let span=g.rows.length;
+   return g.rows.map((x,rowIndex)=>`<tr>
+     ${rowIndex===0?`<td class="schedule-no-cell col-no" rowspan="${span}">${groupIndex+1}</td>`:''}
+     ${rowIndex===0?`<td class="schedule-day-cell col-date" rowspan="${span}">${esc(g.date)}</td>`:''}
+     <td class="col-time">${esc(x.time||'')}</td>
+     <td class="col-allocation">${esc(x.allocation||deriveAllocationFromTime(x.time)||'')}</td>
+     <td class="schedule-subject-cell col-subject">${esc(scheduleSubject(x))}</td>
+     ${showActions?`<td class="no-print"><button class="danger" onclick="deleteSchedule(${x.id})">Hapus</button></td>`:''}
+   </tr>`).join('');
+ }).join('');
+}
+
 function tableSchedules(){
- return `<div class="tablewrap"><table><thead><tr>
- <th>No</th><th>Hari / Tanggal</th><th>Waktu</th><th>Alokasi</th><th>Mata Pelajaran</th><th class="no-print">Aksi</th>
- </tr></thead><tbody>
- ${db.schedules.map((x,i)=>`<tr>
- <td>${i+1}</td><td>${esc(x.date)}</td><td>${esc(x.time)}</td><td>${esc(x.allocation||deriveAllocationFromTime(x.time)||'')}</td><td>${esc(scheduleSubject(x))}</td>
- <td class="no-print"><button class="danger" onclick="deleteSchedule(${x.id})">Hapus</button></td></tr>`).join('')}
- </tbody></table></div>`;
+ return `<div class="tablewrap">
+   <table class="schedule-assessment-table">
+     <thead>
+       <tr>
+         <th class="col-no">No</th>
+         <th class="col-date">Hari / Tanggal</th>
+         <th class="col-time">Waktu</th>
+         <th class="col-allocation">Alokasi</th>
+         <th class="col-subject">Mata Pelajaran</th>
+         <th class="no-print">Aksi</th>
+       </tr>
+     </thead>
+     <tbody>${scheduleTableRows(true)}</tbody>
+   </table>
+ </div>`;
 }
 function deleteSchedule(id){db.schedules=db.schedules.filter(x=>x.id!==id);save();render('schedule')}
 
@@ -4081,6 +4735,53 @@ function setSupervisorCode(name,value){
  db.supervisorCodes[name]=value;
  save();render('supervisors');
 }
+
+function saveSupervisorCodeByIndex(index){
+ let names=db.supervisorNames||[];
+ let name=names[index];
+ if(name===undefined)return;
+ let input=document.getElementById(`supervisorCodeInput_${index}`);
+ let value=String(input?.value||'').trim();
+
+ if(!value){
+   delete db.supervisorCodes[name];
+   save();
+   render('supervisors');
+   setTimeout(()=>alert(`Kode ${name} dikembalikan ke kode otomatis: ${supervisorCode(name)}`),50);
+   return;
+ }
+
+ let conflict=names.find((n,i)=>i!==index && String(supervisorCode(n)).toLowerCase()===value.toLowerCase());
+ if(conflict){
+   alert(`Kode "${value}" sudah digunakan oleh ${conflict}. Gunakan kode lain.`);
+   if(input)input.focus();
+   return;
+ }
+
+ db.supervisorCodes=db.supervisorCodes||{};
+ db.supervisorCodes[name]=value;
+ save();
+ render('supervisors');
+ setTimeout(()=>alert(`Kode pengawas ${name} berhasil disimpan menjadi "${value}".`),50);
+}
+
+function resetSupervisorCodeByIndex(index){
+ let names=db.supervisorNames||[];
+ let name=names[index];
+ if(name===undefined)return;
+ db.supervisorCodes=db.supervisorCodes||{};
+ delete db.supervisorCodes[name];
+ save();
+ render('supervisors');
+}
+
+function resetAllSupervisorCodes(){
+ if(!confirm('Kembalikan semua kode pengawas ke kode otomatis berdasarkan urutan nama?'))return;
+ db.supervisorCodes={};
+ save();
+ render('supervisors');
+}
+
 function supervisorCodeLegendHtml(printMode=false){
  let names=db.supervisorNames||[];
  if(!names.length)return '';
@@ -4092,18 +4793,46 @@ function supervisorCodeLegendHtml(printMode=false){
      </div>
    </div>`;
  }
- return `<table class="supervisor-code-table">
-   <thead><tr><th style="width:90px">Kode</th><th>Nama Pengawas</th><th style="width:70px">Aksi</th></tr></thead>
-   <tbody>${names.map((n,i)=>`<tr>
-     <td style="text-align:center">
-       <input class="code-edit-input" value="${esc(supervisorCode(n))}" 
-         onchange="setSupervisorCode('${String(n).replace(/\\/g,'\\\\').replace(/'/g,"\\'")}',this.value)"
-         title="Kode dapat diedit manual. Kosongkan untuk kembali ke kode otomatis.">
-     </td>
-     <td><b>${esc(n)}</b><br><small>Urutan ${i+1} • Default ${esc(supervisorCodeByIndex(i))}</small></td>
-     <td style="text-align:center"><button class="danger" style="padding:3px 8px" onclick="deleteSupervisorName(${i})">×</button></td>
-   </tr>`).join('')}</tbody>
- </table>`;
+
+ return `<div>
+   <div class="actions" style="justify-content:flex-end;margin-bottom:8px">
+     <button class="secondary" onclick="resetAllSupervisorCodes()">↺ Kembalikan Semua Kode Default</button>
+   </div>
+   <table class="supervisor-code-table">
+     <thead>
+       <tr>
+         <th style="width:58px">No</th>
+         <th>Nama Pengawas</th>
+         <th style="width:140px">Kode Manual</th>
+         <th style="width:180px">Pengaturan</th>
+       </tr>
+     </thead>
+     <tbody>${names.map((n,i)=>`<tr>
+       <td style="text-align:center">${i+1}</td>
+       <td>
+         <b>${esc(n)}</b><br>
+         <small>Kode default: <b>${esc(supervisorCodeByIndex(i))}</b> • Kode aktif: <b>${esc(supervisorCode(n))}</b></small>
+       </td>
+       <td style="text-align:center">
+         <input id="supervisorCodeInput_${i}" class="code-edit-input"
+           value="${esc(supervisorCode(n))}"
+           placeholder="${esc(supervisorCodeByIndex(i))}"
+           maxlength="12"
+           style="text-align:center;font-weight:900"
+           onkeydown="if(event.key==='Enter')saveSupervisorCodeByIndex(${i})">
+       </td>
+       <td style="text-align:center">
+         <button onclick="saveSupervisorCodeByIndex(${i})">💾 Simpan</button>
+         <button class="secondary" onclick="resetSupervisorCodeByIndex(${i})">Default</button>
+         <button class="danger" onclick="deleteSupervisorName(${i})">×</button>
+       </td>
+     </tr>`).join('')}</tbody>
+   </table>
+   <div class="notice" style="margin-top:8px">
+     <b>Kode Manual:</b> isi kode sesuai kebutuhan, misalnya A1, B2, P01, 01, atau kode lain.
+     Setiap kode harus berbeda. Tombol <b>Default</b> mengembalikan kode otomatis berdasarkan urutan nama.
+   </div>
+ </div>`;
 }
 function supervisorCountPanelHtml(){
  let counts=getSupervisorCounts(),days=getSupervisorDayCounts();
@@ -4125,6 +4854,7 @@ function refreshSupervisorCountPanel(){
  if(old)old.outerHTML=supervisorCountPanelHtml();
 }
 function supervisors(){
+ db.schedules=db.schedules||[];
  db.supervisorNames=db.supervisorNames||[];
  db.supervisorMatrix=db.supervisorMatrix||{};
  db.supervisorScheduleOverrides=db.supervisorScheduleOverrides||{};
@@ -4134,7 +4864,7 @@ function supervisors(){
  return `<div class="card"><h2>9. Jadwal Pengawas</h2>
  <div class="notice">
    Format Jadwal Pengawas mengikuti <b>file jadwal yang diupload</b> dan <b>Jumlah Siswa Tiap Ruang</b>.
-   Kolom <b>Hari/Tanggal, Waktu, Alokasi, dan Mata Pelajaran</b> dibaca otomatis dari file Excel/PDF/Word dan tidak perlu diinput manual. Setiap pengawas otomatis mendapat <b>kode berdasarkan urutan input: A–Z, 1–40, lalu a–z</b>, dan kode tersebut dapat <b>diedit manual</b> pada daftar pengawas. Pada kolom ruang hanya kode pengawas yang ditampilkan. Di sisi kanan tersedia rekap <b>Jml Pengawasan</b> dan rekap tersebut tidak ikut tercetak.
+   Kolom <b>Hari/Tanggal, Waktu, Alokasi, dan Mata Pelajaran</b> dibaca otomatis dari file Excel/PDF/Word dan tidak perlu diinput manual. Setiap pengawas otomatis mendapat <b>kode berdasarkan urutan input: A–Z, 1–40, lalu a–z</b>. Kode dapat <b>diatur manual per nama pengawas</b> melalui kolom Kode Manual dan tombol Simpan. Pada kolom ruang hanya kode pengawas yang ditampilkan. Di sisi kanan tersedia rekap <b>Jml Pengawasan</b> dan rekap tersebut tidak ikut tercetak.
  </div>
 
  <div class="schedule-toolbar">
@@ -4169,9 +4899,10 @@ function supervisors(){
        <label>Upload Daftar Nama Pengawas (Excel/CSV)</label>
        <input id="supNamesFile" type="file" accept=".xlsx,.xls,.csv">
        <div class="actions">
-         <button onclick="uploadSupervisorNames()">⬆ Import Nama Pengawas</button>
+         <button onclick="uploadSupervisorNames(this)">⬆ Import Nama Pengawas</button>
          <button class="secondary" onclick="downloadSupervisorNamesTemplate()">⬇ Template Nama</button>
        </div>
+       <small>Excel dapat berisi kolom seperti <b>No | Nama Pengawas | NIP</b>, <b>No | Nama Guru</b>, atau satu kolom nama saja. Aplikasi akan mencari kolom nama secara otomatis.</small>
      </div>
    </div>
    <div>
@@ -4181,14 +4912,14 @@ function supervisors(){
  </div>
 
  <div class="card">
-   <h3>3. Upload Jadwal untuk Dibaca Otomatis (Excel/PDF/Word)</h3>
+   <h3>3. Jadwal Asesmen / Upload Jadwal Otomatis</h3>
    <div class="grid">
      <div><label>Judul/Keterangan File</label><input id="supFileTitle" placeholder="Contoh: Jadwal Asesmen"></div>
      <div><label>Pilih File Jadwal</label><input id="supFileInput" type="file" accept=".xlsx,.xls,.csv,.pdf,.doc,.docx"></div>
    </div>
-   <div class="actions"><button onclick="uploadSupervisorSchedule()">⬆ Upload & Baca Jadwal Otomatis</button></div>
+   <div class="actions"><button onclick="uploadSupervisorSchedule(this)">⬆ Upload & Baca Jadwal Otomatis</button></div>
    <div class="sup-import-status">
-     Format yang dibaca: <b>Excel/CSV, PDF berbasis teks, dan Word .docx</b>. Sistem mencari kolom/baris Hari/Tanggal, Waktu, Alokasi, dan Mata Pelajaran secara otomatis. Jika kolom Alokasi tidak tersedia tetapi rentang Waktu terbaca, alokasi dihitung otomatis dalam menit.
+     Jadwal pada halaman ini otomatis mengambil data dari <b>Jadwal Asesmen</b>. Jika mengunggah file di sini, hasil bacanya juga disimpan sebagai Jadwal Asesmen agar kedua halaman tetap sama. Format: <b>Excel/CSV, PDF berbasis teks, Word .docx</b>.
    </div>
    ${db.supervisorFiles.length?db.supervisorFiles.map(f=>`
      <div class="card"><b>${esc(f.title||f.name)}</b><br><small>${esc(f.name)}</small>
@@ -4216,7 +4947,7 @@ function supervisors(){
      <button onclick="printSupervisorMatrix()">🖨 Cetak Jadwal Pengawas</button>
    </div>
 
-   ${schedules.length&&rooms.length?`
+   ${schedules.length?`
    <div class="sup-workspace">
    <div class="sup-matrix-wrap">
     <table class="sup-matrix">
@@ -4227,9 +4958,9 @@ function supervisors(){
           <th class="fixed-time" rowspan="2">WAKTU</th>
           <th class="fixed-allocation" rowspan="2">ALOKASI</th>
           <th class="fixed-subject" rowspan="2">MATA PELAJARAN</th>
-          <th colspan="${rooms.length}">R U A N G</th>
+          <th colspan="${Math.max(rooms.length,1)}">R U A N G</th>
         </tr>
-        <tr>${rooms.map(r=>`<th class="room-col">${roomLabel(r)}</th>`).join('')}</tr>
+        <tr>${rooms.length?rooms.map(r=>`<th class="room-col">${roomLabel(r)}</th>`).join(''):'<th class="room-col">-</th>'}</tr>
       </thead>
       <tbody>
        ${schedules.map((s,i)=>`
@@ -4239,7 +4970,7 @@ function supervisors(){
           <td><div class="sup-auto-value">${esc(supScheduleValue(s,'time'))}</div></td>
           <td><div class="sup-auto-value">${esc(supScheduleValue(s,'allocation')||deriveAllocationFromTime(supScheduleValue(s,'time')))}</div></td>
           <td><div class="sup-auto-value">${esc(supScheduleValue(s,'subject'))}</div></td>
-          ${rooms.map(r=>{
+          ${rooms.length?rooms.map(r=>{
             let key=supMatrixKey(s.id,r.no), selected=db.supervisorMatrix[key]||'';
             return `<td class="room-col">
               <select onchange="saveSupervisorCell('${key}',this.value)">
@@ -4247,14 +4978,14 @@ function supervisors(){
                 ${availableSupervisorOptions(s.id,key,selected)}
               </select>
             </td>`;
-          }).join('')}
+          }).join(''):'<td class="room-col">-</td>'}
         </tr>`).join('')}
       </tbody>
     </table>
    </div>
    ${supervisorCountPanelHtml()}
    </div>`:
-   '<div class="notice">Upload terlebih dahulu file jadwal pada bagian 3 dan pastikan <b>Jumlah Siswa Tiap Ruang</b> sudah diatur.</div>'}
+   '<div class="notice">Belum ada Jadwal Asesmen. Tambahkan jadwal manual pada halaman Jadwal Asesmen atau gunakan Upload & Baca Jadwal Otomatis.</div>'}
  </div>
  </div>`;
 }
@@ -4283,33 +5014,241 @@ function deleteSupervisorName(i){
  Object.keys(db.supervisorMatrix||{}).forEach(k=>{if(db.supervisorMatrix[k]===n)db.supervisorMatrix[k]=''});
  save();syncFlatSupervisors();render('supervisors');
 }
-function uploadSupervisorNames(){
- let file=document.getElementById('supNamesFile')?.files?.[0];
- if(!file)return alert('Pilih file Excel atau CSV terlebih dahulu.');
- let rd=new FileReader();
- rd.onload=e=>{
-   try{
-     let wb=XLSX.read(e.target.result,{type:'array'}), names=[];
-     wb.SheetNames.forEach(sn=>{
-       let rows=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,defval:''});
-       rows.forEach((row,idx)=>{
-         let vals=row.map(x=>String(x||'').trim()).filter(Boolean);
-         if(!vals.length)return;
-         let val=vals[0];
-         if(idx===0 && /nama|pengawas/i.test(val))return;
-         if(val)names.push(val);
-       });
-     });
-     db.supervisorNames=db.supervisorNames||[];
-     names.forEach(n=>{if(!db.supervisorNames.some(x=>x.toLowerCase()===n.toLowerCase()))db.supervisorNames.push(n)});
-     save();alert(`${names.length} nama pengawas dibaca dari file.`);render('supervisors');
-   }catch(err){alert('File daftar pengawas tidak dapat dibaca: '+err.message)}
- };
- rd.readAsArrayBuffer(file);
+
+function normalizeSupervisorCell(value){
+ return String(value??'')
+   .replace(/\u00a0/g,' ')
+   .replace(/\s+/g,' ')
+   .trim();
 }
+
+function supervisorHeaderScore(value){
+ let s=normalizeSupervisorCell(value).toLowerCase();
+ if(!s)return 0;
+ if(/^nama\s*pengawas$/.test(s))return 100;
+ if(/^nama\s*(guru|ustadz|ustaz|pendidik)$/.test(s))return 95;
+ if(/^pengawas$/.test(s))return 90;
+ if(/^nama\s*lengkap$/.test(s))return 85;
+ if(/^nama$/.test(s))return 80;
+ if(/nama.*pengawas/.test(s))return 75;
+ if(/nama.*guru/.test(s))return 70;
+ return 0;
+}
+
+function cleanSupervisorName(value){
+ let s=normalizeSupervisorCell(value);
+ if(!s)return '';
+ // Hilangkan nomor urut di depan: "1. Ahmad", "01) Ahmad", "1 - Ahmad".
+ s=s.replace(/^\s*\d+\s*[\.\)\-:]\s*/,'').trim();
+ // Hilangkan kode satu huruf jika dipisah jelas, mis. "A - Ahmad".
+ s=s.replace(/^[A-Za-z]\s*[\-:]\s+(?=[A-Za-zÀ-ÿ])/,'').trim();
+ return s;
+}
+
+function looksLikeSupervisorName(value){
+ let s=cleanSupervisorName(value);
+ if(!s || s.length<3)return false;
+
+ let low=s.toLowerCase();
+
+ // Judul/header yang tidak boleh dianggap nama.
+ if(supervisorHeaderScore(s)>0)return false;
+ if(/^(no|nomor|nip|nik|nuptk|kode|jabatan|mapel|mata pelajaran|keterangan|status|ruang|kelas)$/i.test(s))return false;
+ if(/^(daftar|data)\s+(nama\s+)?(pengawas|guru)/i.test(s))return false;
+ if(/jadwal\s+pengawas/i.test(s))return false;
+ if(/madrasah|sekolah|mts\b|smp\b|sma\b|smk\b|tahun\s+pelajaran/i.test(s) && s.split(/\s+/).length>4)return false;
+
+ // Nomor/NIP/tanggal murni tidak dianggap nama.
+ if(/^[\d\s.\/\-]+$/.test(s))return false;
+ if(/^\d{8,}$/.test(s.replace(/\D/g,'')) && !/[A-Za-zÀ-ÿ]/.test(s))return false;
+
+ // Nama minimal memiliki huruf.
+ if(!/[A-Za-zÀ-ÿ]/.test(s))return false;
+
+ // Hindari kalimat panjang yang tampak seperti keterangan, bukan nama.
+ if(s.length>90)return false;
+
+ return true;
+}
+
+function findSupervisorNameColumn(rows){
+ let best=null;
+
+ // Cari header yang eksplisit pada 30 baris pertama.
+ for(let r=0;r<Math.min(rows.length,30);r++){
+   let row=rows[r]||[];
+   for(let c=0;c<row.length;c++){
+     let score=supervisorHeaderScore(row[c]);
+     if(score && (!best || score>best.score)){
+       best={headerRow:r,col:c,score};
+     }
+   }
+ }
+ if(best)return best;
+
+ // Jika tidak ada header, pilih kolom yang paling banyak berisi teks seperti nama.
+ let maxCols=rows.reduce((m,r)=>Math.max(m,(r||[]).length),0);
+ let bestCol=-1,bestScore=-Infinity;
+
+ for(let c=0;c<maxCols;c++){
+   let names=0,numbers=0,headers=0,nonempty=0;
+   for(let r=0;r<Math.min(rows.length,250);r++){
+     let v=normalizeSupervisorCell((rows[r]||[])[c]);
+     if(!v)continue;
+     nonempty++;
+     if(supervisorHeaderScore(v)>0){headers++;continue;}
+     if(/^[\d\s.\/\-]+$/.test(v)){numbers++;continue;}
+     if(looksLikeSupervisorName(v))names++;
+   }
+   // Nama dominan; kolom nomor/NIP mendapat penalti.
+   let score=names*4 + headers*8 - numbers*3 - Math.max(0,nonempty-names-numbers)*0.3;
+   if(names>0 && score>bestScore){
+     bestScore=score;
+     bestCol=c;
+   }
+ }
+
+ return bestCol>=0?{headerRow:-1,col:bestCol,score:bestScore}:null;
+}
+
+function extractSupervisorNamesFromAOA(rows){
+ rows=(rows||[]).map(r=>(r||[]).map(normalizeSupervisorCell));
+ let found=findSupervisorNameColumn(rows);
+ let names=[];
+
+ if(found){
+   let startRow=found.headerRow>=0?found.headerRow+1:0;
+   for(let r=startRow;r<rows.length;r++){
+     let val=cleanSupervisorName((rows[r]||[])[found.col]);
+     if(looksLikeSupervisorName(val))names.push(val);
+   }
+ }
+
+ // Fallback: cari sel yang tampak seperti nama pada tiap baris.
+ // Dipakai bila struktur sheet tidak konsisten/kolom nama berpindah.
+ if(!names.length){
+   rows.forEach((row,idx)=>{
+     if(idx<3 && row.some(v=>/daftar.*pengawas|jadwal.*pengawas/i.test(v)))return;
+     let candidates=(row||[]).map(cleanSupervisorName).filter(looksLikeSupervisorName);
+     if(candidates.length){
+       // Pilih kandidat teks paling "nama": bukan kolom angka/keterangan.
+       candidates.sort((a,b)=>{
+         let wa=a.split(/\s+/).length, wb=b.split(/\s+/).length;
+         return (wb>=2?1:0)-(wa>=2?1:0) || b.length-a.length;
+       });
+       names.push(candidates[0]);
+     }
+   });
+ }
+
+ // Deduplikasi tanpa mengubah urutan dari Excel.
+ let seen=new Set();
+ return names.filter(n=>{
+   let key=n.toLocaleLowerCase('id-ID');
+   if(seen.has(key))return false;
+   seen.add(key);
+   return true;
+ });
+}
+
+async function uploadSupervisorNames(btn){
+ let input=document.getElementById('supNamesFile');
+ let file=input?.files?.[0];
+ if(!file)return alert('Pilih file Excel atau CSV terlebih dahulu.');
+
+ if(!/\.(xlsx|xls|csv)$/i.test(file.name)){
+   return alert('Format daftar pengawas harus Excel (.xlsx/.xls) atau CSV.');
+ }
+ if(typeof XLSX==='undefined'){
+   return alert('Pembaca Excel belum termuat. Pastikan perangkat terhubung internet lalu muat ulang aplikasi.');
+ }
+
+ let oldText=btn?.textContent;
+ if(btn){
+   btn.disabled=true;
+   btn.textContent='Membaca nama pengawas...';
+ }
+
+ try{
+   let buf=await file.arrayBuffer();
+   let wb=XLSX.read(buf,{type:'array',cellDates:false});
+   let names=[];
+
+   wb.SheetNames.forEach(sn=>{
+     let ws=wb.Sheets[sn];
+     let rows=XLSX.utils.sheet_to_json(ws,{
+       header:1,
+       defval:'',
+       raw:false,
+       blankrows:false
+     });
+     names.push(...extractSupervisorNamesFromAOA(rows));
+   });
+
+   // Deduplikasi antar-sheet.
+   let fileSeen=new Set();
+   names=names.filter(n=>{
+     let k=n.toLocaleLowerCase('id-ID');
+     if(fileSeen.has(k))return false;
+     fileSeen.add(k);
+     return true;
+   });
+
+   if(!names.length){
+     return alert(
+       'Nama pengawas belum berhasil ditemukan dari file.\n\n'+
+       'Gunakan salah satu format yang didukung:\n'+
+       '1. No | Nama Pengawas | NIP\n'+
+       '2. No | Nama Guru\n'+
+       '3. Satu kolom berisi Nama Pengawas.'
+     );
+   }
+
+   db.supervisorNames=db.supervisorNames||[];
+   let existing=new Set(db.supervisorNames.map(n=>String(n).trim().toLocaleLowerCase('id-ID')));
+   let added=[];
+
+   names.forEach(n=>{
+     let key=n.toLocaleLowerCase('id-ID');
+     if(!existing.has(key)){
+       db.supervisorNames.push(n);
+       existing.add(key);
+       added.push(n);
+     }
+   });
+
+   save();
+   if(input)input.value='';
+   render('supervisors');
+
+   setTimeout(()=>alert(
+     `Import daftar pengawas berhasil.\n\n`+
+     `Nama terbaca dari file: ${names.length}\n`+
+     `Nama baru ditambahkan: ${added.length}\n`+
+     `Total nama pengawas sekarang: ${db.supervisorNames.length}`+
+     (names.length-added.length?`\nDuplikat dilewati: ${names.length-added.length}`:'')
+   ),60);
+
+ }catch(err){
+   alert('File daftar pengawas tidak dapat dibaca: '+(err?.message||err));
+ }finally{
+   if(btn){
+     btn.disabled=false;
+     btn.textContent=oldText||'⬆ Import Nama Pengawas';
+   }
+ }
+}
+
 function downloadSupervisorNamesTemplate(){
- let ws=XLSX.utils.aoa_to_sheet([['Nama Pengawas'],['Nama Pengawas 1'],['Nama Pengawas 2'],['Nama Pengawas 3']]);
- let wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Nama Pengawas');
+ let ws=XLSX.utils.aoa_to_sheet([
+   ['No','Nama Pengawas','NIP'],
+   [1,'Nama Pengawas 1',''],
+   [2,'Nama Pengawas 2',''],
+   [3,'Nama Pengawas 3','']
+ ]);
+ ws['!cols']=[{wch:6},{wch:36},{wch:22}];
+ let wb=XLSX.utils.book_new();
+ XLSX.utils.book_append_sheet(wb,ws,'Nama Pengawas');
  XLSX.writeFile(wb,'Template_Nama_Pengawas.xlsx');
 }
 
@@ -4466,6 +5405,12 @@ function looksLikeTime(v){
  return /\b\d{1,2}[.:]\d{2}\s*(?:[-–—s\/d]+)\s*\d{1,2}[.:]\d{2}\b/i.test(v) ||
         /^\d{1,2}[.:]\d{2}$/.test(v.trim());
 }
+function looksLikeAllocation(v){
+ let s=normalizeScheduleCell(v);
+ return /\b\d+\s*(?:menit|mnt|minute|minutes)\b/i.test(s) ||
+        /\b\d+(?:[.,]\d+)?\s*(?:jp|jam\s*pelajaran)\b/i.test(s) ||
+        /^(?:alokasi|durasi)\b/i.test(s);
+}
 function looksLikeDate(v){
  return /(?:senin|selasa|rabu|kamis|jumat|jum'at|sabtu|minggu)/i.test(v) ||
         /\b\d{1,2}[\s\/\-](?:jan(?:uari)?|feb(?:ruari)?|mar(?:et)?|apr(?:il)?|mei|jun(?:i)?|jul(?:i)?|agu(?:stus)?|sep(?:tember)?|okt(?:ober)?|nov(?:ember)?|des(?:ember)?|\d{1,2})[\s\/\-]\d{2,4}\b/i.test(v) ||
@@ -4477,15 +5422,17 @@ function findHeaderIndex(headers, patterns){
 }
 function scheduleRowsFromAOA(rows){
  rows=(rows||[]).map(r=>(r||[]).map(normalizeScheduleCell));
- let headerRow=-1, idxDate=-1, idxTime=-1, idxAllocation=-1, idxSubject=-1;
- for(let i=0;i<Math.min(rows.length,25);i++){
+ let headerRow=-1,idxDate=-1,idxTime=-1,idxAllocation=-1,idxSubject=-1;
+
+ for(let i=0;i<Math.min(rows.length,30);i++){
    let r=rows[i];
-   let d=findHeaderIndex(r,[/hari.*tanggal/,/^tanggal$/,/\btgl\b/]);
-   let t=findHeaderIndex(r,[/^waktu$/,/^jam$/, /jam.*waktu/,/waktu.*jam/]);
+   let d=findHeaderIndex(r,[/hari.*tanggal/,/tanggal.*hari/,/^tanggal$/,/^hari$/, /\btgl\b/]);
+   let t=findHeaderIndex(r,[/^waktu$/,/^jam$/, /jam.*waktu/,/waktu.*jam/,/pukul/]);
    let a=findHeaderIndex(r,[/^alokasi$/, /alokasi.*waktu/, /^durasi$/, /lama.*waktu/, /^jp$/, /menit/]);
-   let s=findHeaderIndex(r,[/mata.*pelajaran/,/^mapel$/,/\bpelajaran\b/]);
-   if(d>=0 && t>=0 && s>=0){headerRow=i;idxDate=d;idxTime=t;idxAllocation=a;idxSubject=s;break;}
+   let sub=findHeaderIndex(r,[/mata.*pelajaran/,/^mapel$/,/^pelajaran$/, /nama.*mapel/]);
+   if(d>=0 && t>=0 && sub>=0){headerRow=i;idxDate=d;idxTime=t;idxAllocation=a;idxSubject=sub;break;}
  }
+
  let out=[];
  if(headerRow>=0){
    for(let i=headerRow+1;i<rows.length;i++){
@@ -4493,69 +5440,98 @@ function scheduleRowsFromAOA(rows){
      let date=normalizeScheduleCell(r[idxDate]),
          time=normalizeScheduleCell(r[idxTime]),
          allocation=idxAllocation>=0?normalizeScheduleCell(r[idxAllocation]):'',
-         subject=normalizeScheduleCell(r[idxSubject]);
+         subject=cleanScheduleSubject(r[idxSubject]);
      if(!date&&!time&&!allocation&&!subject)continue;
-     if(/jumlah|keterangan|pengawas/i.test(subject) && !date && !time)continue;
-     out.push({date,time,allocation:allocation||deriveAllocationFromTime(time),subject:cleanScheduleSubject(subject),note:''});
+     if(/^(jumlah|total|keterangan|pengawas)$/i.test(subject) && !date && !time)continue;
+     if(!subject && !date && !time)continue;
+     out.push({date,time,allocation:allocation||deriveAllocationFromTime(time),subject,note:''});
    }
-   return out;
+   return out.filter(x=>x.date||x.time||x.subject);
  }
+
+ // Fallback untuk tabel tanpa header yang jelas.
  rows.forEach(r=>{
-   let vals=r.filter(Boolean);
+   let vals=r.map(normalizeScheduleCell).filter(Boolean);
    if(vals.length<2)return;
    let date=vals.find(looksLikeDate)||'';
    let time=vals.find(looksLikeTime)||'';
-   let subject=vals.find(v=>v!==date && v!==time && !/^\d+$/.test(v) && !/^(no|hari|tanggal|waktu|jam|alokasi|mata pelajaran|mapel)$/i.test(v))||'';
-   if((date||time)&&subject)out.push({date,time,allocation:deriveAllocationFromTime(time),subject:cleanScheduleSubject(subject),note:''});
+   let allocation=vals.find(looksLikeAllocation)||'';
+   let candidates=vals.filter(v=>
+     v!==date && v!==time && v!==allocation &&
+     !/^\d+[.)]?$/.test(v) &&
+     !/^(no|hari|tanggal|hari\/?tanggal|waktu|jam|alokasi|durasi|mata pelajaran|mapel|pelajaran)$/i.test(v)
+   );
+   // Nama mapel biasanya kolom teks terakhir setelah tanggal/waktu/alokasi.
+   let subject=cleanScheduleSubject(candidates[candidates.length-1]||'');
+   if((date||time)&&subject){
+     out.push({date,time,allocation:normalizeScheduleCell(allocation)||deriveAllocationFromTime(time),subject,note:''});
+   }
  });
  return out;
 }
 function textToScheduleRows(rawText){
- let txt=String(rawText||'').replace(/\r/g,'\n').replace(/[ \t]+/g,' ').trim();
+ let txt=String(rawText||'')
+   .replace(/\r\n?/g,'\n')
+   .replace(/\u00a0/g,' ')
+   .trim();
  let lines=txt.split(/\n+/).map(x=>x.trim()).filter(Boolean);
  let rows=[];
 
- // First try tab / multi-space delimited rows.
+ // Pertahankan TAB dan spasi ganda dari tabel Word/PDF agar kolom tidak menyatu.
  lines.forEach(line=>{
-   let cells=line.split(/\t|\s{2,}|\s*\|\s*/).map(normalizeScheduleCell).filter(Boolean);
+   let cells=line.split(/\t+|\s{2,}|\s*\|\s*/).map(normalizeScheduleCell).filter(Boolean);
    if(cells.length>=2)rows.push(cells);
  });
  let parsed=scheduleRowsFromAOA(rows);
  if(parsed.length)return parsed;
 
- // Second heuristic: scan text for date/time blocks and use remaining text as subject.
+ // Fallback: cari rentang waktu lalu pecah bagian sebelum/sesudahnya.
  let out=[];
  lines.forEach(line=>{
-   let tm=line.match(/\b\d{1,2}[.:]\d{2}\s*(?:[-–—s\/d]+)\s*\d{1,2}[.:]\d{2}\b/i);
+   let tm=line.match(/\b\d{1,2}[.:]\d{2}\s*(?:[-–—]|s\/?d)\s*\d{1,2}[.:]\d{2}\b/i);
    if(!tm)return;
    let time=tm[0];
-   let before=line.slice(0,tm.index).trim().replace(/^\d+[.)\s-]*/,'');
-   let after=line.slice((tm.index||0)+time.length).trim().replace(/^[-–—:| ]+/,'');
-   let date=before;
-   let subject=after;
-   if(subject)out.push({date,time,allocation:deriveAllocationFromTime(time),subject:cleanScheduleSubject(subject),note:''});
+   let before=line.slice(0,tm.index).trim().replace(/^\d+[.)\s-]*/, '');
+   let after=line.slice((tm.index||0)+time.length).trim().replace(/^[-–—:| ]+/, '');
+   let allocation=allocationFromMixedSubject(after);
+   let subject=cleanScheduleSubject(after);
+   if(subject)out.push({date:before,time,allocation:allocation||deriveAllocationFromTime(time),subject,note:''});
  });
  return out;
 }
-function commitImportedSchedules(rows,fileName){
- rows=(rows||[]).filter(x=>x.date||x.time||x.allocation||x.subject);
+function commitImportedSchedules(rows,fileName,targetPage='schedule'){
+ let lastDate='';
+ rows=(rows||[]).map(x=>{
+   let date=normalizeScheduleCell(x.date);
+   let time=normalizeScheduleCell(x.time);
+   let subject=cleanScheduleSubject(x.subject);
+   let allocation=normalizeScheduleCell(x.allocation)||allocationFromMixedSubject(x.subject)||deriveAllocationFromTime(x.time);
+   if(date)lastDate=date;
+   else if((time||subject||allocation) && lastDate)date=lastDate;
+   return {date,time,allocation,subject,note:''};
+ }).filter(x=>x.date||x.time||x.subject);
+
  if(!rows.length){
-   alert('Hari/Tanggal, Waktu, Alokasi, dan Mata Pelajaran belum berhasil dikenali dari file. Gunakan tabel dengan judul kolom yang jelas: HARI/TANGGAL, WAKTU, ALOKASI, MATA PELAJARAN.');
+   alert('Jadwal belum berhasil dikenali. Pastikan file memiliki kolom HARI/TANGGAL, WAKTU, ALOKASI, dan MATA PELAJARAN.');
    return false;
  }
+
  db.schedules=rows.map((x,i)=>({
    id:Date.now()+i,
-   date:normalizeScheduleCell(x.date),
-   time:normalizeScheduleCell(x.time),
-   allocation:normalizeScheduleCell(x.allocation)||allocationFromMixedSubject(x.subject)||deriveAllocationFromTime(x.time),
-   subject:cleanScheduleSubject(x.subject),
+   date:x.date,
+   time:x.time,
+   allocation:x.allocation,
+   subject:x.subject,
    note:''
  }));
+
+ // Jadwal Asesmen adalah sumber utama. Jadwal Pengawas membaca array yang sama.
  db.supervisorScheduleOverrides={};
  db.supervisorMatrix={};
+ db.supervisors=[];
  save();
- alert(`${db.schedules.length} baris jadwal berhasil dibaca otomatis dari ${fileName}. Kolom Hari/Tanggal, Waktu, Alokasi, dan Mata Pelajaran pada Jadwal Pengawas sudah diperbarui.`);
- render('supervisors');
+ alert(`${db.schedules.length} baris jadwal berhasil masuk dari ${fileName}. Jadwal Asesmen dan Jadwal Pengawas sekarang sudah tersinkron.`);
+ render(targetPage==='supervisors'?'supervisors':'schedule');
  return true;
 }
 async function parseSupervisorScheduleFile(file){
@@ -4613,12 +5589,11 @@ async function parseSupervisorScheduleFile(file){
  }
  throw new Error('Format file belum didukung.');
 }
-async function uploadSupervisorSchedule(){
+async function uploadSupervisorSchedule(btn){
  let input=document.getElementById('supFileInput'),file=input?.files?.[0];
  if(!file)return alert('Pilih file jadwal Excel, PDF, atau Word terlebih dahulu.');
  if(file.size>8000000)return alert('Ukuran file maksimal 8 MB.');
 
- let btn=event?.currentTarget;
  if(btn){btn.disabled=true;btn.textContent='Membaca file...';}
 
  try{
@@ -4640,7 +5615,7 @@ async function uploadSupervisorSchedule(){
      });
    }
 
-   commitImportedSchedules(rows,file.name);
+   commitImportedSchedules(rows,file.name,'supervisors');
  }catch(err){
    alert('File belum dapat dibaca otomatis: '+err.message);
  }finally{
@@ -4801,27 +5776,36 @@ function printChoiceRow(title,note,selectId,options,type){
  return `<div class="print-choice-row">
    <div><div class="print-doc-title">${title}</div><div class="print-doc-note">${note}</div></div>
    <select id="${selectId}">${options}</select>
-   <button onclick="printFromMenu('${type}','${selectId}')">🖨 Cetak</button>
+   <div class="print-export-actions">
+     <button onclick="printFromMenu('${type}','${selectId}')">🖨 Cetak</button>
+     <button class="excel-btn" onclick="exportFromPrintMenu('${type}','xlsx','${selectId}')">⬇ Excel</button>
+     <button class="csv-btn" onclick="exportFromPrintMenu('${type}','csv','${selectId}')">⬇ CSV</button>
+   </div>
  </div>`;
 }
 function printSingleRow(title,note,type){
  return `<div class="print-choice-row">
    <div><div class="print-doc-title">${title}</div><div class="print-doc-note">${note}</div></div>
    <select disabled><option>Dokumen / Halaman ini</option></select>
-   <button onclick="printFromMenu('${type}','')">🖨 Cetak</button>
+   <div class="print-export-actions">
+     <button onclick="printFromMenu('${type}','')">🖨 Cetak</button>
+     <button class="excel-btn" onclick="exportFromPrintMenu('${type}','xlsx','')">⬇ Excel</button>
+     <button class="csv-btn" onclick="exportFromPrintMenu('${type}','csv','')">⬇ CSV</button>
+   </div>
  </div>`;
 }
 function printPage(){
- return `<div class="card"><h2>13. Print / Cetak</h2>
+ return `<div class="card"><h2>13. Print / Cetak & Unduh Excel/CSV</h2>
  <div class="notice">
-   Fitur cetak sekarang menggunakan <b>window.print bawaan browser/Windows</b>. Pilih <b>Semua</b> atau ruang/halaman tertentu, lalu tekan Cetak.
-   Setelah pratinjau disiapkan, dialog printer akan terbuka. Di dialog printer Anda masih dapat memilih printer, jumlah salinan, dan rentang halaman.
+   Setiap dokumen sekarang mempunyai tiga pilihan: <b>🖨 Cetak</b>, <b>⬇ Excel (.xlsx)</b>, dan <b>⬇ CSV (.csv)</b>.
+   Jika hasil cetak browser kurang maksimal pada kertas <b>33 cm × 29 cm</b>, unduh versi Excel lalu atur sendiri ukuran kertas, margin, skala, lebar kolom, tinggi baris, dan posisi tabel melalui Microsoft Excel.
+   Untuk dokumen per ruang, pilihan <b>Semua Ruang</b> akan dibuat menjadi beberapa sheet Excel agar lebih mudah ditata dan dicetak.
  </div>
  <div class="print-choice-list">
    ${printChoiceRow('Daftar Siswa tiap Ruang','Pilih semua ruang atau satu ruang.','pr_students',printRoomOptions(),'students')}
    ${printChoiceRow('Denah','Kertas A4 portrait; nama kegiatan asesmen tampil otomatis di bawah judul.','pr_seats',printRoomOptions(),'seats')}
    ${printChoiceRow('Daftar Peserta','Kertas A4 portrait; nama kegiatan asesmen tampil otomatis di bawah judul dan tanda tangan Ketua Panitia di kanan bawah.','pr_participants',printRoomOptions(),'participants')}
-   ${printChoiceRow('Nomor Meja Peserta','33 × 29 cm landscape, 20 nomor per lembar.','pr_desks',printRoomOptions(),'desks')}
+   ${printChoiceRow('Nomor Meja Peserta','33 × 29 cm landscape, 16 nomor per lembar; Excel dapat ditata ulang sesuai kebutuhan.','pr_desks',printRoomOptions(),'desks')}
    ${printChoiceRow('Kartu Peserta','33 × 29 cm landscape, 3 kartu per lembar.','pr_cards',printRoomOptions(),'cards')}
    ${printSingleRow('Jadwal Asesmen','Mencetak jadwal asesmen yang aktif.','schedule')}
    ${printSingleRow('Jadwal Pengawas','Mencetak jadwal pengawas yang aktif.','supervisors')}
@@ -4831,6 +5815,405 @@ function printPage(){
  </div>
  </div>`;
 }
+
+function exportSafeFileName(value){
+ return String(value||'dokumen')
+   .replace(/[\\/:*?"<>|]+/g,'_')
+   .replace(/\s+/g,'_')
+   .replace(/_+/g,'_')
+   .replace(/^_+|_+$/g,'')
+   .slice(0,90)||'dokumen';
+}
+
+function exportSheetName(value,used){
+ let base=String(value||'Sheet')
+   .replace(/[\[\]\\/*?:]/g,' ')
+   .replace(/\s+/g,' ')
+   .trim()
+   .slice(0,31)||'Sheet';
+ let name=base,n=2;
+ while(used.has(name)){
+   let suffix=' '+n++;
+   name=base.slice(0,31-suffix.length)+suffix;
+ }
+ used.add(name);
+ return name;
+}
+
+function exportSelectedRooms(value='all'){
+ return (db.rooms||[]).filter(r=>(r.students||[]).length && (value==='all'||String(r.no)===String(value)));
+}
+
+function exportSchoolTitleRows(title,extra=''){
+ return [
+   [db.school?.foundation||"LEMBAGA PENDIDIKAN MA’ARIF NU CABANG BANYUMAS"],
+   [db.school?.name||"MTs MA'ARIF NU 1 WANGON"],
+   [title],
+   [db.assessment||''],
+   ...(extra?[[extra]]:[]),
+   []
+ ];
+}
+
+function exportWorksheet(rows,widths=[],merges=[]){
+ let ws=XLSX.utils.aoa_to_sheet(rows);
+ if(widths?.length)ws['!cols']=widths.map(w=>({wch:w}));
+ if(merges?.length)ws['!merges']=merges;
+ ws['!margins']={left:0.25,right:0.25,top:0.35,bottom:0.35,header:0.1,footer:0.1};
+ return ws;
+}
+
+function exportAppendSheet(wb,used,name,rows,widths=[],merges=[]){
+ let sheetName=exportSheetName(name,used);
+ let ws=exportWorksheet(rows,widths,merges);
+ XLSX.utils.book_append_sheet(wb,ws,sheetName);
+ return ws;
+}
+
+function exportParticipantRow(r,s,i){
+ return [i+1,participantNo(r.no,i+1),s.nis||'',s.name||'',s.gender||'',s.class||'',r.no];
+}
+
+function exportSeatRowsForRoom(r){
+ let layout=buildSeatColumns(r);
+ let rows=exportSchoolTitleRows('DENAH TEMPAT DUDUK PESERTA',`RUANG ${String(r.no).padStart(2,'0')}`);
+ rows.push(['DEPAN / PAPAN TULIS']);
+ rows.push(['Baris / Kedalaman','Meja Kolom 1','Meja Kolom 2','Meja Kolom 3','Meja Kolom 4']);
+
+ for(let depth=0;depth<5;depth++){
+   let row=[depth+1];
+   for(let col=0;col<4;col++){
+     let desk=layout.columns?.[col]?.[depth]||{};
+     let left=desk.left||null,right=desk.right||null;
+     let parts=[];
+     if(left)parts.push(`KIRI: ${participantNoForStudent(r,left)} - ${left.name} (${left.class||''})`);
+     else parts.push('KIRI: -');
+     if(right)parts.push(`KANAN: ${participantNoForStudent(r,right)} - ${right.name} (${right.class||''})`);
+     else parts.push('KANAN: -');
+     row.push(parts.join(' | '));
+   }
+   rows.push(row);
+ }
+ rows.push([]);
+ rows.push(['Aturan Pasangan',db.seatPairingMode==='same_grade'?'Kiri dan kanan satu tingkatan':'Kiri dan kanan berbeda tingkatan']);
+ rows.push(['Jumlah Peserta',(r.students||[]).length]);
+ return rows;
+}
+
+function exportScheduleRowsAndMerges(){
+ let rows=exportSchoolTitleRows('JADWAL ASESMEN');
+ rows.push(['No','Hari / Tanggal','Waktu','Alokasi','Mata Pelajaran']);
+ let merges=[];
+ let dataStart=rows.length; // indeks baris 0-based untuk row pertama data
+ let groups=groupedAssessmentSchedules();
+ groups.forEach((g,gi)=>{
+   let span=Math.max(g.rows.length,1);
+   g.rows.forEach((s,ri)=>{
+     rows.push([
+       ri===0?gi+1:'',
+       ri===0?(g.date||''):'',
+       s.time||'',
+       s.allocation||deriveAllocationFromTime(s.time)||'',
+       scheduleSubject(s)
+     ]);
+   });
+   if(span>1){
+     let start=dataStart;
+     merges.push({s:{r:start,c:0},e:{r:start+span-1,c:0}});
+     merges.push({s:{r:start,c:1},e:{r:start+span-1,c:1}});
+   }
+   dataStart+=span;
+ });
+ return {rows,merges};
+}
+
+function exportSupervisorMatrixRows(){
+ syncFlatSupervisors();
+ let rooms=db.rooms||[],schedules=db.schedules||[];
+ let rows=exportSchoolTitleRows(supervisorTitleValue());
+ let head=['No','Hari / Tanggal','Waktu','Alokasi','Mata Pelajaran',...rooms.map(r=>`Ruang ${roomLabel(r)}`)];
+ rows.push(head);
+ schedules.forEach((s,i)=>{
+   rows.push([
+     i+1,
+     supScheduleValue(s,'date'),
+     supScheduleValue(s,'time'),
+     supScheduleValue(s,'allocation')||deriveAllocationFromTime(supScheduleValue(s,'time')),
+     supScheduleValue(s,'subject'),
+     ...rooms.map(r=>{
+       let name=(db.supervisorMatrix||{})[supMatrixKey(s.id,r.no)]||'';
+       return name?supervisorCode(name):'';
+     })
+   ]);
+ });
+ rows.push([]);
+ rows.push(['KODE PENGAWAS','NAMA PENGAWAS']);
+ (db.supervisorNames||[]).forEach(n=>rows.push([supervisorCode(n),n]));
+ return rows;
+}
+
+function exportAttendanceRowsForRoom(r){
+ let schedules=db.schedules||[];
+ let rows=exportSchoolTitleRows('DAFTAR HADIR PESERTA',`RUANG ${String(r.no).padStart(2,'0')}`);
+ let headers=['No','No Peserta','Nama Peserta','Kelas'];
+ if(schedules.length){
+   headers.push(...schedules.map((s,i)=>`${i+1}. ${s.date||''} - ${scheduleSubject(s)}`));
+ }else{
+   headers.push('Tanda Tangan');
+ }
+ rows.push(headers);
+ (r.students||[]).forEach((s,i)=>{
+   rows.push([i+1,participantNo(r.no,i+1),s.name||'',s.class||'',...(schedules.length?schedules.map(()=>''):[''])]);
+ });
+ return rows;
+}
+
+function buildPrintExcelWorkbook(type,value='all'){
+ if(typeof XLSX==='undefined')throw new Error('Library Excel belum termuat. Pastikan perangkat terhubung internet.');
+ let wb=XLSX.utils.book_new();
+ wb.Props={
+   Title:`${db.assessment||'Administrasi Asesmen'} - ${type}`,
+   Subject:'Administrasi Asesmen',
+   Author:db.school?.name||"MTs MA'ARIF NU 1 WANGON",
+   Company:db.school?.name||"MTs MA'ARIF NU 1 WANGON"
+ };
+ let used=new Set();
+
+ if(type==='students'){
+   let rooms=exportSelectedRooms(value);
+   if(!rooms.length)throw new Error('Belum ada peserta pada ruang yang dipilih.');
+   rooms.forEach(r=>{
+     let rows=exportSchoolTitleRows('DAFTAR SISWA TIAP RUANG',`RUANG ${String(r.no).padStart(2,'0')}`);
+     rows.push(['No','No Peserta','NIS','Nama','L/P','Kelas']);
+     (r.students||[]).forEach((s,i)=>rows.push(exportParticipantRow(r,s,i).slice(0,6)));
+     exportAppendSheet(wb,used,`Siswa R${r.no}`,rows,[7,18,16,34,8,12]);
+   });
+ }
+ else if(type==='seats'){
+   let rooms=exportSelectedRooms(value);
+   if(!rooms.length)throw new Error('Belum ada denah pada ruang yang dipilih.');
+   rooms.forEach(r=>exportAppendSheet(wb,used,`Denah R${r.no}`,exportSeatRowsForRoom(r),[13,38,38,38,38]));
+ }
+ else if(type==='participants'){
+   let rooms=exportSelectedRooms(value);
+   if(!rooms.length)throw new Error('Belum ada peserta hasil pembagian ruang.');
+   rooms.forEach(r=>{
+     let rows=exportSchoolTitleRows('DAFTAR PESERTA',`RUANG ${String(r.no).padStart(2,'0')}`);
+     rows.push(['No','No Peserta','NIS','Nama','L/P','Kelas']);
+     (r.students||[]).forEach((s,i)=>rows.push(exportParticipantRow(r,s,i).slice(0,6)));
+     exportAppendSheet(wb,used,`Peserta R${r.no}`,rows,[7,18,16,34,8,12]);
+   });
+ }
+ else if(type==='desks'){
+   let rooms=exportSelectedRooms(value);
+   if(!rooms.length)throw new Error('Belum ada nomor meja peserta.');
+   rooms.forEach(r=>{
+     let rows=exportSchoolTitleRows('NOMOR MEJA PESERTA',`RUANG ${String(r.no).padStart(2,'0')}`);
+     rows.push(['No','Nomor Peserta','Nama Peserta','Kelas','Ruang','Asesmen']);
+     (r.students||[]).forEach((s,i)=>rows.push([i+1,participantNo(r.no,i+1),s.name||'',s.class||'',r.no,db.assessment||'']));
+     exportAppendSheet(wb,used,`Nomor Meja R${r.no}`,rows,[7,18,36,12,10,40]);
+   });
+ }
+ else if(type==='cards'){
+   let rooms=exportSelectedRooms(value);
+   if(!rooms.length)throw new Error('Belum ada data kartu peserta.');
+   let scheduleText=(db.schedules||[]).map((s,i)=>`${i+1}. ${s.date||''} | ${s.time||''} | ${scheduleSubject(s)}`).join('\n');
+   rooms.forEach(r=>{
+     let rows=exportSchoolTitleRows('DATA KARTU PESERTA',`RUANG ${String(r.no).padStart(2,'0')}`);
+     rows.push(['No','Nomor Peserta','NIS','Nama','L/P','Kelas','Ruang','Jadwal Asesmen']);
+     (r.students||[]).forEach((s,i)=>rows.push([i+1,participantNo(r.no,i+1),s.nis||'',s.name||'',s.gender||'',s.class||'',r.no,scheduleText]));
+     exportAppendSheet(wb,used,`Kartu R${r.no}`,rows,[7,18,16,32,8,12,10,62]);
+   });
+ }
+ else if(type==='schedule'){
+   if(!(db.schedules||[]).length)throw new Error('Belum ada Jadwal Asesmen.');
+   let pack=exportScheduleRowsAndMerges();
+   let ws=exportAppendSheet(wb,used,'Jadwal Asesmen',pack.rows,[7,31,18,16,36],pack.merges);
+ }
+ else if(type==='supervisors'){
+   if(!(db.schedules||[]).length)throw new Error('Belum ada Jadwal Asesmen.');
+   let rooms=db.rooms||[];
+   if(!rooms.length)throw new Error('Belum ada data ruang.');
+   let rows=exportSupervisorMatrixRows();
+   exportAppendSheet(wb,used,'Jadwal Pengawas',rows,[7,30,17,15,30,...rooms.map(()=>12)]);
+ }
+ else if(type==='attendance'){
+   let rooms=exportSelectedRooms(value);
+   if(!rooms.length)throw new Error('Belum ada peserta pada ruang yang dipilih.');
+   let scheduleCount=Math.max((db.schedules||[]).length,1);
+   rooms.forEach(r=>exportAppendSheet(
+     wb,used,`Hadir Peserta R${r.no}`,
+     exportAttendanceRowsForRoom(r),
+     [7,18,34,12,...Array(scheduleCount).fill(24)]
+   ));
+ }
+ else if(type==='attendanceSup'){
+   syncFlatSupervisors();
+   let rows=exportSchoolTitleRows('DAFTAR HADIR PENGAWAS');
+   rows.push(['No','Tanggal','Jam','Pengawas','Kode','Ruang','Mata Pelajaran','Tanda Tangan']);
+   (db.supervisors||[]).forEach((s,i)=>rows.push([
+     i+1,s.date||'',s.time||'',s.name||'',s.name?supervisorCode(s.name):'',s.room||'',s.subject||'',''
+   ]));
+   exportAppendSheet(wb,used,'Hadir Pengawas',rows,[7,24,16,32,10,10,30,24]);
+ }
+ else if(type==='berita'){
+   let items=(db.berita||[]).filter(b=>value==='all'||String(b.id)===String(value));
+   if(!items.length)throw new Error('Belum ada Berita Acara yang dipilih.');
+   items.forEach((b,i)=>{
+     let rows=exportSchoolTitleRows('BERITA ACARA PELAKSANAAN ASESMEN');
+     rows.push(['Tanggal',b.date||'']);
+     rows.push(['Waktu',b.time||'']);
+     rows.push(['Mata Pelajaran',b.subject||'']);
+     rows.push(['Ruang',b.room||'']);
+     rows.push(['Pengawas',b.supervisor||'']);
+     rows.push([]);
+     rows.push(['Isi Berita Acara']);
+     rows.push([b.text||'']);
+     exportAppendSheet(wb,used,`Berita ${i+1}`,rows,[22,70]);
+   });
+ }
+ else{
+   throw new Error('Jenis dokumen belum mendukung ekspor Excel.');
+ }
+
+ if(!wb.SheetNames.length)throw new Error('Tidak ada data yang dapat diekspor.');
+ return wb;
+}
+
+function buildPrintCsvRows(type,value='all'){
+ if(type==='students' || type==='participants'){
+   let rooms=exportSelectedRooms(value);
+   if(!rooms.length)throw new Error('Belum ada peserta pada ruang yang dipilih.');
+   let rows=[['Ruang','No','No Peserta','NIS','Nama','L/P','Kelas']];
+   rooms.forEach(r=>(r.students||[]).forEach((s,i)=>rows.push([r.no,i+1,participantNo(r.no,i+1),s.nis||'',s.name||'',s.gender||'',s.class||''])));
+   return rows;
+ }
+ if(type==='seats'){
+   let rooms=exportSelectedRooms(value);
+   if(!rooms.length)throw new Error('Belum ada denah pada ruang yang dipilih.');
+   let rows=[['Ruang','Kolom Meja','Baris/Kedalaman','Posisi','No Peserta','Nama','Kelas']];
+   rooms.forEach(r=>{
+     let layout=buildSeatColumns(r);
+     for(let c=0;c<4;c++)for(let d=0;d<5;d++){
+       let desk=layout.columns?.[c]?.[d]||{};
+       [['Kiri',desk.left],['Kanan',desk.right]].forEach(([side,s])=>{
+         rows.push([r.no,c+1,d+1,side,s?participantNoForStudent(r,s):'',s?.name||'',s?.class||'']);
+       });
+     }
+   });
+   return rows;
+ }
+ if(type==='desks'){
+   let rooms=exportSelectedRooms(value);
+   if(!rooms.length)throw new Error('Belum ada nomor meja peserta.');
+   let rows=[['Ruang','No','Nomor Peserta','Nama Peserta','Kelas','Asesmen']];
+   rooms.forEach(r=>(r.students||[]).forEach((s,i)=>rows.push([r.no,i+1,participantNo(r.no,i+1),s.name||'',s.class||'',db.assessment||''])));
+   return rows;
+ }
+ if(type==='cards'){
+   let rooms=exportSelectedRooms(value);
+   if(!rooms.length)throw new Error('Belum ada data kartu peserta.');
+   let scheduleText=(db.schedules||[]).map((s,i)=>`${i+1}. ${s.date||''} | ${s.time||''} | ${scheduleSubject(s)}`).join(' ; ');
+   let rows=[['Ruang','No','Nomor Peserta','NIS','Nama','L/P','Kelas','Jadwal Asesmen']];
+   rooms.forEach(r=>(r.students||[]).forEach((s,i)=>rows.push([r.no,i+1,participantNo(r.no,i+1),s.nis||'',s.name||'',s.gender||'',s.class||'',scheduleText])));
+   return rows;
+ }
+ if(type==='schedule'){
+   let rows=[['No','Hari / Tanggal','Waktu','Alokasi','Mata Pelajaran']];
+   let groups=groupedAssessmentSchedules();
+   groups.forEach((g,gi)=>g.rows.forEach(s=>rows.push([gi+1,g.date||'',s.time||'',s.allocation||deriveAllocationFromTime(s.time)||'',scheduleSubject(s)])));
+   return rows;
+ }
+ if(type==='supervisors'){
+   syncFlatSupervisors();
+   let rooms=db.rooms||[];
+   let rows=[['No','Hari / Tanggal','Waktu','Alokasi','Mata Pelajaran',...rooms.map(r=>`Ruang ${roomLabel(r)}`)]];
+   (db.schedules||[]).forEach((s,i)=>rows.push([
+     i+1,supScheduleValue(s,'date'),supScheduleValue(s,'time'),
+     supScheduleValue(s,'allocation')||deriveAllocationFromTime(supScheduleValue(s,'time')),
+     supScheduleValue(s,'subject'),
+     ...rooms.map(r=>{
+       let name=(db.supervisorMatrix||{})[supMatrixKey(s.id,r.no)]||'';
+       return name?`${supervisorCode(name)} - ${name}`:'';
+     })
+   ]));
+   return rows;
+ }
+ if(type==='attendance'){
+   let rooms=exportSelectedRooms(value);
+   if(!rooms.length)throw new Error('Belum ada peserta pada ruang yang dipilih.');
+   let schedules=db.schedules||[];
+   let headers=['Ruang','No','No Peserta','Nama Peserta','Kelas',...(schedules.length?schedules.map((s,i)=>`${i+1}. ${s.date||''} - ${scheduleSubject(s)}`):['Tanda Tangan'])];
+   let rows=[headers];
+   rooms.forEach(r=>(r.students||[]).forEach((s,i)=>rows.push([
+     r.no,i+1,participantNo(r.no,i+1),s.name||'',s.class||'',...(schedules.length?schedules.map(()=>''):[''])
+   ])));
+   return rows;
+ }
+ if(type==='attendanceSup'){
+   syncFlatSupervisors();
+   let rows=[['No','Tanggal','Jam','Pengawas','Kode','Ruang','Mata Pelajaran','Tanda Tangan']];
+   (db.supervisors||[]).forEach((s,i)=>rows.push([i+1,s.date||'',s.time||'',s.name||'',s.name?supervisorCode(s.name):'',s.room||'',s.subject||'','']));
+   return rows;
+ }
+ if(type==='berita'){
+   let items=(db.berita||[]).filter(b=>value==='all'||String(b.id)===String(value));
+   if(!items.length)throw new Error('Belum ada Berita Acara yang dipilih.');
+   let rows=[['No','Tanggal','Waktu','Mata Pelajaran','Ruang','Pengawas','Isi Berita Acara']];
+   items.forEach((b,i)=>rows.push([i+1,b.date||'',b.time||'',b.subject||'',b.room||'',b.supervisor||'',b.text||'']));
+   return rows;
+ }
+ throw new Error('Jenis dokumen belum mendukung ekspor CSV.');
+}
+
+function printExportBaseName(type,value='all'){
+ let map={
+   students:'Daftar_Siswa_Tiap_Ruang',
+   seats:'Denah_Tempat_Duduk',
+   participants:'Daftar_Peserta',
+   desks:'Nomor_Meja_Peserta',
+   cards:'Kartu_Peserta',
+   schedule:'Jadwal_Asesmen',
+   supervisors:'Jadwal_Pengawas',
+   attendance:'Daftar_Hadir_Peserta',
+   attendanceSup:'Daftar_Hadir_Pengawas',
+   berita:'Berita_Acara'
+ };
+ let roomSuffix=(value!=='all' && ['students','seats','participants','desks','cards','attendance'].includes(type))?`_Ruang_${value}`:'';
+ return exportSafeFileName((map[type]||type)+roomSuffix+'_'+(db.assessment||'Asesmen'));
+}
+
+function downloadCsvRows(rows,fileName){
+ if(typeof XLSX==='undefined')throw new Error('Library CSV/Excel belum termuat.');
+ let ws=XLSX.utils.aoa_to_sheet(rows);
+ let csv=XLSX.utils.sheet_to_csv(ws,{FS:',',RS:'\r\n',blankrows:true});
+ let blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
+ let url=URL.createObjectURL(blob);
+ let a=document.createElement('a');
+ a.href=url;
+ a.download=fileName+'.csv';
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+function exportFromPrintMenu(type,format,selectId){
+ let value=selectId?(document.getElementById(selectId)?.value||'all'):'all';
+ try{
+   if(format==='xlsx'){
+     let wb=buildPrintExcelWorkbook(type,value);
+     XLSX.writeFile(wb,printExportBaseName(type,value)+'.xlsx');
+   }else if(format==='csv'){
+     downloadCsvRows(buildPrintCsvRows(type,value),printExportBaseName(type,value));
+   }else{
+     throw new Error('Format ekspor tidak dikenal.');
+   }
+ }catch(err){
+   alert('Data belum dapat diunduh: '+(err?.message||err));
+ }
+}
+
 function printFromMenu(type,selectId){
  let value=selectId?(document.getElementById(selectId)?.value||'all'):'all';
  let ok=false;
@@ -4861,7 +6244,23 @@ function printStudentsByRoom(roomNo='all'){
  return true;
 }
 function printScheduleDoc(){
- document.getElementById('app').innerHTML=`<div class="print-page">${printHeader()}<div class="print-title">JADWAL ASESMEN<br>${esc(db.assessment)}</div>${tableSchedules()}${signature()}</div>
+ document.getElementById('app').innerHTML=`<div class="print-page schedule-print-page">
+   ${printHeader()}
+   <div class="print-title">JADWAL ASESMEN<br>${esc(db.assessment)}</div>
+   <table class="schedule-assessment-table">
+     <thead>
+       <tr>
+         <th class="col-no">No</th>
+         <th class="col-date">Hari / Tanggal</th>
+         <th class="col-time">Waktu</th>
+         <th class="col-allocation">Alokasi</th>
+         <th class="col-subject">Mata Pelajaran</th>
+       </tr>
+     </thead>
+     <tbody>${scheduleTableRows(false)}</tbody>
+   </table>
+   ${signature()}
+ </div>
  <div class="actions no-print"><button onclick="systemPrint()">🖨 Cetak</button><button class="secondary" onclick="render('print')">Kembali ke Print</button></div>`;
 }
 function printSupDoc(){printSupervisorMatrix()}
@@ -4889,8 +6288,27 @@ function printBeritaAll(itemId='all'){
  `<div class="actions no-print"><button onclick="systemPrint()">🖨 Cetak</button><button class="secondary" onclick="render('print')">Kembali ke Print</button></div>`;
  return true;
 }
-function backup(){return `<div class="card"><h2>Backup Data & Akun Login</h2><div class="card"><h3>Ubah Akun Login</h3><div class="grid"><div><label>Username Baru</label><input id="newLoginUser" placeholder="admin"></div><div><label>Password Baru</label><input id="newLoginPass" type="password" placeholder="Password baru"></div></div><div class="actions"><button onclick="saveLoginAccount()">Simpan Akun Login</button></div></div><div class="actions"><button onclick="downloadBackup()">⬇ Download Backup</button><button class="secondary" onclick="document.getElementById('restoreFile').click()">⬆ Restore Backup</button><input id="restoreFile" type="file" accept=".json" class="hidden"></div></div>`}function downloadBackup(){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:'application/json'}));a.download='backup-administrasi-asesmen.json';a.click()}function bind(page){if(page==='participants')setTimeout(()=>{recalcGradeRoomPlan();},0);if(page==='students'){let i=document.getElementById('studentFile');i.onchange=()=>{if(i.files[0])importStudents(i.files[0])}}if(page==='backup'){let r=document.getElementById('restoreFile');r.onchange=()=>{let f=r.files[0];if(!f)return;let rd=new FileReader();rd.onload=()=>{try{db=JSON.parse(rd.result);save();alert('Backup dipulihkan.');render('dashboard')}catch(e){alert('File backup tidak valid.')}};rd.readAsText(f)}}}
-document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('loginScreen')?.style.display!=='none')doLogin()});
+function backup(){
+ let email=cloudUser?.email||'Belum login';
+ return `<div class="card"><h2>Backup Data & Sinkronisasi Cloud</h2>
+   <div class="cloud-card">
+     <h3>☁ Supabase Cloud</h3>
+     <p>Akun aktif: <span class="cloud-email">${esc(email)}</span></p>
+     <p>Setiap perubahan disimpan ke perangkat ini dan otomatis dikirim ke Supabase. Gunakan akun email/password yang sama pada perangkat lain untuk membuka data yang sama.</p>
+     <div class="actions">
+       <button onclick="saveCloudNow(false).then(ok=>ok&&alert('Data berhasil disimpan ke Supabase.'))">☁ Simpan ke Cloud Sekarang</button>
+       <button class="secondary" onclick="pullCloudNow()">↻ Ambil Data dari Cloud</button>
+     </div>
+   </div>
+   <div class="card"><h3>Ubah Password Cloud</h3><div class="grid"><div><label>Password Baru</label><input id="newCloudPass" type="password" placeholder="Minimal 6 karakter"></div></div><div class="actions"><button onclick="changeCloudPassword()">Simpan Password Baru</button></div></div>
+   <div class="card"><h3>Backup File JSON</h3><p>Backup JSON tetap tersedia sebagai cadangan manual di luar Supabase.</p><div class="actions"><button onclick="downloadBackup()">⬇ Download Backup</button><button class="secondary" onclick="document.getElementById('restoreFile').click()">⬆ Restore Backup</button><input id="restoreFile" type="file" accept=".json" class="hidden"></div></div>
+ </div>`
+}function downloadBackup(){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:'application/json'}));a.download='backup-administrasi-asesmen.json';a.click()}function bind(page){if(page==='participants')setTimeout(()=>{recalcGradeRoomPlan();},0);if(page==='students'){let i=document.getElementById('studentFile');i.onchange=()=>{if(i.files[0])importStudents(i.files[0])}}if(page==='backup'){let r=document.getElementById('restoreFile');r.onchange=()=>{let f=r.files[0];if(!f)return;let rd=new FileReader();rd.onload=()=>{try{db=JSON.parse(rd.result);save();alert('Backup dipulihkan.');render('dashboard')}catch(e){alert('File backup tidak valid.')}};rd.readAsText(f)}}}
+document.addEventListener('keydown',e=>{
+ if(e.key!=='Enter'||document.getElementById('loginScreen')?.style.display==='none')return;
+ if(cloudRecoveryMode && document.getElementById('recoveryPanel')?.style.display!=='none')completePasswordRecovery();
+ else doLogin();
+});
 render();
 checkLogin();
 </script>
