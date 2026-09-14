@@ -6594,6 +6594,12 @@ window.pdfjsLibBridge=pdfjsLib;
   .sup-never-summary{display:none!important}
 }
 </style>
+<style>
+/* ===== CADANGAN JUGA BISA DIPILIH SEBAGAI PENGAWAS ===== */
+.sup-helper-chip.reserve{
+  border-width:2px!important;
+}
+</style>
 </head>
 <body>
 <div id="loginScreen"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan penyimpanan Supabase. Gunakan akun cloud yang sama agar data dapat dibuka dari komputer/laptop lain.</p></div><div style="font-size:12px;color:#d9eadf">Database Cloud Supabase • Sinkron Otomatis</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">LOGIN ADMIN CLOUD</div><h2>Selamat Datang</h2><div class="sub">Masukkan email dan password Supabase. Akun yang sama dapat digunakan di perangkat lain.</div><div id="loginError" class="login-error">Login gagal.</div><div class="login-field"><label>Email Admin</label><input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com"></div><div class="login-field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -9316,7 +9322,7 @@ function supMatrixKey(scheduleId,roomNo){return `${scheduleId}_${roomNo}`}
 
 function getSupervisorCounts(){
  let counts={};
- (db.supervisorNames||[]).forEach(n=>counts[n]=0);
+ supervisorAllCandidateNames().forEach(n=>counts[n]=0);
  let scheduleMap=new Map((db.schedules||[]).map(s=>[String(s.id),s]));
  Object.entries(db.supervisorMatrix||{}).forEach(([key,n])=>{
    if(!n)return;
@@ -9329,7 +9335,7 @@ function getSupervisorCounts(){
 }
 function getSupervisorDayCounts(){
  let days={};
- (db.supervisorNames||[]).forEach(n=>days[n]=new Set());
+ supervisorAllCandidateNames().forEach(n=>days[n]=new Set());
  (db.schedules||[]).forEach(s=>{
    if(!supervisorScheduleNeedsDuty(s))return;
    (db.rooms||[]).forEach(r=>{
@@ -9343,6 +9349,22 @@ function getSupervisorDayCounts(){
  let out={};Object.keys(days).forEach(n=>out[n]=days[n].size);
  return out;
 }
+function supervisorAllCandidateNames(){
+ let out=[];
+ let seen=new Set();
+ let add=name=>{
+   name=String(name||'').trim();
+   if(!name)return;
+   let key=name.toLocaleLowerCase('id-ID');
+   if(seen.has(key))return;
+   seen.add(key);
+   out.push(name);
+ };
+ (db.supervisorNames||[]).forEach(add);
+ ensureSupervisorReserveNames().forEach(add);
+ return out;
+}
+
 function supervisorCodeByIndex(index){
  if(index<0)return '';
  if(index<26)return String.fromCharCode(65+index);          // A-Z
@@ -9353,11 +9375,13 @@ function supervisorCodeByIndex(index){
 function supervisorCode(name){
  db.supervisorCodes=db.supervisorCodes||{};
  if(db.supervisorCodes[name])return db.supervisorCodes[name];
- let i=(db.supervisorNames||[]).indexOf(name);
+ let names=supervisorAllCandidateNames();
+ let target=String(name||'').toLocaleLowerCase('id-ID');
+ let i=names.findIndex(n=>String(n).toLocaleLowerCase('id-ID')===target);
  return i>=0?supervisorCodeByIndex(i):'';
 }
 function supervisorNameFromCode(code){
- let names=db.supervisorNames||[];
+ let names=supervisorAllCandidateNames();
  return names.find(n=>supervisorCode(n)===code)||'';
 }
 function setSupervisorCode(name,value){
@@ -9366,7 +9390,7 @@ function setSupervisorCode(name,value){
    delete db.supervisorCodes[name];
    save();render('supervisors');return;
  }
- let conflict=(db.supervisorNames||[]).find(n=>n!==name && supervisorCode(n).toLowerCase()===value.toLowerCase());
+ let conflict=supervisorAllCandidateNames().find(n=>n!==name && supervisorCode(n).toLowerCase()===value.toLowerCase());
  if(conflict){
    alert(`Kode "${value}" sudah digunakan oleh ${conflict}. Gunakan kode lain.`);
    render('supervisors');return;
@@ -9475,7 +9499,7 @@ function supervisorCodeLegendHtml(printMode=false){
 }
 function supervisorCountPanelHtml(){
  let counts=getSupervisorCounts(),days=getSupervisorDayCounts();
- let names=[...(db.supervisorNames||[])].sort((a,b)=>(counts[b]||0)-(counts[a]||0)||a.localeCompare(b));
+ let names=supervisorAllCandidateNames().sort((a,b)=>(counts[b]||0)-(counts[a]||0)||a.localeCompare(b));
  let never=names.filter(n=>(counts[n]||0)===0);
  return `<aside class="sup-count-panel screen-only-supervisor-count">
    <h4>Jml Pengawasan</h4>
@@ -9529,10 +9553,11 @@ function supervisorManualHelperBody(scheduleId,roomNo){
  let reserveSet=new Set(reserve);
  let counts=getSupervisorCounts();
 
- let idle=(db.supervisorNames||[]).filter(n=>!assignedSet.has(n));
- let neverAssigned=(db.supervisorNames||[]).filter(n=>(counts[n]||0)===0);
+ let allCandidates=supervisorAllCandidateNames();
+ let idle=allCandidates.filter(n=>!assignedSet.has(n));
+ let neverAssigned=allCandidates.filter(n=>(counts[n]||0)===0);
 
- let selectable=[...(db.supervisorNames||[])].filter(n=>!assignedSet.has(n)||n===current);
+ let selectable=allCandidates.filter(n=>!assignedSet.has(n)||n===current);
  let optionHtml=`<option value="">-- Kosong / belum ditentukan --</option>`+
    selectable.map(n=>{
      let code=supervisorCode(n);
@@ -9620,7 +9645,7 @@ function supervisorManualHelperHtml(){
    <div class="notice">
      Pilih <b>sesi/mapel</b> dan <b>ruang</b>. Aplikasi akan menunjukkan siapa yang belum mengawasi pada sesi tersebut,
      siapa yang sudah bertugas, siapa yang belum pernah mendapat jadwal, serta <b>kode + nama Pengawas Cadangan</b>.
-     Pengawas dapat langsung ditetapkan dari panel ini. <b>Pembiasaan tidak dimasukkan</b> karena tidak memerlukan pengawas.
+     Pengawas dapat langsung ditetapkan dari panel ini. <b>Pengawas Cadangan juga masuk daftar kandidat yang bisa mengawasi</b> selama belum bertugas pada sesi yang sama. <b>Pembiasaan tidak dimasukkan</b> karena tidak memerlukan pengawas.
    </div>
    <div class="sup-helper-selector">
      <div>
@@ -9759,7 +9784,7 @@ function supervisors(){
  <div class="card">
    <h3>4. Pembagian Jadwal Pengawas</h3>
    <div class="notice">
-     Jadwal tersedia: <b>${schedules.length}</b> baris • Ruang: <b>${rooms.length}</b> • Nama Pengawas: <b>${db.supervisorNames.length}</b>.
+     Jadwal tersedia: <b>${schedules.length}</b> baris • Ruang: <b>${rooms.length}</b> • Nama Pengawas tersedia: <b>${supervisorAllCandidateNames().length}</b>.
      Jumlah kolom ruang otomatis mengikuti halaman <b>Jumlah Siswa Tiap Ruang</b> dan memanjang ke kanan. Pada setiap ruang yang tampil adalah <b>kode pengawas</b>. Kolom <b>No</b> dan <b>Hari/Tanggal</b> otomatis di-merge untuk dua mapel dalam satu hari. <b>Khusus hasil Cetak/PDF</b>, tabel ruang ditampilkan lengkap <b>01–29</b> dan setiap kolom mengambil data pengawas yang sudah ada pada halaman Jadwal Pengawas. Kolom hanya kosong jika memang belum ada pengawas yang ditetapkan pada ruang tersebut. Kolom <b>Hari/Tanggal, Waktu, Alokasi, dan Mata Pelajaran</b> dapat diedit manual langsung. Sistem <b>anti-bentrok</b>: satu pengawas tidak boleh mengawasi dua ruang pada <b>mapel/jam yang sama</b>. Pengawas yang sama boleh bertugas lagi pada <b>jam 2</b> setelah bertugas pada <b>jam 1</b>.
    </div>
    <div class="balance-info">
@@ -9795,7 +9820,7 @@ function supervisors(){
      Jika ingin mengisi dengan tulisan tangan setelah dicetak, biarkan kolomnya kosong.
    </div>
    <datalist id="supervisorReserveNameList">
-     ${(db.supervisorNames||[]).map(n=>`<option value="${esc(n)}"></option>`).join('')}
+     ${supervisorAllCandidateNames().map(n=>`<option value="${esc(n)}"></option>`).join('')}
    </datalist>
    <div class="reserve-manual-grid">
      ${[0,1,2,3].map(i=>{
@@ -10181,21 +10206,26 @@ function supervisorConflictForSchedule(scheduleId,name,excludeKey=''){
  return supervisorUsedInSession(scheduleId,name,'room',excludeKey);
 }
 function availableSupervisorOptions(scheduleId,currentKey,selected){
- let reserveSet=new Set(ensureSupervisorReserveNames().filter(Boolean));
- return (db.supervisorNames||[]).map(n=>{
+ let reserveSet=new Set(
+   ensureSupervisorReserveNames()
+     .filter(Boolean)
+     .map(n=>String(n).toLocaleLowerCase('id-ID'))
+ );
+ return supervisorAllCandidateNames().map(n=>{
    let conflict=supervisorUsedInSession(scheduleId,n,'room',currentKey);
    let disabled=conflict && n!==selected;
    let code=supervisorCode(n);
-   let reserveLabel=reserveSet.has(n)?' • CADANGAN':'';
+   let isReserve=reserveSet.has(String(n).toLocaleLowerCase('id-ID'));
+   let reserveLabel=isReserve?' • CADANGAN':'';
    return `<option value="${esc(n)}" ${selected===n?'selected':''} ${disabled?'disabled':''}>${esc(code)} — ${esc(n)}${reserveLabel}${disabled?' • SUDAH BERTUGAS':''}</option>`;
  }).join('');
 }
 function availableReserveOptions(scheduleId,currentKey,selected){
- return (db.supervisorNames||[]).map(n=>{
+ return supervisorAllCandidateNames().map(n=>{
    let conflict=supervisorUsedInSession(scheduleId,n,'reserve',currentKey);
    let disabled=conflict && n!==selected;
    let code=supervisorCode(n);
-   return `<option value="${esc(n)}" ${selected===n?'selected':''} ${disabled?'disabled':''}>${esc(n)}${code?` (${esc(code)})`:''}${disabled?' — terpakai':''}</option>`;
+   return `<option value="${esc(n)}" ${selected===n?'selected':''} ${disabled?'disabled':''}>${esc(code)} — ${esc(n)}${disabled?' • SUDAH BERTUGAS':''}</option>`;
  }).join('');
 }
 function saveSupervisorCell(key,value){
