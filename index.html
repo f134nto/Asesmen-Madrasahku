@@ -6600,6 +6600,59 @@ window.pdfjsLibBridge=pdfjsLib;
   border-width:2px!important;
 }
 </style>
+<style>
+/* ===== EDIT NOMOR PESERTA PER RUANG ===== */
+.participant-room-edit-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.participant-room-edit-head h3{margin:0!important}
+.participant-room-edit-head .actions{margin:0!important}
+.participant-edit-table .participant-number-edit-cell{
+  min-width:155px;
+}
+.participant-number-edit{
+  width:125px!important;
+  padding:7px 8px!important;
+  font-weight:900!important;
+  text-align:center!important;
+  text-transform:uppercase!important;
+  border:1px solid #9eb8aa!important;
+  background:#fff!important;
+}
+.participant-number-edit.is-manual{
+  border:2px solid #b89018!important;
+  background:#fff9df!important;
+}
+.participant-number-edit-cell small{
+  display:inline-block;
+  margin-left:5px;
+  font-size:9px;
+  font-weight:900;
+  color:#66736b;
+}
+.participant-manual-badge{
+  display:inline-flex;
+  align-items:center;
+  padding:7px 10px;
+  border:1px solid #d1b14a;
+  border-radius:999px;
+  background:#fff7d6;
+  color:#705700;
+  font-size:11px;
+  font-weight:900;
+}
+@media(max-width:850px){
+  .participant-room-edit-head{align-items:flex-start;flex-direction:column}
+}
+@media print{
+  .participant-room-edit-head .actions,
+  .participant-number-edit-cell small{display:none!important}
+}
+</style>
 </head>
 <body>
 <div id="loginScreen"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan penyimpanan Supabase. Gunakan akun cloud yang sama agar data dapat dibuka dari komputer/laptop lain.</p></div><div style="font-size:12px;color:#d9eadf">Database Cloud Supabase • Sinkron Otomatis</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">LOGIN ADMIN CLOUD</div><h2>Selamat Datang</h2><div class="sub">Masukkan email dan password Supabase. Akun yang sama dapat digunakan di perangkat lain.</div><div id="loginError" class="login-error">Login gagal.</div><div class="login-field"><label>Email Admin</label><input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com"></div><div class="login-field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -7069,6 +7122,77 @@ function save(){localStorage.setItem(KEY,JSON.stringify(db));scheduleCloudSave()
  return idx>=0?idx+1:1;
 }
 
+function participantNumberOverrideKey(room,student){
+ if(!student)return '';
+ let sid=(student.id!==undefined && student.id!==null && String(student.id)!=='')
+   ? `id:${student.id}`
+   : `row:${String(student.nis||'').trim()}|${String(student.name||'').trim()}|${String(student.class||'').trim()}`;
+ return `${String(room)}|${sid}`;
+}
+
+function getParticipantNumberOverride(room,student){
+ db.participantNumberOverrides=db.participantNumberOverrides||{};
+ let key=participantNumberOverrideKey(room,student);
+ return key?String(db.participantNumberOverrides[key]||'').trim():'';
+}
+
+function setParticipantNumberOverride(room,student,value){
+ if(!student)return;
+ db.participantNumberOverrides=db.participantNumberOverrides||{};
+ let key=participantNumberOverrideKey(room,student);
+ if(!key)return;
+ let clean=String(value||'').replace(/\s+/g,'').trim().toUpperCase();
+ if(clean)db.participantNumberOverrides[key]=clean;
+ else delete db.participantNumberOverrides[key];
+ save();
+}
+
+function saveParticipantNumberEdit(room,pos,value){
+ let r=(db.rooms||[]).find(x=>String(x.no)===String(room));
+ let s=r?.students?.[Number(pos)-1];
+ if(!s)return;
+ let clean=String(value||'').replace(/\s+/g,'').trim().toUpperCase();
+
+ if(!clean){
+   setParticipantNumberOverride(room,s,'');
+   render('participantList');
+   return;
+ }
+
+ // Nomor peserta dalam satu ruang tidak boleh dobel.
+ let duplicate=(r.students||[]).some((other,i)=>{
+   if(i===Number(pos)-1)return false;
+   let otherNo=participantNo(room,i+1);
+   return String(otherNo||'').trim().toUpperCase()===clean;
+ });
+ if(duplicate){
+   alert(`Nomor peserta ${clean} sudah digunakan di Ruang ${String(room).padStart(2,'0')}. Gunakan nomor lain.`);
+   render('participantList');
+   return;
+ }
+
+ setParticipantNumberOverride(room,s,clean);
+ render('participantList');
+}
+
+function resetParticipantNumbersInRoom(room){
+ let r=(db.rooms||[]).find(x=>String(x.no)===String(room));
+ if(!r)return;
+ if(!confirm(`Kembalikan seluruh nomor peserta Ruang ${String(room).padStart(2,'0')} ke nomor otomatis per kelas?`))return;
+ db.participantNumberOverrides=db.participantNumberOverrides||{};
+ (r.students||[]).forEach(s=>{
+   let key=participantNumberOverrideKey(room,s);
+   if(key)delete db.participantNumberOverrides[key];
+ });
+ save();
+ render('participantList');
+}
+
+function participantRoomHasManualNumbers(room){
+ let r=(db.rooms||[]).find(x=>String(x.no)===String(room));
+ return !!(r&&(r.students||[]).some(s=>getParticipantNumberOverride(room,s)));
+}
+
 function participantNoByStudent(student){
  if(!student)return '';
  let kelas=String(student.class||'').trim().toUpperCase();
@@ -7078,7 +7202,8 @@ function participantNoByStudent(student){
 function participantNo(room,pos){
  let r=(db.rooms||[]).find(x=>String(x.no)===String(room)), s=r?.students?.[pos-1];
  if(!s)return String(room).padStart(2,'0')+'-'+String(pos).padStart(2,'0');
- return participantNoByStudent(s);
+ let manual=getParticipantNumberOverride(room,s);
+ return manual||participantNoByStudent(s);
 }
 function assessmentDisplay(value=db.assessment){
  return String(value||'').toLocaleUpperCase('id-ID');
@@ -8142,10 +8267,39 @@ function participantList(){
  ensureParticipantListSynced();
  let total=db.rooms.reduce((a,r)=>a+(r.students||[]).length,0);
  return `<div class="card"><h2>5. Daftar Peserta Asesmen</h2>
- <div class="notice">Data pada halaman ini <b>terhubung langsung dan otomatis</b> dengan halaman <b>3. Pembagian Ruang Peserta</b>. Nama siswa diambil dari <b>1. Data Siswa tiap Kelas</b>, sedangkan jumlah peserta setiap ruang mengikuti <b>2. Jumlah Siswa tiap Ruang</b> dan pengaturan pembagian rombel. Setelah pembagian disimpan/diterapkan, daftar peserta setiap ruang langsung menyesuaikan tanpa input ulang.</div>
+ <div class="notice">
+   Data pada halaman ini <b>terhubung langsung</b> dengan Pembagian Ruang Peserta.
+   Kolom <b>No Peserta</b> sekarang dapat diedit manual untuk setiap peserta pada setiap ruang.
+   Nomor manual yang disimpan akan dipakai pada <b>Denah, Nomor Meja, Kartu Peserta, Daftar Hadir, Print/PDF, Excel dan CSV</b>.
+   Jika ingin kembali ke nomor otomatis per kelas, gunakan tombol <b>Reset Nomor Ruang</b>.
+ </div>
  <div class="grid"><div class="stat">Total Peserta<b>${total}</b></div><div class="stat">Jumlah Ruang<b>${db.rooms.length}</b></div><div class="stat">Belum Terbagi<b>${Math.max(0,db.students.length-total)}</b></div></div>
  <div class="actions"><button onclick="printParticipantListAll()">🖨 Cetak Semua Daftar Peserta</button><button class="secondary" onclick="exportPdfFromPrintMenu('participants','')">⬇ PDF Daftar Peserta</button><button class="secondary" onclick="exportParticipantList()">⬇ Export Excel</button></div>
- ${db.rooms.length?db.rooms.map(r=>`<div class="card"><h3>Daftar Peserta Ruang ${r.no} (${r.students.length} peserta)</h3><div class="tablewrap"><table><thead><tr><th>No</th><th>No Peserta</th><th>NIS</th><th>Nama</th><th>L/P</th><th>Kelas</th></tr></thead><tbody>${r.students.map((st,i)=>`<tr><td>${i+1}</td><td><b>${participantNo(r.no,i+1)}</b></td><td>${esc(st.nis)}</td><td>${esc(st.name)}</td><td>${esc(st.gender)}</td><td>${esc(st.class)}</td></tr>`).join('')}</tbody></table></div></div>`).join(''):'<div class="notice">Belum ada pembagian ruang peserta. Silakan buka halaman 3. Pembagian Ruang Peserta terlebih dahulu.</div>'}
+ ${db.rooms.length?db.rooms.map(r=>`<div class="card participant-room-edit-card">
+   <div class="participant-room-edit-head">
+     <h3>Daftar Peserta Ruang ${String(r.no).padStart(2,'0')} (${r.students.length} peserta)</h3>
+     <div class="actions">
+       ${participantRoomHasManualNumbers(r.no)?`<span class="participant-manual-badge">Nomor manual aktif</span>`:''}
+       <button class="secondary" onclick="resetParticipantNumbersInRoom(${JSON.stringify(r.no)})">↺ Reset Nomor Ruang</button>
+     </div>
+   </div>
+   <div class="tablewrap"><table class="participant-edit-table"><thead><tr><th>No</th><th>No Peserta — dapat diedit</th><th>NIS</th><th>Nama</th><th>L/P</th><th>Kelas</th></tr></thead><tbody>
+   ${r.students.map((st,i)=>{
+     let current=participantNo(r.no,i+1);
+     let manual=!!getParticipantNumberOverride(r.no,st);
+     return `<tr>
+       <td>${i+1}</td>
+       <td class="participant-number-edit-cell">
+         <input class="participant-number-edit ${manual?'is-manual':''}" value="${esc(current)}"
+           title="Edit nomor peserta lalu tekan Enter atau klik di luar kotak"
+           onchange="saveParticipantNumberEdit(${JSON.stringify(r.no)},${i+1},this.value)"
+           onkeydown="if(event.key==='Enter'){this.blur()}">
+         ${manual?'<small>MANUAL</small>':'<small>OTOMATIS</small>'}
+       </td>
+       <td>${esc(st.nis)}</td><td>${esc(st.name)}</td><td>${esc(st.gender)}</td><td>${esc(st.class)}</td>
+     </tr>`;
+   }).join('')}</tbody></table></div>
+ </div>`).join(''):'<div class="notice">Belum ada pembagian ruang peserta. Silakan buka halaman 3. Pembagian Ruang Peserta terlebih dahulu.</div>'}
  </div>`;
 }
 
@@ -8390,6 +8544,8 @@ function deskClassPages(roomFilter='all'){
 
 function deskClassParticipantNo(item){
  if(!item?.student||!item?.classSerial)return '';
+ let manual=getParticipantNumberOverride(item.roomNo,item.student);
+ if(manual)return manual;
  let kelas=String(item.className||item.student.class||'').trim().toUpperCase();
  return `${kelas}.${String(item.classSerial).padStart(2,'0')}`;
 }
@@ -8449,7 +8605,7 @@ function deskNumbers(){
    <div class="desknum-grid">
      ${page.entries.map(entry=>`<div class="desknum-card">
        <div class="exam">${esc(assessmentDisplay())}</div>
-       <div class="participant">${esc(`${entry.className}.${String(entry.classSerial).padStart(2,'0')}`)}</div>
+       <div class="participant">${esc(deskClassParticipantNo(entry))}</div>
        <div class="name">${esc(entry.student.name)}</div>
        <div class="room">RUANG ${entry.roomNo}</div>
      </div>`).join('')}
@@ -8504,7 +8660,7 @@ function exportDeskNumbers(){
    page.entries.forEach(entry=>rows.push({
      'Lembar':pageIndex+1,
      'Kelas':entry.className,
-     'Nomor Peserta':`${entry.className}.${String(entry.classSerial).padStart(2,'0')}`,
+     'Nomor Peserta':deskClassParticipantNo(entry),
      'Nama Peserta':entry.student.name||'',
      'Ruang':entry.roomNo,
      'Asesmen':assessmentDisplay()
