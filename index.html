@@ -6219,6 +6219,249 @@ window.pdfjsLibBridge=pdfjsLib;
   }
 }
 </style>
+<style>
+/* ===== JADWAL PENGAWAS: FONT DIPERBESAR + JARAK ATAS 20MM ===== */
+.supervisor-print-page.supervisor-no-kop-page-one{
+  padding:20mm 7mm 8mm 7mm!important;
+}
+.supervisor-print-page.supervisor-no-kop-page-two{
+  padding:20mm 12mm 10mm 12mm!important;
+}
+
+/* Header dan isi WAKTU */
+.supervisor-no-kop-page-one .supervisor-29-table th.fixed-time,
+.supervisor-no-kop-page-one .supervisor-29-table td.fixed-time{
+  font-size:13pt!important;
+  line-height:1.05!important;
+  font-weight:800!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+}
+
+/* Header dan isi ALOKASI */
+.supervisor-no-kop-page-one .supervisor-29-table th.fixed-allocation,
+.supervisor-no-kop-page-one .supervisor-29-table td.fixed-allocation{
+  font-size:13pt!important;
+  line-height:1.05!important;
+  font-weight:800!important;
+  text-align:center!important;
+  white-space:normal!important;
+}
+
+/* Header dan isi MATA PELAJARAN */
+.supervisor-no-kop-page-one .supervisor-29-table th.fixed-subject,
+.supervisor-no-kop-page-one .supervisor-29-table td.fixed-subject{
+  font-size:13pt!important;
+  line-height:1.06!important;
+  font-weight:800!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+}
+.supervisor-no-kop-page-one .supervisor-29-table th.fixed-subject{
+  text-align:center!important;
+}
+.supervisor-no-kop-page-one .supervisor-29-table td.fixed-subject{
+  text-align:left!important;
+}
+
+/* Kode pengawas: header 01-29 dan isi kode */
+.supervisor-no-kop-page-one .supervisor-29-table .supervisor-print-code-head,
+.supervisor-no-kop-page-one .supervisor-29-table .supervisor-print-code,
+.supervisor-no-kop-page-one .supervisor-29-table .room-col{
+  font-size:13pt!important;
+  line-height:1!important;
+  font-weight:900!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+  padding:.2mm 0!important;
+}
+
+/* Header umum tetap terbaca dan proporsional */
+.supervisor-no-kop-page-one .supervisor-29-table th{
+  min-height:7mm!important;
+}
+
+@media print{
+  .supervisor-print-page.supervisor-no-kop-page-one{
+    padding:20mm 7mm 8mm 7mm!important;
+  }
+  .supervisor-print-page.supervisor-no-kop-page-two{
+    padding:20mm 12mm 10mm 12mm!important;
+  }
+}
+</style>
+<style>
+/* ===== JADWAL ASESMEN FIX — ISI DINAMIS + KETERANGAN ===== */
+@page scheduleFixedPortrait{
+  size:290mm 330mm;
+  margin:0;
+}
+.schedule-print-page.schedule-fixed-print-page{
+  page:scheduleFixedPortrait!important;
+  width:290mm!important;
+  min-width:290mm!important;
+  max-width:290mm!important;
+  min-height:330mm!important;
+  margin:0 auto!important;
+  padding:15mm 20mm!important;
+  box-sizing:border-box!important;
+  background:#fff!important;
+  color:#000!important;
+  overflow:visible!important;
+  transform:none!important;
+}
+.schedule-fixed-header{
+  width:250mm!important;
+  min-height:24mm!important;
+  display:grid!important;
+  grid-template-columns:22mm 1fr 22mm!important;
+  align-items:center!important;
+  border-bottom:.45mm solid #000!important;
+  padding:0 0 2.5mm!important;
+  margin:0 0 5mm!important;
+  box-sizing:border-box!important;
+}
+.schedule-fixed-logo,
+.schedule-fixed-logo-space{
+  width:22mm!important;
+}
+.schedule-fixed-logo{
+  height:21mm!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.schedule-fixed-logo img{
+  max-width:20mm!important;
+  max-height:20mm!important;
+  object-fit:contain!important;
+}
+.schedule-fixed-logo-fallback{
+  font-size:13pt!important;
+  font-weight:900!important;
+}
+.schedule-fixed-heading{
+  text-align:center!important;
+  line-height:1.15!important;
+  color:#000!important;
+}
+.schedule-fixed-assessment{
+  font-size:15pt!important;
+  font-weight:900!important;
+  text-transform:uppercase!important;
+}
+.schedule-fixed-school{
+  margin-top:1.3mm!important;
+  font-size:12pt!important;
+  font-weight:800!important;
+}
+
+.schedule-fixed-table{
+  width:250mm!important;
+  max-width:250mm!important;
+  table-layout:fixed!important;
+  border-collapse:collapse!important;
+  margin:0!important;
+  font-size:11.5pt!important;
+  color:#000!important;
+}
+.schedule-fixed-table col.schedule-fixed-no{width:12mm!important}
+.schedule-fixed-table col.schedule-fixed-date{width:42mm!important}
+.schedule-fixed-table col.schedule-fixed-time{width:30mm!important}
+.schedule-fixed-table col.schedule-fixed-allocation{width:24mm!important}
+.schedule-fixed-table col.schedule-fixed-subject{width:82mm!important}
+.schedule-fixed-table col.schedule-fixed-note{width:60mm!important}
+
+.schedule-fixed-table th,
+.schedule-fixed-table td{
+  border:.38mm solid #000!important;
+  padding:2.2mm 1.8mm!important;
+  vertical-align:middle!important;
+  box-sizing:border-box!important;
+  color:#000!important;
+  line-height:1.15!important;
+}
+.schedule-fixed-table th{
+  background:#0b6b46!important;
+  color:#fff!important;
+  text-align:center!important;
+  font-size:11.5pt!important;
+  font-weight:900!important;
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important;
+}
+.schedule-fixed-table .schedule-no-cell,
+.schedule-fixed-table .schedule-day-cell,
+.schedule-fixed-table .schedule-time-cell,
+.schedule-fixed-table .schedule-allocation-cell{
+  text-align:center!important;
+}
+.schedule-fixed-table .schedule-subject-cell,
+.schedule-fixed-table .schedule-note-cell{
+  text-align:left!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+}
+.schedule-print-day{
+  display:block!important;
+  font-size:11.5pt!important;
+  font-weight:900!important;
+  line-height:1.05!important;
+}
+.schedule-print-date{
+  display:block!important;
+  margin-top:1mm!important;
+  font-size:11pt!important;
+  font-weight:700!important;
+  line-height:1.05!important;
+  white-space:nowrap!important;
+}
+.schedule-fixed-signature{
+  width:250mm!important;
+  max-width:250mm!important;
+  box-sizing:border-box!important;
+  page-break-inside:avoid!important;
+}
+.schedule-note-edit{
+  min-width:120px!important;
+}
+
+@media print{
+  @page scheduleFixedPortrait{size:290mm 330mm;margin:0}
+  .schedule-print-page.schedule-fixed-print-page{
+    page:scheduleFixedPortrait!important;
+    width:290mm!important;
+    min-width:290mm!important;
+    max-width:290mm!important;
+    min-height:330mm!important;
+    margin:0!important;
+    padding:15mm 20mm!important;
+    box-sizing:border-box!important;
+    transform:none!important;
+  }
+  .schedule-fixed-header,
+  .schedule-fixed-table,
+  .schedule-fixed-signature{
+    width:250mm!important;
+    max-width:250mm!important;
+  }
+}
+</style>
+<style>
+/* ===== JADWAL PENGAWAS: PEMBIASAAN TANPA PENGAWAS ===== */
+.supervisor-no-duty-cell{
+  text-align:center!important;
+  font-weight:700!important;
+  color:#888!important;
+  background:#f5f5f5!important;
+}
+@media print{
+  .supervisor-29-table .supervisor-no-duty-cell{
+    background:#fff!important;
+    color:#000!important;
+  }
+}
+</style>
 </head>
 <body>
 <div id="loginScreen"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan penyimpanan Supabase. Gunakan akun cloud yang sama agar data dapat dibuka dari komputer/laptop lain.</p></div><div style="font-size:12px;color:#d9eadf">Database Cloud Supabase • Sinkron Otomatis</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">LOGIN ADMIN CLOUD</div><h2>Selamat Datang</h2><div class="sub">Masukkan email dan password Supabase. Akun yang sama dapat digunakan di perangkat lain.</div><div id="loginError" class="login-error">Login gagal.</div><div class="login-field"><label>Email Admin</label><input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com"></div><div class="login-field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -8484,6 +8727,7 @@ db.supervisorFiles=db.supervisorFiles||[];
      <div><label>Waktu</label><input id="jt" placeholder="07.30 - 09.00"></div>
      <div><label>Alokasi</label><input id="ja" placeholder="90 menit"></div>
      <div><label>Mata Pelajaran</label><input id="js" placeholder="Bahasa Indonesia"></div>
+     <div><label>Keterangan</label><input id="jk" placeholder="Contoh: Jam ke-1 / Catatan (opsional)"></div>
    </div>
    <div class="actions"><button onclick="addSchedule()">+ Tambah Jadwal</button></div>
    ${tableSchedules()}
@@ -8634,7 +8878,7 @@ function deriveAllocationFromTime(value){
 }
 function addSchedule(){
  db.schedules=db.schedules||[];
- let date=v('jd'),time=v('jt'),allocation=v('ja'),subject=cleanScheduleSubject(v('js'));
+ let date=v('jd'),time=v('jt'),allocation=v('ja'),subject=cleanScheduleSubject(v('js')),note=v('jk');
  if(!date)return alert('Hari / Tanggal belum diisi.');
  if(!time)return alert('Waktu belum diisi.');
  if(!subject)return alert('Mata Pelajaran belum diisi. Isi nama mapel saja, misalnya Bahasa Inggris.');
@@ -8645,7 +8889,7 @@ function addSchedule(){
    time,
    allocation:allocation||deriveAllocationFromTime(time),
    subject,
-   note:''
+   note:String(note||'').trim()
  };
  db.schedules.push(row);
  try{
@@ -8712,10 +8956,90 @@ function saveAssessmentScheduleGroupDate(ids,value){
  render('schedule');
 }
 
+function schedulePrintDateHtml(value){
+ let raw=String(value||'').replace(/\s+/g,' ').trim();
+ if(!raw)return '';
+
+ const months={
+   januari:'01',februari:'02',maret:'03',april:'04',mei:'05',juni:'06',
+   juli:'07',agustus:'08',september:'09',oktober:'10',november:'11',desember:'12',
+   january:'01',february:'02',march:'03',april:'04',may:'05',june:'06',
+   july:'07',august:'08',september:'09',october:'10',november:'11',december:'12'
+ };
+
+ function toDDMMYYYY(s){
+   s=String(s||'').trim();
+   let m=s.match(/(\d{1,2})\s+([A-Za-zÀ-ÿ]+)\s+(\d{4})/i);
+   if(m){
+     let mm=months[m[2].toLowerCase()];
+     if(mm)return `${String(+m[1]).padStart(2,'0')}-${mm}-${m[3]}`;
+   }
+   m=s.match(/(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})/);
+   if(m)return `${String(+m[1]).padStart(2,'0')}-${String(+m[2]).padStart(2,'0')}-${m[3]}`;
+   return s;
+ }
+
+ let day='',datePart='';
+ let comma=raw.indexOf(',');
+ if(comma>=0){
+   day=raw.slice(0,comma).trim();
+   datePart=raw.slice(comma+1).trim();
+ }else{
+   let m=raw.match(/^([^\s]+)\s+(.+)$/);
+   if(m){
+     day=m[1].trim();
+     datePart=m[2].trim();
+   }else{
+     day=raw;
+   }
+ }
+
+ return `<div class="schedule-print-day">${esc(day)}${day?',':''}</div>`+
+        (datePart?`<div class="schedule-print-date">${esc(toDDMMYYYY(datePart))}</div>`:'');
+}
+
+function schedulePrintRowsFixed(){
+ let groups=groupedAssessmentSchedules();
+ if(!groups.length){
+   return '<tr><td colspan="6" style="text-align:center">Belum ada jadwal asesmen.</td></tr>';
+ }
+
+ return groups.map((g,groupIndex)=>{
+   let span=Math.max(g.rows.length,1);
+   return g.rows.map((x,rowIndex)=>`<tr>
+     ${rowIndex===0
+       ? `<td class="schedule-no-cell" rowspan="${span}">${groupIndex+1}</td>
+          <td class="schedule-day-cell" rowspan="${span}">${schedulePrintDateHtml(g.date||'')}</td>`
+       : ''}
+     <td class="schedule-time-cell">${esc(x.time||'')}</td>
+     <td class="schedule-allocation-cell">${esc(x.allocation||deriveAllocationFromTime(x.time)||'')}</td>
+     <td class="schedule-subject-cell">${esc(scheduleSubject(x))}</td>
+     <td class="schedule-note-cell">${esc(x.note||'')}</td>
+   </tr>`).join('');
+ }).join('');
+}
+
+function schedulePrintHeaderFixed(){
+ let schoolName=String(db.school?.name||"MTs MA'ARIF NU 1 WANGON").trim();
+ let schoolYear=String(getSchoolYear()).replace(/\s+/g,'');
+ let logo=db.school?.logo
+   ? `<img src="${db.school.logo}" alt="Logo Madrasah">`
+   : `<div class="schedule-fixed-logo-fallback">NU</div>`;
+
+ return `<div class="schedule-fixed-header">
+   <div class="schedule-fixed-logo">${logo}</div>
+   <div class="schedule-fixed-heading">
+     <div class="schedule-fixed-assessment">${esc(assessmentDisplay())}</div>
+     <div class="schedule-fixed-school">${esc(schoolName)} Tahun Ajaran ${esc(schoolYear)}</div>
+   </div>
+   <div class="schedule-fixed-logo-space"></div>
+ </div>`;
+}
+
 function scheduleTableRows(showActions=true){
  let groups=groupedAssessmentSchedules();
  if(!groups.length){
-   return `<tr><td colspan="${showActions?6:5}" style="text-align:center">Belum ada jadwal asesmen.</td></tr>`;
+   return `<tr><td colspan="${showActions?7:6}" style="text-align:center">Belum ada jadwal asesmen.</td></tr>`;
  }
 
  return groups.map((g,groupIndex)=>{
@@ -8743,6 +9067,11 @@ function scheduleTableRows(showActions=true){
          ? `<input class="schedule-edit-input schedule-subject-edit" value="${esc(scheduleSubject(x))}" onchange="saveAssessmentScheduleField(${x.id},'subject',this.value)">`
          : esc(scheduleSubject(x))}
      </td>
+     <td class="schedule-note-cell col-note">
+       ${showActions
+         ? `<input class="schedule-edit-input schedule-note-edit" value="${esc(x.note||'')}" placeholder="Keterangan" onchange="saveAssessmentScheduleField(${x.id},'note',this.value)">`
+         : esc(x.note||'')}
+     </td>
      ${showActions?`<td class="no-print"><button class="danger" onclick="deleteSchedule(${x.id})">Hapus</button></td>`:''}
    </tr>`).join('');
  }).join('');
@@ -8758,6 +9087,7 @@ function tableSchedules(){
          <th class="col-time">Waktu</th>
          <th class="col-allocation">Alokasi</th>
          <th class="col-subject">Mata Pelajaran</th>
+         <th class="col-note">Keterangan</th>
          <th class="no-print">Aksi</th>
        </tr>
      </thead>
@@ -8765,6 +9095,7 @@ function tableSchedules(){
    </table>
  </div>`;
 }
+
 function deleteSchedule(id){db.schedules=db.schedules.filter(x=>x.id!==id);save();render('schedule')}
 
 
@@ -8777,6 +9108,47 @@ function supScheduleValue(s,field){
  let value=o[field]!==undefined?o[field]:(s[field]||'');
  return field==='subject'?cleanScheduleSubject(value):value;
 }
+
+function supervisorScheduleNeedsDuty(s){
+ if(!s)return false;
+ let subject=String(supScheduleValue(s,'subject')||'').replace(/\s+/g,' ').trim();
+ if(!subject)return false;
+ // Pembiasaan bukan mata pelajaran yang membutuhkan pengawas.
+ if(/\bpembiasaan\b/i.test(subject))return false;
+ return true;
+}
+
+function clearSupervisorAssignmentsForSchedule(scheduleId){
+ let changed=false;
+ db.supervisorMatrix=db.supervisorMatrix||{};
+ Object.keys(db.supervisorMatrix).forEach(key=>{
+   let parsed=parseSupMatrixKey(key);
+   if(String(parsed.scheduleId)===String(scheduleId)){
+     delete db.supervisorMatrix[key];
+     changed=true;
+   }
+ });
+ db.supervisorReserveMatrix=db.supervisorReserveMatrix||{};
+ Object.keys(db.supervisorReserveMatrix).forEach(key=>{
+   let parsed=parseSupervisorReserveKey(key);
+   if(String(parsed.scheduleId)===String(scheduleId)){
+     delete db.supervisorReserveMatrix[key];
+     changed=true;
+   }
+ });
+ return changed;
+}
+
+function sanitizeSupervisorAssignments(){
+ let changed=false;
+ (db.schedules||[]).forEach(s=>{
+   if(!supervisorScheduleNeedsDuty(s)){
+     if(clearSupervisorAssignmentsForSchedule(s.id))changed=true;
+   }
+ });
+ return changed;
+}
+
 function saveSupervisorTitle(){
  db.supervisorTitle=v('supervisorTitle').trim();
  save();
@@ -8786,8 +9158,13 @@ function saveSupScheduleOverride(id,field,value){
  db.supervisorScheduleOverrides[id]=db.supervisorScheduleOverrides[id]||{};
  value=field==='subject'?cleanScheduleSubject(value):String(value??'').trim();
  db.supervisorScheduleOverrides[id][field]=value;
+ if(field==='subject'){
+   let s=(db.schedules||[]).find(x=>String(x.id)===String(id));
+   if(s && !supervisorScheduleNeedsDuty(s))clearSupervisorAssignmentsForSchedule(id);
+ }
  save();
  syncFlatSupervisors();
+ render('supervisors');
 }
 
 function saveSupervisorGroupDate(ids,value){
@@ -8808,8 +9185,13 @@ function supMatrixKey(scheduleId,roomNo){return `${scheduleId}_${roomNo}`}
 function getSupervisorCounts(){
  let counts={};
  (db.supervisorNames||[]).forEach(n=>counts[n]=0);
- Object.values(db.supervisorMatrix||{}).forEach(n=>{
-   if(n)counts[n]=(counts[n]||0)+1;
+ let scheduleMap=new Map((db.schedules||[]).map(s=>[String(s.id),s]));
+ Object.entries(db.supervisorMatrix||{}).forEach(([key,n])=>{
+   if(!n)return;
+   let parsed=parseSupMatrixKey(key);
+   let s=scheduleMap.get(String(parsed.scheduleId));
+   if(!s || !supervisorScheduleNeedsDuty(s))return;
+   counts[n]=(counts[n]||0)+1;
  });
  return counts;
 }
@@ -8817,6 +9199,7 @@ function getSupervisorDayCounts(){
  let days={};
  (db.supervisorNames||[]).forEach(n=>days[n]=new Set());
  (db.schedules||[]).forEach(s=>{
+   if(!supervisorScheduleNeedsDuty(s))return;
    (db.rooms||[]).forEach(r=>{
      let n=(db.supervisorMatrix||{})[supMatrixKey(s.id,r.no)]||'';
      if(n){
@@ -8828,7 +9211,6 @@ function getSupervisorDayCounts(){
  let out={};Object.keys(days).forEach(n=>out[n]=days[n].size);
  return out;
 }
-
 function supervisorCodeByIndex(index){
  if(index<0)return '';
  if(index<26)return String.fromCharCode(65+index);          // A-Z
@@ -8980,6 +9362,7 @@ function refreshSupervisorCountPanel(){
 }
 function supervisors(){
  db.schedules=db.schedules||[];
+ sanitizeSupervisorAssignments();
  db.supervisorNames=db.supervisorNames||[];
  db.supervisorMatrix=db.supervisorMatrix||{};
  db.supervisorReserveMatrix=db.supervisorReserveMatrix||{};
@@ -8993,7 +9376,7 @@ function supervisors(){
  return `<div class="card"><h2>9. Jadwal Pengawas</h2>
  <div class="notice">
    Format Jadwal Pengawas mengikuti <b>Jadwal Asesmen</b> dan <b>Jumlah Siswa Tiap Ruang</b>.
-   Kolom <b>Hari/Tanggal, Waktu, Alokasi, dan Mata Pelajaran</b> otomatis mengambil data Jadwal Asesmen, tetapi sekarang <b>bisa diedit manual langsung pada tabel Jadwal Pengawas</b> bila diperlukan. Edit pada Jadwal Pengawas berlaku khusus halaman pengawas dan tidak mengubah Jadwal Asesmen. Setiap pengawas mendapat kode yang dapat diatur manual. Pada kolom ruang hanya kode pengawas yang ditampilkan.
+   Kolom <b>Hari/Tanggal, Waktu, Alokasi, dan Mata Pelajaran</b> otomatis mengambil data Jadwal Asesmen, tetapi sekarang <b>bisa diedit manual langsung pada tabel Jadwal Pengawas</b> bila diperlukan. Edit pada Jadwal Pengawas berlaku khusus halaman pengawas dan tidak mengubah Jadwal Asesmen. Setiap pengawas mendapat kode yang dapat diatur manual. Pada kolom ruang hanya kode pengawas yang ditampilkan. <b>Baris Pembiasaan tidak diberi jadwal pengawasan</b>; penugasan hanya berlaku pada baris yang berisi mata pelajaran.
  </div>
 
  <div class="schedule-toolbar">
@@ -9433,6 +9816,7 @@ function restoreSupervisorScheduleSnapshot(){
  db.supervisorPriorityGap=[1,2].includes(Number(s.supervisorPriorityGap))?Number(s.supervisorPriorityGap):2;
  db.supervisorTitle=s.supervisorTitle||'';
  db.supervisorScheduleOverrides=JSON.parse(JSON.stringify(s.supervisorScheduleOverrides||{}));
+ sanitizeSupervisorAssignments();
  syncFlatSupervisors();save();render('supervisors');
 }
 function parseSupMatrixKey(key){
@@ -9493,6 +9877,13 @@ function saveSupervisorCell(key,value){
  db.supervisorMatrix=db.supervisorMatrix||{};
  db.supervisorReserveMatrix=db.supervisorReserveMatrix||{};
  let parsed=parseSupMatrixKey(key);
+ let schedule=(db.schedules||[]).find(x=>String(x.id)===String(parsed.scheduleId));
+ if(schedule && !supervisorScheduleNeedsDuty(schedule)){
+   delete db.supervisorMatrix[key];
+   save();
+   render('supervisors');
+   return;
+ }
  if(value && supervisorUsedInSession(parsed.scheduleId,value,'room',key)){
    alert('Pengawas tersebut sudah bertugas di ruang lain atau menjadi pengawas cadangan pada mapel/jam yang sama. Untuk satu mapel/jam, satu pengawas hanya boleh mempunyai satu penempatan.');
    render('supervisors');
@@ -9505,6 +9896,13 @@ function saveSupervisorCell(key,value){
 }
 function saveSupervisorReserveCell(scheduleId,slot,value){
  db.supervisorReserveMatrix=db.supervisorReserveMatrix||{};
+ let schedule=(db.schedules||[]).find(x=>String(x.id)===String(scheduleId));
+ if(schedule && !supervisorScheduleNeedsDuty(schedule)){
+   delete db.supervisorReserveMatrix[supervisorReserveKey(scheduleId,slot)];
+   save();
+   render('supervisors');
+   return;
+ }
  let key=supervisorReserveKey(scheduleId,slot);
  if(value && supervisorUsedInSession(scheduleId,value,'reserve',key)){
    alert('Nama tersebut sudah dipakai sebagai pengawas ruang atau cadangan lain pada mapel/jam yang sama. Pilih pengawas lain.');
@@ -9539,6 +9937,10 @@ function autoAssignSupervisors(){
  let groups=[];
  let groupMap=new Map();
  (db.schedules||[]).forEach(s=>{
+   if(!supervisorScheduleNeedsDuty(s)){
+     clearSupervisorAssignmentsForSchedule(s.id);
+     return;
+   }
    let key=supervisorSessionKey(s.id);
    if(!groupMap.has(key)){
      let g={key,schedules:[]};groupMap.set(key,g);groups.push(g);
@@ -9586,13 +9988,15 @@ function autoAssignSupervisors(){
  let first=names.slice(0,17),second=names.slice(17,34);
  let avg=a=>a.length?a.reduce((t,n)=>t+(counts[n]||0),0)/a.length:0;
  let avg1=avg(first),avg2=avg(second);
- let msg=`Pembagian otomatis selesai. Pengawas yang sama boleh bertugas pada jam 1 dan jam 2, tetapi tidak boleh rangkap pada mapel/jam yang sama. Target kelebihan pengawas 1–17: +${priorityGap} tugas. Rata-rata saat ini: urutan 1–17 = ${avg1.toFixed(1)}, urutan 18–34 = ${avg2.toFixed(1)}. Rentang tugas reguler: ${min}–${max}. Pengawas cadangan tidak dibagi otomatis; tersedia 4 baris kosong pada halaman 2 hasil cetak.`;
+ let msg=`Pembagian otomatis selesai. Baris Pembiasaan tidak diberi pengawas. Pengawas yang sama boleh bertugas pada jam 1 dan jam 2, tetapi tidak boleh rangkap pada mapel/jam yang sama. Target kelebihan pengawas 1–17: +${priorityGap} tugas. Rata-rata saat ini: urutan 1–17 = ${avg1.toFixed(1)}, urutan 18–34 = ${avg2.toFixed(1)}. Rentang tugas reguler: ${min}–${max}. Pengawas cadangan tidak dibagi otomatis; tersedia 4 baris kosong pada halaman 2 hasil cetak.`;
  if(unfilled)msg+=` ${unfilled} penempatan ruang belum terisi karena jumlah pengawas pada sesi yang sama tidak mencukupi.`;
  alert(msg);
 }
 function syncFlatSupervisors(){
+ sanitizeSupervisorAssignments();
  let flat=[];
  (db.schedules||[]).forEach(s=>{
+   if(!supervisorScheduleNeedsDuty(s))return;
    (db.rooms||[]).forEach(r=>{
      let name=(db.supervisorMatrix||{})[supMatrixKey(s.id,r.no)]||'';
      if(name)flat.push({
@@ -9889,6 +10293,8 @@ function normalizeSupervisorPrintRoomNo(value){
 }
 
 function supervisorPrintExistingName(scheduleId,roomNo){
+ let schedule=(db.schedules||[]).find(x=>String(x.id)===String(scheduleId));
+ if(schedule && !supervisorScheduleNeedsDuty(schedule))return '';
  let targetNo=Number(roomNo);
 
  // Cari objek ruang aktual yang nomor ruangnya sama, termasuk bila tersimpan "01", "Ruang 01", dll.
@@ -9990,13 +10396,16 @@ function supervisorMatrixBodyHtml(printMode=false){
      let s=item.schedule;
 
      let roomCells='';
+     let needsDuty=supervisorScheduleNeedsDuty(s);
      if(printMode){
        roomCells=printRooms.map(no=>{
+         if(!needsDuty)return `<td class="room-col supervisor-print-code supervisor-no-duty-cell"></td>`;
          let selected=supervisorPrintExistingName(s.id,no);
          return `<td class="room-col supervisor-print-code">${esc(selected?supervisorCode(selected):'')}</td>`;
        }).join('');
      }else{
        roomCells=rooms.length?rooms.map(r=>{
+         if(!needsDuty)return `<td class="room-col supervisor-no-duty-cell" title="Pembiasaan tidak memerlukan pengawas">—</td>`;
          let key=supMatrixKey(s.id,r.no),selected=(db.supervisorMatrix||{})[key]||'';
          return `<td class="room-col"><select onchange="saveSupervisorCell('${key}',this.value)"><option value="">-</option>${availableSupervisorOptions(s.id,key,selected)}</select></td>`;
        }).join(''):'<td class="room-col">-</td>';
@@ -10095,6 +10504,7 @@ function supervisorSecondPrintPage(){
 
 function printSupervisorMatrix(){
  if(!db.schedules.length||!db.rooms.length)return alert('Jadwal Asesmen atau data ruang belum tersedia.');
+ sanitizeSupervisorAssignments();
  syncFlatSupervisors();
  document.getElementById('app').innerHTML=`<div class="supervisor-print-page supervisor-page-one supervisor-29-print supervisor-no-kop-page-one">
    <div class="print-title">${esc(supervisorTitleValue())}</div>
@@ -10263,7 +10673,7 @@ function printPage(){
    ${printChoiceRow('Daftar Peserta','Portrait 29 × 33 cm; KOP mulai tepat 15mm dari tepi atas, hanya 1 garis KOP, jarak garis→judul 4mm dan judul→tabel 3mm, margin kanan 26mm.','pr_participants',printRoomOptions(),'participants')}
    ${printChoiceRow('Nomor Meja Peserta','33 × 29 cm landscape; 20 kartu (5 × 4) per lembar; nomor berlanjut selama kelas sama dan reset ke 001 pada lembar baru saat kelas berganti; tersedia PDF, Word, Excel dan CSV.','pr_desks',printRoomOptions(),'desks')}
    ${printChoiceRow('Kartu Peserta','33 × 29 cm landscape, 3 kartu per lembar.','pr_cards',printRoomOptions(),'cards')}
-   ${printSingleRow('Jadwal Asesmen','Portrait 29 × 33 cm; Hari/Tanggal merge untuk dua mapel dalam satu hari.','schedule')}
+   ${printSingleRow('Jadwal Asesmen','Portrait 29 × 33 cm; judul mengikuti asesmen aktif, Hari/Tanggal dua baris, Mata Pelajaran dipersempit dan ditambah kolom Keterangan.','schedule')}
    ${printSingleRow('Jadwal Pengawas','Mencetak jadwal pengawas yang aktif.','supervisors')}
    ${printChoiceRow('Daftar Hadir Peserta','Landscape; kolom hari/mapel memanjang ke kanan.','pr_attendance',printRoomOptions(),'attendance')}
    ${printSingleRow('Daftar Hadir Pengawas','Mencetak daftar hadir pengawas.','attendanceSup')}
@@ -10358,7 +10768,7 @@ function exportSeatRowsForRoom(r){
 
 function exportScheduleRowsAndMerges(){
  let rows=exportSchoolTitleRows('JADWAL ASESMEN');
- rows.push(['No','Hari / Tanggal','Waktu','Alokasi','Mata Pelajaran']);
+ rows.push(['No','Hari / Tanggal','Waktu','Alokasi','Mata Pelajaran','Keterangan']);
  let merges=[];
  let dataStart=rows.length; // indeks baris 0-based untuk row pertama data
  let groups=groupedAssessmentSchedules();
@@ -10370,7 +10780,8 @@ function exportScheduleRowsAndMerges(){
        ri===0?(g.date||''):'',
        s.time||'',
        s.allocation||deriveAllocationFromTime(s.time)||'',
-       scheduleSubject(s)
+       scheduleSubject(s),
+       s.note||''
      ]);
    });
    if(span>1){
@@ -10403,6 +10814,7 @@ function exportSupervisorMatrixPack(){
        supScheduleValue(s,'allocation')||deriveAllocationFromTime(supScheduleValue(s,'time')),
        supScheduleValue(s,'subject'),
        ...rooms.map(r=>{
+         if(!supervisorScheduleNeedsDuty(s))return '';
          let name=(db.supervisorMatrix||{})[supMatrixKey(s.id,r.no)]||'';
          return name?supervisorCode(name):'';
        })
@@ -10531,7 +10943,7 @@ function buildPrintExcelWorkbook(type,value='all'){
  else if(type==='schedule'){
    if(!(db.schedules||[]).length)throw new Error('Belum ada Jadwal Asesmen.');
    let pack=exportScheduleRowsAndMerges();
-   let ws=exportAppendSheet(wb,used,'Jadwal Asesmen',pack.rows,[7,31,18,16,36],pack.merges);
+   let ws=exportAppendSheet(wb,used,'Jadwal Asesmen',pack.rows,[7,24,18,16,34,26],pack.merges);
  }
  else if(type==='supervisors'){
    if(!(db.schedules||[]).length)throw new Error('Belum ada Jadwal Asesmen.');
@@ -10642,9 +11054,9 @@ function buildPrintCsvRows(type,value='all'){
    return rows;
  }
  if(type==='schedule'){
-   let rows=[['No','Hari / Tanggal','Waktu','Alokasi','Mata Pelajaran']];
+   let rows=[['No','Hari / Tanggal','Waktu','Alokasi','Mata Pelajaran','Keterangan']];
    let groups=groupedAssessmentSchedules();
-   groups.forEach((g,gi)=>g.rows.forEach(s=>rows.push([gi+1,g.date||'',s.time||'',s.allocation||deriveAllocationFromTime(s.time)||'',scheduleSubject(s)])));
+   groups.forEach((g,gi)=>g.rows.forEach(s=>rows.push([gi+1,g.date||'',s.time||'',s.allocation||deriveAllocationFromTime(s.time)||'',scheduleSubject(s),s.note||''])));
    return rows;
  }
  if(type==='supervisors'){
@@ -10658,6 +11070,7 @@ function buildPrintCsvRows(type,value='all'){
        supScheduleValue(s,'allocation')||deriveAllocationFromTime(supScheduleValue(s,'time')),
        supScheduleValue(s,'subject'),
        ...rooms.map(r=>{
+         if(!supervisorScheduleNeedsDuty(s))return '';
          let name=(db.supervisorMatrix||{})[supMatrixKey(s.id,r.no)]||'';
          return name?`${supervisorCode(name)} - ${name}`:'';
        })
@@ -10987,32 +11400,35 @@ function printStudentsByRoom(roomNo='all'){
  return true;
 }
 function printScheduleDoc(){
- document.getElementById('app').innerHTML=`<div class="print-page schedule-print-page special-assessment-print-page">
-   ${specialPortraitPrintHeader()}
-   ${specialPortraitTitle('JADWAL ASESMEN',`TAHUN PELAJARAN ${getSchoolYear()}`)}
-   <table class="schedule-assessment-table special-print-table special-schedule-table">
+ document.getElementById('app').innerHTML=`<div class="print-page schedule-print-page schedule-fixed-print-page">
+   ${schedulePrintHeaderFixed()}
+   <table class="schedule-fixed-table">
      <colgroup>
-       <col class="schedule-special-no">
-       <col class="schedule-special-date">
-       <col class="schedule-special-time">
-       <col class="schedule-special-allocation">
-       <col class="schedule-special-subject">
+       <col class="schedule-fixed-no">
+       <col class="schedule-fixed-date">
+       <col class="schedule-fixed-time">
+       <col class="schedule-fixed-allocation">
+       <col class="schedule-fixed-subject">
+       <col class="schedule-fixed-note">
      </colgroup>
-     <thead>
-       <tr>
-         <th>No</th>
-         <th>Hari / Tanggal</th>
-         <th>Waktu</th>
-         <th>Alokasi</th>
-         <th>Mata Pelajaran</th>
-       </tr>
-     </thead>
-     <tbody>${scheduleTableRows(false)}</tbody>
+     <thead><tr>
+       <th>No</th>
+       <th>Hari / Tanggal</th>
+       <th>Waktu</th>
+       <th>Alokasi</th>
+       <th>Mata Pelajaran</th>
+       <th>Keterangan</th>
+     </tr></thead>
+     <tbody>${schedulePrintRowsFixed()}</tbody>
    </table>
-   <div class="special-signature-wrap">${signature()}</div>
+   <div class="schedule-fixed-signature">${signature()}</div>
  </div>
- <div class="actions no-print"><button onclick="systemPrint()">🖨 Cetak</button><button class="secondary" onclick="render('print')">Kembali ke Print</button></div>`;
+ <div class="actions no-print">
+   <button onclick="systemPrint()">🖨 Cetak</button>
+   <button class="secondary" onclick="render('print')">Kembali ke Print</button>
+ </div>`;
 }
+
 function printSupDoc(){printSupervisorMatrix()}
 function printAttendanceAll(roomNo='all'){
  let rooms=db.rooms.filter(r=>r.students.length && (roomNo==='all'||String(r.no)===String(roomNo)));
