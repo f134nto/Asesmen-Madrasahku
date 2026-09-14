@@ -6462,6 +6462,138 @@ window.pdfjsLibBridge=pdfjsLib;
   }
 }
 </style>
+<style>
+/* ===== JADWAL PENGAWAS: BANTUAN PENGATURAN MANUAL ===== */
+.supervisor-manual-helper{
+  margin-top:14px!important;
+  border:1px solid #b9d8c4!important;
+  background:#fbfefc!important;
+}
+.sup-helper-selector{
+  display:grid;
+  grid-template-columns:minmax(320px,2fr) minmax(160px,1fr);
+  gap:12px;
+  margin:10px 0 14px;
+}
+.sup-helper-session-title{
+  padding:10px 12px;
+  border-left:4px solid #0f5c3a;
+  background:#eef8f1;
+  border-radius:8px;
+  margin-bottom:12px;
+  line-height:1.5;
+}
+.sup-helper-assignment{
+  display:grid;
+  grid-template-columns:minmax(320px,1fr) auto;
+  gap:12px;
+  align-items:end;
+  padding:12px;
+  border:1px solid #d4bd68;
+  border-radius:10px;
+  background:#fffaf0;
+  margin-bottom:12px;
+}
+.sup-helper-assignment .actions{margin:0!important}
+.sup-helper-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+.sup-helper-box{
+  border:1px solid #d8e4dc;
+  border-radius:10px;
+  padding:11px;
+  background:#fff;
+}
+.sup-helper-box h4{
+  margin:0 0 8px;
+  color:#0f5c3a;
+  font-size:13px;
+}
+.sup-helper-chip-wrap{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.sup-helper-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:5px 8px;
+  border-radius:999px;
+  font-size:11px;
+  border:1px solid #cbd8cf;
+  background:#f5f8f6;
+  color:#263a2f;
+}
+.sup-helper-chip b{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:25px;
+  color:#0f5c3a;
+}
+.sup-helper-chip.available{background:#eef9f2;border-color:#acd1b9}
+.sup-helper-chip.used{background:#fff2e8;border-color:#e7bd99}
+.sup-helper-chip.never{background:#eef4ff;border-color:#b7c9ea}
+.sup-helper-chip.reserve{border-color:#c8a646;background:#fff8dc}
+.sup-helper-chip em{
+  font-style:normal;
+  font-size:9px;
+  font-weight:900;
+  color:#745b00;
+}
+.sup-helper-empty{font-size:12px;color:#6b786f}
+.sup-helper-reserve-row{
+  display:grid;
+  grid-template-columns:90px 42px 1fr;
+  align-items:center;
+  gap:8px;
+  padding:6px 0;
+  border-bottom:1px dashed #d8dfda;
+  font-size:12px;
+}
+.sup-helper-reserve-row:last-child{border-bottom:0}
+.reserve-slot{font-weight:800;color:#725500}
+.reserve-manual-item-enhanced{
+  grid-template-columns:36px 72px 1fr!important;
+  align-items:center!important;
+}
+.reserve-code-display{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+}
+.reserve-code-display small{
+  font-size:9px;
+  color:#68756d;
+  text-align:center;
+}
+.sup-never-summary{
+  margin:0 0 8px;
+  padding:8px;
+  border-radius:8px;
+  background:#eef4ff;
+  border:1px solid #bfd0eb;
+  font-size:10px;
+  line-height:1.45;
+}
+.sup-never-summary span{
+  display:block;
+  margin-top:3px;
+}
+@media(max-width:1000px){
+  .sup-helper-selector,
+  .sup-helper-assignment,
+  .sup-helper-grid{grid-template-columns:1fr}
+}
+@media print{
+  .supervisor-manual-helper,
+  .sup-never-summary{display:none!important}
+}
+</style>
 </head>
 <body>
 <div id="loginScreen"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan penyimpanan Supabase. Gunakan akun cloud yang sama agar data dapat dibuka dari komputer/laptop lain.</p></div><div style="font-size:12px;color:#d9eadf">Database Cloud Supabase • Sinkron Otomatis</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">LOGIN ADMIN CLOUD</div><h2>Selamat Datang</h2><div class="sub">Masukkan email dan password Supabase. Akun yang sama dapat digunakan di perangkat lain.</div><div id="loginError" class="login-error">Login gagal.</div><div class="login-field"><label>Email Admin</label><input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com"></div><div class="login-field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -9344,8 +9476,10 @@ function supervisorCodeLegendHtml(printMode=false){
 function supervisorCountPanelHtml(){
  let counts=getSupervisorCounts(),days=getSupervisorDayCounts();
  let names=[...(db.supervisorNames||[])].sort((a,b)=>(counts[b]||0)-(counts[a]||0)||a.localeCompare(b));
+ let never=names.filter(n=>(counts[n]||0)===0);
  return `<aside class="sup-count-panel screen-only-supervisor-count">
    <h4>Jml Pengawasan</h4>
+   ${never.length?`<div class="sup-never-summary"><b>Belum mendapat jadwal (${never.length}):</b><br>${never.map(n=>`<span>${esc(supervisorCode(n))} — ${esc(n)}</span>`).join('')}</div>`:''}
    ${names.length?`<table class="sup-count-table">
      <thead><tr><th>Kode / Nama Pengawas</th><th>Jml</th></tr></thead>
      <tbody>${names.map(n=>`<tr>
@@ -9356,6 +9490,185 @@ function supervisorCountPanelHtml(){
    <div class="sup-count-note">Jumlah dihitung otomatis dari penempatan pengawas reguler pada kolom ruang. Pengawas cadangan disediakan terpisah sebagai 4 baris kosong pada halaman 2 hasil cetak dan tidak dihitung ke jumlah pengawasan. Rekap ini hanya tampil di aplikasi dan tidak ikut dicetak.</div>
  </aside>`;
 }
+function supervisorManualDutySchedules(){
+ return (db.schedules||[]).filter(s=>supervisorScheduleNeedsDuty(s));
+}
+
+function supervisorManualScheduleLabel(s){
+ if(!s)return '-';
+ let date=supervisorEffectiveDate(s.id)||supScheduleValue(s,'date')||'';
+ let time=supScheduleValue(s,'time')||'';
+ let subject=supScheduleValue(s,'subject')||'';
+ return `${date}${time?' • '+time:''}${subject?' • '+subject:''}`;
+}
+
+function supervisorSessionAssignedNames(scheduleId){
+ let session=supervisorSessionKey(scheduleId);
+ let used=[];
+ Object.entries(db.supervisorMatrix||{}).forEach(([key,name])=>{
+   if(!name)return;
+   let parsed=parseSupMatrixKey(key);
+   if(supervisorSessionKey(parsed.scheduleId)===session && !used.includes(name))used.push(name);
+ });
+ return used;
+}
+
+function supervisorManualHelperBody(scheduleId,roomNo){
+ let s=(db.schedules||[]).find(x=>String(x.id)===String(scheduleId));
+ let r=(db.rooms||[]).find(x=>String(x.no)===String(roomNo));
+ if(!s || !r)return `<div class="notice">Pilih sesi/mapel dan ruang terlebih dahulu.</div>`;
+ if(!supervisorScheduleNeedsDuty(s)){
+   return `<div class="notice"><b>${esc(supScheduleValue(s,'subject')||'Pembiasaan')}</b> tidak memerlukan jadwal pengawasan.</div>`;
+ }
+
+ let key=supMatrixKey(s.id,r.no);
+ let current=(db.supervisorMatrix||{})[key]||'';
+ let assigned=supervisorSessionAssignedNames(s.id);
+ let assignedSet=new Set(assigned);
+ let reserve=ensureSupervisorReserveNames().filter(Boolean);
+ let reserveSet=new Set(reserve);
+ let counts=getSupervisorCounts();
+
+ let idle=(db.supervisorNames||[]).filter(n=>!assignedSet.has(n));
+ let neverAssigned=(db.supervisorNames||[]).filter(n=>(counts[n]||0)===0);
+
+ let selectable=[...(db.supervisorNames||[])].filter(n=>!assignedSet.has(n)||n===current);
+ let optionHtml=`<option value="">-- Kosong / belum ditentukan --</option>`+
+   selectable.map(n=>{
+     let code=supervisorCode(n);
+     let tag=reserveSet.has(n)?' • CADANGAN':'';
+     return `<option value="${esc(n)}" ${n===current?'selected':''}>${esc(code)} — ${esc(n)}${tag}</option>`;
+   }).join('');
+
+ let assignedHtml=assigned.length
+   ? assigned.map(n=>`<span class="sup-helper-chip used"><b>${esc(supervisorCode(n))}</b> ${esc(n)}</span>`).join('')
+   : '<span class="sup-helper-empty">Belum ada pengawas yang ditempatkan pada sesi ini.</span>';
+
+ let idleHtml=idle.length
+   ? idle.map(n=>`<span class="sup-helper-chip available ${reserveSet.has(n)?'reserve':''}"><b>${esc(supervisorCode(n))}</b> ${esc(n)}${reserveSet.has(n)?' <em>CADANGAN</em>':''}</span>`).join('')
+   : '<span class="sup-helper-empty">Semua pengawas sudah digunakan pada sesi ini.</span>';
+
+ let neverHtml=neverAssigned.length
+   ? neverAssigned.map(n=>`<span class="sup-helper-chip never"><b>${esc(supervisorCode(n))}</b> ${esc(n)}</span>`).join('')
+   : '<span class="sup-helper-empty">Semua pengawas sudah pernah mendapat jadwal.</span>';
+
+ let reserveHtml=reserve.length
+   ? reserve.map((n,i)=>`<div class="sup-helper-reserve-row">
+       <span class="reserve-slot">Cadangan ${i+1}</span>
+       <span class="supervisor-code-badge">${esc(supervisorCode(n)||'-')}</span>
+       <b>${esc(n)}</b>
+     </div>`).join('')
+   : '<div class="sup-helper-empty">Pengawas cadangan belum diisi.</div>';
+
+ return `<div class="sup-helper-session-title">
+   <b>${esc(supervisorManualScheduleLabel(s))}</b><br>
+   <span>Ruang ${String(r.no).padStart(2,'0')} • Saat ini: ${current?`<b>${esc(supervisorCode(current))} — ${esc(current)}</b>`:'<b>belum ada pengawas</b>'}</span>
+ </div>
+
+ <div class="sup-helper-assignment">
+   <div>
+     <label>Tetapkan Pengawas Secara Manual</label>
+     <select id="supManualSupervisorSelect">${optionHtml}</select>
+   </div>
+   <div class="actions">
+     <button class="success" onclick="setSupervisorManualFromHelper()">💾 Tetapkan ke Ruang ${String(r.no).padStart(2,'0')}</button>
+     <button class="danger" onclick="clearSupervisorManualFromHelper()">× Kosongkan Ruang</button>
+   </div>
+ </div>
+
+ <div class="sup-helper-grid">
+   <div class="sup-helper-box">
+     <h4>Belum Mengawasi pada Sesi Ini (${idle.length})</h4>
+     <div class="sup-helper-chip-wrap">${idleHtml}</div>
+   </div>
+   <div class="sup-helper-box">
+     <h4>Sudah Bertugas pada Sesi Ini (${assigned.length})</h4>
+     <div class="sup-helper-chip-wrap">${assignedHtml}</div>
+   </div>
+   <div class="sup-helper-box">
+     <h4>Belum Pernah Mendapat Jadwal (${neverAssigned.length})</h4>
+     <div class="sup-helper-chip-wrap">${neverHtml}</div>
+   </div>
+   <div class="sup-helper-box reserve-box">
+     <h4>Pengawas Cadangan</h4>
+     ${reserveHtml}
+   </div>
+ </div>`;
+}
+
+function supervisorManualHelperHtml(){
+ let schedules=supervisorManualDutySchedules();
+ let rooms=db.rooms||[];
+ if(!schedules.length || !rooms.length){
+   return `<div class="card supervisor-manual-helper">
+     <h3>Bantuan Pengaturan Manual</h3>
+     <div class="notice">Belum ada sesi mata pelajaran atau ruang yang dapat diatur.</div>
+   </div>`;
+ }
+
+ let selectedSchedule=String(window._supManualScheduleId||'');
+ if(!schedules.some(s=>String(s.id)===selectedSchedule))selectedSchedule=String(schedules[0].id);
+
+ let selectedRoom=String(window._supManualRoomNo||'');
+ if(!rooms.some(r=>String(r.no)===selectedRoom))selectedRoom=String(rooms[0].no);
+
+ window._supManualScheduleId=selectedSchedule;
+ window._supManualRoomNo=selectedRoom;
+
+ return `<div class="card supervisor-manual-helper">
+   <h3>5. Bantuan Pengaturan Manual Pengawas</h3>
+   <div class="notice">
+     Pilih <b>sesi/mapel</b> dan <b>ruang</b>. Aplikasi akan menunjukkan siapa yang belum mengawasi pada sesi tersebut,
+     siapa yang sudah bertugas, siapa yang belum pernah mendapat jadwal, serta <b>kode + nama Pengawas Cadangan</b>.
+     Pengawas dapat langsung ditetapkan dari panel ini. <b>Pembiasaan tidak dimasukkan</b> karena tidak memerlukan pengawas.
+   </div>
+   <div class="sup-helper-selector">
+     <div>
+       <label>Sesi / Mata Pelajaran</label>
+       <select id="supManualScheduleSelect" onchange="renderSupervisorManualHelper()">
+         ${schedules.map(s=>`<option value="${esc(String(s.id))}" ${String(s.id)===selectedSchedule?'selected':''}>${esc(supervisorManualScheduleLabel(s))}</option>`).join('')}
+       </select>
+     </div>
+     <div>
+       <label>Ruang</label>
+       <select id="supManualRoomSelect" onchange="renderSupervisorManualHelper()">
+         ${rooms.map(r=>`<option value="${esc(String(r.no))}" ${String(r.no)===selectedRoom?'selected':''}>Ruang ${String(r.no).padStart(2,'0')}</option>`).join('')}
+       </select>
+     </div>
+   </div>
+   <div id="supervisorManualHelperBody">${supervisorManualHelperBody(selectedSchedule,selectedRoom)}</div>
+ </div>`;
+}
+
+function renderSupervisorManualHelper(){
+ let scheduleId=document.getElementById('supManualScheduleSelect')?.value||'';
+ let roomNo=document.getElementById('supManualRoomSelect')?.value||'';
+ window._supManualScheduleId=scheduleId;
+ window._supManualRoomNo=roomNo;
+ let body=document.getElementById('supervisorManualHelperBody');
+ if(body)body.innerHTML=supervisorManualHelperBody(scheduleId,roomNo);
+}
+
+function setSupervisorManualFromHelper(){
+ let scheduleId=document.getElementById('supManualScheduleSelect')?.value||window._supManualScheduleId||'';
+ let roomNo=document.getElementById('supManualRoomSelect')?.value||window._supManualRoomNo||'';
+ let name=document.getElementById('supManualSupervisorSelect')?.value||'';
+ if(!scheduleId||!roomNo)return alert('Pilih sesi/mapel dan ruang terlebih dahulu.');
+ window._supManualScheduleId=scheduleId;
+ window._supManualRoomNo=roomNo;
+ saveSupervisorCell(supMatrixKey(scheduleId,roomNo),name);
+}
+
+function clearSupervisorManualFromHelper(){
+ let scheduleId=document.getElementById('supManualScheduleSelect')?.value||window._supManualScheduleId||'';
+ let roomNo=document.getElementById('supManualRoomSelect')?.value||window._supManualRoomNo||'';
+ if(!scheduleId||!roomNo)return;
+ window._supManualScheduleId=scheduleId;
+ window._supManualRoomNo=roomNo;
+ saveSupervisorCell(supMatrixKey(scheduleId,roomNo),'');
+}
+
+
 function refreshSupervisorCountPanel(){
  let old=document.querySelector('.sup-count-panel');
  if(old)old.outerHTML=supervisorCountPanelHtml();
@@ -9470,12 +9783,13 @@ function supervisors(){
    <div class="sup-workspace">
    ${supervisorMatrixTable(false)}
    ${supervisorCountPanelHtml()}
-   </div>`:
+   </div>
+   ${supervisorManualHelperHtml()}`:
    '<div class="notice">Belum ada Jadwal Asesmen. Tambahkan jadwal manual pada halaman Jadwal Asesmen atau gunakan Upload & Baca Jadwal Otomatis.</div>'}
  </div>
 
  <div class="card">
-   <h3>5. Pengawas Cadangan — Halaman 2</h3>
+   <h3>6. Pengawas Cadangan — Halaman 2</h3>
    <div class="notice">
      Isi nama <b>Pengawas Cadangan 1–4</b> di sini. Nama ini hanya dicetak pada <b>halaman 2 Jadwal Pengawas</b>, tidak dimasukkan ke jadwal setiap hari dan tidak dihitung sebagai beban pengawasan reguler.
      Jika ingin mengisi dengan tulisan tangan setelah dicetak, biarkan kolomnya kosong.
@@ -9484,12 +9798,20 @@ function supervisors(){
      ${(db.supervisorNames||[]).map(n=>`<option value="${esc(n)}"></option>`).join('')}
    </datalist>
    <div class="reserve-manual-grid">
-     ${[0,1,2,3].map(i=>`<div class="reserve-manual-item">
-       <div class="reserve-number">${i+1}</div>
-       <input list="supervisorReserveNameList" value="${esc(db.supervisorReserveNames[i]||'')}"
-         placeholder="Nama Pengawas Cadangan ${i+1}"
-         onchange="saveSupervisorReserveName(${i},this.value)">
-     </div>`).join('')}
+     ${[0,1,2,3].map(i=>{
+       let reserveName=db.supervisorReserveNames[i]||'';
+       let reserveCode=reserveName?supervisorCode(reserveName):'';
+       return `<div class="reserve-manual-item reserve-manual-item-enhanced">
+         <div class="reserve-number">${i+1}</div>
+         <div class="reserve-code-display">
+           <span class="supervisor-code-badge">${esc(reserveCode||'-')}</span>
+           <small>${reserveName?'Kode Pengawas':'Belum dipilih'}</small>
+         </div>
+         <input list="supervisorReserveNameList" value="${esc(reserveName)}"
+           placeholder="Nama Pengawas Cadangan ${i+1}"
+           onchange="saveSupervisorReserveName(${i},this.value)">
+       </div>`;
+     }).join('')}
    </div>
    <div class="actions">
      <button class="secondary" onclick="clearSupervisorReserveNames()">↺ Kosongkan Pengawas Cadangan</button>
@@ -9510,6 +9832,7 @@ function saveSupervisorReserveName(index,value){
  ensureSupervisorReserveNames();
  db.supervisorReserveNames[index]=String(value??'').trim();
  save();
+ render('supervisors');
 }
 function clearSupervisorReserveNames(){
  if(!confirm('Kosongkan 4 nama Pengawas Cadangan?'))return;
@@ -9858,11 +10181,13 @@ function supervisorConflictForSchedule(scheduleId,name,excludeKey=''){
  return supervisorUsedInSession(scheduleId,name,'room',excludeKey);
 }
 function availableSupervisorOptions(scheduleId,currentKey,selected){
+ let reserveSet=new Set(ensureSupervisorReserveNames().filter(Boolean));
  return (db.supervisorNames||[]).map(n=>{
    let conflict=supervisorUsedInSession(scheduleId,n,'room',currentKey);
    let disabled=conflict && n!==selected;
    let code=supervisorCode(n);
-   return `<option value="${esc(n)}" ${selected===n?'selected':''} ${disabled?'disabled':''}>${esc(code)}${disabled?' — terpakai':''}</option>`;
+   let reserveLabel=reserveSet.has(n)?' • CADANGAN':'';
+   return `<option value="${esc(n)}" ${selected===n?'selected':''} ${disabled?'disabled':''}>${esc(code)} — ${esc(n)}${reserveLabel}${disabled?' • SUDAH BERTUGAS':''}</option>`;
  }).join('');
 }
 function availableReserveOptions(scheduleId,currentKey,selected){
