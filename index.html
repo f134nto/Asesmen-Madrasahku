@@ -6653,6 +6653,714 @@ window.pdfjsLibBridge=pdfjsLib;
   .participant-number-edit-cell small{display:none!important}
 }
 </style>
+<style>
+
+/* ===== FINAL LAYOUT NOMOR MEJA 16 KARTU / HALAMAN ===== */
+.desknum-grid-16{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:12px!important;
+}
+.desknum-card-16{
+  border:1.5px solid #111!important;
+  border-radius:8px!important;
+  min-height:155px!important;
+  padding:12px 10px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:center!important;
+  align-items:center!important;
+  text-align:center!important;
+}
+.desknum-card-16 .exam,
+.desknum-card-16 .school,
+.desk16-title,
+.desk16-school,
+.desk16-name,
+.desk16-room{
+  text-transform:uppercase!important;
+}
+.desknum-card-16 .exam{
+  font-size:12px!important;
+  line-height:1.2!important;
+  margin:0!important;
+  color:#111!important;
+  font-weight:900!important;
+}
+.desknum-card-16 .school{
+  font-size:12px!important;
+  line-height:1.2!important;
+  margin:2px 0 10px 0!important;
+  color:#111!important;
+  font-weight:900!important;
+}
+.desknum-card-16 .participant{
+  font-size:26px!important;
+  line-height:1.05!important;
+  margin:8px 0 10px!important;
+  color:#111!important;
+  font-weight:900!important;
+}
+.desknum-card-16 .name{
+  font-size:14px!important;
+  line-height:1.2!important;
+  font-weight:900!important;
+  color:#111!important;
+  text-transform:uppercase!important;
+}
+.desknum-card-16 .room{
+  display:block!important;
+  background:none!important;
+  color:#111!important;
+  padding:0!important;
+  margin-top:6px!important;
+  font-size:13px!important;
+  line-height:1.2!important;
+  font-weight:900!important;
+  text-transform:uppercase!important;
+}
+
+/* Print/PDF layout */
+.desk16-page{
+  width:330mm;
+  min-height:290mm;
+  box-sizing:border-box;
+  margin:0 auto;
+  padding:5mm;
+  background:#fff;
+  page:deskLandscape;
+}
+.desk16-grid{
+  width:100%;
+  height:100%;
+  min-height:280mm;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  grid-template-rows:repeat(4,1fr);
+  gap:4mm;
+}
+.desk16-card{
+  border:1.4px solid #000;
+  border-radius:0;
+  box-sizing:border-box;
+  padding:4.2mm 3.2mm;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  min-height:0;
+  background:#fff;
+}
+.desk16-line,
+.desk16-number,
+.desk16-name,
+.desk16-room{
+  width:100%;
+  text-align:center;
+  font-family:Arial,Helvetica,sans-serif;
+  font-weight:900;
+  color:#000;
+  text-transform:uppercase;
+}
+.desk16-title{
+  font-size:12.5pt;
+  line-height:1.08;
+  letter-spacing:.2px;
+}
+.desk16-school{
+  font-size:12.5pt;
+  line-height:1.08;
+  margin-top:1.2mm;
+  letter-spacing:.2px;
+}
+.desk16-divider{
+  width:100%;
+  border-top:1.2px solid #000;
+  margin:2.2mm 0 2.6mm;
+}
+.desk16-number{
+  font-size:30pt;
+  line-height:1;
+  margin-bottom:2.8mm;
+}
+.desk16-name{
+  font-size:13.4pt;
+  line-height:1.15;
+  margin-top:0;
+}
+.desk16-room{
+  font-size:12.4pt;
+  line-height:1.12;
+  margin-top:1.8mm;
+}
+.desk16-long-name .desk16-name{font-size:12.2pt;}
+.desk16-very-long-name .desk16-name{font-size:11.2pt; line-height:1.08;}
+.desk16-empty-card{
+  border:1px solid transparent;
+}
+
+@page deskLandscape{
+  size:330mm 290mm;
+  margin:0;
+}
+
+@media print{
+  @page deskLandscape{
+    size:330mm 290mm;
+    margin:0;
+  }
+  .desk16-page{
+    width:330mm!important;
+    min-height:290mm!important;
+    margin:0!important;
+    padding:5mm!important;
+    page-break-after:always;
+    break-after:page;
+  }
+  .desk16-page:last-of-type{
+    page-break-after:auto;
+    break-after:auto;
+  }
+  .desk16-grid{
+    min-height:280mm!important;
+    gap:4mm!important;
+  }
+  .desk16-card{
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+}
+
+</style>
+
+<style id="desk16-spacing-override">
+/* Pengaturan nomor meja final: kertas 29 x 33 cm landscape,
+   margin 7.5mm, kotak 70 x 60 mm, jarak potong 5 mm */
+.desknum-grid-16{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:20px!important;
+  padding:8px 4px!important;
+}
+.desknum-card-16{
+  min-height:190px!important;
+}
+.desknum-card-16 .school,
+.desk16-school{
+  white-space:nowrap!important;
+}
+
+.desk16-page{
+  width:330mm!important;
+  min-height:290mm!important;
+  box-sizing:border-box!important;
+  margin:0 auto!important;
+  padding:7.5mm!important;
+  background:#fff!important;
+}
+.desk16-grid{
+  width:315mm!important;
+  height:275mm!important;
+  min-height:275mm!important;
+  display:grid!important;
+  grid-template-columns:repeat(4,70mm)!important;
+  grid-template-rows:repeat(4,60mm)!important;
+  column-gap:5mm!important;
+  row-gap:5mm!important;
+  justify-content:start!important;
+  align-content:start!important;
+}
+.desk16-card{
+  width:70mm!important;
+  height:60mm!important;
+  min-height:60mm!important;
+  padding:3.5mm 3mm!important;
+  box-sizing:border-box!important;
+  border:1.4px solid #000!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  text-align:center!important;
+}
+.desk16-title{
+  font-size:10.8pt!important;
+  line-height:1.05!important;
+  letter-spacing:0!important;
+  white-space:nowrap!important;
+}
+.desk16-school{
+  font-size:9.8pt!important;
+  line-height:1.04!important;
+  margin-top:1mm!important;
+  letter-spacing:0!important;
+  white-space:nowrap!important;
+}
+.desk16-divider{
+  width:100%!important;
+  border-top:1.2px solid #000!important;
+  margin:2mm 0 2.3mm!important;
+}
+.desk16-number{
+  font-size:27pt!important;
+  line-height:1!important;
+  margin-bottom:2.2mm!important;
+}
+.desk16-name{
+  font-size:11pt!important;
+  line-height:1.12!important;
+  margin-top:0!important;
+}
+.desk16-room{
+  font-size:10.5pt!important;
+  line-height:1.1!important;
+  margin-top:1.5mm!important;
+}
+.desk16-long-name .desk16-name{font-size:10.4pt!important;}
+.desk16-very-long-name .desk16-name{font-size:9.8pt!important;line-height:1.06!important;}
+
+@media print{
+  @page deskLandscape{size:330mm 290mm; margin:0!important;}
+  .desk16-page{
+    width:330mm!important;
+    min-height:290mm!important;
+    margin:0!important;
+    padding:7.5mm!important;
+    page-break-after:always!important;
+    break-after:page!important;
+  }
+  .desk16-page:last-of-type{
+    page-break-after:auto!important;
+    break-after:auto!important;
+  }
+  .desk16-grid{
+    width:315mm!important;
+    height:275mm!important;
+    min-height:275mm!important;
+    grid-template-columns:repeat(4,70mm)!important;
+    grid-template-rows:repeat(4,60mm)!important;
+    column-gap:5mm!important;
+    row-gap:5mm!important;
+  }
+  .desk16-card{
+    width:70mm!important;
+    height:60mm!important;
+    min-height:60mm!important;
+    break-inside:avoid!important;
+    page-break-inside:avoid!important;
+  }
+}
+</style>
+
+<style>
+/* ===== DAFTAR HADIR PESERTA: 20 SISWA / LEMBAR + HEADER HARI / NOMOR MAPEL ===== */
+@page attendanceLandscape{
+  size:330mm 290mm;
+  margin:8mm;
+}
+.attendance-landscape-page.attendance-two-page-layout{
+  page:attendanceLandscape!important;
+  width:330mm!important;
+  min-height:290mm!important;
+  height:290mm!important;
+  margin:0 auto!important;
+  padding:8mm!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+  background:#fff!important;
+}
+.attendance-two-page-layout .print-header.simple-kop{
+  min-height:20mm!important;
+  margin:0 0 2mm!important;
+  padding:0 0 2mm!important;
+}
+.attendance-two-page-layout .print-title{
+  font-size:12pt!important;
+  line-height:1.15!important;
+  margin:1.5mm 0 .7mm!important;
+}
+.attendance-page-info{
+  text-align:right!important;
+  font-size:8.5pt!important;
+  font-weight:800!important;
+  margin:0 0 1.5mm!important;
+}
+.attendance-dynamic-table{
+  width:100%!important;
+  table-layout:fixed!important;
+  border-collapse:collapse!important;
+  font-family:Arial,Helvetica,sans-serif!important;
+  font-size:8pt!important;
+  color:#000!important;
+}
+.attendance-dynamic-table th,
+.attendance-dynamic-table td{
+  border:.3mm solid #111!important;
+  padding:1mm 1.2mm!important;
+  vertical-align:middle!important;
+  text-align:center!important;
+  line-height:1.08!important;
+  overflow:hidden!important;
+}
+.attendance-dynamic-table thead th{
+  background:#0b6b46!important;
+  color:#fff!important;
+  font-weight:900!important;
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important;
+}
+.attendance-dynamic-table .att-no{width:7mm!important;min-width:7mm!important}
+.attendance-dynamic-table .att-participant{width:18mm!important;min-width:18mm!important;white-space:nowrap!important}
+.attendance-dynamic-table .att-name{width:38mm!important;min-width:38mm!important;text-align:left!important}
+.attendance-dynamic-table .att-class{width:13mm!important;min-width:13mm!important}
+.attendance-dynamic-table .att-day-group{
+  font-size:7.2pt!important;
+  line-height:1.05!important;
+  white-space:normal!important;
+  word-break:normal!important;
+  padding:.9mm .6mm!important;
+}
+.attendance-dynamic-table .att-mapel-number{
+  font-size:9pt!important;
+  line-height:1!important;
+  font-weight:900!important;
+  padding:.8mm .3mm!important;
+  min-width:8mm!important;
+}
+.attendance-dynamic-table tbody td{
+  height:7.2mm!important;
+  font-size:8.5pt!important;
+}
+.attendance-dynamic-table tbody td.att-session{
+  height:7.2mm!important;
+  padding:0!important;
+}
+.attendance-two-page-layout .signature{
+  margin-top:4mm!important;
+  font-size:9pt!important;
+}
+@media print{
+  @page attendanceLandscape{size:330mm 290mm;margin:8mm!important;}
+  .attendance-landscape-page.attendance-two-page-layout{
+    width:auto!important;
+    min-width:0!important;
+    max-width:none!important;
+    min-height:0!important;
+    height:auto!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:visible!important;
+  }
+  .attendance-two-page-layout .print-header.simple-kop{margin-top:0!important;}
+}
+</style>
+<style>
+/* ===== DAFTAR HADIR PESERTA — FORMAT REFERENSI, 2 LEMBAR / RUANG ===== */
+@page attendanceReferenceLandscape{
+  size:330mm 290mm;
+  margin:0;
+}
+.attendance-landscape-page.attendance-reference-layout{
+  page:attendanceReferenceLandscape!important;
+  width:330mm!important;
+  min-height:290mm!important;
+  height:290mm!important;
+  margin:0 auto!important;
+  padding:8mm 7mm!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+  background:#fff!important;
+  color:#000!important;
+}
+.attendance-reference-title{
+  width:100%!important;
+  text-align:center!important;
+  font-family:Arial,Helvetica,sans-serif!important;
+  font-size:13.5pt!important;
+  line-height:1.2!important;
+  font-weight:900!important;
+  color:#000!important;
+  margin:0 0 5mm!important;
+  text-transform:uppercase!important;
+}
+.attendance-reference-title > div:first-child{
+  white-space:nowrap!important;
+}
+.attendance-reference-title > div:last-child{
+  margin-top:1.5mm!important;
+  font-size:13pt!important;
+}
+
+.attendance-reference-table{
+  width:100%!important;
+  table-layout:fixed!important;
+  border-collapse:collapse!important;
+  font-family:Arial,Helvetica,sans-serif!important;
+  color:#000!important;
+  margin:0!important;
+}
+.attendance-reference-table th,
+.attendance-reference-table td{
+  border:.3mm solid #000!important;
+  vertical-align:middle!important;
+  text-align:center!important;
+  line-height:1.08!important;
+  overflow:hidden!important;
+  padding:1mm .8mm!important;
+}
+.attendance-reference-table thead th{
+  background:#fff!important;
+  color:#000!important;
+  font-weight:700!important;
+  -webkit-print-color-adjust:exact!important;
+  print-color-adjust:exact!important;
+}
+.attendance-reference-table .att-no{
+  width:10mm!important;
+  min-width:10mm!important;
+  font-size:10pt!important;
+}
+.attendance-reference-table .att-name{
+  width:40mm!important;
+  min-width:40mm!important;
+  text-align:left!important;
+  padding-left:2mm!important;
+  font-size:10pt!important;
+}
+.attendance-reference-table th.att-name{
+  text-align:center!important;
+  padding-left:.8mm!important;
+}
+.attendance-reference-table .att-class{
+  width:18mm!important;
+  min-width:18mm!important;
+  font-size:10pt!important;
+}
+.attendance-reference-table .att-day-group{
+  font-size:9.5pt!important;
+  line-height:1.08!important;
+  font-weight:700!important;
+  padding:1.1mm .4mm!important;
+  white-space:nowrap!important;
+}
+.attendance-reference-table .att-mapel-number{
+  font-size:10.5pt!important;
+  line-height:1!important;
+  font-weight:700!important;
+  padding:.9mm .2mm!important;
+}
+.attendance-reference-table tbody td{
+  height:9mm!important;
+  font-size:10pt!important;
+}
+.attendance-reference-table tbody td.att-session{
+  padding:0!important;
+  height:9mm!important;
+}
+.attendance-reference-page{
+  text-align:right!important;
+  font-size:8.5pt!important;
+  font-weight:700!important;
+  margin-top:2mm!important;
+  color:#333!important;
+}
+
+/* Semakin banyak sesi, font header tanggal mengecil proporsional agar tetap terbaca. */
+.attendance-reference-layout.att-session-count-15 .att-day-group,
+.attendance-reference-layout.att-session-count-16 .att-day-group,
+.attendance-reference-layout.att-session-count-17 .att-day-group,
+.attendance-reference-layout.att-session-count-18 .att-day-group{
+  font-size:8.6pt!important;
+}
+.attendance-reference-layout[class*="att-session-count-2"] .att-day-group,
+.attendance-reference-layout.att-session-count-19 .att-day-group{
+  font-size:7.8pt!important;
+}
+.attendance-reference-layout[class*="att-session-count-3"] .att-day-group{
+  font-size:7pt!important;
+}
+.attendance-reference-layout[class*="att-session-count-2"] .att-mapel-number,
+.attendance-reference-layout[class*="att-session-count-3"] .att-mapel-number{
+  font-size:9pt!important;
+}
+
+@media print{
+  @page attendanceReferenceLandscape{
+    size:330mm 290mm;
+    margin:0!important;
+  }
+  .attendance-landscape-page.attendance-reference-layout{
+    width:330mm!important;
+    height:290mm!important;
+    min-height:290mm!important;
+    padding:8mm 7mm!important;
+    margin:0!important;
+    page-break-after:always!important;
+    break-after:page!important;
+  }
+  .attendance-landscape-page.attendance-reference-layout:last-of-type{
+    page-break-after:auto!important;
+    break-after:auto!important;
+  }
+}
+
+/* ===== DAFTAR PESERTA — 1 RUANG = 1 LEMBAR ===== */
+.participant-list-print-page.participant-one-room-page{
+  overflow:hidden!important;
+}
+.participant-one-room-page .participant-exact-table{
+  page-break-inside:avoid!important;
+}
+.participant-one-room-page .participant-exact-table tr{
+  page-break-inside:avoid!important;
+}
+.participant-one-room-page.participant-density-normal .participant-exact-table{
+  font-size:10pt!important;
+}
+.participant-one-room-page.participant-density-normal .participant-exact-table th,
+.participant-one-room-page.participant-density-normal .participant-exact-table td{
+  padding:2.1mm 1.8mm!important;
+}
+.participant-one-room-page.participant-density-medium .participant-exact-table{
+  font-size:9.2pt!important;
+}
+.participant-one-room-page.participant-density-medium .participant-exact-table th,
+.participant-one-room-page.participant-density-medium .participant-exact-table td{
+  padding:1.65mm 1.5mm!important;
+}
+.participant-one-room-page.participant-density-high .participant-exact-table{
+  font-size:8.5pt!important;
+}
+.participant-one-room-page.participant-density-high .participant-exact-table th,
+.participant-one-room-page.participant-density-high .participant-exact-table td{
+  padding:1.3mm 1.25mm!important;
+}
+.participant-one-room-page.participant-density-xhigh .participant-exact-table{
+  font-size:7.8pt!important;
+}
+.participant-one-room-page.participant-density-xhigh .participant-exact-table th,
+.participant-one-room-page.participant-density-xhigh .participant-exact-table td{
+  padding:1mm 1.1mm!important;
+}
+.participant-one-room-page.participant-density-high .participant-exact-title,
+.participant-one-room-page.participant-density-xhigh .participant-exact-title{
+  margin-top:2mm!important;
+  margin-bottom:2mm!important;
+}
+.participant-one-room-page.participant-density-high .participant-exact-signature,
+.participant-one-room-page.participant-density-xhigh .participant-exact-signature{
+  margin-top:4mm!important;
+}
+</style>
+
+
+<style id="attendance-page-order-final">
+/* ===== FINAL: LEMBAR 2 LANGSUNG HALAMAN 2 ===== */
+@media print{
+  @page attendanceReferenceLandscape{
+    size:330mm 290mm;
+    margin:0!important;
+  }
+
+  /*
+    Tinggi elemen dibuat sedikit di bawah tinggi fisik 290mm.
+    Ini menghindari pembulatan browser yang sebelumnya mendorong
+    lembar berikutnya melewati satu halaman kosong.
+  */
+  .attendance-landscape-page.attendance-reference-layout{
+    page:attendanceReferenceLandscape!important;
+    width:330mm!important;
+    min-width:330mm!important;
+    max-width:330mm!important;
+    height:280mm!important;
+    min-height:280mm!important;
+    max-height:280mm!important;
+    margin:0!important;
+    padding:8mm 7mm!important;
+    box-sizing:border-box!important;
+    overflow:hidden!important;
+
+    page-break-before:auto!important;
+    break-before:auto!important;
+    page-break-after:auto!important;
+    break-after:auto!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid-page!important;
+  }
+
+  /* Lembar ke-2 dan setiap lembar selanjutnya mulai tepat pada halaman baru. */
+  .attendance-landscape-page.attendance-reference-layout.attendance-page-start{
+    page-break-before:always!important;
+    break-before:page!important;
+  }
+
+  /* Netralisasi aturan global yang dapat membuat halaman kosong tambahan. */
+  #app > .attendance-landscape-page.attendance-reference-layout{
+    margin-top:0!important;
+    margin-bottom:0!important;
+  }
+  #app > .attendance-landscape-page.attendance-reference-layout + 
+  .attendance-landscape-page.attendance-reference-layout{
+    margin-top:0!important;
+  }
+}
+
+/* Preview tetap memperlihatkan lembar kertas penuh tanpa mengubah isi. */
+@media screen{
+  .attendance-landscape-page.attendance-reference-layout{
+    margin-bottom:12px!important;
+  }
+}
+</style>
+
+
+<style id="attendance-second-sheet-no-title">
+/* ===== DAFTAR HADIR: JUDUL HANYA LEMBAR 1 ===== */
+.attendance-reference-layout.attendance-second-sheet{
+  padding-top:8mm!important;
+}
+.attendance-reference-layout.attendance-second-sheet .attendance-reference-table{
+  margin-top:0!important;
+}
+@media print{
+  .attendance-reference-layout.attendance-second-sheet{
+    padding-top:8mm!important;
+  }
+}
+</style>
+
+
+<style id="attendance-chair-signature-style">
+/* ===== TANDA TANGAN KETUA PANITIA KHUSUS LEMBAR 2 ===== */
+.attendance-chair-signature{
+  width:72mm;
+  margin:7mm 7mm 0 auto;
+  text-align:center;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:11pt;
+  line-height:1.35;
+  color:#000;
+  page-break-inside:avoid;
+  break-inside:avoid;
+}
+.attendance-chair-space{
+  height:18mm;
+}
+.attendance-chair-name{
+  font-size:11pt;
+}
+@media print{
+  .attendance-chair-signature{
+    width:72mm!important;
+    margin:7mm 7mm 0 auto!important;
+    font-size:11pt!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+  .attendance-chair-space{height:18mm!important;}
+}
+</style>
+
 </head>
 <body>
 <div id="loginScreen"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan penyimpanan Supabase. Gunakan akun cloud yang sama agar data dapat dibuka dari komputer/laptop lain.</p></div><div style="font-size:12px;color:#d9eadf">Database Cloud Supabase • Sinkron Otomatis</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">LOGIN ADMIN CLOUD</div><h2>Selamat Datang</h2><div class="sub">Masukkan email dan password Supabase. Akun yang sama dapat digunakan di perangkat lain.</div><div id="loginError" class="login-error">Login gagal.</div><div class="login-field"><label>Email Admin</label><input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com"></div><div class="login-field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -8397,8 +9105,17 @@ function printRoomDistribution(roomNo='all'){
  return true;
 }
 
+function participantListDensityClass(count){
+ count=Number(count)||0;
+ if(count>36)return 'participant-density-xhigh';
+ if(count>30)return 'participant-density-high';
+ if(count>24)return 'participant-density-medium';
+ return 'participant-density-normal';
+}
+
 function participantListPrintPage(r,students,startIndex=0,pageIndex=0,totalPages=1,isLast=true){
- return `<div class="print-page participant-list-print-page special-assessment-print-page participant-exact-print-page">
+ let density=participantListDensityClass(students?.length||0);
+ return `<div class="print-page participant-list-print-page special-assessment-print-page participant-exact-print-page participant-one-room-page ${density}">
    <div class="print-header participant-exact-header">${specialPortraitPrintHeader()}</div>
    <div class="print-title participant-exact-title">${specialPortraitTitle('DAFTAR PESERTA',`RUANG ${String(r.no).padStart(2,'0')}`)}</div>
    <table class="print-table special-print-table participant-special-table participant-exact-table">
@@ -8422,7 +9139,7 @@ function participantListPrintPage(r,students,startIndex=0,pageIndex=0,totalPages
        <td>${esc(st.class)}</td>
      </tr>`).join('')}</tbody>
    </table>
-   <div class="print-footer participant-exact-footer">RUANG ${String(r.no).padStart(2,'0')} &nbsp;•&nbsp; HALAMAN ${pageIndex+1} DARI ${totalPages}</div>
+   <div class="print-footer participant-exact-footer">RUANG ${String(r.no).padStart(2,'0')} &nbsp;•&nbsp; 1 LEMBAR</div>
    ${isLast?`<div class="special-signature-wrap participant-exact-signature">${signature()}</div>`:''}
  </div>`;
 }
@@ -8431,13 +9148,8 @@ function printParticipantListAll(roomNo='all'){
  let rooms=db.rooms.filter(r=>(r.students||[]).length && (roomNo==='all'||String(r.no)===String(roomNo)));
  if(!rooms.length){alert('Belum ada peserta hasil pembagian pada ruang yang dipilih.');return false;}
 
- let pages=[];
- rooms.forEach(r=>{
-   let chunks=chunkArray(r.students||[],24);
-   chunks.forEach((chunk,ci)=>{
-     pages.push(participantListPrintPage(r,chunk,ci*24,ci,chunks.length,ci===chunks.length-1));
-   });
- });
+ // Satu ruang selalu satu lembar. Seluruh siswa ruang dimasukkan ke halaman yang sama.
+ let pages=rooms.map(r=>participantListPrintPage(r,r.students||[],0,0,1,true));
 
  document.getElementById('app').innerHTML=pages.map((p,i)=>
    p.replace('participant-list-print-page special-assessment-print-page',
@@ -8449,6 +9161,7 @@ function printParticipantListAll(roomNo='all'){
  </div>`;
  return true;
 }
+
 function exportParticipantList(){let rows=[];db.rooms.forEach(r=>r.students.forEach((st,i)=>rows.push({'No':i+1,'No Peserta':participantNo(r.no,i+1),'NIS':st.nis,'Nama':st.name,'L/P':st.gender,'Kelas':st.class,'Ruang':r.no})));if(!rows.length)return alert('Belum ada peserta hasil pembagian ruang.');let ws=XLSX.utils.json_to_sheet(rows),wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Daftar Peserta');XLSX.writeFile(wb,'Daftar_Peserta_Asesmen.xlsx')}
 
 
@@ -8524,6 +9237,52 @@ function deskClassEntries(roomFilter='all'){
  return all.filter(entry=>entry.roomNo===target);
 }
 
+
+function deskCardRoomLabel(item){
+ let roomObj=deskRoomObject(item?.roomNo);
+ let label=String(roomObj?.roomName||roomObj?.location||item?.roomName||item?.roomNo||'').trim();
+ if(!label)return '';
+ if(/^ruang\b/i.test(label))return label.toUpperCase();
+ return `RUANG ${label}`.toUpperCase();
+}
+
+function deskEntriesByRoom(roomFilter='all'){
+ let target=(roomFilter==='all'||roomFilter===''||roomFilter===undefined||roomFilter===null)?'all':deskNumericRoomNo(roomFilter);
+ let entries=[];
+ (db.rooms||[]).forEach(room=>{
+   let roomNo=deskNumericRoomNo(room.no);
+   if(target!=='all' && roomNo!==target)return;
+   (room.students||[]).forEach((student,index)=>{
+     entries.push({
+       student,
+       roomNo,
+       roomName:room.roomName||room.location||'',
+       roomIndex:index+1,
+       participantNo:participantNo(roomNo,index+1),
+       className:String(student.class||'').trim().toUpperCase()
+     });
+   });
+ });
+ return entries;
+}
+
+function deskLayoutPages(roomFilter='all'){
+ let all=deskEntriesByRoom(roomFilter);
+ let perPage=16;
+ let pages=[];
+ for(let i=0;i<all.length;i+=perPage){
+   let chunk=all.slice(i,i+perPage);
+   let slots=Array.from({length:perPage},(_,slotIndex)=>chunk[slotIndex]||null);
+   pages.push({
+     pageNo:pages.length+1,
+     totalPages:Math.ceil(all.length/perPage)||1,
+     entries:chunk,
+     slots
+   });
+ }
+ return pages;
+}
+
 function deskClassGroups(roomFilter='all'){
  let groups=[];
  let map=new Map();
@@ -8579,9 +9338,14 @@ function deskClassParticipantNo(item){
 }
 
 function deskPageSummary(){
- let groups=deskClassGroups('all');
- let pages=deskClassPages('all');
- return {groups,pages,total:groups.reduce((n,g)=>n+g.entries.length,0)};
+ let entries=deskEntriesByRoom('all');
+ let pages=deskLayoutPages('all');
+ let roomStats=(db.rooms||[]).filter(r=>(r.students||[]).length).map(r=>({
+   roomNo:deskNumericRoomNo(r.no),
+   roomName:String(r.roomName||r.location||'').trim(),
+   count:(r.students||[]).length
+ }));
+ return {entries,pages,total:entries.length,roomStats};
 }
 
 function deskAssessmentTitleLines(){
@@ -8601,72 +9365,71 @@ function deskAssessmentTitleLines(){
 
 function deskNumbers(){
  let summary=deskPageSummary();
- let classCards=summary.groups.map(g=>{
-   let pageCount=Math.ceil(g.entries.length/20);
-   let first=g.entries[0]?.classSerial||1;
-   let last=g.entries[g.entries.length-1]?.classSerial||0;
-   return `<div class="stat">Kelas ${esc(g.className)}<b>${g.entries.length} peserta / ${pageCount} lembar</b><small>No. ${String(first).padStart(2,'0')}–${String(last).padStart(2,'0')}</small></div>`;
+ let roomCards=(summary.roomStats||[]).map(r=>{
+   let roomLabel=String(r.roomName||'').trim();
+   return `<div class="stat">Ruang ${String(r.roomNo).padStart(2,'0')}<b>${r.count} peserta</b><small>${roomLabel?esc(roomLabel):'Lokasi belum diisi'}</small></div>`;
  }).join('');
 
  return `<div class="card"><h2>6. Nomor Meja Peserta</h2>
  <div class="notice">
-   Nomor meja menggunakan kertas <b>33 cm × 29 cm landscape</b>, margin <b>1 cm</b>, dan setiap lembar berisi maksimal <b>20 peserta</b> dalam grid <b>5 kolom × 4 baris</b>.
-   <b>Penomoran dibuat mandiri untuk setiap kelas/rombel:</b> setiap kelas selalu mulai dari <b>.01</b> dan berakhir sesuai jumlah siswa kelas tersebut. Contoh: <b>7A-01–7A-32</b>, <b>8A-01–8A-36</b>, <b>9A-01–9A-38</b>. Kelas lain mengikuti jumlah siswanya masing-masing, misalnya 7B mulai lagi dari <b>7B-01</b>. Jika satu kelas membutuhkan lebih dari 20 kartu, nomor dilanjutkan pada lembar berikutnya tetapi tetap dalam kelas yang sama. Saat kelas berganti, otomatis mulai lembar baru dan kembali ke <b>.01</b>.
-   Tulisan <b>RUANG</b> pada tiap kartu tetap mengikuti ruang ujian asli peserta.
+   Layout nomor meja menggunakan kertas <b>29 cm × 33 cm orientasi landscape</b> dengan area cetak dimaksimalkan.
+   Dalam satu halaman terdapat <b>16 kartu</b> dengan grid <b>4 kolom × 4 baris</b>. Isi kartu diambil otomatis dari data peserta hasil pembagian ruang.
+   Urutan kartu mengikuti data peserta pada aplikasi dari <b>kiri ke kanan, atas ke bawah</b>.
+   Nomor meja mengikuti <b>Nomor Peserta</b> pada aplikasi (termasuk jika sudah diedit manual), dengan format contoh <b>7A-01</b>.
  </div>
  <div class="grid">
-   <div class="stat">Total Peserta Terdata<b>${summary.total}</b></div>
-   <div class="stat">Jumlah Kelas<b>${summary.groups.length}</b></div>
+   <div class="stat">Total Peserta<b>${summary.total}</b></div>
    <div class="stat">Total Lembar<b>${summary.pages.length}</b></div>
-   <div class="stat">Kartu per Lembar<b>20</b></div>
+   <div class="stat">Kartu per Lembar<b>16</b></div>
+   <div class="stat">Jumlah Ruang Terisi<b>${(summary.roomStats||[]).length}</b></div>
  </div>
- ${classCards?`<div class="grid">${classCards}</div>`:''}
+ ${roomCards?`<div class="grid">${roomCards}</div>`:''}
  <div class="actions">
-   <button onclick="printDeskNumbersAll('all')">🖨 Cetak Semua Kelas</button>
-   <button class="secondary" onclick="exportPdfFromPrintMenu('desks','')">⬇ PDF Semua Kelas</button>
+   <button onclick="printDeskNumbersAll('all')">🖨 Cetak Semua Nomor Meja</button>
+   <button class="secondary" onclick="exportPdfFromPrintMenu('desks','')">⬇ PDF Nomor Meja</button>
    <button class="secondary" onclick="exportDeskNumbersDocx('all')">⬇ Word (.docx)</button>
    <button class="secondary" onclick="exportDeskNumbers()">⬇ Excel</button>
  </div>
 
- ${summary.pages.slice(0,6).map(page=>`<div class="card">
-   <h3>Kelas ${esc(page.className)} — Lembar ${page.classPage}${page.classPageCount>1?`/${page.classPageCount}`:''}</h3>
-   <div class="desknum-grid">
-     ${page.entries.map(entry=>`<div class="desknum-card">
-       <div class="exam">${esc(assessmentDisplay())}</div>
-       <div class="participant">${esc(deskClassParticipantNo(entry))}</div>
+ ${summary.pages.slice(0,4).map(page=>`<div class="card">
+   <h3>Lembar ${page.pageNo} dari ${page.totalPages}</h3>
+   <div class="desknum-grid desknum-grid-16">
+     ${page.entries.map(entry=>`<div class="desknum-card desknum-card-16">
+       <div class="exam">ASESMEN SUMATIF TENGAH SEMESTER</div>
+       <div class="school">MTs MA'ARIF NU 1 WANGON</div>
+       <div class="participant">${esc(entry.participantNo)}</div>
        <div class="name">${esc(entry.student.name)}</div>
-       <div class="room">RUANG ${entry.roomNo}</div>
+       <div class="room">${esc(deskCardRoomLabel(entry))}</div>
      </div>`).join('')}
    </div>
  </div>`).join('') || '<div class="notice">Belum ada peserta hasil pembagian ruang.</div>'}
- ${summary.pages.length>6?`<div class="notice">Pratinjau aplikasi menampilkan 6 lembar pertama. Cetak/PDF/Word tetap memproses seluruh ${summary.pages.length} lembar.</div>`:''}
+ ${summary.pages.length>4?`<div class="notice">Pratinjau aplikasi menampilkan 4 lembar pertama. Cetak, PDF, dan Word tetap memproses seluruh ${summary.pages.length} lembar.</div>`:''}
  </div>`;
 }
 
 function deskPrintCard(item){
  if(!item?.student){
-   return `<div class="desk-landscape-card desk-20x-card desk-empty-card"></div>`;
+   return `<div class="desk16-card desk16-empty-card"></div>`;
  }
  let s=item.student;
- let lines=deskAssessmentTitleLines();
- let longName=String(s.name||'').trim().length>19;
- let veryLong=String(s.name||'').trim().length>27;
-
- return `<div class="desk-landscape-card desk-20x-card ${longName?'desk-long-name':''} ${veryLong?'desk-very-long-name':''}">
-   <div class="desk-20x-assessment">${esc(lines[0])}<br>${esc(lines[1])}</div>
-   <div class="desk-20x-divider"></div>
-   <div class="desk-20x-participant">${esc(deskClassParticipantNo(item))}</div>
-   <div class="desk-20x-name">${esc(s.name)}</div>
-   <div class="desk-20x-room">RUANG ${item.roomNo}</div>
+ let longName=String(s.name||'').trim().length>23;
+ let veryLong=String(s.name||'').trim().length>32;
+ return `<div class="desk16-card ${longName?'desk16-long-name':''} ${veryLong?'desk16-very-long-name':''}">
+   <div class="desk16-line desk16-title">ASESMEN SUMATIF TENGAH SEMESTER</div>
+   <div class="desk16-line desk16-school">MTs MA'ARIF NU 1 WANGON</div>
+   <div class="desk16-divider"></div>
+   <div class="desk16-number">${esc(item.participantNo||participantNo(item.roomNo,item.roomIndex||1))}</div>
+   <div class="desk16-name">${esc(s.name)}</div>
+   <div class="desk16-room">${esc(deskCardRoomLabel(item))}</div>
  </div>`;
 }
 
 function printDeskNumbersAll(roomNo='all'){
- let pages=deskClassPages(roomNo);
+ let pages=deskLayoutPages(roomNo);
  if(!pages.length){alert('Belum ada peserta hasil pembagian ruang untuk dicetak.');return false;}
 
- let htmlPages=pages.map(page=>`<div class="desk-landscape-page desk-plain-paper desk-20x-page" data-class="${esc(page.className)}" data-class-page="${page.classPage}">
-   <div class="desk-landscape-grid desk-20x-grid">
+ let htmlPages=pages.map(page=>`<div class="desk16-page" data-page="${page.pageNo}">
+   <div class="desk16-grid">
      ${page.slots.map(deskPrintCard).join('')}
    </div>
  </div>`);
@@ -8681,27 +9444,28 @@ function printDeskNumbersAll(roomNo='all'){
 }
 
 function exportDeskNumbers(){
- let pages=deskClassPages('all');
+ let pages=deskLayoutPages('all');
  if(!pages.length)return alert('Belum ada peserta hasil pembagian ruang.');
  let rows=[];
  pages.forEach((page,pageIndex)=>{
    page.entries.forEach(entry=>rows.push({
      'Lembar':pageIndex+1,
-     'Kelas':entry.className,
-     'Nomor Peserta':deskClassParticipantNo(entry),
+     'Nomor Meja':entry.participantNo,
      'Nama Peserta':entry.student.name||'',
-     'Ruang':entry.roomNo,
-     'Asesmen':assessmentDisplay()
+     'Kelas':entry.className||'',
+     'Ruang':deskCardRoomLabel(entry),
+     'No Ruang':entry.roomNo,
+     'Asesmen':'ASESMEN SUMATIF TENGAH SEMESTER'
    }));
  });
  let ws=XLSX.utils.json_to_sheet(rows),wb=XLSX.utils.book_new();
  XLSX.utils.book_append_sheet(wb,ws,'Nomor Meja');
- XLSX.writeFile(wb,'Nomor_Meja_Peserta_Per_Kelas.xlsx');
+ XLSX.writeFile(wb,'Nomor_Meja_Peserta.xlsx');
 }
 
 /* ===========================
    WORD (.docx) NOMOR MEJA
-   29 halaman, 5 kolom x 4 baris
+   layout 4 kolom x 4 baris
    =========================== */
 function deskXmlEscape(value){
  return String(value??'')
@@ -8741,38 +9505,40 @@ function deskWordCell(item){
  if(!item?.student){
    return `<w:tc>
      <w:tcPr>
-       <w:tcW w:w="3515" w:type="dxa"/>
+       <w:tcW w:w="4478" w:type="dxa"/>
        <w:vAlign w:val="center"/>
-       <w:tcMar><w:top w:w="75" w:type="dxa"/><w:left w:w="90" w:type="dxa"/><w:bottom w:w="75" w:type="dxa"/><w:right w:w="90" w:type="dxa"/></w:tcMar>
+       <w:tcMar><w:top w:w="60" w:type="dxa"/><w:left w:w="70" w:type="dxa"/><w:bottom w:w="60" w:type="dxa"/><w:right w:w="70" w:type="dxa"/></w:tcMar>
      </w:tcPr>
      <w:p><w:pPr><w:spacing w:after="0"/></w:pPr></w:p>
    </w:tc>`;
  }
  let s=item.student;
- let title=deskAssessmentTitleLines().join('\n');
- let number=deskClassParticipantNo(item);
+ let number=String(item.participantNo||participantNo(item.roomNo,item.roomIndex||1));
  let name=String(s.name||'');
- let longName=name.length>19;
- let veryLong=name.length>27;
- let nameSize=veryLong?17:(longName?18:20);
- let nameBefore=longName?90:50;
- let roomBefore=longName?80:45;
+ let room=deskCardRoomLabel(item);
+ let longName=name.length>23;
+ let veryLong=name.length>32;
+ let nameSize=veryLong?16:(longName?18:20);
+ let nameBefore=longName?80:55;
+ let roomBefore=longName?70:40;
 
  return `<w:tc>
    <w:tcPr>
-     <w:tcW w:w="3515" w:type="dxa"/>
+     <w:tcW w:w="4478" w:type="dxa"/>
      <w:vAlign w:val="center"/>
      <w:tcMar>
-       <w:top w:w="75" w:type="dxa"/>
-       <w:left w:w="90" w:type="dxa"/>
-       <w:bottom w:w="75" w:type="dxa"/>
-       <w:right w:w="90" w:type="dxa"/>
+       <w:top w:w="60" w:type="dxa"/>
+       <w:left w:w="70" w:type="dxa"/>
+       <w:bottom w:w="60" w:type="dxa"/>
+       <w:right w:w="70" w:type="dxa"/>
      </w:tcMar>
    </w:tcPr>
-   ${deskWordParagraph(title,15,true,0,80,true)}
-   ${deskWordParagraph(number,48,true,140,75,false)}
-   ${deskWordParagraph(name,nameSize,true,nameBefore,40,false)}
-   ${deskWordParagraph(`RUANG ${item.roomNo}`,19,true,roomBefore,0,false)}
+   ${deskWordParagraph('ASESMEN SUMATIF TENGAH SEMESTER',16,true,0,20,false)}
+   ${deskWordParagraph("MTs MA'ARIF NU 1 WANGON",16,true,0,30,false)}
+   ${deskWordParagraph('',1,false,0,20,true)}
+   ${deskWordParagraph(number,34,true,95,40,false)}
+   ${deskWordParagraph(name.toUpperCase(),nameSize,true,nameBefore,30,false)}
+   ${deskWordParagraph(room,18,true,roomBefore,0,false)}
  </w:tc>`;
 }
 
@@ -8780,30 +9546,31 @@ function deskWordTable(page){
  let slots=page.slots||[];
  let rows=[];
  for(let r=0;r<4;r++){
-   let cells=slots.slice(r*5,r*5+5).map(deskWordCell).join('');
+   let cells=slots.slice(r*4,r*4+4).map(deskWordCell).join('');
    rows.push(`<w:tr>
      <w:trPr>
        <w:cantSplit/>
-       <w:trHeight w:val="3750" w:hRule="exact"/>
+       <w:trHeight w:val="3270" w:hRule="exact"/>
      </w:trPr>
      ${cells}
    </w:tr>`);
  }
  return `<w:tbl>
    <w:tblPr>
-     <w:tblW w:w="17575" w:type="dxa"/>
+     <w:tblW w:w="17912" w:type="dxa"/>
      <w:tblLayout w:type="fixed"/>
+     <w:tblCellSpacing w:w="120" w:type="dxa"/>
      <w:tblCellMar><w:top w:w="0" w:type="dxa"/><w:left w:w="0" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:right w:w="0" w:type="dxa"/></w:tblCellMar>
      <w:tblBorders>
-       <w:top w:val="single" w:sz="8" w:color="000000"/>
-       <w:left w:val="single" w:sz="8" w:color="000000"/>
-       <w:bottom w:val="single" w:sz="8" w:color="000000"/>
-       <w:right w:val="single" w:sz="8" w:color="000000"/>
-       <w:insideH w:val="single" w:sz="8" w:color="000000"/>
-       <w:insideV w:val="single" w:sz="8" w:color="000000"/>
+       <w:top w:val="nil"/>
+       <w:left w:val="nil"/>
+       <w:bottom w:val="nil"/>
+       <w:right w:val="nil"/>
+       <w:insideH w:val="nil"/>
+       <w:insideV w:val="nil"/>
      </w:tblBorders>
    </w:tblPr>
-   <w:tblGrid><w:gridCol w:w="3515"/><w:gridCol w:w="3515"/><w:gridCol w:w="3515"/><w:gridCol w:w="3515"/><w:gridCol w:w="3515"/></w:tblGrid>
+   <w:tblGrid><w:gridCol w:w="4478"/><w:gridCol w:w="4478"/><w:gridCol w:w="4478"/><w:gridCol w:w="4478"/></w:tblGrid>
    ${rows.join('')}
  </w:tbl>`;
 }
@@ -8821,7 +9588,7 @@ function deskWordDocumentXml(pages){
      ${body}
      <w:sectPr>
        <w:pgSz w:w="18709" w:h="16441" w:orient="landscape"/>
-       <w:pgMar w:top="567" w:right="567" w:bottom="567" w:left="567" w:header="0" w:footer="0" w:gutter="0"/>
+       <w:pgMar w:top="283" w:right="283" w:bottom="283" w:left="283" w:header="0" w:footer="0" w:gutter="0"/>
        <w:cols w:space="0"/>
        <w:docGrid w:linePitch="360"/>
      </w:sectPr>
@@ -8830,7 +9597,7 @@ function deskWordDocumentXml(pages){
 }
 
 async function exportDeskNumbersDocx(roomNo='all'){
- let pages=deskClassPages(roomNo);
+ let pages=deskLayoutPages(roomNo);
  if(!pages.length)return alert('Belum ada peserta hasil pembagian ruang untuk dibuat Word.');
  if(typeof JSZip==='undefined')return alert('Library Word belum termuat. Pastikan perangkat terhubung internet, lalu muat ulang aplikasi.');
 
@@ -11053,50 +11820,187 @@ function printSupervisorMatrix(){
  <div class="actions no-print"><button onclick="systemPrint()">🖨 Cetak 2 Halaman</button><button class="secondary" onclick="render('supervisors')">Kembali</button></div>`;
 }
 
-function attendanceSessionHeader(s){
- return `<th class="att-session">
-   <div class="attendance-session-date">${esc(s.date||'')}</div>
-   <div class="attendance-session-subject">${esc(scheduleSubject(s))}</div>
- </th>`;
+function attendanceCompactDate(value){
+ let raw=String(value||'').replace(/\s+/g,' ').trim();
+ if(!raw)return '';
+
+ const months={
+   januari:1,februari:2,maret:3,april:4,mei:5,juni:6,juli:7,agustus:8,september:9,oktober:10,november:11,desember:12,
+   january:1,february:2,march:3,may:5,june:6,july:7,august:8,october:10,december:12
+ };
+
+ let day='',datePart='';
+ let comma=raw.indexOf(',');
+ if(comma>=0){
+   day=raw.slice(0,comma).trim();
+   datePart=raw.slice(comma+1).trim();
+ }else{
+   let m=raw.match(/^([^\s]+)\s+(.+)$/);
+   if(m){day=m[1].trim();datePart=m[2].trim();}
+   else day=raw;
+ }
+
+ function compactDate(s){
+   s=String(s||'').trim();
+   let m=s.match(/(\d{1,2})\s+([A-Za-zÀ-ÿ]+)\s+(\d{4})/i);
+   if(m){
+     let mm=months[m[2].toLowerCase()];
+     if(mm)return `${Number(m[1])}/${mm}/${m[3]}`;
+   }
+   m=s.match(/(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})/);
+   if(m)return `${Number(m[1])}/${Number(m[2])}/${m[3]}`;
+   return s;
+ }
+
+ let date=compactDate(datePart);
+ return day && date ? `${day}, ${date}` : (day||date||raw);
 }
-function attendanceParticipantPage(r){
- let schedules=db.schedules||[];
- let sessionHeaders=schedules.length?schedules.map(attendanceSessionHeader).join(''):'<th class="att-session">TANDA TANGAN</th>';
- return `<div class="attendance-landscape-page">
-   ${printHeader()}
-   <div class="print-title">DAFTAR HADIR PESERTA<br>${esc(assessmentDisplay())}<br>RUANG ${String(r.no).padStart(2,'0')}</div>
-   <table class="attendance-wide-table">
-     <thead><tr>
-       <th class="att-no">No</th>
-       <th class="att-participant">No Peserta</th>
-       <th class="att-name">Nama Peserta</th>
-       <th class="att-class">Kelas</th>
-       ${sessionHeaders}
-     </tr></thead>
-     <tbody>${(r.students||[]).map((s,i)=>`<tr>
-       <td class="att-no">${i+1}</td>
-       <td class="att-participant">${participantNo(r.no,i+1)}</td>
-       <td class="att-name">${esc(s.name)}</td>
-       <td class="att-class">${esc(s.class)}</td>
-       ${schedules.length?schedules.map(()=>'<td class="att-session"></td>').join(''):'<td class="att-session"></td>'}
-     </tr>`).join('')}</tbody>
-   </table>
-   ${signature()}
+
+function attendanceScheduleGroups(){
+ let groups=groupedAssessmentSchedules();
+ return groups.map((g,index)=>{
+   let rows=(g.rows||[]).filter(s=>
+     String(scheduleSubject(s)||'').trim() || String(s.time||'').trim()
+   );
+
+   // Format daftar hadir:
+   // Hari pertama = maksimal 3 kolom mapel (1,2,3)
+   // Hari-hari berikutnya = maksimal 2 kolom mapel (1,2)
+   let maxMapel=index===0?3:2;
+   rows=rows.slice(0,maxMapel);
+
+   return {
+     date:g.date||'',
+     label:attendanceCompactDate(g.date||''),
+     rows
+   };
+ }).filter(g=>g.rows.length);
+}
+
+function attendanceHeaderHtml(){
+ let groups=attendanceScheduleGroups();
+ if(!groups.length){
+   return `<thead><tr>
+     <th class="att-no">NO</th>
+     <th class="att-name">Nama Peserta</th>
+     <th class="att-class">Kelas</th>
+     <th class="att-session">1</th>
+   </tr></thead>`;
+ }
+
+ let first=`<tr>
+   <th class="att-no" rowspan="2">NO</th>
+   <th class="att-name" rowspan="2">Nama Peserta</th>
+   <th class="att-class" rowspan="2">Kelas</th>
+   ${groups.map(g=>`<th class="att-day-group" colspan="${g.rows.length}">${esc(g.label)}</th>`).join('')}
+ </tr>`;
+
+ let second=`<tr>${groups.map(g=>g.rows.map((s,i)=>
+   `<th class="att-mapel-number" title="${esc(scheduleSubject(s)||'Mapel '+(i+1))}">${i+1}</th>`
+ ).join('')).join('')}</tr>`;
+
+ return `<thead>${first}${second}</thead>`;
+}
+
+function attendanceSessionCount(){
+ let n=attendanceScheduleGroups().reduce((sum,g)=>sum+g.rows.length,0);
+ return Math.max(n,1);
+}
+
+function attendanceChairSignature(){
+ let city=db.school.signatureCity||'Wangon';
+ let date=formatTanggalIndonesia(db.school.signatureDate||'');
+ let chair=db.school.committeeChair||'........................................';
+ return `<div class="attendance-chair-signature">
+   <div>${esc(city)}, ${date}</div>
+   <div>Ketua Panitia</div>
+   <div class="attendance-chair-space"></div>
+   <div class="attendance-chair-name"><b><u>${esc(chair)}</u></b></div>
  </div>`;
 }
+
+function attendanceParticipantPage(r,students,startIndex=0,pageIndex=0,totalPages=2){
+ let sessionCount=attendanceSessionCount();
+ let rows=students||[];
+ let sessionClass=`att-session-count-${Math.min(sessionCount,30)}`;
+ let firstSheet=pageIndex===0;
+
+ return `<div class="attendance-landscape-page attendance-reference-layout ${firstSheet?'attendance-first-sheet':'attendance-second-sheet'} ${sessionClass}">
+   ${firstSheet?`<div class="attendance-reference-title">
+     <div>DAFTAR HADIR PESERTA ${esc(assessmentDisplay())}</div>
+     <div>RUANG ${String(r.no).padStart(2,'0')}</div>
+   </div>`:''}
+   <table class="attendance-wide-table attendance-reference-table">
+     ${attendanceHeaderHtml()}
+     <tbody>${rows.map((s,i)=>`<tr>
+       <td class="att-no">${startIndex+i+1}</td>
+       <td class="att-name">${esc(s.name)}</td>
+       <td class="att-class">${esc(s.class)}</td>
+       ${Array.from({length:sessionCount},()=>'<td class="att-session"></td>').join('')}
+     </tr>`).join('')}</tbody>
+   </table>
+   ${!firstSheet?attendanceChairSignature():''}
+   <div class="attendance-reference-page">LEMBAR ${pageIndex+1} DARI ${totalPages}</div>
+ </div>`;
+}
+
+function attendancePagesForRoom(r){
+ let students=r?.students||[];
+ if(!students.length)return [];
+
+ // Setiap ruang selalu disiapkan 2 lembar.
+ // Peserta dibagi seimbang agar tulisan dan tinggi baris tetap jelas.
+ let firstCount=Math.ceil(students.length/2);
+ let chunks=[
+   students.slice(0,firstCount),
+   students.slice(firstCount)
+ ];
+
+ let start=0;
+ return chunks.map((chunk,i)=>{
+   let html=attendanceParticipantPage(r,chunk,start,i,2);
+   start+=chunk.length;
+   return html;
+ });
+}
+
 function attendance(){
+ let sessionTotal=attendanceSessionCount();
  return `<div class="card"><h2>10. Daftar Hadir Peserta</h2>
-   <div class="notice">Daftar hadir dibuat <b>landscape</b>. Satu kegiatan asesmen menggunakan satu tabel per ruang; setiap jadwal/hari/mata pelajaran otomatis menjadi kolom tanda tangan yang memanjang ke kanan.</div>
+   <div class="notice">
+     Format Daftar Hadir mengikuti contoh cetak: <b>tanpa KOP</b>, judul langsung di atas tabel.
+     Setiap ruang dibuat <b>2 lembar</b> dan jumlah peserta dibagi seimbang agar tulisan tetap terbaca jelas. <b>Judul hanya tampil pada Lembar 1</b>; Lembar 2 langsung dimulai dari tabel dan di bagian bawah diberi <b>tanda tangan Ketua Panitia</b>.
+     Kolom awal hanya <b>NO, Nama Peserta, Kelas</b>. Header asesmen mengikuti Jadwal Asesmen:
+     baris atas berisi <b>Hari, tanggal</b> seperti <b>Senin, 21/9/2026</b>. Hari pertama memakai kolom
+     <b>1, 2, 3</b>, sedangkan hari-hari berikutnya memakai kolom <b>1, 2</b>.
+     Jumlah kolom mapel saat ini: <b>${sessionTotal}</b>.
+   </div>
    <div class="actions">${db.rooms.map(r=>`<button onclick="showAttendance(${r.no})">Ruang ${r.no}</button>`).join('')}
    <button class="secondary" onclick="printAttendanceAll()">Tampilkan Semua Ruang</button></div>
    <div id="attOut"></div>
  </div>`;
 }
+
+function attendancePrintPageWithBreak(html,needsBreakBefore){
+ if(!needsBreakBefore)return html;
+ return html.replace(
+   'attendance-landscape-page attendance-reference-layout',
+   'attendance-landscape-page attendance-reference-layout attendance-page-start'
+ );
+}
+
 function showAttendance(no){
  let r=db.rooms.find(x=>x.no===no);if(!r)return;
- document.getElementById('attOut').innerHTML=attendanceParticipantPage(r)+
- `<div class="actions no-print"><button onclick="systemPrint()">🖨 Cetak Ruang ${no}</button></div>`;
+ let pages=attendancePagesForRoom(r);
+ if(!pages.length)return alert('Belum ada peserta pada ruang ini.');
+
+ document.getElementById('attOut').innerHTML=
+   pages.map((p,i)=>attendancePrintPageWithBreak(p,i>0)).join('')+
+   `<div class="actions no-print">
+     <button onclick="systemPrint()">🖨 Cetak Ruang ${no} (${pages.length} lembar)</button>
+   </div>`;
 }
+
 function attendanceSup(){return `<div class="card"><h2>11. Daftar Hadir Pengawas</h2><div class="actions"><button onclick="showSupAttendance()">Tampilkan</button></div><div id="supAtt"></div></div>`}function showSupAttendance(){document.getElementById('supAtt').innerHTML=`<div class="print-page">${printHeader()}<div class="print-title">DAFTAR HADIR PENGAWAS<br>${esc(assessmentDisplay())}</div><table><thead><tr><th>No</th><th>Tanggal</th><th>Jam</th><th>Pengawas</th><th>Ruang</th><th>Mapel</th><th>Tanda Tangan</th></tr></thead><tbody>${db.supervisors.map((s,i)=>`<tr><td>${i+1}</td><td>${esc(s.date)}</td><td>${esc(s.time)}</td><td>${esc(s.name)}</td><td>${esc(s.room)}</td><td>${esc(s.subject)}</td><td style="height:34px"></td></tr>`).join('')}</tbody></table></div><div class="actions no-print"><button onclick="systemPrint()">🖨 Cetak</button></div>`}
 function berita(){return `<div class="card"><h2>12. Berita Acara Pelaksanaan</h2><div class="grid"><div><label>Tanggal</label><input id="bd" type="date"></div><div><label>Jam</label><input id="bt"></div><div><label>Mapel</label><input id="bm"></div><div><label>Ruang</label><input id="br"></div><div><label>Pengawas</label><input id="bp"></div></div><label>Isi Berita Acara</label><textarea id="bx"></textarea><div class="actions"><button onclick="addBerita()">+ Simpan</button></div>${db.berita.map(b=>`<div class="card"><b>${esc(b.date)} • ${esc(b.subject)} • Ruang ${esc(b.room)}</b><p>${esc(b.text)}</p></div>`).join('')}</div>`}function addBerita(){db.berita.push({id:Date.now(),date:v('bd'),time:v('bt'),subject:v('bm'),room:v('br'),supervisor:v('bp'),text:v('bx')});save();render('berita')}
 
@@ -11972,11 +12876,19 @@ function printSupDoc(){printSupervisorMatrix()}
 function printAttendanceAll(roomNo='all'){
  let rooms=db.rooms.filter(r=>r.students.length && (roomNo==='all'||String(r.no)===String(roomNo)));
  if(!rooms.length){alert('Belum ada peserta pada ruang yang dipilih.');return false;}
- document.getElementById('app').innerHTML=rooms.map((r,i,a)=>
-   `<div class="${i<a.length-1?'page-break':''}">${attendanceParticipantPage(r)}</div>`).join('')+
-   `<div class="actions no-print"><button onclick="systemPrint()">🖨 Cetak ${roomNo==='all'?'Semua Ruang':'Ruang '+roomNo}</button><button class="secondary" onclick="render('print')">Kembali ke Print</button></div>`;
+
+ let pages=[];
+ rooms.forEach(r=>pages.push(...attendancePagesForRoom(r)));
+
+ document.getElementById('app').innerHTML=
+   pages.map((p,i)=>attendancePrintPageWithBreak(p,i>0)).join('')+
+   `<div class="actions no-print">
+     <button onclick="systemPrint()">🖨 Cetak ${pages.length} Lembar</button>
+     <button class="secondary" onclick="render('print')">Kembali ke Print</button>
+   </div>`;
  return true;
 }
+
 function printSupAttendanceDoc(){
  document.getElementById('app').innerHTML=`<div class="print-page">${printHeader()}<div class="print-title">DAFTAR HADIR PENGAWAS<br>${esc(assessmentDisplay())}</div>
  <table><thead><tr><th>No</th><th>Tanggal</th><th>Jam</th><th>Ruang</th><th>Nama Pengawas</th><th>Mapel</th><th>Tanda Tangan</th></tr></thead><tbody>
