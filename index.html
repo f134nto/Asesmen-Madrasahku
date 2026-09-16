@@ -7989,6 +7989,73 @@ window.pdfjsLibBridge=pdfjsLib;
 }
 </style>
 
+
+<style id="participant-number-note-column-final">
+/* ===== DAFTAR PESERTA: NOMOR PESERTA LEBIH LEBAR + KETERANGAN ===== */
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table th:nth-child(2){
+  white-space:nowrap!important;
+  font-size:10.5pt!important;
+  text-align:center!important;
+  padding-left:1mm!important;
+  padding-right:1mm!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table td:nth-child(2){
+  white-space:nowrap!important;
+  text-align:center!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table th:nth-child(7),
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table td:nth-child(7){
+  text-align:center!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table td.participant-note-cell{
+  background:#fff!important;
+}
+
+/* KOP dan judul dipastikan persis sama panjang dengan tabel hasil hitung terbaru. */
+.participant-list-print-page.participant-dynamic-columns .participant-list-kop,
+.participant-list-print-page.participant-dynamic-columns .participant-list-title-block,
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table,
+.participant-list-print-page.participant-dynamic-columns .participant-exact-footer,
+.participant-list-print-page.participant-dynamic-columns .participant-dynamic-signature{
+  width:var(--participant-table-width)!important;
+  min-width:var(--participant-table-width)!important;
+  max-width:var(--participant-table-width)!important;
+  margin-left:0!important;
+  margin-right:auto!important;
+  box-sizing:border-box!important;
+}
+
+/* Logo NU tetap besar dan proporsional dengan KOP yang mengikuti tabel. */
+.participant-list-print-page.participant-dynamic-columns .participant-list-kop{
+  grid-template-columns:29mm minmax(0,1fr) 29mm!important;
+  min-height:26mm!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-list-kop-logo,
+.participant-list-print-page.participant-dynamic-columns .participant-list-kop-spacer{
+  width:29mm!important;
+  min-width:29mm!important;
+  height:26mm!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-list-kop-logo img{
+  max-width:27mm!important;
+  max-height:25mm!important;
+}
+
+@media print{
+  .participant-list-print-page.participant-dynamic-columns .participant-list-kop,
+  .participant-list-print-page.participant-dynamic-columns .participant-list-title-block,
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table,
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-footer,
+  .participant-list-print-page.participant-dynamic-columns .participant-dynamic-signature{
+    width:var(--participant-table-width)!important;
+    min-width:var(--participant-table-width)!important;
+    max-width:var(--participant-table-width)!important;
+    margin-left:0!important;
+    margin-right:auto!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="loginScreen"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan penyimpanan Supabase. Gunakan akun cloud yang sama agar data dapat dibuka dari komputer/laptop lain.</p></div><div style="font-size:12px;color:#d9eadf">Database Cloud Supabase • Sinkron Otomatis</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">LOGIN ADMIN CLOUD</div><h2>Selamat Datang</h2><div class="sub">Masukkan email dan password Supabase. Akun yang sama dapat digunakan di perangkat lain.</div><div id="loginError" class="login-error">Login gagal.</div><div class="login-field"><label>Email Admin</label><input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com"></div><div class="login-field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -9741,25 +9808,29 @@ function participantListColumnLayout(students){
 
  const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 
- // Kolom di depan Nama dibuat lebih rapat agar kolom Nama bergeser ke kiri.
  let no=9;
- let number=25;
- let nis=clamp(14 + maxNis*1.25,20,26);
 
- // Lebar Nama benar-benar mengikuti nama siswa terpanjang di ruang tersebut.
- // Estimasi dibuat sedikit longgar agar nama tetap satu baris selama memungkinkan.
- let name=clamp(24 + maxName*2.05,62,112);
+ // Diperlebar agar tulisan "Nomor Peserta" utuh dan nomor 7A-01 dst. lega.
+ let number=33;
 
- let gender=13;
- let kelas=clamp(12 + maxClass*2.1,17,24);
+ let nis=clamp(14 + maxNis*1.2,20,26);
 
- let total=no+number+nis+name+gender+kelas;
+ // Nama tetap dinamis berdasarkan nama terpanjang dalam ruang.
+ let name=clamp(22 + maxName*1.9,58,98);
 
- // Jangan melebihi area cetak maksimal 249mm.
+ let gender=12;
+ let kelas=clamp(11 + maxClass*2,17,23);
+
+ // Kolom paling kanan baru, dibiarkan kosong.
+ let note=34;
+
+ let total=no+number+nis+name+gender+kelas+note;
+
+ // Maksimum area cetak tetap 249mm.
  if(total>249){
    let over=total-249;
-   name=Math.max(58,name-over);
-   total=no+number+nis+name+gender+kelas;
+   name=Math.max(54,name-over);
+   total=no+number+nis+name+gender+kelas+note;
  }
 
  return {
@@ -9769,6 +9840,7 @@ function participantListColumnLayout(students){
    name:Number(name.toFixed(1)),
    gender:Number(gender.toFixed(1)),
    kelas:Number(kelas.toFixed(1)),
+   note:Number(note.toFixed(1)),
    total:Number(total.toFixed(1)),
    longestName:maxName
  };
@@ -9823,9 +9895,10 @@ function participantListPrintPage(r,students,startIndex=0,pageIndex=0,totalPages
        <col class="participant-col-name" style="width:${col.name}mm!important">
        <col class="participant-col-gender" style="width:${col.gender}mm!important">
        <col class="participant-col-class" style="width:${col.kelas}mm!important">
+       <col class="participant-col-note" style="width:${col.note}mm!important">
      </colgroup>
      <thead><tr>
-       <th>No</th><th>Nomor Peserta</th><th>NIS</th><th>Nama</th><th>L/P</th><th>Kelas</th>
+       <th>No</th><th>Nomor Peserta</th><th>NIS</th><th>Nama</th><th>L/P</th><th>Kelas</th><th>Keterangan</th>
      </tr></thead>
      <tbody>${students.map((st,i)=>`<tr>
        <td>${startIndex+i+1}</td>
@@ -9834,6 +9907,7 @@ function participantListPrintPage(r,students,startIndex=0,pageIndex=0,totalPages
        <td class="name-cell">${esc(st.name)}</td>
        <td>${esc(st.gender)}</td>
        <td>${esc(st.class)}</td>
+       <td class="participant-note-cell"></td>
      </tr>`).join('')}</tbody>
    </table>
    <div class="print-footer participant-exact-footer" style="${footerStyle}">RUANG ${String(r.no).padStart(2,'0')} &nbsp;•&nbsp; 1 LEMBAR</div>
