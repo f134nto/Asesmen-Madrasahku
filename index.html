@@ -11,7 +11,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
 
 <style>
-:root{--p:#173b67;--p2:#235b91;--bg:#f3f6fa;--line:#dbe4ec;--danger:#b42318;--ok:#18794e}*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:#17212b}header{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center;gap:14px;position:sticky;top:0;z-index:10}header h1{margin:0;font-size:22px}.layout{display:flex;min-height:calc(100vh - 70px)}aside{width:270px;background:#102f52;padding:12px;position:sticky;top:70px;height:calc(100vh - 70px);overflow:auto}aside button{width:100%;text-align:left;border:0;background:transparent;color:#dcecff;padding:11px 12px;border-radius:8px;margin:2px 0;cursor:pointer}aside button:hover,aside button.active{background:#235b91;color:#fff}main{flex:1;padding:22px;max-width:1500px;margin:auto;width:100%}.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:18px;box-shadow:0 2px 8px #102f520d}h2,h3{color:var(--p)}h2{margin-top:0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}label{display:block;font-size:13px;font-weight:700;margin-bottom:5px}input,select,textarea{width:100%;padding:9px 10px;border:1px solid #cbd5df;border-radius:7px;background:#fff}textarea{min-height:90px}button{border:0;border-radius:7px;padding:9px 13px;background:var(--p2);color:#fff;cursor:pointer;font-weight:700}button.secondary{background:#e9eef4;color:var(--p)}button.danger{background:var(--danger)}button.success{background:var(--ok)}.actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.notice{padding:11px;background:#fff8e5;border:1px solid #f2d68a;border-radius:8px;margin:10px 0}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:13px}th,td{border:1px solid var(--line);padding:8px;text-align:left}th{background:#edf3f8;color:var(--p)}.stat{padding:16px;border-radius:10px;background:#edf5ff;border:1px solid #d7e8fb}.stat b{font-size:27px;display:block;color:var(--p)}.hidden{display:none}.print-page{background:#fff;width:210mm;min-height:297mm;margin:auto;padding:15mm;color:#000}.print-header{display:grid;grid-template-columns:75px 1fr 75px;align-items:center;text-align:center;border-bottom:3px double #000;padding-bottom:8px;margin-bottom:15px}.print-header h1{font-size:14px;margin:2px}.print-header h2{font-size:16px;color:#000;margin:2px}.print-header p{font-size:10px;margin:2px}.print-title{text-align:center;font-weight:bold;font-size:16px;margin:16px 0}.signature{display:grid;grid-template-columns:1fr 1fr;text-align:center;margin-top:40px}.board{text-align:center;border:2px solid #173b67;padding:8px;margin:10px 0 18px;font-weight:bold}.seatgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.desk{border:2px solid #9db2c7;border-radius:7px;padding:7px;background:#f8fbff;text-align:center;min-height:80px}.desk small{display:block;color:#637587}.page-break{page-break-after:always}@media(max-width:850px){aside{width:210px}main{padding:12px}.seatgrid{grid-template-columns:repeat(2,1fr)}}@media print{@page{size:330mm 290mm;margin:0}header,aside,.no-print{display:none!important}main{padding:0;max-width:none}.card{border:0;box-shadow:none;margin:0;padding:0}.print-page{width:330mm;min-height:290mm;margin:0;padding:15mm}.page-break{page-break-after:always}}
+:root{--p:#173b67;--p2:#235b91;--bg:#f3f6fa;--line:#dbe4ec;--danger:#b42318;--ok:#18794e}*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:#17212b}header{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;padding:16px 22px;display:flex;justify-content:flex-end;align-items:center;gap:14px;position:sticky;top:0;z-index:10}header h1{margin:0;font-size:22px}.layout{display:flex;min-height:calc(100vh - 70px)}aside{width:270px;background:#102f52;padding:12px;position:sticky;top:70px;height:calc(100vh - 70px);overflow:auto}aside button{width:100%;text-align:left;border:0;background:transparent;color:#dcecff;padding:11px 12px;border-radius:8px;margin:2px 0;cursor:pointer}aside button:hover,aside button.active{background:#235b91;color:#fff}main{flex:1;padding:22px;max-width:1500px;margin:auto;width:100%}.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:18px;box-shadow:0 2px 8px #102f520d}h2,h3{color:var(--p)}h2{margin-top:0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}label{display:block;font-size:13px;font-weight:700;margin-bottom:5px}input,select,textarea{width:100%;padding:9px 10px;border:1px solid #cbd5df;border-radius:7px;background:#fff}textarea{min-height:90px}button{border:0;border-radius:7px;padding:9px 13px;background:var(--p2);color:#fff;cursor:pointer;font-weight:700}button.secondary{background:#e9eef4;color:var(--p)}button.danger{background:var(--danger)}button.success{background:var(--ok)}.actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.notice{padding:11px;background:#fff8e5;border:1px solid #f2d68a;border-radius:8px;margin:10px 0}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:13px}th,td{border:1px solid var(--line);padding:8px;text-align:left}th{background:#edf3f8;color:var(--p)}.stat{padding:16px;border-radius:10px;background:#edf5ff;border:1px solid #d7e8fb}.stat b{font-size:27px;display:block;color:var(--p)}.hidden{display:none}.print-page{background:#fff;width:210mm;min-height:297mm;margin:auto;padding:15mm;color:#000}.print-header{display:grid;grid-template-columns:75px 1fr 75px;align-items:center;text-align:center;border-bottom:3px double #000;padding-bottom:8px;margin-bottom:15px}.print-header h1{font-size:14px;margin:2px}.print-header h2{font-size:16px;color:#000;margin:2px}.print-header p{font-size:10px;margin:2px}.print-title{text-align:center;font-weight:bold;font-size:16px;margin:16px 0}.signature{display:grid;grid-template-columns:1fr 1fr;text-align:center;margin-top:40px}.board{text-align:center;border:2px solid #173b67;padding:8px;margin:10px 0 18px;font-weight:bold}.seatgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.desk{border:2px solid #9db2c7;border-radius:7px;padding:7px;background:#f8fbff;text-align:center;min-height:80px}.desk small{display:block;color:#637587}.page-break{page-break-after:always}@media(max-width:850px){aside{width:210px}main{padding:12px}.seatgrid{grid-template-columns:repeat(2,1fr)}}@media print{@page{size:330mm 290mm;margin:0}header,aside,.no-print{display:none!important}main{padding:0;max-width:none}.card{border:0;box-shadow:none;margin:0;padding:0}.print-page{width:330mm;min-height:290mm;margin:0;padding:15mm}.page-break{page-break-after:always}}
 
 .print-header{grid-template-columns:115px 1fr 20px!important;border-bottom:4px double #1b6f54!important;padding-bottom:7px!important;color:#287f61!important}
 .print-logo-wrap{display:flex;align-items:center;justify-content:center;height:82px}
@@ -236,7 +236,7 @@ th{background:linear-gradient(180deg,#0f633f,#0b5435)!important;color:#fff!impor
 .badge{background:#fff3bf!important;color:#6a530f!important;border:1px solid #d9bd54!important}
 #loginScreen{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 20% 20%,rgba(200,166,70,.18),transparent 28%),radial-gradient(circle at 80% 80%,rgba(200,166,70,.12),transparent 30%),linear-gradient(135deg,#062f21 0%,#0b5a39 55%,#113e2d 100%);padding:24px}
 .login-shell{width:min(980px,96vw);min-height:560px;display:grid;grid-template-columns:1.08fr .92fr;background:#fff;border:1px solid rgba(200,166,70,.6);border-radius:24px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.28)}
-.login-brand{padding:54px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(155deg,#073b29 0%,#0f6842 72%,#9b7a23 150%);color:#fff;position:relative;overflow:hidden}
+.login-brand{padding:54px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(155deg,#073b29 0%,#0f6842 72%,#9b7a23 150%);color:#fff;position:relative;overflow:hidden}
 .login-brand:before,.login-brand:after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(255,221,121,.18)}.login-brand:before{width:330px;height:330px;right:-130px;top:-110px}.login-brand:after{width:260px;height:260px;left:-110px;bottom:-90px}
 .login-badge{display:inline-block;padding:7px 12px;border:1px solid rgba(255,222,120,.55);border-radius:999px;color:#ffe79a;font-size:12px;font-weight:700;letter-spacing:.7px}.login-brand h1{font-size:34px;line-height:1.15;margin:22px 0 10px}.login-brand p{color:#e4f3e9;line-height:1.7;max-width:440px}.gold-line{width:86px;height:4px;background:linear-gradient(90deg,#c8a646,#f1d678);border-radius:4px;margin:18px 0}
 .login-panel{padding:54px 46px;display:flex;flex-direction:column;justify-content:center;background:linear-gradient(180deg,#fff,#fbfcf8)}.login-panel h2{font-size:28px;margin-bottom:8px;border:0!important}.login-panel .sub{color:#65766c;margin-bottom:26px}.login-field{margin-bottom:16px}.login-field input{padding:13px 14px;font-size:15px;border-radius:10px}.login-submit{width:100%;padding:13px 16px;border-radius:10px;font-size:15px;background:linear-gradient(90deg,#0f633f,#147a4c)!important;border:1px solid #c8a646!important}.login-foot{margin-top:18px;font-size:12px;color:#7b897f;text-align:center}.login-error{display:none;background:#fff1f0;border:1px solid #ffb4ad;color:#9c2d26;padding:10px;border-radius:8px;margin-bottom:14px}.logout-btn{background:linear-gradient(180deg,#c9a94c,#a58220)!important;color:#fff!important;border-color:#ead98d!important}@media(max-width:760px){.login-shell{grid-template-columns:1fr}.login-brand{display:none}.login-panel{padding:38px 26px}}
@@ -265,7 +265,7 @@ th{background:linear-gradient(180deg,#0f633f,#0b5435)!important;color:#fff!impor
 .sup-matrix .room-col{min-width:92px;max-width:115px}
 .sup-matrix input,.sup-matrix select{min-width:82px;width:100%;padding:4px;font-size:11px}
 .supervisor-name-chip{display:inline-flex;align-items:center;gap:6px;margin:4px;padding:7px 9px;border:1px solid #d6be6a;border-radius:999px;background:#fff8db}
-.supervisor-signatures{display:flex;justify-content:space-between;gap:30mm;margin-top:12mm;page-break-inside:avoid}
+.supervisor-signatures{display:flex;justify-content:flex-end;gap:30mm;margin-top:12mm;page-break-inside:avoid}
 .supervisor-signatures .signbox{width:70mm;text-align:center;font-size:11px;line-height:1.45}
 .supervisor-print-page{page:supervisorLandscape;width:330mm;height:210mm;min-height:210mm;padding:6mm 7mm;background:#fff;color:#000;overflow:hidden}
 .supervisor-print-page .sup-matrix{font-size:8.5px}
@@ -500,7 +500,7 @@ th{background:linear-gradient(180deg,#0f633f,#0b5435)!important;color:#fff!impor
 
 
 /* SIMPAN & RESET PEMBAGIAN RUANG */
-.room-plan-toolbar{position:sticky;top:8px;z-index:20;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:12px 14px;margin:12px 0 16px;border:1px solid #d5bd68;border-radius:12px;background:linear-gradient(90deg,#f3fbf6,#fff8dc);box-shadow:0 5px 14px rgba(15,92,58,.10)}
+.room-plan-toolbar{position:sticky;top:8px;z-index:20;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:flex-end;padding:12px 14px;margin:12px 0 16px;border:1px solid #d5bd68;border-radius:12px;background:linear-gradient(90deg,#f3fbf6,#fff8dc);box-shadow:0 5px 14px rgba(15,92,58,.10)}
 .room-plan-toolbar .toolbar-left{display:flex;flex-wrap:wrap;gap:8px}.room-plan-toolbar .toolbar-status{font-size:12px;color:#53645a}.room-plan-toolbar .save-room-btn{background:linear-gradient(180deg,#17804f,#0d603c)!important;border:1px solid #c8a646!important}.room-plan-toolbar .reset-room-btn{background:linear-gradient(180deg,#fff7d7,#e9d58c)!important;color:#5f4a0d!important;border:1px solid #c8a646!important}
 
 
@@ -717,7 +717,7 @@ th{background:linear-gradient(180deg,#0f633f,#0b5435)!important;color:#fff!impor
   flex-wrap:wrap;
   gap:8px;
   align-items:center;
-  justify-content:space-between;
+  justify-content:flex-end;
   margin:10px 0 14px;
   padding:10px 12px;
   border:1px solid #d5bd68;
@@ -764,7 +764,7 @@ th{background:linear-gradient(180deg,#0f633f,#0b5435)!important;color:#fff!impor
   display:flex;
   flex-wrap:wrap;
   align-items:center;
-  justify-content:space-between;
+  justify-content:flex-end;
   gap:10px;
   margin:12px 0 14px;
   padding:11px 13px;
@@ -832,7 +832,7 @@ th{background:linear-gradient(180deg,#0f633f,#0b5435)!important;color:#fff!impor
 .seat-area-wrap{position:relative;max-width:100%;margin:0 auto}
 .seat-side-labels{
   display:none;
-  justify-content:space-between;
+  justify-content:flex-end;
   margin:0 auto 2mm;
   max-width:245mm;
   font-size:9pt;
@@ -6604,7 +6604,7 @@ window.pdfjsLibBridge=pdfjsLib;
 /* ===== EDIT NOMOR PESERTA PER RUANG ===== */
 .participant-room-edit-head{
   display:flex;
-  justify-content:space-between;
+  justify-content:flex-end;
   align-items:center;
   gap:12px;
   flex-wrap:wrap;
@@ -7358,6 +7358,634 @@ window.pdfjsLibBridge=pdfjsLib;
     break-inside:avoid!important;
   }
   .attendance-chair-space{height:18mm!important;}
+}
+</style>
+
+
+<style id="schedule-row-height-2x">
+/* ===== JADWAL ASESMEN: BARIS MAPEL 2X, PEMBIASAAN TETAP ===== */
+.schedule-fixed-table tbody tr.schedule-row-mapel > td{
+  height:12mm!important;
+  padding-top:3.6mm!important;
+  padding-bottom:3.6mm!important;
+}
+.schedule-fixed-table tbody tr.schedule-row-habituation > td{
+  height:6mm!important;
+  padding-top:1.2mm!important;
+  padding-bottom:1.2mm!important;
+}
+.schedule-fixed-table tbody tr.schedule-row-mapel .schedule-subject-cell,
+.schedule-fixed-table tbody tr.schedule-row-mapel .schedule-time-cell,
+.schedule-fixed-table tbody tr.schedule-row-mapel .schedule-allocation-cell,
+.schedule-fixed-table tbody tr.schedule-row-mapel .schedule-note-cell{
+  vertical-align:middle!important;
+}
+.schedule-fixed-table tbody tr.schedule-row-habituation .schedule-subject-cell,
+.schedule-fixed-table tbody tr.schedule-row-habituation .schedule-time-cell,
+.schedule-fixed-table tbody tr.schedule-row-habituation .schedule-allocation-cell,
+.schedule-fixed-table tbody tr.schedule-row-habituation .schedule-note-cell{
+  vertical-align:middle!important;
+}
+@media print{
+  .schedule-fixed-table tbody tr.schedule-row-mapel > td{
+    height:12mm!important;
+    padding-top:3.6mm!important;
+    padding-bottom:3.6mm!important;
+  }
+  .schedule-fixed-table tbody tr.schedule-row-habituation > td{
+    height:6mm!important;
+    padding-top:1.2mm!important;
+    padding-bottom:1.2mm!important;
+  }
+}
+</style>
+
+
+<style id="schedule-narrow-subject-note-columns">
+/* ===== JADWAL ASESMEN: MAPEL & KETERANGAN DIPERSEMPIT DINAMIS ===== */
+.schedule-fixed-table.schedule-auto-width-table{
+  width:var(--schedule-table-width)!important;
+  max-width:var(--schedule-table-width)!important;
+  margin-left:0!important;
+  margin-right:auto!important;
+  table-layout:fixed!important;
+}
+.schedule-fixed-table.schedule-auto-width-table col.schedule-fixed-subject{
+  width:var(--schedule-subject-width)!important;
+}
+.schedule-fixed-table.schedule-auto-width-table col.schedule-fixed-note{
+  width:var(--schedule-note-width)!important;
+}
+.schedule-fixed-table.schedule-auto-width-table .schedule-subject-cell,
+.schedule-fixed-table.schedule-auto-width-table .schedule-note-cell{
+  padding-left:1.4mm!important;
+  padding-right:1.4mm!important;
+  white-space:normal!important;
+  overflow-wrap:break-word!important;
+  word-break:normal!important;
+}
+.schedule-fixed-table.schedule-auto-width-table th:nth-child(5),
+.schedule-fixed-table.schedule-auto-width-table th:nth-child(6){
+  padding-left:1mm!important;
+  padding-right:1mm!important;
+}
+@media print{
+  .schedule-fixed-table.schedule-auto-width-table{
+    width:var(--schedule-table-width)!important;
+    max-width:var(--schedule-table-width)!important;
+    margin-left:0!important;
+    margin-right:auto!important;
+  }
+}
+</style>
+
+
+<style id="schedule-screen-narrow-columns">
+.schedule-assessment-table .col-subject{width:31%!important;}
+.schedule-assessment-table .col-note{width:18%!important;}
+.schedule-assessment-table .schedule-subject-edit,
+.schedule-assessment-table .schedule-note-edit{min-width:0!important;width:100%!important;}
+</style>
+
+
+<style id="schedule-header-match-table-width">
+/* ===== KOP JADWAL ASESMEN: PANJANG MENGIKUTI TABEL ===== */
+.schedule-fixed-header.schedule-auto-width-header{
+  width:var(--schedule-header-width)!important;
+  max-width:var(--schedule-header-width)!important;
+  margin-left:0!important;
+  margin-right:auto!important;
+  grid-template-columns:20mm minmax(0,1fr) 20mm!important;
+  box-sizing:border-box!important;
+}
+.schedule-fixed-header.schedule-auto-width-header .schedule-fixed-logo,
+.schedule-fixed-header.schedule-auto-width-header .schedule-fixed-logo-space{
+  width:20mm!important;
+}
+.schedule-fixed-header.schedule-auto-width-header .schedule-fixed-logo{
+  height:20mm!important;
+}
+.schedule-fixed-header.schedule-auto-width-header .schedule-fixed-logo img{
+  max-width:18mm!important;
+  max-height:18mm!important;
+}
+.schedule-fixed-header.schedule-auto-width-header .schedule-fixed-heading{
+  min-width:0!important;
+  padding:0 2mm!important;
+}
+.schedule-fixed-header.schedule-auto-width-header .schedule-fixed-assessment{
+  font-size:14pt!important;
+  white-space:normal!important;
+}
+.schedule-fixed-header.schedule-auto-width-header .schedule-fixed-school{
+  font-size:11pt!important;
+  white-space:normal!important;
+}
+@media print{
+  .schedule-fixed-header.schedule-auto-width-header{
+    width:var(--schedule-header-width)!important;
+    max-width:var(--schedule-header-width)!important;
+    margin-left:0!important;
+    margin-right:auto!important;
+  }
+}
+</style>
+
+
+<style id="schedule-logo-larger-final">
+/* ===== LOGO NU JADWAL ASESMEN DIPERBESAR ===== */
+.schedule-fixed-header.schedule-auto-width-header{
+  grid-template-columns:27mm minmax(0,1fr) 27mm!important;
+  min-height:28mm!important;
+}
+.schedule-fixed-header.schedule-auto-width-header .schedule-fixed-logo,
+.schedule-fixed-header.schedule-auto-width-header .schedule-fixed-logo-space{
+  width:27mm!important;
+}
+.schedule-fixed-header.schedule-auto-width-header .schedule-fixed-logo{
+  height:26mm!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.schedule-fixed-header.schedule-auto-width-header .schedule-fixed-logo img{
+  max-width:24mm!important;
+  max-height:24mm!important;
+  width:auto!important;
+  height:auto!important;
+  object-fit:contain!important;
+}
+@media print{
+  .schedule-fixed-header.schedule-auto-width-header{
+    grid-template-columns:27mm minmax(0,1fr) 27mm!important;
+    min-height:28mm!important;
+  }
+  .schedule-fixed-header.schedule-auto-width-header .schedule-fixed-logo,
+  .schedule-fixed-header.schedule-auto-width-header .schedule-fixed-logo-space{
+    width:27mm!important;
+  }
+  .schedule-fixed-header.schedule-auto-width-header .schedule-fixed-logo{
+    height:26mm!important;
+  }
+  .schedule-fixed-header.schedule-auto-width-header .schedule-fixed-logo img{
+    max-width:24mm!important;
+    max-height:24mm!important;
+  }
+}
+</style>
+
+
+
+
+
+<style id="schedule-signature-align-last-column-final">
+/* ===== TTD KETUA PANITIA: BATAS KANAN = AKHIR KOLOM TERAKHIR TABEL ===== */
+.schedule-fixed-signature.schedule-signature-table-aligned{
+  width:var(--schedule-table-width)!important;
+  max-width:var(--schedule-table-width)!important;
+  margin:7mm 0 0 0!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+  display:block!important;
+  page-break-inside:avoid!important;
+  break-inside:avoid!important;
+}
+
+/* Outer div dari function signature(): isi tanda tangan ditarik ke kanan
+   hanya sampai batas kanan tabel, bukan batas kanan halaman. */
+.schedule-fixed-signature.schedule-signature-table-aligned > div{
+  width:100%!important;
+  max-width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  display:flex!important;
+  justify-content:flex-end!important;
+  align-items:flex-start!important;
+  box-sizing:border-box!important;
+}
+
+/* Blok tanda tangan bergerak ke KIRI, dengan sisi kanan berhenti tepat
+   di garis akhir kolom Keterangan / kolom terakhir. */
+.schedule-fixed-signature.schedule-signature-table-aligned > div > div{
+  width:58mm!important;
+  max-width:58mm!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+  text-align:center!important;
+  font-size:11pt!important;
+  line-height:1.4!important;
+  box-sizing:border-box!important;
+}
+
+/* Bila kolom Keterangan sangat sempit, TTD tetap tidak melewati batas kanan tabel. */
+.schedule-fixed-signature.schedule-signature-table-aligned b,
+.schedule-fixed-signature.schedule-signature-table-aligned u{
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+}
+
+@media print{
+  .schedule-fixed-signature.schedule-signature-table-aligned{
+    width:var(--schedule-table-width)!important;
+    max-width:var(--schedule-table-width)!important;
+    margin:7mm 0 0 0!important;
+    padding:0!important;
+    display:block!important;
+  }
+  .schedule-fixed-signature.schedule-signature-table-aligned > div{
+    width:100%!important;
+    max-width:100%!important;
+    margin:0!important;
+    padding:0!important;
+    display:flex!important;
+    justify-content:flex-end!important;
+  }
+  .schedule-fixed-signature.schedule-signature-table-aligned > div > div{
+    width:58mm!important;
+    max-width:58mm!important;
+    margin:0!important;
+    text-align:center!important;
+    font-size:11pt!important;
+  }
+}
+</style>
+
+
+<style id="participant-dynamic-column-widths-final">
+/* ===== DAFTAR PESERTA: KOLOM NAMA MENYESUAIKAN NAMA TERPANJANG ===== */
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table{
+  width:var(--participant-table-width)!important;
+  min-width:var(--participant-table-width)!important;
+  max-width:var(--participant-table-width)!important;
+  table-layout:fixed!important;
+  margin-left:0!important;
+  margin-right:auto!important;
+}
+
+/* Override semua ukuran kolom lama; nilai aktual diberikan inline per ruang. */
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table col{
+  min-width:0!important;
+  max-width:none!important;
+}
+
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table td:nth-child(4){
+  text-align:left!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+  padding-left:1.8mm!important;
+  padding-right:1.8mm!important;
+}
+
+/* Kalau ruang berisi nama sangat panjang, teks boleh sedikit mengecil agar tetap satu baris. */
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table td.name-cell{
+  font-size:11.5pt!important;
+}
+.participant-list-print-page.participant-dynamic-columns.participant-density-high .participant-exact-table td.name-cell,
+.participant-list-print-page.participant-dynamic-columns.participant-density-xhigh .participant-exact-table td.name-cell{
+  font-size:10pt!important;
+}
+
+/* Footer dan tanda tangan mengikuti lebar tabel dinamis. */
+.participant-list-print-page.participant-dynamic-columns .participant-exact-footer{
+  width:var(--participant-table-width)!important;
+  max-width:var(--participant-table-width)!important;
+  margin-left:0!important;
+  margin-right:auto!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-dynamic-signature{
+  width:var(--participant-table-width)!important;
+  max-width:var(--participant-table-width)!important;
+  margin-left:0!important;
+  margin-right:auto!important;
+}
+
+@media print{
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table,
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-footer,
+  .participant-list-print-page.participant-dynamic-columns .participant-dynamic-signature{
+    width:var(--participant-table-width)!important;
+    max-width:var(--participant-table-width)!important;
+    margin-left:0!important;
+    margin-right:auto!important;
+  }
+}
+</style>
+
+
+<style id="participant-kop-follow-table-final">
+/* ===== DAFTAR PESERTA: KOP MENGIKUTI LEBAR TABEL DINAMIS ===== */
+
+/* Wrapper KOP dan judul mengikuti lebar tabel per ruang */
+.participant-list-print-page.participant-dynamic-columns .participant-exact-header,
+.participant-list-print-page.participant-dynamic-columns .participant-exact-title{
+  width:var(--participant-table-width)!important;
+  min-width:var(--participant-table-width)!important;
+  max-width:var(--participant-table-width)!important;
+  margin-left:0!important;
+  margin-right:auto!important;
+  padding-left:0!important;
+  padding-right:0!important;
+  box-sizing:border-box!important;
+}
+
+/* KOP dipendekkan tepat sama dengan tabel dan tetap mulai dari sisi kiri tabel */
+.participant-list-print-page.participant-dynamic-columns .special-print-kop{
+  width:var(--participant-table-width)!important;
+  min-width:var(--participant-table-width)!important;
+  max-width:var(--participant-table-width)!important;
+  margin-left:0!important;
+  margin-right:auto!important;
+  box-sizing:border-box!important;
+
+  /* Logo dibuat lebih ramping agar area teks tetap lega saat tabel pendek */
+  grid-template-columns:18mm minmax(0,1fr) 18mm!important;
+  min-height:18mm!important;
+  padding:0 0 2mm 0!important;
+}
+
+/* Logo mengikuti KOP yang lebih pendek */
+.participant-list-print-page.participant-dynamic-columns .special-print-logo,
+.participant-list-print-page.participant-dynamic-columns .special-print-logo-spacer{
+  width:18mm!important;
+}
+.participant-list-print-page.participant-dynamic-columns .special-print-logo img{
+  max-width:17mm!important;
+  max-height:17mm!important;
+  object-fit:contain!important;
+}
+
+/* Tipografi dibuat sedikit adaptif supaya tetap satu kesatuan dengan tabel */
+.participant-list-print-page.participant-dynamic-columns .special-kop-foundation{
+  font-size:8.5pt!important;
+  line-height:1.08!important;
+  white-space:nowrap!important;
+}
+.participant-list-print-page.participant-dynamic-columns .special-kop-school{
+  font-size:13pt!important;
+  line-height:1.08!important;
+  white-space:nowrap!important;
+}
+.participant-list-print-page.participant-dynamic-columns .special-kop-address{
+  font-size:7.5pt!important;
+  line-height:1.08!important;
+  white-space:nowrap!important;
+}
+
+/* Garis bawah KOP berhenti tepat di ujung kanan tabel */
+.participant-list-print-page.participant-dynamic-columns .special-print-kop{
+  border-bottom:.35mm solid #000!important;
+}
+
+@media print{
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-header,
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-title,
+  .participant-list-print-page.participant-dynamic-columns .special-print-kop{
+    width:var(--participant-table-width)!important;
+    min-width:var(--participant-table-width)!important;
+    max-width:var(--participant-table-width)!important;
+    margin-left:0!important;
+    margin-right:auto!important;
+  }
+}
+</style>
+
+
+<style id="participant-kop-title-logo-bigger-follow-table-v2">
+/* ===== DAFTAR PESERTA: LOGO LEBIH BESAR + JUDUL SEJAJAR TABEL ===== */
+.participant-list-print-page.participant-dynamic-columns .participant-exact-header,
+.participant-list-print-page.participant-dynamic-columns .participant-exact-title,
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table,
+.participant-list-print-page.participant-dynamic-columns .participant-exact-footer,
+.participant-list-print-page.participant-dynamic-columns .participant-dynamic-signature{
+  width:var(--participant-table-width)!important;
+  min-width:var(--participant-table-width)!important;
+  max-width:var(--participant-table-width)!important;
+  margin-left:0!important;
+  margin-right:auto!important;
+  box-sizing:border-box!important;
+}
+
+/* KOP mengikuti lebar tabel, logo dibesarkan */
+.participant-list-print-page.participant-dynamic-columns .special-print-kop{
+  width:var(--participant-table-width)!important;
+  min-width:var(--participant-table-width)!important;
+  max-width:var(--participant-table-width)!important;
+  grid-template-columns:24mm minmax(0,1fr) 24mm!important;
+  min-height:21mm!important;
+  margin:0 0 4mm 0!important;
+  padding:0 0 2mm 0!important;
+  border-bottom:.35mm solid #000!important;
+}
+.participant-list-print-page.participant-dynamic-columns .special-print-logo,
+.participant-list-print-page.participant-dynamic-columns .special-print-logo-spacer{
+  width:24mm!important;
+  min-width:24mm!important;
+}
+.participant-list-print-page.participant-dynamic-columns .special-print-logo{
+  height:21mm!important;
+}
+.participant-list-print-page.participant-dynamic-columns .special-print-logo img{
+  max-width:22mm!important;
+  max-height:22mm!important;
+  width:auto!important;
+  height:auto!important;
+  object-fit:contain!important;
+}
+
+/* Tipografi KOP tetap proporsional walau logo lebih besar */
+.participant-list-print-page.participant-dynamic-columns .special-kop-foundation{
+  font-size:8.5pt!important;
+  line-height:1.08!important;
+  white-space:nowrap!important;
+}
+.participant-list-print-page.participant-dynamic-columns .special-kop-school{
+  font-size:13.2pt!important;
+  line-height:1.05!important;
+  white-space:nowrap!important;
+}
+.participant-list-print-page.participant-dynamic-columns .special-kop-address{
+  font-size:7.4pt!important;
+  line-height:1.08!important;
+  white-space:nowrap!important;
+}
+
+/* Judul dibuat benar-benar sejajar dengan tabel */
+.participant-list-print-page.participant-dynamic-columns .participant-exact-title{
+  display:block!important;
+  width:var(--participant-table-width)!important;
+  min-width:var(--participant-table-width)!important;
+  max-width:var(--participant-table-width)!important;
+  margin:0 0 3mm 0!important;
+  padding:0!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-exact-title .special-print-title{
+  display:block!important;
+  width:100%!important;
+  min-width:100%!important;
+  max-width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  text-align:center!important;
+  line-height:1.12!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-exact-title .special-title-main{
+  font-size:13pt!important;
+  font-weight:900!important;
+  margin:0!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-exact-title .special-title-assessment{
+  font-size:11.2pt!important;
+  font-weight:900!important;
+  margin-top:.6mm!important;
+  max-width:100%!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-exact-title .special-title-third{
+  font-size:11pt!important;
+  font-weight:900!important;
+  margin-top:.4mm!important;
+}
+
+@media print{
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-header,
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-title,
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table,
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-footer,
+  .participant-list-print-page.participant-dynamic-columns .participant-dynamic-signature,
+  .participant-list-print-page.participant-dynamic-columns .special-print-kop,
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-title .special-print-title{
+    width:var(--participant-table-width)!important;
+    min-width:var(--participant-table-width)!important;
+    max-width:var(--participant-table-width)!important;
+    margin-left:0!important;
+    margin-right:auto!important;
+  }
+}
+</style>
+
+
+<style id="participant-list-kop-title-structural-fix">
+/* ===== FINAL STRUCTURAL FIX DAFTAR PESERTA ===== */
+.participant-list-print-page.participant-dynamic-columns .participant-list-kop{
+  display:grid!important;
+  grid-template-columns:28mm minmax(0,1fr) 28mm!important;
+  align-items:center!important;
+  min-height:25mm!important;
+  margin:0 0 4mm 0!important;
+  padding:0 0 2.2mm 0!important;
+  border-bottom:.35mm solid #000!important;
+  box-sizing:border-box!important;
+  color:#000!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-list-kop-logo,
+.participant-list-print-page.participant-dynamic-columns .participant-list-kop-spacer{
+  width:28mm!important;
+  min-width:28mm!important;
+  height:25mm!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-list-kop-logo{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  padding-left:1mm!important;
+  box-sizing:border-box!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-list-kop-logo img{
+  display:block!important;
+  width:auto!important;
+  height:auto!important;
+  max-width:26mm!important;
+  max-height:24mm!important;
+  object-fit:contain!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-list-logo-fallback{
+  font-size:18pt!important;
+  font-weight:900!important;
+  color:#17724a!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-list-kop-text{
+  min-width:0!important;
+  width:100%!important;
+  text-align:center!important;
+  line-height:1.05!important;
+  overflow:visible!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-list-kop-foundation{
+  font-size:8.5pt!important;
+  font-weight:900!important;
+  white-space:nowrap!important;
+  margin:0 0 .7mm!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-list-kop-school{
+  font-size:13.3pt!important;
+  font-weight:900!important;
+  line-height:1.05!important;
+  white-space:nowrap!important;
+  margin:0!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-list-kop-address{
+  font-size:7.3pt!important;
+  font-weight:600!important;
+  line-height:1.06!important;
+  white-space:nowrap!important;
+  margin-top:.8mm!important;
+}
+
+/* Judul: blok persis selebar tabel, pusat teks = pusat tabel. */
+.participant-list-print-page.participant-dynamic-columns .participant-list-title-block{
+  display:block!important;
+  box-sizing:border-box!important;
+  margin:0 0 3mm 0!important;
+  padding:0!important;
+  text-align:center!important;
+  color:#000!important;
+  line-height:1.08!important;
+  overflow:visible!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-list-title-main{
+  width:100%!important;
+  text-align:center!important;
+  font-size:13pt!important;
+  font-weight:900!important;
+  line-height:1.05!important;
+  margin:0!important;
+  text-transform:uppercase!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-list-title-assessment{
+  width:100%!important;
+  text-align:center!important;
+  font-size:10.8pt!important;
+  font-weight:900!important;
+  line-height:1.08!important;
+  margin:.6mm 0 0!important;
+  padding:0!important;
+  text-transform:uppercase!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-list-title-room{
+  width:100%!important;
+  text-align:center!important;
+  font-size:10.8pt!important;
+  font-weight:900!important;
+  line-height:1.05!important;
+  margin:.5mm 0 0!important;
+  text-transform:uppercase!important;
+}
+
+@media print{
+  .participant-list-print-page.participant-dynamic-columns .participant-list-kop,
+  .participant-list-print-page.participant-dynamic-columns .participant-list-title-block{
+    margin-left:0!important;
+    margin-right:auto!important;
+  }
+  .participant-list-print-page.participant-dynamic-columns .participant-list-kop-logo img{
+    max-width:26mm!important;
+    max-height:24mm!important;
+  }
 }
 </style>
 
@@ -9105,6 +9733,47 @@ function printRoomDistribution(roomNo='all'){
  return true;
 }
 
+function participantListColumnLayout(students){
+ let rows=Array.isArray(students)?students:[];
+ let maxName=Math.max(1,...rows.map(s=>String(s?.name||'').trim().length));
+ let maxNis=Math.max(3,...rows.map(s=>String(s?.nis||'').trim().length));
+ let maxClass=Math.max(2,...rows.map(s=>String(s?.class||'').trim().length));
+
+ const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
+
+ // Kolom di depan Nama dibuat lebih rapat agar kolom Nama bergeser ke kiri.
+ let no=9;
+ let number=25;
+ let nis=clamp(14 + maxNis*1.25,20,26);
+
+ // Lebar Nama benar-benar mengikuti nama siswa terpanjang di ruang tersebut.
+ // Estimasi dibuat sedikit longgar agar nama tetap satu baris selama memungkinkan.
+ let name=clamp(24 + maxName*2.05,62,112);
+
+ let gender=13;
+ let kelas=clamp(12 + maxClass*2.1,17,24);
+
+ let total=no+number+nis+name+gender+kelas;
+
+ // Jangan melebihi area cetak maksimal 249mm.
+ if(total>249){
+   let over=total-249;
+   name=Math.max(58,name-over);
+   total=no+number+nis+name+gender+kelas;
+ }
+
+ return {
+   no:Number(no.toFixed(1)),
+   number:Number(number.toFixed(1)),
+   nis:Number(nis.toFixed(1)),
+   name:Number(name.toFixed(1)),
+   gender:Number(gender.toFixed(1)),
+   kelas:Number(kelas.toFixed(1)),
+   total:Number(total.toFixed(1)),
+   longestName:maxName
+ };
+}
+
 function participantListDensityClass(count){
  count=Number(count)||0;
  if(count>36)return 'participant-density-xhigh';
@@ -9113,19 +9782,47 @@ function participantListDensityClass(count){
  return 'participant-density-normal';
 }
 
+function participantListKopHtml(widthMm){
+ let logo=db.school.logo
+   ? `<img src="${db.school.logo}" alt="Logo Madrasah">`
+   : `<div class="participant-list-logo-fallback">NU</div>`;
+ return `<div class="participant-list-kop" style="width:${widthMm}mm;max-width:${widthMm}mm;">
+   <div class="participant-list-kop-logo">${logo}</div>
+   <div class="participant-list-kop-text">
+     <div class="participant-list-kop-foundation">${esc(db.school.foundation||"LEMBAGA PENDIDIKAN MA’ARIF NU CABANG BANYUMAS")}</div>
+     <div class="participant-list-kop-school">${esc(db.school.name||"MTs MA'ARIF NU 1 WANGON")}</div>
+     <div class="participant-list-kop-address">Alamat: Jalan Raya Timur Wangon Kecamatan Wangon Kabupaten Banyumas 53176</div>
+   </div>
+   <div class="participant-list-kop-spacer"></div>
+ </div>`;
+}
+
+function participantListTitleHtml(widthMm,roomNo){
+ return `<div class="participant-list-title-block" style="width:${widthMm}mm;max-width:${widthMm}mm;">
+   <div class="participant-list-title-main">DAFTAR PESERTA</div>
+   <div class="participant-list-title-assessment">${esc(assessmentDisplay())}</div>
+   <div class="participant-list-title-room">RUANG ${String(roomNo).padStart(2,'0')}</div>
+ </div>`;
+}
+
 function participantListPrintPage(r,students,startIndex=0,pageIndex=0,totalPages=1,isLast=true){
  let density=participantListDensityClass(students?.length||0);
- return `<div class="print-page participant-list-print-page special-assessment-print-page participant-exact-print-page participant-one-room-page ${density}">
-   <div class="print-header participant-exact-header">${specialPortraitPrintHeader()}</div>
-   <div class="print-title participant-exact-title">${specialPortraitTitle('DAFTAR PESERTA',`RUANG ${String(r.no).padStart(2,'0')}`)}</div>
-   <table class="print-table special-print-table participant-special-table participant-exact-table">
+ let col=participantListColumnLayout(students||[]);
+ let tableStyle=`width:${col.total}mm!important;min-width:${col.total}mm!important;max-width:${col.total}mm!important;`;
+ let footerStyle=`width:${col.total}mm!important;max-width:${col.total}mm!important;`;
+
+ return `<div class="print-page participant-list-print-page special-assessment-print-page participant-exact-print-page participant-one-room-page participant-dynamic-columns ${density}"
+   style="--participant-table-width:${col.total}mm;--participant-name-width:${col.name}mm;">
+   ${participantListKopHtml(col.total)}
+   ${participantListTitleHtml(col.total,r.no)}
+   <table class="print-table special-print-table participant-special-table participant-exact-table" style="${tableStyle}">
      <colgroup>
-       <col class="participant-col-no">
-       <col class="participant-col-number">
-       <col class="participant-col-nis">
-       <col class="participant-col-name">
-       <col class="participant-col-gender">
-       <col class="participant-col-class">
+       <col class="participant-col-no" style="width:${col.no}mm!important">
+       <col class="participant-col-number" style="width:${col.number}mm!important">
+       <col class="participant-col-nis" style="width:${col.nis}mm!important">
+       <col class="participant-col-name" style="width:${col.name}mm!important">
+       <col class="participant-col-gender" style="width:${col.gender}mm!important">
+       <col class="participant-col-class" style="width:${col.kelas}mm!important">
      </colgroup>
      <thead><tr>
        <th>No</th><th>Nomor Peserta</th><th>NIS</th><th>Nama</th><th>L/P</th><th>Kelas</th>
@@ -9139,8 +9836,8 @@ function participantListPrintPage(r,students,startIndex=0,pageIndex=0,totalPages
        <td>${esc(st.class)}</td>
      </tr>`).join('')}</tbody>
    </table>
-   <div class="print-footer participant-exact-footer">RUANG ${String(r.no).padStart(2,'0')} &nbsp;•&nbsp; 1 LEMBAR</div>
-   ${isLast?`<div class="special-signature-wrap participant-exact-signature">${signature()}</div>`:''}
+   <div class="print-footer participant-exact-footer" style="${footerStyle}">RUANG ${String(r.no).padStart(2,'0')} &nbsp;•&nbsp; 1 LEMBAR</div>
+   ${isLast?`<div class="special-signature-wrap participant-exact-signature participant-dynamic-signature" style="width:${col.total}mm!important;max-width:${col.total}mm!important;">${signature()}</div>`:''}
  </div>`;
 }
 
@@ -10095,27 +10792,33 @@ function schedulePrintRowsFixed(){
 
  return groups.map((g,groupIndex)=>{
    let span=Math.max(g.rows.length,1);
-   return g.rows.map((x,rowIndex)=>`<tr>
-     ${rowIndex===0
-       ? `<td class="schedule-no-cell" rowspan="${span}">${groupIndex+1}</td>
-          <td class="schedule-day-cell" rowspan="${span}">${schedulePrintDateHtml(g.date||'')}</td>`
-       : ''}
-     <td class="schedule-time-cell">${esc(x.time||'')}</td>
-     <td class="schedule-allocation-cell">${esc(x.allocation||deriveAllocationFromTime(x.time)||'')}</td>
-     <td class="schedule-subject-cell">${esc(scheduleSubject(x))}</td>
-     <td class="schedule-note-cell">${esc(x.note||'')}</td>
-   </tr>`).join('');
+   return g.rows.map((x,rowIndex)=>{
+     let subject=scheduleSubject(x);
+     let isHabit=/\bpembiasaan\b/i.test(String(subject||''));
+     let rowClass=isHabit?'schedule-row-habituation':'schedule-row-mapel';
+     return `<tr class="${rowClass}">
+       ${rowIndex===0
+         ? `<td class="schedule-no-cell" rowspan="${span}">${groupIndex+1}</td>
+            <td class="schedule-day-cell" rowspan="${span}">${schedulePrintDateHtml(g.date||'')}</td>`
+         : ''}
+       <td class="schedule-time-cell">${esc(x.time||'')}</td>
+       <td class="schedule-allocation-cell">${esc(x.allocation||deriveAllocationFromTime(x.time)||'')}</td>
+       <td class="schedule-subject-cell">${esc(subject)}</td>
+       <td class="schedule-note-cell">${esc(x.note||'')}</td>
+     </tr>`;
+   }).join('');
  }).join('');
 }
 
-function schedulePrintHeaderFixed(){
+function schedulePrintHeaderFixed(widthMm=250){
  let schoolName=String(db.school?.name||"MTs MA'ARIF NU 1 WANGON").trim();
  let schoolYear=String(getSchoolYear()).replace(/\s+/g,'');
  let logo=db.school?.logo
    ? `<img src="${db.school.logo}" alt="Logo Madrasah">`
    : `<div class="schedule-fixed-logo-fallback">NU</div>`;
+ let safeWidth=Math.max(170,Math.min(250,Number(widthMm)||250));
 
- return `<div class="schedule-fixed-header">
+ return `<div class="schedule-fixed-header schedule-auto-width-header" style="--schedule-header-width:${safeWidth}mm;">
    <div class="schedule-fixed-logo">${logo}</div>
    <div class="schedule-fixed-heading">
      <div class="schedule-fixed-assessment">${esc(assessmentDisplay())}</div>
@@ -12842,10 +13545,28 @@ function printStudentsByRoom(roomNo='all'){
  `<div class="actions no-print"><button onclick="systemPrint()">🖨 Cetak</button><button class="secondary" onclick="render('print')">Kembali ke Print</button></div>`;
  return true;
 }
+function schedulePrintColumnWidths(){
+ let schedules=db.schedules||[];
+ let maxSubject=Math.max(0,...schedules.map(s=>String(scheduleSubject(s)||'').trim().length));
+ let maxNote=Math.max(0,...schedules.map(s=>String(s.note||'').trim().length));
+
+ // Lebar dibuat mengikuti teks terpanjang, tetapi tetap dalam batas aman.
+ // Mata Pelajaran: 48–66 mm. Keterangan: 30–44 mm.
+ let subject=Math.max(48,Math.min(66,Math.round(34 + maxSubject*1.25)));
+ let note=Math.max(30,Math.min(44,Math.round(24 + maxNote*1.05)));
+
+ // Kolom tetap dipertahankan. Total tabel sengaja boleh lebih sempit dari 250 mm
+ // agar batas Mapel + Keterangan benar-benar bergeser ke kiri.
+ let fixed={no:12,date:42,time:30,allocation:24};
+ let total=fixed.no+fixed.date+fixed.time+fixed.allocation+subject+note;
+ return {...fixed,subject,note,total};
+}
+
 function printScheduleDoc(){
+ let col=schedulePrintColumnWidths();
  document.getElementById('app').innerHTML=`<div class="print-page schedule-print-page schedule-fixed-print-page">
-   ${schedulePrintHeaderFixed()}
-   <table class="schedule-fixed-table">
+   ${schedulePrintHeaderFixed(col.total)}
+   <table class="schedule-fixed-table schedule-auto-width-table" style="--schedule-table-width:${col.total}mm;--schedule-subject-width:${col.subject}mm;--schedule-note-width:${col.note}mm;">
      <colgroup>
        <col class="schedule-fixed-no">
        <col class="schedule-fixed-date">
@@ -12864,7 +13585,10 @@ function printScheduleDoc(){
      </tr></thead>
      <tbody>${schedulePrintRowsFixed()}</tbody>
    </table>
-   <div class="schedule-fixed-signature">${signature()}</div>
+   <div class="schedule-fixed-signature schedule-signature-table-aligned"
+        style="--schedule-table-width:${col.total}mm;--schedule-note-width:${col.note}mm;">
+     ${signature()}
+   </div>
  </div>
  <div class="actions no-print">
    <button onclick="systemPrint()">🖨 Cetak</button>
