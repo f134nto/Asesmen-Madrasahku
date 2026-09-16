@@ -8056,6 +8056,341 @@ window.pdfjsLibBridge=pdfjsLib;
 }
 </style>
 
+
+<style id="override-daftar-peserta-tanpa-kop-judul-ttd-besar">
+/* ===== OVERRIDE DAFTAR PESERTA: TANPA KOP + JUDUL & TTD LEBIH BESAR ===== */
+.participant-list-print-page.participant-dynamic-columns .participant-list-kop,
+.participant-list-print-page.participant-dynamic-columns .participant-exact-header,
+.participant-list-print-page.participant-dynamic-columns .special-print-kop{
+  display:none !important;
+}
+
+.participant-list-print-page.participant-dynamic-columns{
+  padding-top:0 !important;
+}
+
+.participant-list-print-page.participant-dynamic-columns .participant-list-title-block,
+.participant-list-print-page.participant-dynamic-columns .participant-exact-title,
+.participant-list-print-page.participant-dynamic-columns .special-print-title{
+  margin-top:0 !important;
+  margin-bottom:4mm !important;
+  padding-top:0 !important;
+}
+
+.participant-list-print-page.participant-dynamic-columns .participant-list-title-main{
+  font-size:18pt !important;
+  line-height:1.05 !important;
+  font-weight:900 !important;
+  letter-spacing:.2px !important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-list-title-assessment{
+  font-size:14.5pt !important;
+  line-height:1.12 !important;
+  font-weight:900 !important;
+  margin-top:1.2mm !important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-list-title-room{
+  font-size:14.5pt !important;
+  line-height:1.08 !important;
+  font-weight:900 !important;
+  margin-top:1mm !important;
+}
+
+.participant-list-print-page.participant-dynamic-columns .participant-dynamic-signature{
+  margin-top:5mm !important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-dynamic-signature > div{
+  margin-top:0 !important;
+  justify-content:flex-end !important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-dynamic-signature > div > div{
+  font-size:14pt !important;
+  line-height:1.45 !important;
+  width:340px !important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-dynamic-signature u,
+.participant-list-print-page.participant-dynamic-columns .participant-dynamic-signature b{
+  font-size:14pt !important;
+}
+
+@media print{
+  .participant-list-print-page.participant-dynamic-columns .participant-list-kop,
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-header,
+  .participant-list-print-page.participant-dynamic-columns .special-print-kop{
+    display:none !important;
+  }
+  .participant-list-print-page.participant-dynamic-columns .participant-list-title-block,
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-title,
+  .participant-list-print-page.participant-dynamic-columns .special-print-title{
+    margin-top:0 !important;
+    padding-top:0 !important;
+    margin-bottom:4mm !important;
+  }
+  .participant-list-print-page.participant-dynamic-columns .participant-list-title-main{
+    font-size:18pt !important;
+  }
+  .participant-list-print-page.participant-dynamic-columns .participant-list-title-assessment,
+  .participant-list-print-page.participant-dynamic-columns .participant-list-title-room{
+    font-size:14.5pt !important;
+  }
+  .participant-list-print-page.participant-dynamic-columns .participant-dynamic-signature > div > div,
+  .participant-list-print-page.participant-dynamic-columns .participant-dynamic-signature u,
+  .participant-list-print-page.participant-dynamic-columns .participant-dynamic-signature b{
+    font-size:14pt !important;
+  }
+}
+</style>
+
+
+<style id="participant-table-font-12pt-final">
+/* ===== DAFTAR PESERTA: FONT TABEL 12 PT ===== */
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table{
+  font-size:12pt!important;
+  line-height:1.08!important;
+}
+
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table th{
+  font-size:12pt!important;
+  font-weight:900!important;
+  line-height:1.08!important;
+  padding:1.2mm 1.1mm!important;
+  vertical-align:middle!important;
+}
+
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table td{
+  font-size:12pt!important;
+  line-height:1.08!important;
+  padding:1.15mm 1.1mm!important;
+  vertical-align:middle!important;
+}
+
+/* Nama tetap 12pt, tetapi tidak keluar dari kolom */
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table td.name-cell{
+  font-size:12pt!important;
+  line-height:1.08!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+}
+
+/* Nomor peserta tetap jelas dan satu baris */
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table th:nth-child(2),
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table td:nth-child(2){
+  font-size:12pt!important;
+  white-space:nowrap!important;
+}
+
+/* Keterangan tetap kosong tetapi lebar kolom dipertahankan */
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table td.participant-note-cell{
+  font-size:12pt!important;
+}
+
+/* Override density lama agar tidak mengecilkan tulisan lagi */
+.participant-list-print-page.participant-dynamic-columns.participant-density-normal .participant-exact-table,
+.participant-list-print-page.participant-dynamic-columns.participant-density-medium .participant-exact-table,
+.participant-list-print-page.participant-dynamic-columns.participant-density-high .participant-exact-table,
+.participant-list-print-page.participant-dynamic-columns.participant-density-xhigh .participant-exact-table,
+.participant-list-print-page.participant-dynamic-columns.participant-density-normal .participant-exact-table td,
+.participant-list-print-page.participant-dynamic-columns.participant-density-medium .participant-exact-table td,
+.participant-list-print-page.participant-dynamic-columns.participant-density-high .participant-exact-table td,
+.participant-list-print-page.participant-dynamic-columns.participant-density-xhigh .participant-exact-table td,
+.participant-list-print-page.participant-dynamic-columns.participant-density-normal .participant-exact-table th,
+.participant-list-print-page.participant-dynamic-columns.participant-density-medium .participant-exact-table th,
+.participant-list-print-page.participant-dynamic-columns.participant-density-high .participant-exact-table th,
+.participant-list-print-page.participant-dynamic-columns.participant-density-xhigh .participant-exact-table th{
+  font-size:12pt!important;
+}
+
+@media print{
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table,
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table th,
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table td,
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table td.name-cell{
+    font-size:12pt!important;
+    line-height:1.08!important;
+  }
+
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table th{
+    padding:1.2mm 1.1mm!important;
+  }
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table td{
+    padding:1.15mm 1.1mm!important;
+  }
+}
+</style>
+
+
+<style id="participant-table-font-14pt-final">
+/* ===== DAFTAR PESERTA: FONT 14 PT + NOMOR PESERTA LEBIH LEBAR ===== */
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table{
+  font-size:14pt!important;
+  line-height:1.04!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table th{
+  font-size:14pt!important;
+  font-weight:900!important;
+  line-height:1.04!important;
+  padding:.8mm .7mm!important;
+  vertical-align:middle!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table td{
+  font-size:14pt!important;
+  line-height:1.04!important;
+  padding:.75mm .7mm!important;
+  vertical-align:middle!important;
+}
+
+/* Kolom Nomor Peserta: teks header dan isi tidak boleh tertutup / pindah baris. */
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table th:nth-child(2),
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table td:nth-child(2){
+  font-size:14pt!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  text-align:center!important;
+  padding-left:.5mm!important;
+  padding-right:.5mm!important;
+}
+
+/* Nama tetap 14pt dan satu baris selama memungkinkan. */
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table td.name-cell{
+  font-size:14pt!important;
+  line-height:1.04!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  padding-left:1mm!important;
+  padding-right:1mm!important;
+}
+
+/* Override density lama supaya tidak mengecilkan lagi ke 8-12pt. */
+.participant-list-print-page.participant-dynamic-columns.participant-density-normal .participant-exact-table,
+.participant-list-print-page.participant-dynamic-columns.participant-density-medium .participant-exact-table,
+.participant-list-print-page.participant-dynamic-columns.participant-density-high .participant-exact-table,
+.participant-list-print-page.participant-dynamic-columns.participant-density-xhigh .participant-exact-table,
+.participant-list-print-page.participant-dynamic-columns.participant-density-normal .participant-exact-table th,
+.participant-list-print-page.participant-dynamic-columns.participant-density-medium .participant-exact-table th,
+.participant-list-print-page.participant-dynamic-columns.participant-density-high .participant-exact-table th,
+.participant-list-print-page.participant-dynamic-columns.participant-density-xhigh .participant-exact-table th,
+.participant-list-print-page.participant-dynamic-columns.participant-density-normal .participant-exact-table td,
+.participant-list-print-page.participant-dynamic-columns.participant-density-medium .participant-exact-table td,
+.participant-list-print-page.participant-dynamic-columns.participant-density-high .participant-exact-table td,
+.participant-list-print-page.participant-dynamic-columns.participant-density-xhigh .participant-exact-table td{
+  font-size:14pt!important;
+}
+
+@media print{
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table,
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table th,
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table td,
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table td.name-cell{
+    font-size:14pt!important;
+    line-height:1.04!important;
+  }
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table th{
+    padding:.8mm .7mm!important;
+  }
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table td{
+    padding:.75mm .7mm!important;
+  }
+}
+</style>
+
+
+<style id="participant-columns-measured-final">
+/* ===== NOMOR PESERTA & NAMA: GARIS MENGIKUTI LEBAR TEKS 14PT ===== */
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table{
+  table-layout:fixed!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table th:nth-child(2),
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table td:nth-child(2){
+  white-space:nowrap!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  padding-left:1.5mm!important;
+  padding-right:1.5mm!important;
+  box-sizing:border-box!important;
+}
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table th:nth-child(4),
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table td:nth-child(4),
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table td.name-cell{
+  white-space:nowrap!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  padding-left:1.8mm!important;
+  padding-right:1.8mm!important;
+  box-sizing:border-box!important;
+}
+/* Pastikan aturan lama yang mengecilkan/memotong Nama tidak menang. */
+.participant-list-print-page.participant-dynamic-columns.participant-density-normal .participant-exact-table td.name-cell,
+.participant-list-print-page.participant-dynamic-columns.participant-density-medium .participant-exact-table td.name-cell,
+.participant-list-print-page.participant-dynamic-columns.participant-density-high .participant-exact-table td.name-cell,
+.participant-list-print-page.participant-dynamic-columns.participant-density-xhigh .participant-exact-table td.name-cell{
+  font-size:14pt!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+}
+@media print{
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table th:nth-child(2),
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table td:nth-child(2),
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table th:nth-child(4),
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table td:nth-child(4),
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table td.name-cell{
+    overflow:visible!important;
+    white-space:nowrap!important;
+  }
+}
+</style>
+
+
+<style id="participant-number-column-extra-wide-final">
+/* ===== FIX AKHIR: NOMOR PESERTA LEBIH LEBAR + KET. ===== */
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table th:nth-child(1),
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table td:nth-child(1){
+  min-width:11mm!important;
+  white-space:nowrap!important;
+  text-align:center!important;
+}
+
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table th:nth-child(2),
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table td:nth-child(2){
+  min-width:56mm!important;
+  width:56mm!important;
+  max-width:56mm!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  text-align:center!important;
+  padding-left:2mm!important;
+  padding-right:2mm!important;
+  box-sizing:border-box!important;
+}
+
+/* Header "Nomor Peserta" diberi ruang internal lebih lega dari garis vertikal. */
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table th:nth-child(2){
+  font-size:14pt!important;
+  line-height:1!important;
+  letter-spacing:0!important;
+}
+
+/* Kolom Ket. cukup pendek karena isi dikosongkan. */
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table th:nth-child(7),
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table td:nth-child(7){
+  min-width:16mm!important;
+  white-space:nowrap!important;
+  text-align:center!important;
+  padding-left:.8mm!important;
+  padding-right:.8mm!important;
+}
+
+@media print{
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table th:nth-child(2),
+  .participant-list-print-page.participant-dynamic-columns .participant-exact-table td:nth-child(2){
+    min-width:56mm!important;
+    width:56mm!important;
+    max-width:56mm!important;
+    padding-left:2mm!important;
+    padding-right:2mm!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="loginScreen"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan penyimpanan Supabase. Gunakan akun cloud yang sama agar data dapat dibuka dari komputer/laptop lain.</p></div><div style="font-size:12px;color:#d9eadf">Database Cloud Supabase • Sinkron Otomatis</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">LOGIN ADMIN CLOUD</div><h2>Selamat Datang</h2><div class="sub">Masukkan email dan password Supabase. Akun yang sama dapat digunakan di perangkat lain.</div><div id="loginError" class="login-error">Login gagal.</div><div class="login-field"><label>Email Admin</label><input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com"></div><div class="login-field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -9800,36 +10135,82 @@ function printRoomDistribution(roomNo='all'){
  return true;
 }
 
+function participantMeasureTextMm(value,bold=false){
+ let text=String(value||'');
+ try{
+   let canvas=participantMeasureTextMm._canvas||(participantMeasureTextMm._canvas=document.createElement('canvas'));
+   let ctx=canvas.getContext('2d');
+   ctx.font=`${bold?'700':'400'} 14pt Arial, Helvetica, sans-serif`;
+   // CSS pixel 96dpi => 1mm = 96/25.4 px
+   return ctx.measureText(text).width/(96/25.4);
+ }catch(_){
+   // fallback jika canvas belum tersedia
+   return text.length*(bold?2.45:2.25);
+ }
+}
+
 function participantListColumnLayout(students){
  let rows=Array.isArray(students)?students:[];
- let maxName=Math.max(1,...rows.map(s=>String(s?.name||'').trim().length));
- let maxNis=Math.max(3,...rows.map(s=>String(s?.nis||'').trim().length));
- let maxClass=Math.max(2,...rows.map(s=>String(s?.class||'').trim().length));
-
+ let names=rows.map(s=>String(s?.name||'').trim()).filter(Boolean);
+ let nisValues=rows.map(s=>String(s?.nis||'').trim()).filter(Boolean);
+ let classValues=rows.map(s=>String(s?.class||'').trim()).filter(Boolean);
  const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 
- let no=9;
+ // Kolom kecil dibuat hemat agar ruang utama diberikan ke Nomor Peserta dan Nama.
+ let no=11;
 
- // Diperlebar agar tulisan "Nomor Peserta" utuh dan nomor 7A-01 dst. lega.
- let number=33;
+ // Lebar dihitung dari tulisan header 14pt, lalu diberi ruang padding ekstra
+ // supaya garis kanan tidak menyentuh / menutup tulisan.
+ let number=56;
 
- let nis=clamp(14 + maxNis*1.2,20,26);
+ let widestNis=Math.max(
+   participantMeasureTextMm('NIS',true),
+   ...nisValues.map(v=>participantMeasureTextMm(v,false)),
+   0
+ );
+ let nis=clamp(widestNis+6,20,26);
 
- // Nama tetap dinamis berdasarkan nama terpanjang dalam ruang.
- let name=clamp(22 + maxName*1.9,58,98);
+ // Nama mengikuti lebar nama TERPANJANG pada ruang ini menggunakan ukuran 14pt sebenarnya.
+ let widestName=Math.max(
+   participantMeasureTextMm('Nama',true),
+   ...names.map(v=>participantMeasureTextMm(v,false)),
+   0
+ );
+ let name=clamp(widestName+9,62,120);
 
- let gender=12;
- let kelas=clamp(11 + maxClass*2,17,23);
+ let gender=11;
 
- // Kolom paling kanan baru, dibiarkan kosong.
- let note=34;
+ let widestClass=Math.max(
+   participantMeasureTextMm('Kelas',true),
+   ...classValues.map(v=>participantMeasureTextMm(v,false)),
+   0
+ );
+ let kelas=clamp(widestClass+6,17,22);
 
+ // Kolom Keterangan boleh dipersempit terlebih dahulu bila tabel mendekati batas halaman.
+ let note=18;
  let total=no+number+nis+name+gender+kelas+note;
 
- // Maksimum area cetak tetap 249mm.
  if(total>249){
    let over=total-249;
-   name=Math.max(54,name-over);
+   let reducibleNote=Math.max(0,note-16);
+   let cut=Math.min(over,reducibleNote);
+   note-=cut; over-=cut;
+
+   if(over>0){
+     let reducibleNis=Math.max(0,nis-20);
+     cut=Math.min(over,reducibleNis);
+     nis-=cut; over-=cut;
+   }
+
+   if(over>0){
+     let reducibleClass=Math.max(0,kelas-17);
+     cut=Math.min(over,reducibleClass);
+     kelas-=cut; over-=cut;
+   }
+
+   // Nama baru dikurangi sebagai pilihan terakhir, namun tetap dijaga cukup besar.
+   if(over>0)name=Math.max(58,name-over);
    total=no+number+nis+name+gender+kelas+note;
  }
 
@@ -9842,7 +10223,7 @@ function participantListColumnLayout(students){
    kelas:Number(kelas.toFixed(1)),
    note:Number(note.toFixed(1)),
    total:Number(total.toFixed(1)),
-   longestName:maxName
+   longestName:names.reduce((a,b)=>a.length>=b.length?a:b,'')
  };
 }
 
@@ -9898,7 +10279,7 @@ function participantListPrintPage(r,students,startIndex=0,pageIndex=0,totalPages
        <col class="participant-col-note" style="width:${col.note}mm!important">
      </colgroup>
      <thead><tr>
-       <th>No</th><th>Nomor Peserta</th><th>NIS</th><th>Nama</th><th>L/P</th><th>Kelas</th><th>Keterangan</th>
+       <th>No</th><th>Nomor Peserta</th><th>NIS</th><th>Nama</th><th>L/P</th><th>Kelas</th><th>Ket.</th>
      </tr></thead>
      <tbody>${students.map((st,i)=>`<tr>
        <td>${startIndex+i+1}</td>
