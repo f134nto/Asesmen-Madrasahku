@@ -8391,6 +8391,340 @@ window.pdfjsLibBridge=pdfjsLib;
 }
 </style>
 
+
+<style id="schedule-no-kop-font14-final">
+/* ===== JADWAL ASESMEN: TANPA KOP + FONT 14 PT ===== */
+.schedule-print-page.schedule-no-kop-print{
+  padding-top:15mm!important;
+}
+
+/* WAKTU: header + isi */
+.schedule-no-kop-print .schedule-fixed-table th:nth-child(3),
+.schedule-no-kop-print .schedule-fixed-table td.schedule-time-cell{
+  font-size:14pt!important;
+  line-height:1.12!important;
+  font-weight:800!important;
+}
+
+/* ALOKASI: header + isi */
+.schedule-no-kop-print .schedule-fixed-table th:nth-child(4),
+.schedule-no-kop-print .schedule-fixed-table td.schedule-allocation-cell{
+  font-size:14pt!important;
+  line-height:1.12!important;
+  font-weight:800!important;
+}
+
+/* MATA PELAJARAN: header + isi */
+.schedule-no-kop-print .schedule-fixed-table th:nth-child(5),
+.schedule-no-kop-print .schedule-fixed-table td.schedule-subject-cell{
+  font-size:14pt!important;
+  line-height:1.12!important;
+  font-weight:800!important;
+}
+
+/* Header Ket. dibuat ringkas dan jelas */
+.schedule-no-kop-print .schedule-fixed-table th:nth-child(6){
+  white-space:nowrap!important;
+}
+
+/* Tampilan di halaman Jadwal Asesmen juga ikut lebih besar */
+.schedule-assessment-table th.col-time,
+.schedule-assessment-table td.col-time,
+.schedule-assessment-table th.col-allocation,
+.schedule-assessment-table td.col-allocation,
+.schedule-assessment-table th.col-subject,
+.schedule-assessment-table td.col-subject,
+.schedule-assessment-table td.schedule-subject-cell{
+  font-size:14pt!important;
+}
+
+/* Input di tiga kolom utama ikut terbaca jelas */
+.schedule-assessment-table .schedule-time-edit,
+.schedule-assessment-table .schedule-allocation-edit,
+.schedule-assessment-table .schedule-subject-edit{
+  font-size:14pt!important;
+  font-weight:700!important;
+}
+
+/* Kolom Ket. tidak perlu terlalu lebar */
+.schedule-assessment-table th.col-note{
+  white-space:nowrap!important;
+}
+
+@media print{
+  .schedule-print-page.schedule-no-kop-print{
+    padding-top:15mm!important;
+  }
+  .schedule-no-kop-print .schedule-fixed-table th:nth-child(3),
+  .schedule-no-kop-print .schedule-fixed-table td.schedule-time-cell,
+  .schedule-no-kop-print .schedule-fixed-table th:nth-child(4),
+  .schedule-no-kop-print .schedule-fixed-table td.schedule-allocation-cell,
+  .schedule-no-kop-print .schedule-fixed-table th:nth-child(5),
+  .schedule-no-kop-print .schedule-fixed-table td.schedule-subject-cell{
+    font-size:14pt!important;
+  }
+}
+</style>
+
+
+<style id="schedule-time-wide-normal-text-friday-habituation">
+/* ===== JADWAL ASESMEN: WAKTU LEBAR + ISI NORMAL ===== */
+.schedule-fixed-table.schedule-auto-width-table col.schedule-fixed-time{
+  width:var(--schedule-time-width)!important;
+}
+
+.schedule-no-kop-print .schedule-fixed-table td.schedule-time-cell{
+  white-space:nowrap!important;
+  overflow:visible!important;
+  font-size:14pt!important;
+  font-weight:400!important;
+  line-height:1.12!important;
+  padding-left:2mm!important;
+  padding-right:2mm!important;
+}
+
+.schedule-no-kop-print .schedule-fixed-table td.schedule-allocation-cell,
+.schedule-no-kop-print .schedule-fixed-table td.schedule-subject-cell{
+  font-size:14pt!important;
+  font-weight:400!important;
+  line-height:1.12!important;
+}
+
+/* Header tetap tegas. */
+.schedule-no-kop-print .schedule-fixed-table th:nth-child(3),
+.schedule-no-kop-print .schedule-fixed-table th:nth-child(4),
+.schedule-no-kop-print .schedule-fixed-table th:nth-child(5){
+  font-size:14pt!important;
+  font-weight:900!important;
+}
+
+/* Tampilan halaman edit juga dibuat lebih lega untuk Waktu. */
+.schedule-assessment-table .col-time{
+  min-width:145px!important;
+  width:145px!important;
+}
+.schedule-assessment-table .schedule-time-edit{
+  white-space:nowrap!important;
+  font-size:14pt!important;
+  font-weight:400!important;
+}
+.schedule-assessment-table .schedule-allocation-edit,
+.schedule-assessment-table .schedule-subject-edit{
+  font-size:14pt!important;
+  font-weight:400!important;
+}
+
+@media print{
+  .schedule-fixed-table.schedule-auto-width-table col.schedule-fixed-time{
+    width:var(--schedule-time-width)!important;
+  }
+  .schedule-no-kop-print .schedule-fixed-table td.schedule-time-cell{
+    white-space:nowrap!important;
+    font-size:14pt!important;
+    font-weight:400!important;
+  }
+  .schedule-no-kop-print .schedule-fixed-table td.schedule-allocation-cell,
+  .schedule-no-kop-print .schedule-fixed-table td.schedule-subject-cell{
+    font-size:14pt!important;
+    font-weight:400!important;
+  }
+}
+</style>
+
+
+<style id="schedule-allocation-wide-single-line-final">
+/* ===== JADWAL ASESMEN: ALOKASI LEBIH LEBAR DAN 1 BARIS ===== */
+.schedule-fixed-table.schedule-auto-width-table col.schedule-fixed-allocation{
+  width:var(--schedule-allocation-width)!important;
+}
+
+.schedule-no-kop-print .schedule-fixed-table td.schedule-allocation-cell{
+  white-space:nowrap!important;
+  overflow:visible!important;
+  font-size:14pt!important;
+  font-weight:400!important;
+  line-height:1.12!important;
+  text-align:center!important;
+  padding-left:2mm!important;
+  padding-right:2mm!important;
+}
+
+/* Header Alokasi juga diberi ruang cukup */
+.schedule-no-kop-print .schedule-fixed-table th:nth-child(4){
+  white-space:nowrap!important;
+  font-size:14pt!important;
+  padding-left:2mm!important;
+  padding-right:2mm!important;
+}
+
+/* Tampilan editor ikut dilebarkan */
+.schedule-assessment-table .col-allocation{
+  min-width:125px!important;
+  width:125px!important;
+}
+.schedule-assessment-table .schedule-allocation-edit{
+  white-space:nowrap!important;
+  font-size:14pt!important;
+  font-weight:400!important;
+}
+
+@media print{
+  .schedule-fixed-table.schedule-auto-width-table col.schedule-fixed-allocation{
+    width:var(--schedule-allocation-width)!important;
+  }
+  .schedule-no-kop-print .schedule-fixed-table td.schedule-allocation-cell{
+    white-space:nowrap!important;
+    font-size:14pt!important;
+    font-weight:400!important;
+    padding-left:2mm!important;
+    padding-right:2mm!important;
+  }
+}
+</style>
+
+
+<style id="schedule-signature-font-14pt-final">
+/* ===== JADWAL ASESMEN: FONT TANDA TANGAN 14 PT ===== */
+.schedule-fixed-signature,
+.schedule-fixed-signature *,
+.schedule-signature-table-aligned,
+.schedule-signature-table-aligned *{
+  font-size:14pt!important;
+  line-height:1.4!important;
+}
+
+.schedule-fixed-signature b,
+.schedule-fixed-signature strong,
+.schedule-fixed-signature u,
+.schedule-signature-table-aligned b,
+.schedule-signature-table-aligned strong,
+.schedule-signature-table-aligned u{
+  font-size:14pt!important;
+}
+
+@media print{
+  .schedule-fixed-signature,
+  .schedule-fixed-signature *,
+  .schedule-signature-table-aligned,
+  .schedule-signature-table-aligned *{
+    font-size:14pt!important;
+    line-height:1.4!important;
+  }
+}
+</style>
+
+
+<style id="schedule-signature-left-wide-16pt-final">
+/* ===== JADWAL ASESMEN: TTD DIGESER KE KIRI + 16 PT ===== */
+.schedule-fixed-signature.schedule-signature-table-aligned{
+  box-sizing:border-box!important;
+  padding-right:12mm!important; /* menggeser blok tanda tangan ke kiri */
+}
+
+/* Wrapper dari function signature() */
+.schedule-fixed-signature.schedule-signature-table-aligned > div{
+  width:100%!important;
+  max-width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  display:flex!important;
+  justify-content:flex-end!important;
+  align-items:flex-start!important;
+  box-sizing:border-box!important;
+}
+
+/* Blok isi tanda tangan diperlebar agar kota + tanggal + tahun satu baris */
+.schedule-fixed-signature.schedule-signature-table-aligned > div > div{
+  width:84mm!important;
+  max-width:84mm!important;
+  min-width:84mm!important;
+  margin:0!important;
+  padding:0!important;
+  text-align:center!important;
+  font-size:16pt!important;
+  line-height:1.4!important;
+  box-sizing:border-box!important;
+}
+
+/* Wangon, tanggal lengkap tahun harus satu baris */
+.schedule-fixed-signature.schedule-signature-table-aligned > div > div > div:first-child{
+  white-space:nowrap!important;
+  font-size:16pt!important;
+  line-height:1.25!important;
+}
+
+/* Jabatan dan nama ikut diperbesar */
+.schedule-fixed-signature.schedule-signature-table-aligned > div > div > div:nth-child(2),
+.schedule-fixed-signature.schedule-signature-table-aligned > div > div > div:last-child,
+.schedule-fixed-signature.schedule-signature-table-aligned b,
+.schedule-fixed-signature.schedule-signature-table-aligned strong,
+.schedule-fixed-signature.schedule-signature-table-aligned u{
+  font-size:16pt!important;
+  line-height:1.35!important;
+}
+
+/* Jarak area tanda tangan tetap cukup */
+.schedule-fixed-signature.schedule-signature-table-aligned > div > div > div:nth-child(3){
+  height:18mm!important;
+}
+
+@media print{
+  .schedule-fixed-signature.schedule-signature-table-aligned{
+    padding-right:12mm!important;
+  }
+  .schedule-fixed-signature.schedule-signature-table-aligned > div > div{
+    width:84mm!important;
+    max-width:84mm!important;
+    min-width:84mm!important;
+    font-size:16pt!important;
+  }
+  .schedule-fixed-signature.schedule-signature-table-aligned > div > div > div:first-child,
+  .schedule-fixed-signature.schedule-signature-table-aligned > div > div > div:nth-child(2),
+  .schedule-fixed-signature.schedule-signature-table-aligned > div > div > div:last-child,
+  .schedule-fixed-signature.schedule-signature-table-aligned b,
+  .schedule-fixed-signature.schedule-signature-table-aligned strong,
+  .schedule-fixed-signature.schedule-signature-table-aligned u{
+    font-size:16pt!important;
+  }
+}
+</style>
+
+
+<style id="schedule-custom-title-16pt-bold-final">
+/* ===== JUDUL JADWAL ASESMEN 3 BARIS ===== */
+.schedule-print-page.schedule-no-kop-print .schedule-custom-title{
+  box-sizing:border-box!important;
+  margin:0 0 5mm 0!important;
+  padding:0!important;
+  text-align:center!important;
+  font-size:16pt!important;
+  font-weight:900!important;
+  line-height:1.25!important;
+  color:#000!important;
+}
+
+.schedule-print-page.schedule-no-kop-print .schedule-custom-title > div{
+  font-size:16pt!important;
+  font-weight:900!important;
+  line-height:1.25!important;
+  margin:0!important;
+  padding:0!important;
+  white-space:nowrap!important;
+}
+
+@media print{
+  .schedule-print-page.schedule-no-kop-print .schedule-custom-title{
+    font-size:16pt!important;
+    font-weight:900!important;
+    margin-bottom:5mm!important;
+  }
+  .schedule-print-page.schedule-no-kop-print .schedule-custom-title > div{
+    font-size:16pt!important;
+    font-weight:900!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="loginScreen"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan penyimpanan Supabase. Gunakan akun cloud yang sama agar data dapat dibuka dari komputer/laptop lain.</p></div><div style="font-size:12px;color:#d9eadf">Database Cloud Supabase • Sinkron Otomatis</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">LOGIN ADMIN CLOUD</div><h2>Selamat Datang</h2><div class="sub">Masukkan email dan password Supabase. Akun yang sama dapat digunakan di perangkat lain.</div><div id="loginError" class="login-error">Login gagal.</div><div class="login-field"><label>Email Admin</label><input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com"></div><div class="login-field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -10922,6 +11256,7 @@ function printParticipantCards(roomNo='all'){
 function schedule(){
  db.schedules=db.schedules||[];
  db.scheduleFiles=db.scheduleFiles||[];
+ ensureFridayHabituationAllocation();
 db.supervisorFiles=db.supervisorFiles||[];
  return `<div class="card"><h2>Jadwal Asesmen</h2>
  <div class="schedule-toolbar">
@@ -11238,6 +11573,32 @@ function schedulePrintDateHtml(value){
         (datePart?`<div class="schedule-print-date">${esc(toDDMMYYYY(datePart))}</div>`:'');
 }
 
+function isFridayScheduleDate(value){
+ let s=String(value||'').replace(/\s+/g,' ').trim().toLowerCase();
+ return /jum[’']?at/.test(s) || /\bjumat\b/.test(s);
+}
+
+function ensureFridayHabituationAllocation(){
+ let changed=false;
+ let groups=groupedAssessmentSchedules();
+ groups.forEach(g=>{
+   if(!isFridayScheduleDate(g.date||''))return;
+   (g.rows||[]).forEach(s=>{
+     let subject=String(scheduleSubject(s)||'').trim();
+     if(/\bpembiasaan\b/i.test(subject)){
+       if(String(s.allocation||'').trim().toLowerCase()!=='10 menit'){
+         s.allocation='10 menit';
+         changed=true;
+       }
+     }
+   });
+ });
+ if(changed){
+   try{save();}catch(_){}
+ }
+ return changed;
+}
+
 function schedulePrintRowsFixed(){
  let groups=groupedAssessmentSchedules();
  if(!groups.length){
@@ -11333,7 +11694,7 @@ function tableSchedules(){
          <th class="col-time">Waktu</th>
          <th class="col-allocation">Alokasi</th>
          <th class="col-subject">Mata Pelajaran</th>
-         <th class="col-note">Keterangan</th>
+         <th class="col-note">Ket.</th>
          <th class="no-print">Aksi</th>
        </tr>
      </thead>
@@ -14003,24 +14364,37 @@ function schedulePrintColumnWidths(){
  let schedules=db.schedules||[];
  let maxSubject=Math.max(0,...schedules.map(s=>String(scheduleSubject(s)||'').trim().length));
  let maxNote=Math.max(0,...schedules.map(s=>String(s.note||'').trim().length));
+ let maxTime=Math.max(0,...schedules.map(s=>String(s.time||'').replace(/\s+/g,'').trim().length));
+ let maxAllocation=Math.max(
+   0,
+   ...schedules.map(s=>String(s.allocation||deriveAllocationFromTime(s.time)||'').replace(/\s+/g,' ').trim().length)
+ );
 
- // Lebar dibuat mengikuti teks terpanjang, tetapi tetap dalam batas aman.
- // Mata Pelajaran: 48–66 mm. Keterangan: 30–44 mm.
+ // Waktu tetap dinamis agar satu baris.
+ let time=Math.max(40,Math.min(52,Math.round(20 + maxTime*2.1)));
+
+ // Alokasi diperlebar berdasarkan isi terpanjang, contoh 120 menit.
+ // Minimal 34mm, maksimal 44mm.
+ let allocation=Math.max(34,Math.min(44,Math.round(18 + maxAllocation*2.05)));
+
  let subject=Math.max(48,Math.min(66,Math.round(34 + maxSubject*1.25)));
  let note=Math.max(30,Math.min(44,Math.round(24 + maxNote*1.05)));
 
- // Kolom tetap dipertahankan. Total tabel sengaja boleh lebih sempit dari 250 mm
- // agar batas Mapel + Keterangan benar-benar bergeser ke kiri.
- let fixed={no:12,date:42,time:30,allocation:24};
- let total=fixed.no+fixed.date+fixed.time+fixed.allocation+subject+note;
- return {...fixed,subject,note,total};
+ let fixed={no:12,date:42};
+ let total=fixed.no+fixed.date+time+allocation+subject+note;
+ return {...fixed,time,allocation,subject,note,total};
 }
 
 function printScheduleDoc(){
+ ensureFridayHabituationAllocation();
  let col=schedulePrintColumnWidths();
- document.getElementById('app').innerHTML=`<div class="print-page schedule-print-page schedule-fixed-print-page">
-   ${schedulePrintHeaderFixed(col.total)}
-   <table class="schedule-fixed-table schedule-auto-width-table" style="--schedule-table-width:${col.total}mm;--schedule-subject-width:${col.subject}mm;--schedule-note-width:${col.note}mm;">
+ document.getElementById('app').innerHTML=`<div class="print-page schedule-print-page schedule-fixed-print-page schedule-no-kop-print">
+   <div class="schedule-custom-title" style="width:${col.total}mm;max-width:${col.total}mm;">
+     <div>Jadwal Asesmen Sumatif Tengah Semester Gasal</div>
+     <div>MTs Ma'arif NU 1 Wangon</div>
+     <div>Tahun Ajaran 2026/2027</div>
+   </div>
+   <table class="schedule-fixed-table schedule-auto-width-table" style="--schedule-table-width:${col.total}mm;--schedule-time-width:${col.time}mm;--schedule-allocation-width:${col.allocation}mm;--schedule-subject-width:${col.subject}mm;--schedule-note-width:${col.note}mm;">
      <colgroup>
        <col class="schedule-fixed-no">
        <col class="schedule-fixed-date">
@@ -14035,7 +14409,7 @@ function printScheduleDoc(){
        <th>Waktu</th>
        <th>Alokasi</th>
        <th>Mata Pelajaran</th>
-       <th>Keterangan</th>
+       <th>Ket.</th>
      </tr></thead>
      <tbody>${schedulePrintRowsFixed()}</tbody>
    </table>
