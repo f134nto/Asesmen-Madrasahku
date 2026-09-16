@@ -9910,7 +9910,6 @@ function participantListPrintPage(r,students,startIndex=0,pageIndex=0,totalPages
        <td class="participant-note-cell"></td>
      </tr>`).join('')}</tbody>
    </table>
-   <div class="print-footer participant-exact-footer" style="${footerStyle}">RUANG ${String(r.no).padStart(2,'0')} &nbsp;•&nbsp; 1 LEMBAR</div>
    ${isLast?`<div class="special-signature-wrap participant-exact-signature participant-dynamic-signature" style="width:${col.total}mm!important;max-width:${col.total}mm!important;">${signature()}</div>`:''}
  </div>`;
 }
