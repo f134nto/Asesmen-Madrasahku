@@ -9592,6 +9592,92 @@ window.pdfjsLibBridge=pdfjsLib;
 }
 </style>
 
+
+<style id="room-capacity-table-14pt-jumlah-siswa-final">
+/* ===== PEMBAGIAN SISWA TIAP RUANG: TABEL 14 PT ===== */
+.room-capacity-print-page .room-capacity-print-table{
+  font-size:14pt!important;
+}
+
+.room-capacity-print-page .room-capacity-print-table th,
+.room-capacity-print-page .room-capacity-print-table td{
+  font-size:14pt!important;
+  line-height:1.15!important;
+  vertical-align:middle!important;
+}
+
+/* Header tetap tegas dan terbaca jelas */
+.room-capacity-print-page .room-capacity-print-table th{
+  font-weight:900!important;
+}
+
+/* Isi tabel tetap normal, bukan terlalu tebal */
+.room-capacity-print-page .room-capacity-print-table td{
+  font-weight:500!important;
+}
+
+/* Jumlah Siswa tetap satu baris */
+.room-capacity-print-page .room-capacity-print-table th:nth-child(3),
+.room-capacity-print-page .room-capacity-print-table td:nth-child(3){
+  white-space:nowrap!important;
+  text-align:center!important;
+}
+
+/* Tempat/Ruangan tetap mengikuti lebar dinamis sebelumnya */
+.room-capacity-print-page .room-capacity-print-table th:nth-child(4),
+.room-capacity-print-page .room-capacity-print-table td:nth-child(4){
+  font-size:14pt!important;
+  white-space:nowrap!important;
+}
+
+@media print{
+  .room-capacity-print-page .room-capacity-print-table,
+  .room-capacity-print-page .room-capacity-print-table th,
+  .room-capacity-print-page .room-capacity-print-table td{
+    font-size:14pt!important;
+  }
+}
+</style>
+
+
+<style id="room-capacity-jumlah-siswa-column-wide-final">
+/* ===== PEMBAGIAN SISWA TIAP RUANG: JUMLAH SISWA LEBIH LEBAR ===== */
+.room-capacity-document-wrap .room-capacity-print-table col:nth-child(3){
+  width:50mm!important;
+  min-width:50mm!important;
+}
+
+.room-capacity-print-page .room-capacity-print-table th:nth-child(3),
+.room-capacity-print-page .room-capacity-print-table td:nth-child(3){
+  width:50mm!important;
+  min-width:50mm!important;
+  max-width:50mm!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  box-sizing:border-box!important;
+  padding-left:2.5mm!important;
+  padding-right:2.5mm!important;
+  text-align:center!important;
+}
+
+/* Header 14 pt tetap satu baris dan tidak menempel pada garis */
+.room-capacity-print-page .room-capacity-print-table th:nth-child(3){
+  font-size:14pt!important;
+  font-weight:900!important;
+  line-height:1.1!important;
+}
+
+@media print{
+  .room-capacity-document-wrap .room-capacity-print-table col:nth-child(3),
+  .room-capacity-print-page .room-capacity-print-table th:nth-child(3),
+  .room-capacity-print-page .room-capacity-print-table td:nth-child(3){
+    width:50mm!important;
+    min-width:50mm!important;
+    max-width:50mm!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="loginScreen"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan penyimpanan Supabase. Gunakan akun cloud yang sama agar data dapat dibuka dari komputer/laptop lain.</p></div><div style="font-size:12px;color:#d9eadf">Database Cloud Supabase • Sinkron Otomatis</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">LOGIN ADMIN CLOUD</div><h2>Selamat Datang</h2><div class="sub">Masukkan email dan password Supabase. Akun yang sama dapat digunakan di perangkat lain.</div><div id="loginError" class="login-error">Login gagal.</div><div class="login-field"><label>Email Admin</label><input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com"></div><div class="login-field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -14748,7 +14834,8 @@ function roomCapacityPrintPage(){
  let locationWidth=Math.max(70,Math.min(145,Math.round(45 + longestLocation*2.7)));
  let noWidth=16;
  let roomWidth=45;
- let capacityWidth=38;
+ // Diperlebar agar header "Jumlah Siswa" 14pt tidak terkena garis.
+ let capacityWidth=50;
  let totalWidth=noWidth+roomWidth+capacityWidth+locationWidth;
 
  return `<div class="print-page room-capacity-print-page">
@@ -14769,7 +14856,7 @@ function roomCapacityPrintPage(){
        <thead><tr>
          <th class="room-capacity-no">No</th>
          <th class="room-capacity-room">Ruang</th>
-         <th class="room-capacity-capacity">Kapasitas</th>
+         <th class="room-capacity-capacity">Jumlah Siswa</th>
          <th class="room-capacity-location">Tempat/Ruangan</th>
        </tr></thead>
        <tbody>
@@ -15036,7 +15123,7 @@ function buildPrintExcelWorkbook(type,value='all'){
      [assessmentDisplay()||'Asesmen'],
      [`TAHUN AJARAN ${roomCapacitySchoolYear()}`],
      [],
-     ['No','Ruang','Kapasitas','Tempat/Ruangan']
+     ['No','Ruang','Jumlah Siswa','Tempat/Ruangan']
    ];
    rooms.forEach((r,i)=>rows.push([
      i+1,
@@ -15054,7 +15141,7 @@ function buildPrintExcelWorkbook(type,value='all'){
      [assessmentDisplay()||'Asesmen'],
      [`TAHUN AJARAN ${roomCapacitySchoolYear()}`],
      [],
-     ['No','Ruang','Kapasitas','Tempat/Ruangan']
+     ['No','Ruang','Jumlah Siswa','Tempat/Ruangan']
    ];
    rooms.forEach((r,i)=>rows.push([
      i+1,
