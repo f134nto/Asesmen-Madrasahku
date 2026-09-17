@@ -9841,6 +9841,74 @@ window.pdfjsLibBridge=pdfjsLib;
 }
 </style>
 
+
+<style id="supervisor-full-name-degree-fit-final">
+/* ===== DAFTAR NAMA / KODE PENGAWAS: NAMA + GELAR HARUS LENGKAP ===== */
+.supervisor-page-two .supervisor-code-legend-item{
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  min-width:0!important;
+  font-size:8.5pt!important;
+  line-height:1.08!important;
+  padding:.9mm 0!important;
+  word-break:normal!important;
+  overflow-wrap:normal!important;
+}
+
+.supervisor-page-two .supervisor-code-legend-item b{
+  display:inline-block!important;
+  min-width:7mm!important;
+  vertical-align:top!important;
+}
+
+.supervisor-page-two .supervisor-code-full-name{
+  display:inline!important;
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+}
+
+/* Nama yang panjang (termasuk nama + gelar) otomatis 1 pt lebih kecil */
+.supervisor-page-two .supervisor-code-legend-item.supervisor-code-name-long{
+  font-size:7.5pt!important;
+  line-height:1.06!important;
+}
+
+/* Beri sedikit ruang horizontal tambahan antarkolom */
+.supervisor-page-two .supervisor-code-legend-grid{
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  column-gap:4mm!important;
+  row-gap:.8mm!important;
+}
+
+/* Pengawas cadangan juga jangan sampai nama/gelarnya terpotong */
+.supervisor-page-two .supervisor-reserve-blank .reserve-name{
+  white-space:normal!important;
+  overflow:visible!important;
+  text-overflow:clip!important;
+  font-size:8pt!important;
+  line-height:1.08!important;
+}
+
+@media print{
+  .supervisor-page-two .supervisor-code-legend-item{
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    font-size:8.5pt!important;
+  }
+  .supervisor-page-two .supervisor-code-legend-item.supervisor-code-name-long{
+    font-size:7.5pt!important;
+  }
+  .supervisor-page-two .supervisor-code-full-name{
+    white-space:normal!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="loginScreen"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan penyimpanan Supabase. Gunakan akun cloud yang sama agar data dapat dibuka dari komputer/laptop lain.</p></div><div style="font-size:12px;color:#d9eadf">Database Cloud Supabase • Sinkron Otomatis</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">LOGIN ADMIN CLOUD</div><h2>Selamat Datang</h2><div class="sub">Masukkan email dan password Supabase. Akun yang sama dapat digunakan di perangkat lain.</div><div id="loginError" class="login-error">Login gagal.</div><div class="login-field"><label>Email Admin</label><input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com"></div><div class="login-field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -13140,7 +13208,10 @@ function supervisorCodeLegendHtml(printMode=false){
    return `<div class="supervisor-code-legend">
      <div class="legend-title">KETERANGAN KODE PENGAWAS</div>
      <div class="supervisor-code-legend-grid">
-       ${names.map((n,i)=>`<div class="supervisor-code-legend-item"><b>${esc(supervisorCode(n))}</b> ${esc(n)}</div>`).join('')}
+       ${names.map((n,i)=>{
+         let longName=String(n||'').trim().length>27;
+         return `<div class="supervisor-code-legend-item ${longName?'supervisor-code-name-long':''}"><b>${esc(supervisorCode(n))}</b> <span class="supervisor-code-full-name">${esc(n)}</span></div>`;
+       }).join('')}
      </div>
    </div>`;
  }
