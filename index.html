@@ -9678,6 +9678,169 @@ window.pdfjsLibBridge=pdfjsLib;
 }
 </style>
 
+
+<style id="supervisor-idle-control-screen-only-final">
+/* ===== KONTROL PENGAWAS TIDAK MENGAWASI — HANYA LAYAR ===== */
+.supervisor-idle-control{
+  margin-top:14px;
+  border:2px solid #8aac9a;
+  border-radius:12px;
+  padding:14px;
+  background:#f7fbf8;
+}
+
+.sup-idle-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:12px;
+}
+.sup-idle-head h4{
+  margin:0 0 4px;
+  font-size:17px;
+}
+.sup-idle-subtitle{
+  font-size:12px;
+  color:#53655b;
+}
+
+.sup-idle-never{
+  padding:11px 12px;
+  border:1px solid #e0b15b;
+  border-radius:9px;
+  background:#fff8e9;
+  margin-bottom:12px;
+}
+
+.sup-idle-selector{
+  display:grid;
+  grid-template-columns:180px minmax(260px,1fr);
+  gap:10px;
+  align-items:center;
+  margin:12px 0;
+}
+.sup-idle-selector label{
+  font-weight:800;
+}
+.sup-idle-selector select{
+  width:100%;
+}
+
+.sup-idle-selected{
+  border:1px solid #ccd9d1;
+  border-radius:9px;
+  background:#fff;
+  padding:12px;
+  margin-bottom:14px;
+}
+.sup-idle-selected-title{
+  font-size:14px;
+  margin-bottom:7px;
+}
+.sup-idle-selected-summary{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:10px;
+}
+.sup-idle-selected-summary span{
+  padding:5px 9px;
+  border-radius:999px;
+  background:#eef4f0;
+  border:1px solid #cfddd4;
+  font-size:12px;
+}
+
+.sup-idle-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:8px;
+}
+.sup-idle-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:5px 8px;
+  border:1px solid #c8d7ce;
+  border-radius:7px;
+  background:#fff;
+  font-size:12px;
+}
+.sup-idle-chip.reserve{
+  border-color:#d8a65a;
+  background:#fff7e9;
+}
+.sup-idle-chip em{
+  margin-left:3px;
+  font-size:9px;
+  font-style:normal;
+  font-weight:900;
+  color:#9a5d00;
+}
+.sup-idle-empty,
+.sup-idle-complete{
+  color:#466154;
+  font-weight:700;
+  font-size:12px;
+}
+
+.sup-idle-all-title{
+  font-weight:900;
+  margin:4px 0 8px;
+}
+.sup-idle-all-table-wrap{
+  width:100%;
+  overflow:auto;
+}
+.sup-idle-all-table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:900px;
+  background:#fff;
+}
+.sup-idle-all-table th,
+.sup-idle-all-table td{
+  border:1px solid #c8d2cc;
+  padding:7px 8px;
+  vertical-align:top;
+  font-size:12px;
+}
+.sup-idle-all-table th{
+  background:#e8f0eb;
+  font-weight:900;
+  text-align:center;
+}
+.sup-idle-all-table td:nth-child(1),
+.sup-idle-all-table td:nth-child(3),
+.sup-idle-all-table td:nth-child(5){
+  text-align:center;
+}
+.sup-idle-inline{
+  display:inline-block;
+  margin:1px 8px 2px 0;
+  white-space:nowrap;
+}
+
+@media(max-width:780px){
+  .sup-idle-selector{
+    grid-template-columns:1fr;
+  }
+  .sup-idle-head{
+    flex-direction:column;
+  }
+}
+
+@media print{
+  .supervisor-idle-control,
+  #supervisorIdleControlHost,
+  .supervisor-missing-control-card .actions.no-print{
+    display:none!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="loginScreen"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan penyimpanan Supabase. Gunakan akun cloud yang sama agar data dapat dibuka dari komputer/laptop lain.</p></div><div style="font-size:12px;color:#d9eadf">Database Cloud Supabase • Sinkron Otomatis</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">LOGIN ADMIN CLOUD</div><h2>Selamat Datang</h2><div class="sub">Masukkan email dan password Supabase. Akun yang sama dapat digunakan di perangkat lain.</div><div id="loginError" class="login-error">Login gagal.</div><div class="login-field"><label>Email Admin</label><input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com"></div><div class="login-field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -13296,6 +13459,159 @@ function supervisorMissingControlTableHtml(printMode=false){
  </div>`;
 }
 
+function supervisorIdleForSchedule(scheduleId){
+ let s=(db.schedules||[]).find(x=>String(x.id)===String(scheduleId));
+ if(!s || !supervisorScheduleNeedsDuty(s))return [];
+
+ let assigned=new Set(supervisorSessionAssignedNames(s.id));
+ return supervisorAllCandidateNames().filter(n=>!assigned.has(n));
+}
+
+function supervisorNeverAssignedNames(){
+ let counts=getSupervisorCounts();
+ return supervisorAllCandidateNames().filter(n=>(counts[n]||0)===0);
+}
+
+function supervisorIdleScheduleRows(){
+ return (db.schedules||[])
+   .filter(s=>supervisorScheduleNeedsDuty(s))
+   .map(s=>({
+     schedule:s,
+     idle:supervisorIdleForSchedule(s.id),
+     assigned:supervisorSessionAssignedNames(s.id)
+   }));
+}
+
+function supervisorIdleChip(name){
+ let reserveSet=new Set(ensureSupervisorReserveNames().filter(Boolean));
+ return `<span class="sup-idle-chip ${reserveSet.has(name)?'reserve':''}">
+   <b>${esc(supervisorCode(name)||'-')}</b> — ${esc(name)}
+   ${reserveSet.has(name)?'<em>CADANGAN</em>':''}
+ </span>`;
+}
+
+function supervisorIdleSelectedHtml(scheduleId){
+ let rows=supervisorIdleScheduleRows();
+ if(!rows.length)return `<div class="notice">Belum ada sesi/mapel yang membutuhkan pengawas.</div>`;
+
+ let row=rows.find(x=>String(x.schedule.id)===String(scheduleId))||rows[0];
+ let s=row.schedule;
+ let idle=row.idle||[];
+ let assigned=row.assigned||[];
+
+ return `<div class="sup-idle-selected">
+   <div class="sup-idle-selected-title">
+     <b>${esc(supervisorManualScheduleLabel(s))}</b>
+   </div>
+   <div class="sup-idle-selected-summary">
+     <span><b>${assigned.length}</b> pengawas bertugas</span>
+     <span><b>${idle.length}</b> pengawas tidak bertugas</span>
+   </div>
+   <div class="sup-idle-list">
+     ${idle.length
+       ? idle.map(supervisorIdleChip).join('')
+       : '<div class="sup-idle-empty">Semua pengawas sudah mendapat tugas pada sesi/mapel ini.</div>'}
+   </div>
+ </div>`;
+}
+
+function supervisorIdleAllMapelTableHtml(){
+ let rows=supervisorIdleScheduleRows();
+ if(!rows.length)return '';
+
+ return `<div class="sup-idle-all-table-wrap">
+   <div class="sup-idle-all-title">Ringkasan Pengawas Tidak Bertugas per Mapel / Sesi</div>
+   <table class="sup-idle-all-table">
+     <thead><tr>
+       <th>No</th>
+       <th>Hari / Tanggal</th>
+       <th>Waktu</th>
+       <th>Mata Pelajaran</th>
+       <th>Tidak Bertugas</th>
+       <th>Nama Pengawas yang Tidak Bertugas</th>
+     </tr></thead>
+     <tbody>${rows.map((row,i)=>{
+       let s=row.schedule;
+       return `<tr>
+         <td>${i+1}</td>
+         <td>${esc(supervisorEffectiveDate(s.id)||supScheduleValue(s,'date')||'')}</td>
+         <td>${esc(supScheduleValue(s,'time')||'')}</td>
+         <td>${esc(supScheduleValue(s,'subject')||'')}</td>
+         <td>${row.idle.length}</td>
+         <td>${row.idle.length
+           ? row.idle.map(n=>`<span class="sup-idle-inline"><b>${esc(supervisorCode(n)||'-')}</b> ${esc(n)}</span>`).join('')
+           : '<span class="sup-idle-complete">Semua bertugas</span>'}</td>
+       </tr>`;
+     }).join('')}</tbody>
+   </table>
+ </div>`;
+}
+
+function supervisorIdleControlPanelHtml(){
+ let rows=supervisorIdleScheduleRows();
+ let never=supervisorNeverAssignedNames();
+ if(!rows.length)return `<div class="supervisor-idle-control no-print" id="supervisorIdleControlPanel">
+   <div class="notice">Belum ada sesi/mapel yang membutuhkan pengawas.</div>
+ </div>`;
+
+ let selected=String(window._supIdleScheduleId||rows[0].schedule.id);
+ if(!rows.some(x=>String(x.schedule.id)===selected))selected=String(rows[0].schedule.id);
+ window._supIdleScheduleId=selected;
+
+ return `<div class="supervisor-idle-control no-print" id="supervisorIdleControlPanel">
+   <div class="sup-idle-head">
+     <div>
+       <h4>Kontrol Pengawas Tidak Mengawasi</h4>
+       <div class="sup-idle-subtitle">
+         Hanya tampil di aplikasi dan <b>tidak ikut tercetak</b>.
+       </div>
+     </div>
+     <button class="secondary" onclick="toggleSupervisorIdleControl()">Tutup</button>
+   </div>
+
+   <div class="sup-idle-never">
+     <b>Belum mendapat jadwal mengawasi sama sekali (${never.length}):</b>
+     <div class="sup-idle-list">
+       ${never.length
+         ? never.map(supervisorIdleChip).join('')
+         : '<span class="sup-idle-complete">Semua pengawas sudah mendapat minimal satu jadwal.</span>'}
+     </div>
+   </div>
+
+   <div class="sup-idle-selector">
+     <label>Pilih Mapel / Sesi</label>
+     <select id="supervisorIdleScheduleSelect" onchange="renderSupervisorIdleSelected(this.value)">
+       ${rows.map(row=>`<option value="${esc(String(row.schedule.id))}" ${String(row.schedule.id)===selected?'selected':''}>
+         ${esc(supervisorManualScheduleLabel(row.schedule))}
+       </option>`).join('')}
+     </select>
+   </div>
+
+   <div id="supervisorIdleSelectedBody">
+     ${supervisorIdleSelectedHtml(selected)}
+   </div>
+
+   ${supervisorIdleAllMapelTableHtml()}
+ </div>`;
+}
+
+function toggleSupervisorIdleControl(){
+ let panel=document.getElementById('supervisorIdleControlPanel');
+ if(panel){
+   panel.remove();
+   return;
+ }
+ let host=document.getElementById('supervisorIdleControlHost');
+ if(host)host.innerHTML=supervisorIdleControlPanelHtml();
+}
+
+function renderSupervisorIdleSelected(scheduleId){
+ window._supIdleScheduleId=String(scheduleId||'');
+ let body=document.getElementById('supervisorIdleSelectedBody');
+ if(body)body.innerHTML=supervisorIdleSelectedHtml(window._supIdleScheduleId);
+}
+
+
 function supervisorMissingControlCardHtml(){
  let rows=supervisorMissingAssignments();
  let missing=supervisorMissingTotalSlots();
@@ -13315,10 +13631,12 @@ function supervisorMissingControlCardHtml(){
      <div><b>${rows.length}</b><small>Sesi Belum Lengkap</small></div>
    </div>
    ${supervisorMissingControlTableHtml(false)}
-   <div class="actions">
+   <div class="actions no-print">
      <button class="secondary" onclick="render('supervisors')">↻ Periksa Ulang</button>
+     <button class="secondary" onclick="toggleSupervisorIdleControl()">👁 Pengawas Tidak Mengawasi</button>
      <button onclick="printSupervisorMissingOnly()">🖨 Cetak Lembar Kontrol Saja</button>
    </div>
+   <div id="supervisorIdleControlHost" class="no-print"></div>
  </div>`;
 }
 
