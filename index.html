@@ -10166,6 +10166,69 @@ window.pdfjsLibBridge=pdfjsLib;
 }
 </style>
 
+
+<style id="schedule-assessment-three-columns-14pt-final">
+/* ===== JADWAL ASESMEN: WAKTU, ALOKASI, MATA PELAJARAN 14 PT ===== */
+
+/* Tampilan halaman Jadwal Asesmen */
+.schedule-assessment-table th.col-time,
+.schedule-assessment-table td.col-time,
+.schedule-assessment-table th.col-allocation,
+.schedule-assessment-table td.col-allocation,
+.schedule-assessment-table th.col-subject,
+.schedule-assessment-table td.col-subject,
+.schedule-assessment-table td.schedule-subject-cell{
+  font-size:14pt!important;
+  line-height:1.12!important;
+  vertical-align:middle!important;
+}
+
+/* Input edit ikut 14 pt */
+.schedule-assessment-table .schedule-time-edit,
+.schedule-assessment-table .schedule-allocation-edit,
+.schedule-assessment-table .schedule-subject-edit{
+  font-size:14pt!important;
+  line-height:1.12!important;
+}
+
+/* Hasil cetak Jadwal Asesmen */
+.schedule-print-page.schedule-no-kop-print .schedule-fixed-table th:nth-child(3),
+.schedule-print-page.schedule-no-kop-print .schedule-fixed-table td.schedule-time-cell,
+.schedule-print-page.schedule-no-kop-print .schedule-fixed-table th:nth-child(4),
+.schedule-print-page.schedule-no-kop-print .schedule-fixed-table td.schedule-allocation-cell,
+.schedule-print-page.schedule-no-kop-print .schedule-fixed-table th:nth-child(5),
+.schedule-print-page.schedule-no-kop-print .schedule-fixed-table td.schedule-subject-cell{
+  font-size:14pt!important;
+  line-height:1.12!important;
+  vertical-align:middle!important;
+}
+
+/* Isi tetap tidak terlalu tebal */
+.schedule-print-page.schedule-no-kop-print .schedule-fixed-table td.schedule-time-cell,
+.schedule-print-page.schedule-no-kop-print .schedule-fixed-table td.schedule-allocation-cell,
+.schedule-print-page.schedule-no-kop-print .schedule-fixed-table td.schedule-subject-cell{
+  font-weight:400!important;
+}
+
+/* Header tetap tegas */
+.schedule-print-page.schedule-no-kop-print .schedule-fixed-table th:nth-child(3),
+.schedule-print-page.schedule-no-kop-print .schedule-fixed-table th:nth-child(4),
+.schedule-print-page.schedule-no-kop-print .schedule-fixed-table th:nth-child(5){
+  font-weight:900!important;
+}
+
+@media print{
+  .schedule-print-page.schedule-no-kop-print .schedule-fixed-table th:nth-child(3),
+  .schedule-print-page.schedule-no-kop-print .schedule-fixed-table td.schedule-time-cell,
+  .schedule-print-page.schedule-no-kop-print .schedule-fixed-table th:nth-child(4),
+  .schedule-print-page.schedule-no-kop-print .schedule-fixed-table td.schedule-allocation-cell,
+  .schedule-print-page.schedule-no-kop-print .schedule-fixed-table th:nth-child(5),
+  .schedule-print-page.schedule-no-kop-print .schedule-fixed-table td.schedule-subject-cell{
+    font-size:14pt!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="loginScreen"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan penyimpanan Supabase. Gunakan akun cloud yang sama agar data dapat dibuka dari komputer/laptop lain.</p></div><div style="font-size:12px;color:#d9eadf">Database Cloud Supabase • Sinkron Otomatis</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">LOGIN ADMIN CLOUD</div><h2>Selamat Datang</h2><div class="sub">Masukkan email dan password Supabase. Akun yang sama dapat digunakan di perangkat lain.</div><div id="loginError" class="login-error">Login gagal.</div><div class="login-field"><label>Email Admin</label><input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com"></div><div class="login-field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter')doLogin()"></div>
