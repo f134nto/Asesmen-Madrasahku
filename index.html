@@ -11435,6 +11435,118 @@ window.pdfjsLibBridge=pdfjsLib;
 }
 </style>
 
+
+<style id="attendance-no-blank-middle-page-final">
+/* ===== DAFTAR HADIR PESERTA: HILANGKAN HALAMAN KOSONG DI TENGAH ===== */
+@media print{
+  @page attendanceReferenceLandscape{
+    size:330mm 290mm;
+    margin:0!important;
+  }
+
+  .attendance-landscape-page.attendance-reference-layout{
+    page:attendanceReferenceLandscape!important;
+    width:330mm!important;
+    height:280mm!important;
+    min-height:280mm!important;
+    max-height:280mm!important;
+    box-sizing:border-box!important;
+    margin:0!important;
+    padding:8mm 7mm!important;
+    overflow:hidden!important;
+
+    /* Jangan pernah memaksa pindah SEBELUM halaman ini */
+    page-break-before:auto!important;
+    break-before:auto!important;
+
+    /* Default tidak menambah halaman kosong */
+    page-break-after:auto!important;
+    break-after:auto!important;
+  }
+
+  /* Pindah halaman hanya SETELAH lembar yang memang belum terakhir */
+  .attendance-landscape-page.attendance-reference-layout.attendance-page-break-after{
+    page-break-after:always!important;
+    break-after:page!important;
+  }
+
+  /* Matikan class lama yang sebelumnya berpotensi melompat satu halaman */
+  .attendance-landscape-page.attendance-reference-layout.attendance-page-start{
+    page-break-before:auto!important;
+    break-before:auto!important;
+  }
+}
+</style>
+
+
+<style id="attendance-blank-page-hard-fix-final">
+/* ============================================================
+   HARD FIX DAFTAR HADIR PESERTA
+   Hilangkan halaman kosong yang muncul di antara lembar 1 dan 2.
+   ============================================================ */
+@media print{
+  /* Override aturan force-print-root lama yang memaksa tinggi 290 mm. */
+  body.force-print-root .attendance-landscape-page.attendance-reference-layout{
+    width:auto!important;
+    min-width:0!important;
+    max-width:none!important;
+
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+
+    margin:0!important;
+    padding:7mm!important;
+    box-sizing:border-box!important;
+    overflow:visible!important;
+
+    page-break-before:auto!important;
+    break-before:auto!important;
+
+    page-break-after:auto!important;
+    break-after:auto!important;
+
+    page-break-inside:avoid!important;
+    break-inside:avoid-page!important;
+  }
+
+  /* Lembar pertama hanya melakukan SATU kali pindah halaman. */
+  body.force-print-root .attendance-landscape-page.attendance-reference-layout.attendance-page-break-after{
+    page-break-after:always!important;
+    break-after:page!important;
+  }
+
+  /* Matikan seluruh mekanisme break-before versi lama. */
+  body.force-print-root .attendance-landscape-page.attendance-reference-layout.attendance-page-start,
+  body.force-print-root .attendance-landscape-page.attendance-reference-layout.attendance-second-sheet{
+    page-break-before:auto!important;
+    break-before:auto!important;
+  }
+
+  /* Jangan biarkan layout utama memberi tinggi/margin tambahan. */
+  body.force-print-root main#app,
+  body.force-print-root #app{
+    height:auto!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+  }
+
+  /* Lembar kedua tidak menambah page-break lagi. */
+  body.force-print-root .attendance-landscape-page.attendance-reference-layout:last-of-type{
+    page-break-after:auto!important;
+    break-after:auto!important;
+  }
+}
+
+/* Preview layar tetap terlihat sebagai lembar terpisah. */
+@media screen{
+  .attendance-landscape-page.attendance-reference-layout{
+    margin-bottom:12px!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="loginScreen"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan penyimpanan Supabase. Gunakan akun cloud yang sama agar data dapat dibuka dari komputer/laptop lain.</p></div><div style="font-size:12px;color:#d9eadf">Database Cloud Supabase • Sinkron Otomatis</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">LOGIN ADMIN CLOUD</div><h2>Selamat Datang</h2><div class="sub">Masukkan email dan password Supabase. Akun yang sama dapat digunakan di perangkat lain.</div><div id="loginError" class="login-error">Login gagal.</div><div class="login-field"><label>Email Admin</label><input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com"></div><div class="login-field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -16800,11 +16912,11 @@ function attendance(){
  </div>`;
 }
 
-function attendancePrintPageWithBreak(html,needsBreakBefore){
- if(!needsBreakBefore)return html;
+function attendancePrintPageWithBreak(html,needsBreakAfter){
+ if(!needsBreakAfter)return html;
  return html.replace(
    'attendance-landscape-page attendance-reference-layout',
-   'attendance-landscape-page attendance-reference-layout attendance-page-start'
+   'attendance-landscape-page attendance-reference-layout attendance-page-break-after'
  );
 }
 
@@ -16814,7 +16926,7 @@ function showAttendance(no){
  if(!pages.length)return alert('Belum ada peserta pada ruang ini.');
 
  document.getElementById('attOut').innerHTML=
-   pages.map((p,i)=>attendancePrintPageWithBreak(p,i>0)).join('')+
+   pages.map((p,i)=>attendancePrintPageWithBreak(p,i<pages.length-1)).join('')+
    `<div class="actions no-print">
      <button onclick="systemPrint()">🖨 Cetak Ruang ${no} (${pages.length} lembar)</button>
    </div>`;
@@ -17937,7 +18049,7 @@ function printAttendanceAll(roomNo='all'){
  rooms.forEach(r=>pages.push(...attendancePagesForRoom(r)));
 
  document.getElementById('app').innerHTML=
-   pages.map((p,i)=>attendancePrintPageWithBreak(p,i>0)).join('')+
+   pages.map((p,i)=>attendancePrintPageWithBreak(p,i<pages.length-1)).join('')+
    `<div class="actions no-print">
      <button onclick="systemPrint()">🖨 Cetak ${pages.length} Lembar</button>
      <button class="secondary" onclick="render('print')">Kembali ke Print</button>
