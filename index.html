@@ -10348,6 +10348,1038 @@ window.pdfjsLibBridge=pdfjsLib;
 }
 </style>
 
+
+<style id="supervisor-remove-head-signature-latest-final">
+/* ===== JADWAL PENGAWAS: HANYA TANDA TANGAN KETUA PANITIA ===== */
+.supervisor-page-two .supervisor-signatures.supervisor-signatures-chair-only{
+  position:relative!important;
+  width:150mm!important;
+  max-width:150mm!important;
+  min-height:42mm!important;
+  margin:12mm auto 0!important;
+  padding:0!important;
+  display:block!important;
+}
+
+.supervisor-page-two .supervisor-signatures-chair-only .supervisor-chair-signbox{
+  position:absolute!important;
+  right:-32mm!important;
+  top:0!important;
+  width:62mm!important;
+  min-width:62mm!important;
+  max-width:62mm!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+  text-align:center!important;
+}
+
+/* Pengaman: bila masih ada elemen Kepala Madrasah lama di halaman pengawas, jangan tampilkan. */
+.supervisor-page-two .supervisor-signatures .supervisor-head-signbox,
+.supervisor-page-two .supervisor-signatures .signbox:first-child:not(.supervisor-chair-signbox){
+  display:none!important;
+}
+
+@media print{
+  .supervisor-page-two .supervisor-signatures.supervisor-signatures-chair-only{
+    margin-top:12mm!important;
+  }
+  .supervisor-page-two .supervisor-signatures-chair-only .supervisor-chair-signbox{
+    right:-32mm!important;
+    transform:none!important;
+  }
+}
+</style>
+
+
+<style id="supervisor-title-spacing-chair-right-final">
+/* ===== JADWAL PENGAWAS: JUDUL + POSISI TTD KETUA PANITIA ===== */
+
+/* Baris judul pertama */
+.supervisor-no-kop-page-one .supervisor-main-title > div:first-child{
+  font-size:12pt!important;
+  font-weight:900!important;
+  text-align:center!important;
+  line-height:1.15!important;
+}
+
+/* Baris kedua: diberi jarak/spasi 1,5 dari judul */
+.supervisor-no-kop-page-one .supervisor-main-title-sub{
+  margin-top:1.5mm!important;
+  line-height:1.5!important;
+  text-align:center!important;
+}
+
+/* Ketua Panitia tetap di kanan, digeser 2 cm lagi ke kanan */
+.supervisor-page-two .supervisor-signatures-chair-only .supervisor-chair-signbox{
+  right:-52mm!important;
+  transform:none!important;
+  text-align:center!important;
+}
+
+@media print{
+  .supervisor-no-kop-page-one .supervisor-main-title-sub{
+    margin-top:1.5mm!important;
+    line-height:1.5!important;
+  }
+
+  .supervisor-page-two .supervisor-signatures-chair-only .supervisor-chair-signbox{
+    right:-52mm!important;
+    transform:none!important;
+  }
+}
+</style>
+
+
+<style id="signature-manual-position-and-supervisor-chair-right-final">
+/* ===== EDIT POSISI STEMPEL & TANDA TANGAN DARI APLIKASI ===== */
+.identity-position-editor{
+  margin-top:10px;
+  padding:10px;
+  border:1px solid #d8c46e;
+  border-radius:8px;
+  background:#fffaf0;
+}
+.identity-position-title{
+  font-size:12px;
+  font-weight:900;
+  color:#0f5c3a;
+  margin-bottom:7px;
+}
+.identity-position-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:7px;
+}
+.identity-position-grid label{
+  font-size:10px!important;
+  line-height:1.2;
+  min-height:24px;
+}
+.identity-position-grid input{
+  padding:6px 7px!important;
+  font-size:12px!important;
+  text-align:center;
+}
+.identity-position-help{
+  margin-top:6px;
+  font-size:10.5px;
+  color:#6a6246;
+  line-height:1.35;
+}
+.identity-reset-position{
+  margin-top:7px!important;
+  padding:6px 9px!important;
+  font-size:11px!important;
+}
+
+/* ===== JADWAL PENGAWAS: KETUA PANITIA BENAR-BENAR DI SISI KANAN ===== */
+.supervisor-page-two .supervisor-signatures.supervisor-signatures-chair-only{
+  position:relative!important;
+  width:100%!important;
+  max-width:none!important;
+  min-height:44mm!important;
+  margin:12mm 0 0!important;
+  padding:0!important;
+  display:block!important;
+}
+.supervisor-page-two .supervisor-signatures-chair-only .supervisor-chair-signbox{
+  position:absolute!important;
+  left:auto!important;
+  right:5mm!important;
+  top:0!important;
+  width:62mm!important;
+  min-width:62mm!important;
+  max-width:62mm!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+  text-align:center!important;
+}
+
+@media(max-width:760px){
+  .identity-position-grid{grid-template-columns:1fr}
+}
+@media print{
+  .supervisor-page-two .supervisor-signatures.supervisor-signatures-chair-only{
+    width:100%!important;
+    margin:12mm 0 0!important;
+  }
+  .supervisor-page-two .supervisor-signatures-chair-only .supervisor-chair-signbox{
+    left:auto!important;
+    right:5mm!important;
+    transform:none!important;
+  }
+}
+</style>
+
+
+<style id="supervisor-page-two-chair-signature-bottom-right-final">
+/* ===== DAFTAR NAMA PENGAWAS: TTD KETUA PANITIA DI KANAN BAWAH ===== */
+.supervisor-print-page.supervisor-page-two{
+  display:flex!important;
+  flex-direction:column!important;
+}
+.supervisor-page-two .supervisor-page-two-signature-wrap{
+  width:100%!important;
+  margin-top:auto!important;
+  min-height:38mm!important;
+  position:relative!important;
+  flex:0 0 auto!important;
+}
+.supervisor-page-two .supervisor-page-two-signature-wrap .supervisor-signatures.supervisor-signatures-chair-only{
+  position:relative!important;
+  width:100%!important;
+  max-width:none!important;
+  min-height:38mm!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+}
+.supervisor-page-two .supervisor-page-two-signature-wrap .supervisor-signatures-chair-only .supervisor-chair-signbox{
+  position:absolute!important;
+  top:auto!important;
+  bottom:0!important;
+  left:auto!important;
+  right:8mm!important;
+  width:68mm!important;
+  min-width:68mm!important;
+  max-width:68mm!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+  text-align:center!important;
+}
+@media print{
+  .supervisor-print-page.supervisor-page-two{
+    display:flex!important;
+    flex-direction:column!important;
+  }
+  .supervisor-page-two .supervisor-page-two-signature-wrap{
+    margin-top:auto!important;
+    min-height:38mm!important;
+  }
+  .supervisor-page-two .supervisor-page-two-signature-wrap .supervisor-signatures.supervisor-signatures-chair-only{
+    margin:0!important;
+    min-height:38mm!important;
+  }
+  .supervisor-page-two .supervisor-page-two-signature-wrap .supervisor-signatures-chair-only .supervisor-chair-signbox{
+    right:8mm!important;
+    bottom:0!important;
+    top:auto!important;
+    transform:none!important;
+  }
+}
+</style>
+
+<style id="supervisor-chair-sign-page3-only">
+/* ===== Jadwal Pengawas: hapus TTD Kepala Madrasah, pindah Ketua Panitia ke lembar 3 ===== */
+.supervisor-page-two .supervisor-signatures,
+.supervisor-page-two .supervisor-page-two-signature-wrap{
+  display:none!important;
+}
+.supervisor-missing-print-page.supervisor-missing-print-page-with-chair-sign{
+  display:flex!important;
+  flex-direction:column!important;
+}
+.supervisor-missing-print-page .supervisor-missing-print-main{
+  flex:1 1 auto!important;
+}
+.supervisor-missing-print-page .supervisor-missing-print-signature-wrap{
+  flex:0 0 auto!important;
+  width:100%!important;
+  min-height:36mm!important;
+  margin-top:4mm!important;
+  position:relative!important;
+}
+.supervisor-missing-print-page .supervisor-missing-print-signature-wrap .supervisor-signatures.supervisor-signatures-chair-only{
+  width:100%!important;
+  min-height:36mm!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+  position:relative!important;
+}
+.supervisor-missing-print-page .supervisor-missing-print-signature-wrap .supervisor-chair-signbox{
+  position:absolute!important;
+  right:4mm!important;
+  bottom:0!important;
+  left:auto!important;
+  top:auto!important;
+  width:72mm!important;
+  max-width:72mm!important;
+  min-width:72mm!important;
+  margin:0!important;
+  padding:0!important;
+  text-align:center!important;
+  transform:none!important;
+}
+.supervisor-missing-print-page .supervisor-head-signbox,
+.supervisor-missing-print-page .signbox-head,
+.supervisor-missing-print-page .school-head-signature,
+.supervisor-missing-print-page .headmaster-signature{
+  display:none!important;
+}
+@media print{
+  .supervisor-page-two .supervisor-signatures,
+  .supervisor-page-two .supervisor-page-two-signature-wrap{
+    display:none!important;
+  }
+  .supervisor-missing-print-page.supervisor-missing-print-page-with-chair-sign{
+    display:flex!important;
+    flex-direction:column!important;
+  }
+  .supervisor-missing-print-page .supervisor-missing-print-main{
+    flex:1 1 auto!important;
+  }
+  .supervisor-missing-print-page .supervisor-missing-print-signature-wrap{
+    margin-top:4mm!important;
+    min-height:36mm!important;
+  }
+  .supervisor-missing-print-page .supervisor-missing-print-signature-wrap .supervisor-signatures.supervisor-signatures-chair-only{
+    min-height:36mm!important;
+  }
+  .supervisor-missing-print-page .supervisor-missing-print-signature-wrap .supervisor-chair-signbox{
+    right:4mm!important;
+    bottom:0!important;
+  }
+}
+</style>
+
+<style id="supervisor-chair-under-reserve-final">
+/* ===== TTD KETUA PANITIA DI BAWAH KOTAK PENGAWAS CADANGAN ===== */
+.supervisor-page-two .supervisor-page-two-chair-under-reserve{
+  width:150mm!important;
+  margin:5mm auto 0!important;
+  min-height:36mm!important;
+  position:relative!important;
+  display:block!important;
+}
+
+.supervisor-page-two .supervisor-page-two-chair-under-reserve .supervisor-signatures.supervisor-signatures-chair-only{
+  width:100%!important;
+  min-height:36mm!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+  position:relative!important;
+}
+
+.supervisor-page-two .supervisor-page-two-chair-under-reserve .supervisor-chair-signbox{
+  position:absolute!important;
+  top:0!important;
+  right:0!important;
+  left:auto!important;
+  bottom:auto!important;
+  width:68mm!important;
+  min-width:68mm!important;
+  max-width:68mm!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+  text-align:center!important;
+}
+
+/* Pastikan lembar 3 tidak menampilkan tanda tangan */
+.supervisor-missing-print-page .supervisor-signatures,
+.supervisor-missing-print-page .supervisor-missing-print-signature-wrap{
+  display:none!important;
+}
+
+@media print{
+  .supervisor-page-two .supervisor-page-two-chair-under-reserve{
+    width:150mm!important;
+    margin:5mm auto 0!important;
+    min-height:36mm!important;
+  }
+
+  .supervisor-page-two .supervisor-page-two-chair-under-reserve .supervisor-chair-signbox{
+    top:0!important;
+    right:0!important;
+    left:auto!important;
+    transform:none!important;
+  }
+
+  .supervisor-missing-print-page .supervisor-signatures,
+  .supervisor-missing-print-page .supervisor-missing-print-signature-wrap{
+    display:none!important;
+  }
+}
+</style>
+
+
+<style id="supervisor-chair-right-of-reserve-final">
+/* ===== TTD KETUA PANITIA DI SEBELAH KANAN KOTAK PENGAWAS CADANGAN ===== */
+.supervisor-page-two .supervisor-page-two-reserve-sign-row{
+  width:235mm!important;
+  max-width:100%!important;
+  margin:0 auto!important;
+  display:flex!important;
+  justify-content:space-between!important;
+  align-items:flex-end!important;
+  gap:8mm!important;
+}
+.supervisor-page-two .supervisor-page-two-reserve-sign-row .supervisor-reserve-section{
+  width:150mm!important;
+  margin:0!important;
+  flex:0 0 150mm!important;
+}
+.supervisor-page-two .supervisor-page-two-reserve-sign-row .supervisor-reserve-blank{
+  width:150mm!important;
+  margin:4mm 0 0!important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve{
+  width:68mm!important;
+  min-width:68mm!important;
+  max-width:68mm!important;
+  margin:0 0 2mm 0!important;
+  padding:0!important;
+  display:block!important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-signatures.supervisor-signatures-chair-only{
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  min-height:0!important;
+  display:block!important;
+  position:relative!important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox{
+  position:static!important;
+  top:auto!important;
+  right:auto!important;
+  left:auto!important;
+  bottom:auto!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+  text-align:center!important;
+}
+/* Sembunyikan wrapper lama jika masih ada */
+.supervisor-page-two .supervisor-page-two-chair-under-reserve{
+  display:none!important;
+}
+/* Pastikan lembar 3 tidak menampilkan tanda tangan */
+.supervisor-missing-print-page .supervisor-signatures,
+.supervisor-missing-print-page .supervisor-missing-print-signature-wrap{
+  display:none!important;
+}
+@media print{
+  .supervisor-page-two .supervisor-page-two-reserve-sign-row{
+    width:235mm!important;
+    max-width:100%!important;
+    margin:0 auto!important;
+    display:flex!important;
+    justify-content:space-between!important;
+    align-items:flex-end!important;
+    gap:8mm!important;
+  }
+  .supervisor-page-two .supervisor-page-two-reserve-sign-row .supervisor-reserve-section{
+    width:150mm!important;
+    flex:0 0 150mm!important;
+    margin:0!important;
+  }
+  .supervisor-page-two .supervisor-page-two-reserve-sign-row .supervisor-reserve-blank{
+    width:150mm!important;
+    margin:4mm 0 0!important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve{
+    width:68mm!important;
+    min-width:68mm!important;
+    max-width:68mm!important;
+    margin:0 0 2mm 0!important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox{
+    position:static!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+  }
+  .supervisor-missing-print-page .supervisor-signatures,
+  .supervisor-missing-print-page .supervisor-missing-print-signature-wrap{
+    display:none!important;
+  }
+}
+</style>
+
+
+<style id="supervisor-chair-far-right-14pt-final">
+/* ===== FINAL: TTD KETUA PANITIA DI AREA KOSONG SEBELAH KANAN ===== */
+
+/* Gunakan seluruh lebar lembar 2 sebagai area penempatan */
+.supervisor-page-two .supervisor-page-two-reserve-sign-row{
+  width:100%!important;
+  max-width:none!important;
+  min-height:54mm!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+  position:relative!important;
+}
+
+/* Kotak Pengawas Cadangan tetap di tengah */
+.supervisor-page-two .supervisor-page-two-reserve-sign-row .supervisor-reserve-section{
+  width:150mm!important;
+  margin:0 auto!important;
+  padding:0!important;
+  display:block!important;
+}
+
+/* Tabel tidak berubah lebarnya */
+.supervisor-page-two .supervisor-page-two-reserve-sign-row .supervisor-reserve-blank{
+  width:150mm!important;
+  margin:4mm auto 0!important;
+}
+
+/* Blok Ketua Panitia dipindah ke ruang kosong sebelah kanan tabel */
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve{
+  position:absolute!important;
+  right:0mm!important;
+  top:15mm!important;
+  width:68mm!important;
+  min-width:68mm!important;
+  max-width:68mm!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+  z-index:2!important;
+}
+
+/* Hapus semua positioning lama yang dapat menumpuk ke tabel */
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-signatures.supervisor-signatures-chair-only{
+  position:relative!important;
+  width:100%!important;
+  min-height:36mm!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+}
+
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox{
+  position:static!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  transform:none!important;
+  text-align:center!important;
+  font-size:14pt!important;
+  line-height:1.35!important;
+}
+
+/* Semua tulisan Ketua Panitia 14 pt */
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox > div:not(.signature-visual-space),
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox b,
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox u{
+  font-size:14pt!important;
+  line-height:1.35!important;
+}
+
+/* Ruang untuk gambar TTD / stempel tetap cukup */
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-sign-space{
+  height:18mm!important;
+  min-height:18mm!important;
+}
+
+/* Lembar 3 tetap tanpa tanda tangan */
+.supervisor-missing-print-page .supervisor-signatures,
+.supervisor-missing-print-page .supervisor-missing-print-signature-wrap{
+  display:none!important;
+}
+
+@media print{
+  .supervisor-page-two .supervisor-page-two-reserve-sign-row{
+    width:100%!important;
+    max-width:none!important;
+    min-height:54mm!important;
+    margin:0!important;
+    position:relative!important;
+  }
+
+  .supervisor-page-two .supervisor-page-two-reserve-sign-row .supervisor-reserve-section{
+    width:150mm!important;
+    margin:0 auto!important;
+  }
+
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve{
+    position:absolute!important;
+    right:0mm!important;
+    top:15mm!important;
+    width:68mm!important;
+  }
+
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox,
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox > div:not(.signature-visual-space),
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox b,
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox u{
+    font-size:14pt!important;
+    line-height:1.35!important;
+  }
+}
+</style>
+
+
+<style id="supervisor-chair-beside-reserve-box-fix">
+/* ===== OVERRIDE: TTD KETUA PANITIA DI SEBELAH KANAN KOTAK PENGAWAS CADANGAN ===== */
+.supervisor-page-two .supervisor-page-two-reserve-sign-row{
+  width:100%!important;
+  max-width:none!important;
+  margin:0 auto!important;
+  padding:0!important;
+  display:flex!important;
+  justify-content:center!important;
+  align-items:flex-end!important;
+  gap:8mm!important;
+  position:relative!important;
+  min-height:auto!important;
+}
+
+.supervisor-page-two .supervisor-page-two-reserve-sign-row .supervisor-reserve-section{
+  width:150mm!important;
+  margin:0!important;
+  padding:0!important;
+  flex:0 0 150mm!important;
+}
+
+.supervisor-page-two .supervisor-page-two-reserve-sign-row .supervisor-reserve-blank{
+  width:150mm!important;
+  margin:4mm 0 0 0!important;
+}
+
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve{
+  position:static!important;
+  right:auto!important;
+  top:auto!important;
+  width:62mm!important;
+  min-width:62mm!important;
+  max-width:62mm!important;
+  margin:0 0 3mm 0!important;
+  padding:0!important;
+  display:block!important;
+  flex:0 0 62mm!important;
+  z-index:auto!important;
+}
+
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-signatures.supervisor-signatures-chair-only{
+  position:relative!important;
+  width:100%!important;
+  min-height:36mm!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+}
+
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox{
+  position:static!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  text-align:center!important;
+  font-size:14pt!important;
+  line-height:1.35!important;
+}
+
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox > div:not(.signature-visual-space),
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox b,
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox u{
+  font-size:14pt!important;
+  line-height:1.35!important;
+}
+
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-sign-space{
+  height:18mm!important;
+  min-height:18mm!important;
+}
+
+@media print{
+  .supervisor-page-two .supervisor-page-two-reserve-sign-row{
+    display:flex!important;
+    justify-content:center!important;
+    align-items:flex-end!important;
+    gap:8mm!important;
+    min-height:auto!important;
+    width:100%!important;
+    max-width:none!important;
+    margin:0 auto!important;
+    padding:0!important;
+    position:relative!important;
+  }
+
+  .supervisor-page-two .supervisor-page-two-reserve-sign-row .supervisor-reserve-section{
+    width:150mm!important;
+    margin:0!important;
+    flex:0 0 150mm!important;
+  }
+
+  .supervisor-page-two .supervisor-page-two-reserve-sign-row .supervisor-reserve-blank{
+    width:150mm!important;
+    margin:4mm 0 0 0!important;
+  }
+
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve{
+    position:static!important;
+    width:62mm!important;
+    min-width:62mm!important;
+    max-width:62mm!important;
+    flex:0 0 62mm!important;
+    margin:0 0 3mm 0!important;
+  }
+
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox,
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox > div:not(.signature-visual-space),
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox b,
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox u{
+    font-size:14pt!important;
+    line-height:1.35!important;
+  }
+}
+</style>
+
+
+<style id="supervisor-chair-next-to-reserve-box-final-fix">
+/* ===== FINAL FIX: TTD KETUA PANITIA DI SEBELAH KANAN KOTAK PENGAWAS CADANGAN ===== */
+.supervisor-page-two .supervisor-page-two-reserve-sign-row{
+  width:max-content!important;
+  max-width:100%!important;
+  margin:0 auto!important;
+  padding:0!important;
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  justify-content:flex-start!important;
+  align-items:flex-end!important;
+  gap:10mm!important;
+  overflow:visible!important;
+}
+
+.supervisor-page-two .supervisor-page-two-reserve-sign-row .supervisor-reserve-section,
+.supervisor-page-two .supervisor-page-two-reserve-sign-row .supervisor-reserve-blank,
+.supervisor-page-two .supervisor-reserve-blank{
+  width:132mm!important;
+  max-width:132mm!important;
+  min-width:132mm!important;
+  margin:0!important;
+}
+
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve{
+  position:relative!important;
+  right:auto!important;
+  left:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  display:block!important;
+  width:58mm!important;
+  min-width:58mm!important;
+  max-width:58mm!important;
+  flex:0 0 58mm!important;
+  margin:0 0 4mm 0!important;
+  padding:0!important;
+  transform:none!important;
+}
+
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-signatures.supervisor-signatures-chair-only{
+  position:relative!important;
+  width:58mm!important;
+  max-width:58mm!important;
+  min-width:58mm!important;
+  min-height:auto!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+}
+
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox{
+  position:relative!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  width:58mm!important;
+  max-width:58mm!important;
+  min-width:58mm!important;
+  margin:0!important;
+  padding:0!important;
+  text-align:center!important;
+  transform:none!important;
+  font-size:14pt!important;
+  line-height:1.3!important;
+}
+
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox > div:not(.signature-visual-space),
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox b,
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox u{
+  font-size:14pt!important;
+  line-height:1.3!important;
+}
+
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-sign-space{
+  height:16mm!important;
+  min-height:16mm!important;
+}
+
+@media print{
+  .supervisor-page-two .supervisor-page-two-reserve-sign-row{
+    width:max-content!important;
+    max-width:100%!important;
+    margin:0 auto!important;
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    justify-content:flex-start!important;
+    align-items:flex-end!important;
+    gap:10mm!important;
+    overflow:visible!important;
+  }
+
+  .supervisor-page-two .supervisor-page-two-reserve-sign-row .supervisor-reserve-section,
+  .supervisor-page-two .supervisor-page-two-reserve-sign-row .supervisor-reserve-blank,
+  .supervisor-page-two .supervisor-reserve-blank{
+    width:132mm!important;
+    max-width:132mm!important;
+    min-width:132mm!important;
+    margin:0!important;
+  }
+
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve,
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-signatures.supervisor-signatures-chair-only,
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox{
+    width:58mm!important;
+    max-width:58mm!important;
+    min-width:58mm!important;
+    position:relative!important;
+    margin:0 0 4mm 0!important;
+    transform:none!important;
+  }
+
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox,
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox > div:not(.signature-visual-space),
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox b,
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox u{
+    font-size:14pt!important;
+    line-height:1.3!important;
+  }
+}
+</style>
+
+
+<style id="supervisor-chair-right-of-reserve-no-overlap-final">
+/* FINAL: TTD KETUA PANITIA DIGESER LEBIH KE KANAN, DI SEBELAH KANAN KOTAK PENGAWAS CADANGAN */
+.supervisor-page-two .supervisor-page-two-reserve-sign-row{
+  width:100%!important;
+  max-width:100%!important;
+  margin:0 auto!important;
+  padding:0!important;
+  display:grid!important;
+  grid-template-columns:132mm 18mm 62mm!important;
+  justify-content:center!important;
+  align-items:start!important;
+  column-gap:0!important;
+  row-gap:0!important;
+  overflow:visible!important;
+}
+
+.supervisor-page-two .supervisor-page-two-reserve-sign-row .supervisor-reserve-section,
+.supervisor-page-two .supervisor-page-two-reserve-sign-row .supervisor-reserve-blank,
+.supervisor-page-two .supervisor-reserve-blank{
+  grid-column:1!important;
+  width:132mm!important;
+  max-width:132mm!important;
+  min-width:132mm!important;
+  margin:0!important;
+}
+
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve{
+  grid-column:3!important;
+  position:relative!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  width:62mm!important;
+  min-width:62mm!important;
+  max-width:62mm!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+  transform:none!important;
+  z-index:2!important;
+  align-self:start!important;
+}
+
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-signatures.supervisor-signatures-chair-only,
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox{
+  width:62mm!important;
+  max-width:62mm!important;
+  min-width:62mm!important;
+  margin:0!important;
+  padding:0!important;
+  position:relative!important;
+  text-align:center!important;
+  font-size:14pt!important;
+  line-height:1.35!important;
+}
+
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox > div:not(.signature-visual-space),
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox b,
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox u{
+  font-size:14pt!important;
+  line-height:1.35!important;
+}
+
+.supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-sign-space{
+  height:18mm!important;
+  min-height:18mm!important;
+}
+
+@media print{
+  .supervisor-page-two .supervisor-page-two-reserve-sign-row{
+    width:100%!important;
+    max-width:100%!important;
+    margin:0 auto!important;
+    padding:0!important;
+    display:grid!important;
+    grid-template-columns:132mm 18mm 62mm!important;
+    justify-content:center!important;
+    align-items:start!important;
+    overflow:visible!important;
+  }
+
+  .supervisor-page-two .supervisor-page-two-reserve-sign-row .supervisor-reserve-section,
+  .supervisor-page-two .supervisor-page-two-reserve-sign-row .supervisor-reserve-blank,
+  .supervisor-page-two .supervisor-reserve-blank{
+    grid-column:1!important;
+    width:132mm!important;
+    max-width:132mm!important;
+    min-width:132mm!important;
+    margin:0!important;
+  }
+
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve,
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-signatures.supervisor-signatures-chair-only,
+  .supervisor-page-two .supervisor-page-two-chair-right-of-reserve .supervisor-chair-signbox{
+    grid-column:3!important;
+    width:62mm!important;
+    max-width:62mm!important;
+    min-width:62mm!important;
+    margin:0!important;
+    padding:0!important;
+    position:relative!important;
+    transform:none!important;
+    text-align:center!important;
+    font-size:14pt!important;
+    line-height:1.35!important;
+  }
+}
+</style>
+
+
+<style id="supervisor-remove-all-chair-signatures-final">
+/* ===== FINAL: HAPUS SEMUA TANDA TANGAN KETUA PANITIA DARI JADWAL PENGAWAS ===== */
+.supervisor-print-page .supervisor-signatures,
+.supervisor-print-page .supervisor-signatures-chair-only,
+.supervisor-print-page .supervisor-chair-signbox,
+.supervisor-print-page .supervisor-page-two-chair-under-reserve,
+.supervisor-print-page .supervisor-page-two-chair-right-of-reserve,
+.supervisor-print-page .supervisor-page-two-signature-wrap,
+.supervisor-print-page .supervisor-missing-print-signature-wrap{
+  display:none!important;
+}
+@media print{
+  .supervisor-print-page .supervisor-signatures,
+  .supervisor-print-page .supervisor-signatures-chair-only,
+  .supervisor-print-page .supervisor-chair-signbox,
+  .supervisor-print-page .supervisor-page-two-chair-under-reserve,
+  .supervisor-print-page .supervisor-page-two-chair-right-of-reserve,
+  .supervisor-print-page .supervisor-page-two-signature-wrap,
+  .supervisor-print-page .supervisor-missing-print-signature-wrap{
+    display:none!important;
+  }
+}
+</style>
+
+
+<style id="supervisor-reserve-centered-14pt-final">
+/* FINAL: kotak pengawas cadangan di tengah & nama 14pt */
+.supervisor-page-two .supervisor-reserve-section{
+  width:100%!important;
+  max-width:100%!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  margin:0 auto!important;
+  padding:0!important;
+}
+.supervisor-page-two .supervisor-reserve-section > div:first-child{
+  width:100%!important;
+  text-align:center!important;
+  font-size:14pt!important;
+  font-weight:900!important;
+  margin-top:5mm!important;
+  margin-bottom:2mm!important;
+}
+.supervisor-page-two .supervisor-reserve-blank{
+  width:132mm!important;
+  max-width:132mm!important;
+  min-width:132mm!important;
+  margin:0 auto!important;
+  align-self:center!important;
+}
+.supervisor-page-two .supervisor-reserve-blank th{
+  font-size:12pt!important;
+}
+.supervisor-page-two .supervisor-reserve-blank td.reserve-name{
+  font-size:14pt!important;
+  line-height:1.25!important;
+}
+.supervisor-page-two .supervisor-reserve-blank td.reserve-no{
+  font-size:14pt!important;
+  line-height:1.2!important;
+  text-align:center!important;
+}
+@media print{
+  .supervisor-page-two .supervisor-reserve-section{
+    width:100%!important;
+    max-width:100%!important;
+    display:flex!important;
+    flex-direction:column!important;
+    align-items:center!important;
+    justify-content:flex-start!important;
+    margin:0 auto!important;
+    padding:0!important;
+  }
+  .supervisor-page-two .supervisor-reserve-section > div:first-child{
+    width:100%!important;
+    text-align:center!important;
+    font-size:14pt!important;
+    font-weight:900!important;
+    margin-top:5mm!important;
+    margin-bottom:2mm!important;
+  }
+  .supervisor-page-two .supervisor-reserve-blank{
+    width:132mm!important;
+    max-width:132mm!important;
+    min-width:132mm!important;
+    margin:0 auto!important;
+    align-self:center!important;
+  }
+  .supervisor-page-two .supervisor-reserve-blank th{
+    font-size:12pt!important;
+  }
+  .supervisor-page-two .supervisor-reserve-blank td.reserve-name{
+    font-size:14pt!important;
+    line-height:1.25!important;
+  }
+  .supervisor-page-two .supervisor-reserve-blank td.reserve-no{
+    font-size:14pt!important;
+    line-height:1.2!important;
+    text-align:center!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="loginScreen"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan penyimpanan Supabase. Gunakan akun cloud yang sama agar data dapat dibuka dari komputer/laptop lain.</p></div><div style="font-size:12px;color:#d9eadf">Database Cloud Supabase • Sinkron Otomatis</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">LOGIN ADMIN CLOUD</div><h2>Selamat Datang</h2><div class="sub">Masukkan email dan password Supabase. Akun yang sama dapat digunakan di perangkat lain.</div><div id="loginError" class="login-error">Login gagal.</div><div class="login-field"><label>Email Admin</label><input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com"></div><div class="login-field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -10405,6 +11437,10 @@ db.school.headSignature=db.school.headSignature||'';
 db.school.chairSignature=db.school.chairSignature||'';
 db.school.madrasahStamp=db.school.madrasahStamp||'';
 db.school.committeeStamp=db.school.committeeStamp||'';
+db.school.signatureAdjust=db.school.signatureAdjust||{};
+['madrasahStamp','committeeStamp','headSignature','chairSignature'].forEach(function(k){
+  db.school.signatureAdjust[k]=db.school.signatureAdjust[k]||{};
+});
 
 db.school.signatureCity=db.school.signatureCity||'Wangon';
 db.school.signatureDate=db.school.signatureDate||'';
@@ -10940,14 +11976,80 @@ function menu(active){menuEl=document.getElementById('menu');menuEl.innerHTML=pa
 
 function render(page='dashboard'){migrateParticipantNumberOverridesToHyphen();menu(page);document.getElementById('assessment').value=db.assessment;let f={dashboard,profile,students,rooms,participants,seats,participantList,deskNumbers,participantCards,schedule,supervisors,attendance,attendanceSup,berita,print:printPage,backup};document.getElementById('app').innerHTML=f[page]();bind(page)}
 function dashboard(){return `<div class="card"><h2>Dashboard</h2><div class="notice"><b>${esc(db.school.name)}</b><br>${esc(assessmentDisplay())}</div><div class="grid"><div class="stat">Jumlah Siswa<b>${db.students.length}</b></div><div class="stat">Jumlah Kelas<b>${new Set(db.students.map(s=>s.class)).size}</b></div><div class="stat">Jumlah Ruang<b>${db.rooms.length}</b></div><div class="stat">Peserta Terbagi<b>${db.rooms.reduce((a,r)=>a+r.students.length,0)}</b></div><div class="stat">Jadwal<b>${db.schedules.length}</b></div><div class="stat">Pengawas<b>${db.supervisors.length}</b></div></div></div>`}
+function signatureAdjustDefaults(field){
+ let map={
+   madrasahStamp:{x:0,y:0,size:29},
+   committeeStamp:{x:0,y:0,size:29},
+   headSignature:{x:0,y:0,size:42},
+   chairSignature:{x:0,y:0,size:42}
+ };
+ return map[field]||{x:0,y:0,size:30};
+}
+
+function signatureAdjustGet(field){
+ let d=signatureAdjustDefaults(field);
+ let raw=(db.school.signatureAdjust&&db.school.signatureAdjust[field])||{};
+ let num=(v,def)=>{let n=Number(v);return Number.isFinite(n)?n:def;};
+ return {
+   x:num(raw.x,d.x),
+   y:num(raw.y,d.y),
+   size:Math.max(5,Math.min(80,num(raw.size,d.size)))
+ };
+}
+
+function signatureAdjustControls(field){
+ let a=signatureAdjustGet(field);
+ return `<div class="identity-position-editor">
+   <div class="identity-position-title">Atur Posisi Manual</div>
+   <div class="identity-position-grid">
+     <div><label>Geser Kiri / Kanan (mm)</label><input id="${field}PosX" type="number" step="1" value="${a.x}" title="Nilai positif = ke kanan, negatif = ke kiri"></div>
+     <div><label>Geser Atas / Bawah (mm)</label><input id="${field}PosY" type="number" step="1" value="${a.y}" title="Nilai positif = ke bawah, negatif = ke atas"></div>
+     <div><label>Ukuran Maks. (mm)</label><input id="${field}Size" type="number" min="5" max="80" step="1" value="${a.size}"></div>
+   </div>
+   <div class="identity-position-help">Kanan/Bawah gunakan angka positif. Kiri/Atas gunakan angka negatif.</div>
+   <button type="button" class="secondary identity-reset-position" onclick="resetSignatureAdjust('${field}')">↺ Reset Posisi</button>
+ </div>`;
+}
+
+function resetSignatureAdjust(field){
+ if(!['headSignature','chairSignature','madrasahStamp','committeeStamp'].includes(field))return;
+ db.school.signatureAdjust=db.school.signatureAdjust||{};
+ db.school.signatureAdjust[field]={...signatureAdjustDefaults(field)};
+ save();
+ render('profile');
+}
+
+function readSignatureAdjustFromProfile(){
+ db.school.signatureAdjust=db.school.signatureAdjust||{};
+ ['madrasahStamp','committeeStamp','headSignature','chairSignature'].forEach(field=>{
+   let d=signatureAdjustDefaults(field);
+   let old=signatureAdjustGet(field);
+   let xEl=document.getElementById(field+'PosX');
+   let yEl=document.getElementById(field+'PosY');
+   let sEl=document.getElementById(field+'Size');
+   let numberOr=(el,def)=>{let n=Number(el?.value);return Number.isFinite(n)?n:def;};
+   db.school.signatureAdjust[field]={
+     x:numberOr(xEl,old.x),
+     y:numberOr(yEl,old.y),
+     size:Math.max(5,Math.min(80,numberOr(sEl,d.size)))
+   };
+ });
+}
+
 function signatureAssetsHtml(role='chair'){
  let isHead=role==='head';
- let sign=isHead?(db.school.headSignature||''):(db.school.chairSignature||'');
- let stamp=isHead?(db.school.madrasahStamp||''):(db.school.committeeStamp||'');
+ let signField=isHead?'headSignature':'chairSignature';
+ let stampField=isHead?'madrasahStamp':'committeeStamp';
+ let sign=db.school[signField]||'';
+ let stamp=db.school[stampField]||'';
  if(!sign && !stamp)return '';
+ let sa=signatureAdjustGet(signField);
+ let ta=signatureAdjustGet(stampField);
+ let signStyle=`left:calc(50% + ${sa.x}mm)!important;top:calc(50% + ${sa.y}mm)!important;max-width:${sa.size}mm!important;max-height:${sa.size}mm!important;`;
+ let stampStyle=`left:calc(38% + ${ta.x}mm)!important;top:calc(50% + ${ta.y}mm)!important;max-width:${ta.size}mm!important;max-height:${ta.size}mm!important;`;
  return `<div class="signature-assets signature-assets-${isHead?'head':'chair'}">
-   ${stamp?`<img class="signature-stamp-img" src="${stamp}" alt="${isHead?'Stempel Madrasah':'Stempel Panitia'}">`:''}
-   ${sign?`<img class="signature-hand-img" src="${sign}" alt="${isHead?'Tanda Tangan Kepala Madrasah':'Tanda Tangan Ketua Panitia'}">`:''}
+   ${stamp?`<img class="signature-stamp-img" style="${stampStyle}" src="${stamp}" alt="${isHead?'Stempel Madrasah':'Stempel Panitia'}">`:''}
+   ${sign?`<img class="signature-hand-img" style="${signStyle}" src="${sign}" alt="${isHead?'Tanda Tangan Kepala Madrasah':'Tanda Tangan Ketua Panitia'}">`:''}
  </div>`;
 }
 
@@ -11004,13 +12106,14 @@ function profile(){return `<div class="card"><h2>Identitas Madrasah & Kop Cetak<
 
 <div class="identity-signature-upload-section">
   <h3>Stempel & Tanda Tangan Otomatis</h3>
-  <div class="notice">Unggah gambar PNG/JPG. Setelah disimpan, gambar akan otomatis ditempel pada dokumen cetak yang menampilkan nama Kepala Madrasah atau Ketua Panitia.</div>
+  <div class="notice">Unggah gambar PNG/JPG. Setelah disimpan, gambar otomatis ditempel pada dokumen cetak. Gunakan <b>Atur Posisi Manual</b> untuk menggeser kiri/kanan, atas/bawah, dan mengatur ukuran gambar.</div>
 
   <div class="identity-signature-grid">
     <div class="identity-upload-card">
       <h4>1. Stempel Madrasah</h4>
       <input id="madrasahStampFile" type="file" accept="image/*">
       ${identityImagePreview('Stempel Madrasah',db.school.madrasahStamp,'stamp')}
+      ${signatureAdjustControls('madrasahStamp')}
       ${db.school.madrasahStamp?`<button type="button" class="danger identity-remove-image" onclick="clearIdentityImage('madrasahStamp')">Hapus Stempel Madrasah</button>`:''}
     </div>
 
@@ -11018,6 +12121,7 @@ function profile(){return `<div class="card"><h2>Identitas Madrasah & Kop Cetak<
       <h4>2. Stempel Panitia</h4>
       <input id="committeeStampFile" type="file" accept="image/*">
       ${identityImagePreview('Stempel Panitia',db.school.committeeStamp,'stamp')}
+      ${signatureAdjustControls('committeeStamp')}
       ${db.school.committeeStamp?`<button type="button" class="danger identity-remove-image" onclick="clearIdentityImage('committeeStamp')">Hapus Stempel Panitia</button>`:''}
     </div>
 
@@ -11025,6 +12129,7 @@ function profile(){return `<div class="card"><h2>Identitas Madrasah & Kop Cetak<
       <h4>3. Tanda Tangan Kepala Madrasah</h4>
       <input id="headSignatureFile" type="file" accept="image/*">
       ${identityImagePreview('Tanda Tangan Kepala Madrasah',db.school.headSignature,'signature')}
+      ${signatureAdjustControls('headSignature')}
       ${db.school.headSignature?`<button type="button" class="danger identity-remove-image" onclick="clearIdentityImage('headSignature')">Hapus Tanda Tangan Kepala</button>`:''}
     </div>
 
@@ -11032,6 +12137,7 @@ function profile(){return `<div class="card"><h2>Identitas Madrasah & Kop Cetak<
       <h4>4. Tanda Tangan Ketua Panitia</h4>
       <input id="chairSignatureFile" type="file" accept="image/*">
       ${identityImagePreview('Tanda Tangan Ketua Panitia',db.school.chairSignature,'signature')}
+      ${signatureAdjustControls('chairSignature')}
       ${db.school.chairSignature?`<button type="button" class="danger identity-remove-image" onclick="clearIdentityImage('chairSignature')">Hapus Tanda Tangan Ketua</button>`:''}
     </div>
   </div>
@@ -11044,6 +12150,8 @@ async function saveProfile(){
  db.school.foundation=v('schoolFoundation');db.school.name=v('schoolName');db.school.accreditation=v('schoolAccreditation');
  db.school.nsm=v('schoolNsm');db.school.npsn=v('schoolNpsn');db.school.phone=v('schoolPhone');db.school.postal=v('schoolPostal');
  db.school.email=v('schoolEmail');db.school.website=v('schoolWebsite');db.school.head=v('schoolHead');db.school.nip=v('schoolNip');db.school.committeeChair=v('committeeChair');db.school.signatureCity=v('signatureCity')||'Wangon';db.school.signatureDate=v('signatureDate');db.school.signatureTitle=v('signatureTitle')||'Ketua Panitia';db.school.address=v('schoolAddress');
+
+ readSignatureAdjustFromProfile();
 
  try{
    let [headSign,chairSign,madStamp,committeeStamp]=await Promise.all([
@@ -15264,18 +16372,9 @@ function deleteSupervisorFile(id){if(confirm('Hapus lampiran Jadwal Pengawas ini
 function supervisorSignatureBlock(){
  let city=db.school.signatureCity||'Wangon';
  let date=formatTanggalIndonesia(db.school.signatureDate||'');
- let head=db.school.head||'........................................';
- let nip=db.school.nip||'';
  let chair=db.school.committeeChair||'........................................';
- return `<div class="supervisor-signatures">
-   <div class="signbox">
-     <div>Mengetahui,</div>
-     <div>Kepala Madrasah</div>
-     <div class="supervisor-sign-space signature-visual-space">${signatureAssetsHtml('head')}</div>
-     <div><b><u>${esc(head)}</u></b></div>
-     ${nip?`<div>NIP. ${esc(nip)}</div>`:''}
-   </div>
-   <div class="signbox">
+ return `<div class="supervisor-signatures supervisor-signatures-chair-only">
+   <div class="signbox supervisor-chair-signbox">
      <div>${esc(city)}, ${date}</div>
      <div>Ketua Panitia</div>
      <div class="supervisor-sign-space signature-visual-space">${signatureAssetsHtml('chair')}</div>
@@ -15515,7 +16614,6 @@ function supervisorSecondPrintPage(){
    <div class="print-title">DAFTAR NAMA PENGAWAS<br>${esc(assessmentDisplay())}</div>
    ${supervisorCodeLegendHtml(true)}
    ${supervisorReserveBlankTableHtml()}
-   ${supervisorSignatureBlock()}
  </div>`;
 }
 
@@ -15525,7 +16623,7 @@ function printSupervisorMatrix(){
  syncFlatSupervisors();
  document.getElementById('app').innerHTML=`<div class="supervisor-print-page supervisor-page-one supervisor-29-print supervisor-no-kop-page-one">
    <div class="print-title supervisor-main-title">
-     <div>${esc(supervisorTitleValue())}</div>
+     <div>JADWAL PENGAWAS ASESMEN SUMATIF TENGAH SEMESTER GASAL</div>
      <div class="supervisor-main-title-sub">MTs MA'ARIF NU 1 WANGON TAHUN AJARAN 2026/2027</div>
    </div>
    ${supervisorMatrixTable(true)}
