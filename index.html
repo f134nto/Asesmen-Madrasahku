@@ -11380,6 +11380,19 @@ window.pdfjsLibBridge=pdfjsLib;
 }
 </style>
 
+
+<style id="attendance-remove-sheet-label-final">
+/* ===== DAFTAR HADIR PESERTA: HAPUS TULISAN LEMBAR X DARI Y ===== */
+.attendance-landscape-page .attendance-reference-page{
+  display:none!important;
+}
+@media print{
+  .attendance-landscape-page .attendance-reference-page{
+    display:none!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="loginScreen"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan penyimpanan Supabase. Gunakan akun cloud yang sama agar data dapat dibuka dari komputer/laptop lain.</p></div><div style="font-size:12px;color:#d9eadf">Database Cloud Supabase • Sinkron Otomatis</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">LOGIN ADMIN CLOUD</div><h2>Selamat Datang</h2><div class="sub">Masukkan email dan password Supabase. Akun yang sama dapat digunakan di perangkat lain.</div><div id="loginError" class="login-error">Login gagal.</div><div class="login-field"><label>Email Admin</label><input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com"></div><div class="login-field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -16753,7 +16766,6 @@ function attendanceParticipantPage(r,students,startIndex=0,pageIndex=0,totalPage
      </tr>`).join('')}</tbody>
    </table>
    ${!firstSheet?attendanceChairSignature():''}
-   <div class="attendance-reference-page">LEMBAR ${pageIndex+1} DARI ${totalPages}</div>
  </div>`;
 }
 
