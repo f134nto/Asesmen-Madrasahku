@@ -11547,6 +11547,2042 @@ window.pdfjsLibBridge=pdfjsLib;
 }
 </style>
 
+
+<style id="supervisor-print-no-blank-page-hard-fix-final">
+/* ============================================================
+   HARD FIX JADWAL PENGAWAS — HAPUS HALAMAN KOSONG
+   Samakan semua lembar ke 330 x 215 mm dan cegah konflik
+   dengan aturan cetak lama 330 x 290 mm.
+   ============================================================ */
+@page supervisorFolioLandscape{
+  size:330mm 215mm!important;
+  margin:0!important;
+}
+
+/* Override paling kuat terhadap force-print-root lama. */
+body.force-print-root .supervisor-print-page.supervisor-no-kop-page-one,
+body.force-print-root .supervisor-print-page.supervisor-no-kop-page-two,
+body.force-print-root .supervisor-print-page.supervisor-missing-print-page,
+.supervisor-print-page.supervisor-no-kop-page-one,
+.supervisor-print-page.supervisor-no-kop-page-two,
+.supervisor-print-page.supervisor-missing-print-page{
+  page:supervisorFolioLandscape!important;
+  width:330mm!important;
+  min-width:330mm!important;
+  max-width:330mm!important;
+  height:215mm!important;
+  min-height:215mm!important;
+  max-height:215mm!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+  position:relative!important;
+  top:0!important;
+  left:0!important;
+  transform:none!important;
+
+  /* Jangan pernah memaksa pindah halaman sebelum lembar. */
+  page-break-before:auto!important;
+  break-before:auto!important;
+}
+
+/* Lembar 1 -> langsung lembar 2. */
+body.force-print-root .supervisor-print-page.supervisor-no-kop-page-one,
+.supervisor-print-page.supervisor-no-kop-page-one{
+  padding:12mm 7mm 6mm 7mm!important;
+  page-break-after:always!important;
+  break-after:page!important;
+}
+
+/* Lembar 2 -> langsung lembar 3, tanpa halaman kosong. */
+body.force-print-root .supervisor-print-page.supervisor-no-kop-page-two,
+.supervisor-print-page.supervisor-no-kop-page-two{
+  padding:10mm 12mm 7mm 12mm!important;
+  page-break-after:always!important;
+  break-after:page!important;
+}
+
+/* Lembar 3 adalah lembar terakhir. */
+body.force-print-root .supervisor-print-page.supervisor-missing-print-page,
+.supervisor-print-page.supervisor-missing-print-page{
+  padding:10mm 12mm 8mm 12mm!important;
+  page-break-after:auto!important;
+  break-after:auto!important;
+}
+
+/* Akar dokumen jangan memberi tinggi tambahan. */
+body.force-print-root:has(main#app .supervisor-print-page) .layout,
+body.force-print-root:has(main#app .supervisor-print-page) main#app,
+body.force-print-root:has(main#app .supervisor-print-page) #app{
+  min-height:0!important;
+  height:auto!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+}
+
+@media print{
+  @page supervisorFolioLandscape{
+    size:330mm 215mm!important;
+    margin:0!important;
+  }
+
+  body.force-print-root .supervisor-print-page.supervisor-no-kop-page-one,
+  body.force-print-root .supervisor-print-page.supervisor-no-kop-page-two,
+  body.force-print-root .supervisor-print-page.supervisor-missing-print-page,
+  .supervisor-print-page.supervisor-no-kop-page-one,
+  .supervisor-print-page.supervisor-no-kop-page-two,
+  .supervisor-print-page.supervisor-missing-print-page{
+    page:supervisorFolioLandscape!important;
+    width:330mm!important;
+    min-width:330mm!important;
+    max-width:330mm!important;
+    height:215mm!important;
+    min-height:215mm!important;
+    max-height:215mm!important;
+    margin:0!important;
+    overflow:hidden!important;
+    page-break-before:auto!important;
+    break-before:auto!important;
+  }
+
+  body.force-print-root .supervisor-print-page.supervisor-no-kop-page-one,
+  .supervisor-print-page.supervisor-no-kop-page-one,
+  body.force-print-root .supervisor-print-page.supervisor-no-kop-page-two,
+  .supervisor-print-page.supervisor-no-kop-page-two{
+    page-break-after:always!important;
+    break-after:page!important;
+  }
+
+  body.force-print-root .supervisor-print-page.supervisor-missing-print-page,
+  .supervisor-print-page.supervisor-missing-print-page{
+    page-break-after:auto!important;
+    break-after:auto!important;
+  }
+}
+</style>
+
+
+<style id="supervisor-page-two-reserve-left-chair-right-final-20260918">
+/* ===== JADWAL PENGAWAS LEMBAR 2 =====
+   Kotak Pengawas Cadangan digeser ke kiri lagi,
+   tanda tangan Ketua Panitia di sisi kanan bawah area Arif Puji,
+   ukuran tulisan 14 pt.
+*/
+.supervisor-page-two .supervisor-page-two-bottom-row{
+  width:250mm!important;
+  max-width:250mm!important;
+  margin:5mm auto 0!important;
+  padding:0!important;
+  display:flex!important;
+  justify-content:space-between!important;
+  align-items:flex-start!important;
+  gap:10mm!important;
+}
+.supervisor-page-two .supervisor-page-two-bottom-row .supervisor-reserve-section{
+  width:132mm!important;
+  max-width:132mm!important;
+  min-width:132mm!important;
+  margin:0!important;
+  padding:0!important;
+  flex:0 0 132mm!important;
+}
+.supervisor-page-two .supervisor-page-two-bottom-row .supervisor-reserve-blank{
+  width:132mm!important;
+  max-width:132mm!important;
+  min-width:132mm!important;
+  margin:0 auto!important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right{
+  width:72mm!important;
+  max-width:72mm!important;
+  min-width:72mm!important;
+  margin:22mm 0 0 0!important;
+  padding:0!important;
+  flex:0 0 72mm!important;
+  display:block!important;
+  text-align:center!important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-signatures,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-signatures-chair-only,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox{
+  display:block!important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-signatures,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-signatures-chair-only{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:0!important;
+  text-align:center!important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox > div,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox b,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox u{
+  font-size:14pt!important;
+  line-height:1.3!important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-sign-space{
+  height:18mm!important;
+  min-height:18mm!important;
+}
+@media print{
+  .supervisor-page-two .supervisor-page-two-bottom-row{
+    width:250mm!important;
+    max-width:250mm!important;
+    margin:5mm auto 0!important;
+    display:flex!important;
+    justify-content:space-between!important;
+    align-items:flex-start!important;
+    gap:10mm!important;
+  }
+  .supervisor-page-two .supervisor-page-two-bottom-row .supervisor-reserve-section{
+    width:132mm!important;
+    max-width:132mm!important;
+    min-width:132mm!important;
+    margin:0!important;
+    flex:0 0 132mm!important;
+  }
+  .supervisor-page-two .supervisor-page-two-bottom-row .supervisor-reserve-blank{
+    width:132mm!important;
+    max-width:132mm!important;
+    min-width:132mm!important;
+    margin:0 auto!important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right,
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-signatures,
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-signatures-chair-only,
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox{
+    display:block!important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right{
+    width:72mm!important;
+    max-width:72mm!important;
+    min-width:72mm!important;
+    margin:22mm 0 0 0!important;
+    flex:0 0 72mm!important;
+    text-align:center!important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox > div,
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox b,
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox u{
+    font-size:14pt!important;
+    line-height:1.3!important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-sign-space{
+    height:18mm!important;
+    min-height:18mm!important;
+  }
+}
+</style>
+
+<style id="supervisor-page-two-signature-right-under-arif-puji-final-20260918b">
+/* FINAL OVERRIDE:
+   - Kotak Pengawas Cadangan digeser ke kiri
+   - TTD Ketua Panitia dipindah ke kanan, di bawah area nama pengawas kolom Arif Puji
+   - Ukuran teks tanda tangan 14pt
+*/
+.supervisor-print-page.supervisor-page-two{
+  position:relative!important;
+}
+.supervisor-page-two .supervisor-page-two-bottom-row{
+  width:250mm!important;
+  max-width:250mm!important;
+  margin:4mm auto 0!important;
+  padding:0!important;
+  display:block!important;
+  position:relative!important;
+  min-height:72mm!important;
+}
+.supervisor-page-two .supervisor-page-two-bottom-row .supervisor-reserve-section{
+  width:132mm!important;
+  max-width:132mm!important;
+  min-width:132mm!important;
+  margin:0 0 0 34mm!important;
+  padding:0!important;
+  display:block!important;
+}
+.supervisor-page-two .supervisor-page-two-bottom-row .supervisor-reserve-section > div:first-child{
+  width:100%!important;
+  text-align:center!important;
+  font-size:14pt!important;
+  font-weight:900!important;
+  margin:0 0 2mm 0!important;
+}
+.supervisor-page-two .supervisor-page-two-bottom-row .supervisor-reserve-blank{
+  width:132mm!important;
+  max-width:132mm!important;
+  min-width:132mm!important;
+  margin:0 auto!important;
+}
+.supervisor-page-two .supervisor-page-two-bottom-row .supervisor-reserve-blank td.reserve-name,
+.supervisor-page-two .supervisor-page-two-bottom-row .supervisor-reserve-blank td.reserve-no{
+  font-size:14pt!important;
+  line-height:1.2!important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right{
+  position:absolute!important;
+  left:188mm!important;
+  top:14mm!important;
+  width:54mm!important;
+  max-width:54mm!important;
+  min-width:54mm!important;
+  margin:0!important;
+  padding:0!important;
+  display:block!important;
+  text-align:center!important;
+  z-index:5!important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-signatures,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-signatures-chair-only,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox{
+  display:block!important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-signatures,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-signatures-chair-only,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox{
+  width:54mm!important;
+  max-width:54mm!important;
+  min-width:54mm!important;
+  margin:0!important;
+  padding:0!important;
+  text-align:center!important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox > div,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox b,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox u{
+  font-size:14pt!important;
+  line-height:1.25!important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-sign-space,
+.supervisor-page-two .supervisor-page-two-chair-right .signature-visual-space{
+  height:16mm!important;
+  min-height:16mm!important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right .signature-assets{
+  width:44mm!important;
+  height:16mm!important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right .signature-hand-img{
+  max-width:34mm!important;
+  max-height:14mm!important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right .signature-stamp-img{
+  max-width:22mm!important;
+  max-height:22mm!important;
+}
+@media print{
+  .supervisor-print-page.supervisor-page-two{
+    position:relative!important;
+  }
+  .supervisor-page-two .supervisor-page-two-bottom-row{
+    width:250mm!important;
+    max-width:250mm!important;
+    margin:4mm auto 0!important;
+    padding:0!important;
+    display:block!important;
+    position:relative!important;
+    min-height:72mm!important;
+  }
+  .supervisor-page-two .supervisor-page-two-bottom-row .supervisor-reserve-section{
+    width:132mm!important;
+    max-width:132mm!important;
+    min-width:132mm!important;
+    margin:0 0 0 34mm!important;
+    display:block!important;
+  }
+  .supervisor-page-two .supervisor-page-two-bottom-row .supervisor-reserve-blank{
+    width:132mm!important;
+    max-width:132mm!important;
+    min-width:132mm!important;
+    margin:0 auto!important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right{
+    position:absolute!important;
+    left:188mm!important;
+    top:14mm!important;
+    width:54mm!important;
+    max-width:54mm!important;
+    min-width:54mm!important;
+    margin:0!important;
+    padding:0!important;
+    display:block!important;
+    text-align:center!important;
+    z-index:5!important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right,
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-signatures,
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-signatures-chair-only,
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox{
+    display:block!important;
+    width:54mm!important;
+    max-width:54mm!important;
+    min-width:54mm!important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox > div,
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox b,
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox u{
+    font-size:14pt!important;
+    line-height:1.25!important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right .signature-assets{
+    width:44mm!important;
+    height:16mm!important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right .signature-hand-img{
+    max-width:34mm!important;
+    max-height:14mm!important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right .signature-stamp-img{
+    max-width:22mm!important;
+    max-height:22mm!important;
+  }
+}
+</style>
+
+<style id="supervisor-signature-black-box-position-20260918-final">
+/* Posisi akhir: tanda tangan Ketua Panitia dipindah ke area kotak hitam (sebelah kanan kotak Pengawas Cadangan) */
+.supervisor-page-two .supervisor-page-two-chair-right{
+  position:absolute !important;
+  left:205mm !important;
+  top:15mm !important;
+  width:46mm !important;
+  max-width:46mm !important;
+  min-width:46mm !important;
+  margin:0 !important;
+  padding:0 !important;
+  text-align:center !important;
+  z-index:99 !important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-signatures,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-signatures-chair-only,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox{
+  width:46mm !important;
+  max-width:46mm !important;
+  min-width:46mm !important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox > div,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox b,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox u{
+  font-size:14pt !important;
+  line-height:1.2 !important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-sign-space,
+.supervisor-page-two .supervisor-page-two-chair-right .signature-visual-space{
+  height:15mm !important;
+  min-height:15mm !important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right .signature-assets{
+  width:40mm !important;
+  height:15mm !important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right .signature-hand-img{
+  max-width:30mm !important;
+  max-height:13mm !important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right .signature-stamp-img{
+  max-width:20mm !important;
+  max-height:20mm !important;
+}
+@media print{
+  .supervisor-page-two .supervisor-page-two-chair-right{
+    position:absolute !important;
+    left:205mm !important;
+    top:15mm !important;
+    width:46mm !important;
+    max-width:46mm !important;
+    min-width:46mm !important;
+    margin:0 !important;
+    padding:0 !important;
+    text-align:center !important;
+    z-index:99 !important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right,
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-signatures,
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-signatures-chair-only,
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox{
+    width:46mm !important;
+    max-width:46mm !important;
+    min-width:46mm !important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox > div,
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox b,
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox u{
+    font-size:14pt !important;
+    line-height:1.2 !important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-sign-space,
+  .supervisor-page-two .supervisor-page-two-chair-right .signature-visual-space{
+    height:15mm !important;
+    min-height:15mm !important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right .signature-assets{
+    width:40mm !important;
+    height:15mm !important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right .signature-hand-img{
+    max-width:30mm !important;
+    max-height:13mm !important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right .signature-stamp-img{
+    max-width:20mm !important;
+    max-height:20mm !important;
+  }
+}
+</style>
+
+<style id="supervisor-signature-move-further-right-20260918">
+/* Revisi: tanda tangan Ketua Panitia dipindah lebih ke kanan agar tidak berada di atas kotak Pengawas Cadangan */
+.supervisor-page-two .supervisor-page-two-chair-right{
+  left:auto !important;
+  right:0mm !important;
+  top:18mm !important;
+  width:52mm !important;
+  max-width:52mm !important;
+  min-width:52mm !important;
+  margin:0 !important;
+  padding:0 !important;
+  text-align:center !important;
+  z-index:120 !important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-signatures,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-signatures-chair-only,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox{
+  width:52mm !important;
+  max-width:52mm !important;
+  min-width:52mm !important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox > div,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox b,
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox u{
+  font-size:14pt !important;
+  line-height:1.2 !important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right .supervisor-sign-space,
+.supervisor-page-two .supervisor-page-two-chair-right .signature-visual-space{
+  height:15mm !important;
+  min-height:15mm !important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right .signature-assets{
+  width:42mm !important;
+  height:15mm !important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right .signature-hand-img{
+  max-width:31mm !important;
+  max-height:13mm !important;
+}
+.supervisor-page-two .supervisor-page-two-chair-right .signature-stamp-img{
+  max-width:18mm !important;
+  max-height:18mm !important;
+}
+@media print{
+  .supervisor-page-two .supervisor-page-two-chair-right{
+    left:auto !important;
+    right:0mm !important;
+    top:18mm !important;
+    width:52mm !important;
+    max-width:52mm !important;
+    min-width:52mm !important;
+    margin:0 !important;
+    padding:0 !important;
+    text-align:center !important;
+    z-index:120 !important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right,
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-signatures,
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-signatures-chair-only,
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox{
+    width:52mm !important;
+    max-width:52mm !important;
+    min-width:52mm !important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox > div,
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox b,
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-chair-signbox u{
+    font-size:14pt !important;
+    line-height:1.2 !important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right .supervisor-sign-space,
+  .supervisor-page-two .supervisor-page-two-chair-right .signature-visual-space{
+    height:15mm !important;
+    min-height:15mm !important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right .signature-assets{
+    width:42mm !important;
+    height:15mm !important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right .signature-hand-img{
+    max-width:31mm !important;
+    max-height:13mm !important;
+  }
+  .supervisor-page-two .supervisor-page-two-chair-right .signature-stamp-img{
+    max-width:18mm !important;
+    max-height:18mm !important;
+  }
+}
+</style>
+
+<style id="supervisor-chair-manual-position-ready-print-final">
+/* ===== POSISI MANUAL TTD KETUA PANITIA — HALAMAN SIAP CETAK ===== */
+.supervisor-page-two .supervisor-page-two-chair-right{
+  transform:translate(var(--sup-chair-x,0mm),var(--sup-chair-y,0mm))!important;
+  transition:transform .12s ease!important;
+}
+
+.supervisor-chair-manual-panel{
+  width:min(980px,calc(100% - 28px));
+  margin:18px auto 8px;
+  padding:14px 16px;
+  border:2px solid #0f6d3c;
+  border-radius:12px;
+  background:#f6fbf7;
+  box-shadow:0 4px 14px rgba(0,0,0,.08);
+  color:#173d2d;
+}
+.supervisor-chair-manual-title{
+  font-size:16px;
+  font-weight:900;
+  margin-bottom:5px;
+  color:#0f5c3a;
+}
+.supervisor-chair-manual-help{
+  font-size:12px;
+  line-height:1.45;
+  color:#52665b;
+  margin-bottom:10px;
+}
+.supervisor-chair-manual-buttons,
+.supervisor-chair-manual-fields{
+  display:flex;
+  gap:8px;
+  align-items:end;
+  flex-wrap:wrap;
+  margin-top:8px;
+}
+.supervisor-chair-manual-fields label{
+  margin:0;
+  font-weight:800;
+  font-size:12px;
+}
+.supervisor-chair-manual-fields input{
+  display:block;
+  width:110px;
+  margin-top:4px;
+}
+.supervisor-chair-manual-status{
+  margin-top:9px;
+  font-size:12px;
+  font-weight:800;
+  color:#0f5c3a;
+}
+@media(max-width:760px){
+  .supervisor-chair-manual-buttons button,
+  .supervisor-chair-manual-fields button{
+    flex:1 1 45%;
+  }
+}
+@media print{
+  .supervisor-page-two .supervisor-page-two-chair-right{
+    transform:translate(var(--sup-chair-x,0mm),var(--sup-chair-y,0mm))!important;
+    transition:none!important;
+  }
+  .supervisor-chair-manual-panel{display:none!important;}
+}
+</style>
+
+<style id="print-direct-signature-drag-editor-final">
+/* ============================================================
+   EDIT LANGSUNG STEMPEL & TANDA TANGAN PADA HALAMAN SIAP PRINT
+   ============================================================ */
+.print-direct-editor-toolbar{
+  position:fixed!important;
+  right:14px!important;
+  bottom:14px!important;
+  z-index:2147483000!important;
+  width:min(390px,calc(100vw - 28px))!important;
+  box-sizing:border-box!important;
+  padding:12px!important;
+  border:2px solid #146b43!important;
+  border-radius:12px!important;
+  background:rgba(255,255,255,.97)!important;
+  box-shadow:0 8px 28px rgba(0,0,0,.20)!important;
+  color:#173d2d!important;
+  font-family:Arial,sans-serif!important;
+}
+.print-direct-editor-title{
+  font-size:14px!important;
+  font-weight:900!important;
+  margin-bottom:5px!important;
+}
+.print-direct-editor-help{
+  font-size:11px!important;
+  line-height:1.35!important;
+  margin-bottom:8px!important;
+  color:#4b6255!important;
+}
+.print-direct-editor-status{
+  padding:7px 8px!important;
+  margin:6px 0!important;
+  border-radius:7px!important;
+  background:#f0f7f3!important;
+  font-size:11px!important;
+  font-weight:700!important;
+}
+.print-direct-editor-actions{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:5px!important;
+  margin-top:6px!important;
+}
+.print-direct-editor-actions button{
+  min-width:54px!important;
+  padding:6px 8px!important;
+  font-size:11px!important;
+}
+.print-direct-editor-toggle-active{
+  background:#146b43!important;
+  color:#fff!important;
+}
+
+/* Offset direct editor ditambahkan tanpa merusak transform bawaan elemen. */
+.print-direct-draggable{
+  translate:var(--print-direct-x,0mm) var(--print-direct-y,0mm)!important;
+}
+
+body.print-direct-edit-active .print-signature-block{
+  outline:1.5px dashed #15803d!important;
+  outline-offset:2px!important;
+  cursor:move!important;
+  user-select:none!important;
+  touch-action:none!important;
+}
+body.print-direct-edit-active .signature-assets{
+  pointer-events:auto!important;
+}
+body.print-direct-edit-active .signature-hand-img,
+body.print-direct-edit-active .signature-stamp-img{
+  pointer-events:auto!important;
+  cursor:grab!important;
+  user-select:none!important;
+  touch-action:none!important;
+}
+body.print-direct-edit-active .signature-hand-img{
+  outline:1.5px dashed #b58105!important;
+  outline-offset:2px!important;
+}
+body.print-direct-edit-active .signature-stamp-img{
+  outline:1.5px dashed #245ca6!important;
+  outline-offset:2px!important;
+}
+body.print-direct-edit-active .print-direct-selected{
+  outline:3px solid #d09700!important;
+  outline-offset:3px!important;
+}
+
+@media print{
+  .print-direct-editor-toolbar{display:none!important;}
+  .print-signature-block,
+  .signature-hand-img,
+  .signature-stamp-img,
+  .print-direct-selected{
+    outline:none!important;
+  }
+}
+</style>
+
+
+<style id="print-direct-drag-hard-fix-20260918">
+/* HARD FIX DRAG: semua objek edit menerima pointer/mouse secara langsung */
+body.print-direct-edit-active .print-signature-block,
+body.print-direct-edit-active .signature-assets,
+body.print-direct-edit-active .signature-hand-img,
+body.print-direct-edit-active .signature-stamp-img,
+body.print-direct-edit-active [data-print-drag-key]{
+  pointer-events:auto!important;
+  touch-action:none!important;
+  -webkit-user-drag:none!important;
+  user-select:none!important;
+}
+body.print-direct-edit-active .print-signature-block,
+body.print-direct-edit-active [data-print-drag-key]{
+  cursor:grab!important;
+}
+body.print-direct-edit-active .print-direct-dragging,
+body.print-direct-edit-active .print-direct-dragging *{
+  cursor:grabbing!important;
+}
+/* Pastikan offset drag benar-benar dipakai di Chromium */
+.print-direct-draggable{
+  translate:var(--print-direct-x,0mm) var(--print-direct-y,0mm)!important;
+}
+@media print{
+  .print-direct-dragging{outline:none!important;}
+}
+</style>
+
+
+<style id="manual-paste-safe-login-final">
+/* ============================================================
+   MODE MANUAL COPY/PASTE + DRAG — AMAN, TIDAK MENYENTUH LOGIN
+   Gambar tanda tangan/stempel otomatis disembunyikan; teks penandatangan tetap ada.
+   ============================================================ */
+
+/* Sembunyikan gambar TTD/stempel otomatis pada dokumen siap print. */
+.signature-visual-space .signature-assets,
+.signature-visual-space .signature-hand-img,
+.signature-visual-space .signature-stamp-img{
+  display:none!important;
+}
+
+/* Sembunyikan editor drag otomatis versi lama agar tidak bentrok. */
+#printDirectEditorToolbar{
+  display:none!important;
+}
+body.print-direct-edit-active .print-direct-draggable{
+  outline:none!important;
+  cursor:default!important;
+}
+
+/* Setiap lembar cetak menjadi kanvas posisi absolut. */
+.print-page,
+[class*="-print-page"],
+.participant-list-print-page,
+.participant-exact-print-page,
+.seat-print-page,
+.schedule-print-page,
+.schedule-fixed-print-page,
+.special-assessment-print-page,
+.room-distribution-print-page,
+.supervisor-print-page,
+.attendance-landscape-page,
+.card-landscape-page,
+.desk-landscape-page,
+.desk16-page,
+.room-capacity-print-page{
+  position:relative!important;
+}
+
+.manual-paste-page-selected{
+  outline:2px dashed #14753d!important;
+  outline-offset:-3px!important;
+}
+
+.manual-paste-asset{
+  position:absolute!important;
+  display:block!important;
+  z-index:99999!important;
+  transform:translate(-50%,-50%)!important;
+  object-fit:contain!important;
+  cursor:grab!important;
+  user-select:none!important;
+  -webkit-user-select:none!important;
+  -webkit-user-drag:none!important;
+  touch-action:none!important;
+  pointer-events:auto!important;
+  max-width:none!important;
+  max-height:none!important;
+}
+.manual-paste-asset:active{cursor:grabbing!important}
+.manual-paste-asset.manual-paste-selected{
+  outline:2px dashed #e59b00!important;
+  outline-offset:2px!important;
+}
+
+.manual-paste-toolbar{
+  position:fixed!important;
+  left:14px!important;
+  bottom:14px!important;
+  z-index:1000000!important;
+  width:min(680px,calc(100vw - 28px))!important;
+  background:#fff!important;
+  border:2px solid #14753d!important;
+  border-radius:12px!important;
+  box-shadow:0 8px 28px rgba(0,0,0,.20)!important;
+  padding:12px!important;
+  color:#173d2d!important;
+  font-size:13px!important;
+}
+.manual-paste-toolbar-title{
+  font-size:15px!important;
+  font-weight:900!important;
+  color:#0f5c3a!important;
+  margin-bottom:5px!important;
+}
+.manual-paste-toolbar-help{line-height:1.45!important;margin-bottom:8px!important}
+.manual-paste-toolbar-status{
+  background:#f4faf6!important;
+  border:1px solid #c6dacf!important;
+  border-radius:8px!important;
+  padding:7px 9px!important;
+  margin-bottom:8px!important;
+  font-weight:700!important;
+}
+.manual-paste-toolbar-actions{
+  display:flex!important;
+  flex-wrap:wrap!important;
+  gap:6px!important;
+}
+.manual-paste-toolbar-actions button{
+  padding:7px 10px!important;
+  font-size:12px!important;
+}
+.manual-paste-file-input{display:none!important}
+
+@media print{
+  .manual-paste-toolbar{display:none!important}
+  .manual-paste-page-selected{outline:none!important}
+  .manual-paste-asset,
+  .manual-paste-asset.manual-paste-selected{
+    outline:none!important;
+    cursor:default!important;
+  }
+}
+</style>
+
+
+<style id="attendance-short-name-two-parts-final">
+/* Daftar Hadir Peserta: nama tampil ringkas maksimal 2 bagian */
+.attendance-reference-table td.att-name{
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+@media print{
+  .attendance-reference-table td.att-name{
+    white-space:nowrap!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+  }
+}
+</style>
+
+
+<style id="attendance-exact-two-pages-compact-rows-final-20260918">
+/* ============================================================
+   DAFTAR HADIR PESERTA — FINAL
+   1 ruang = tepat 2 lembar, baris peserta diperkecil, TTD di lembar 2.
+   ============================================================ */
+.attendance-landscape-page.attendance-reference-layout{
+  box-sizing:border-box!important;
+}
+
+/* Baris default dibuat lebih rendah dari versi sebelumnya. */
+.attendance-reference-layout .attendance-reference-table tbody td,
+.attendance-reference-layout .attendance-reference-table tbody td.att-session{
+  height:6.6mm!important;
+  min-height:6.6mm!important;
+  max-height:6.6mm!important;
+  padding:.45mm .65mm!important;
+  line-height:1.0!important;
+  font-size:9.2pt!important;
+}
+.attendance-reference-layout .attendance-reference-table tbody td.att-name{
+  padding-left:1.4mm!important;
+  white-space:nowrap!important;
+  text-overflow:clip!important;
+}
+
+/* Penyesuaian otomatis bila peserta per lembar lebih banyak. */
+.attendance-reference-layout.attendance-density-normal .attendance-reference-table tbody td,
+.attendance-reference-layout.attendance-density-normal .attendance-reference-table tbody td.att-session{
+  height:6.6mm!important;
+  min-height:6.6mm!important;
+  max-height:6.6mm!important;
+}
+.attendance-reference-layout.attendance-density-medium .attendance-reference-table tbody td,
+.attendance-reference-layout.attendance-density-medium .attendance-reference-table tbody td.att-session{
+  height:6.2mm!important;
+  min-height:6.2mm!important;
+  max-height:6.2mm!important;
+  font-size:9pt!important;
+}
+.attendance-reference-layout.attendance-density-high .attendance-reference-table tbody td,
+.attendance-reference-layout.attendance-density-high .attendance-reference-table tbody td.att-session{
+  height:5.7mm!important;
+  min-height:5.7mm!important;
+  max-height:5.7mm!important;
+  font-size:8.7pt!important;
+}
+.attendance-reference-layout.attendance-density-xhigh .attendance-reference-table tbody td,
+.attendance-reference-layout.attendance-density-xhigh .attendance-reference-table tbody td.att-session{
+  height:5.2mm!important;
+  min-height:5.2mm!important;
+  max-height:5.2mm!important;
+  font-size:8.3pt!important;
+}
+
+/* Header tetap ringkas agar ruang vertikal lebih longgar. */
+.attendance-reference-layout .attendance-reference-table th{
+  padding:.65mm .45mm!important;
+  line-height:1.0!important;
+}
+.attendance-reference-layout .attendance-reference-table .att-day-group{
+  padding:.65mm .35mm!important;
+}
+.attendance-reference-layout .attendance-reference-table .att-mapel-number{
+  padding:.55mm .2mm!important;
+}
+
+/* Lembar 2 selalu menyediakan ruang tanda tangan Ketua Panitia. */
+.attendance-reference-layout.attendance-second-sheet .attendance-chair-signature{
+  display:block!important;
+  width:70mm!important;
+  margin:5mm 6mm 0 auto!important;
+  font-size:10.5pt!important;
+  line-height:1.25!important;
+}
+.attendance-reference-layout.attendance-second-sheet .attendance-chair-space{
+  height:15mm!important;
+  min-height:15mm!important;
+}
+.attendance-reference-layout.attendance-second-sheet .attendance-chair-name{
+  font-size:10.5pt!important;
+}
+
+@media print{
+  @page attendanceReferenceLandscape{
+    size:330mm 290mm!important;
+    margin:0!important;
+  }
+
+  /* Tiap elemen attendance = satu lembar fisik. */
+  body.force-print-root .attendance-landscape-page.attendance-reference-layout,
+  .attendance-landscape-page.attendance-reference-layout{
+    page:attendanceReferenceLandscape!important;
+    box-sizing:border-box!important;
+    width:330mm!important;
+    max-width:330mm!important;
+    min-width:330mm!important;
+    height:290mm!important;
+    max-height:290mm!important;
+    min-height:290mm!important;
+    margin:0!important;
+    padding:7mm!important;
+    overflow:hidden!important;
+    page-break-before:auto!important;
+    break-before:auto!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid-page!important;
+  }
+
+  /* Hanya lembar yang diberi class ini yang melakukan pindah halaman. */
+  body.force-print-root .attendance-landscape-page.attendance-reference-layout.attendance-page-break-after,
+  .attendance-landscape-page.attendance-reference-layout.attendance-page-break-after{
+    page-break-after:always!important;
+    break-after:page!important;
+  }
+
+  /* Lembar kedua tidak pernah menambah break-before sendiri. */
+  body.force-print-root .attendance-landscape-page.attendance-reference-layout.attendance-second-sheet,
+  .attendance-landscape-page.attendance-reference-layout.attendance-second-sheet{
+    page-break-before:auto!important;
+    break-before:auto!important;
+  }
+
+  .attendance-reference-layout .attendance-reference-table tbody tr{
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+
+  .attendance-reference-layout.attendance-second-sheet .attendance-chair-signature{
+    display:block!important;
+    margin:5mm 6mm 0 auto!important;
+  }
+}
+</style>
+
+
+<style id="manual-paste-all-print-pages-global-final-20260918">
+/* Editor TTD/Stempel manual aktif pada seluruh lembar yang siap dicetak. */
+#app .print-page,
+#app [class*="-print-page"],
+#app .attendance-landscape-page,
+#app .card-landscape-page,
+#app .desk16-page,
+#app .desk-landscape-page{
+  position:relative!important;
+}
+@media print{
+  #manualPasteSafeToolbar{display:none!important;}
+  #app .manual-paste-page-selected{outline:none!important;}
+}
+</style>
+
+<style id="manual-paste-toolbar-visibility-hard-fix-20260918">
+/* FIX: panel selalu dapat ditampilkan pada setiap preview siap cetak */
+#manualPasteSafeToolbar{
+  display:none!important;
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+}
+#manualPasteSafeToolbar.manual-toolbar-visible:not(.manual-toolbar-user-hidden){
+  display:block!important;
+}
+.manual-paste-launcher{
+  display:none!important;
+  position:fixed!important;
+  right:16px!important;
+  bottom:16px!important;
+  z-index:1000001!important;
+  border:2px solid #14753d!important;
+  background:#14753d!important;
+  color:#fff!important;
+  border-radius:999px!important;
+  padding:10px 16px!important;
+  box-shadow:0 6px 22px rgba(0,0,0,.22)!important;
+  font-weight:800!important;
+}
+.manual-paste-launcher.manual-launcher-visible{display:block!important;}
+#manualPasteSafeToolbar.manual-toolbar-user-hidden{display:none!important;}
+@media print{
+  #manualPasteSafeToolbar,.manual-paste-launcher{display:none!important;}
+}
+</style>
+
+<style id="manual-paste-launcher-always-available-fix-20260918">
+@media screen{
+  #manualPasteLauncher.manual-launcher-visible{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+  }
+  #manualPasteSafeToolbar.manual-toolbar-visible:not(.manual-toolbar-user-hidden){
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    pointer-events:auto!important;
+  }
+}
+@media print{
+  #manualPasteLauncher,#manualPasteSafeToolbar{display:none!important;}
+}
+</style>
+
+<style id="manual-toolbar-compact-draggable-chair-only-final-20260918">
+/* Panel tidak menutupi menu kerja: kecil, kanan atas, dapat digeser dari judul. */
+#manualPasteSafeToolbar.manual-paste-toolbar{
+  left:auto!important;
+  right:18px!important;
+  top:74px!important;
+  bottom:auto!important;
+  width:min(460px,calc(100vw - 36px))!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+.manual-paste-toolbar-head{
+  min-height:42px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:8px!important;
+  padding:8px 10px!important;
+  background:#f4faf6!important;
+  border-bottom:1px solid #c6dacf!important;
+  cursor:move!important;
+  touch-action:none!important;
+  user-select:none!important;
+}
+.manual-paste-toolbar-title{margin:0!important;font-size:14px!important;}
+.manual-paste-toolbar-window-actions{display:flex!important;gap:5px!important;flex:0 0 auto!important;}
+.manual-paste-toolbar-window-actions button{
+  min-width:30px!important;width:30px!important;height:28px!important;padding:0!important;
+  border-radius:7px!important;font-size:16px!important;line-height:1!important;
+}
+.manual-paste-toolbar-body{padding:10px!important;}
+#manualPasteSafeToolbar.manual-toolbar-minimized{width:min(330px,calc(100vw - 36px))!important;}
+#manualPasteSafeToolbar.manual-toolbar-minimized .manual-paste-toolbar-body{display:none!important;}
+/* Hanya dua pengaturan yang dipakai: Stempel Panitia + TTD Ketua Panitia. */
+.print-signature-grid-chair-only{grid-template-columns:repeat(2,minmax(220px,1fr))!important;}
+@media(max-width:720px){.print-signature-grid-chair-only{grid-template-columns:1fr!important;}}
+@media print{#manualPasteSafeToolbar,#manualPasteLauncher{display:none!important;}}
+</style>
+
+<style id="attendance-fixed-20-first-page-remainder-second-signature-bottom-right-20260918">
+/* ============================================================
+   DAFTAR HADIR PESERTA — 2 LEMBAR TETAP
+   Lembar 1: peserta 1-20.
+   Lembar 2: sisa peserta, TTD Ketua Panitia di pojok kanan bawah.
+   ============================================================ */
+.attendance-landscape-page.attendance-reference-layout{
+  position:relative!important;
+  box-sizing:border-box!important;
+}
+
+/* Header tabel diperbesar sedikit agar seimbang dengan isi. */
+.attendance-reference-layout .attendance-reference-table th{
+  font-size:10.5pt!important;
+  line-height:1.05!important;
+  padding:.8mm .5mm!important;
+}
+.attendance-reference-layout .attendance-reference-table .att-day-group{
+  font-size:10pt!important;
+}
+.attendance-reference-layout .attendance-reference-table .att-mapel-number{
+  font-size:10.5pt!important;
+}
+
+/* LEMBAR 1: maksimal 20 peserta, huruf dan baris dibuat lebih besar. */
+.attendance-reference-layout.attendance-first-fixed-20 .attendance-reference-table tbody td,
+.attendance-reference-layout.attendance-first-fixed-20 .attendance-reference-table tbody td.att-session{
+  height:9.2mm!important;
+  min-height:9.2mm!important;
+  max-height:9.2mm!important;
+  padding:.9mm .85mm!important;
+  font-size:11.3pt!important;
+  line-height:1.08!important;
+  vertical-align:middle!important;
+}
+.attendance-reference-layout.attendance-first-fixed-20 .attendance-reference-table tbody td.att-name{
+  font-size:11.5pt!important;
+  padding-left:1.5mm!important;
+}
+
+/* LEMBAR 2: semakin sedikit sisa peserta, semakin besar huruf/barisnya. */
+.attendance-reference-layout.attendance-remainder-xs .attendance-reference-table tbody td,
+.attendance-reference-layout.attendance-remainder-xs .attendance-reference-table tbody td.att-session{
+  height:13mm!important;min-height:13mm!important;max-height:13mm!important;
+  font-size:13pt!important;padding:1mm .9mm!important;line-height:1.1!important;
+}
+.attendance-reference-layout.attendance-remainder-sm .attendance-reference-table tbody td,
+.attendance-reference-layout.attendance-remainder-sm .attendance-reference-table tbody td.att-session{
+  height:11.5mm!important;min-height:11.5mm!important;max-height:11.5mm!important;
+  font-size:12.3pt!important;padding:.9mm .85mm!important;line-height:1.08!important;
+}
+.attendance-reference-layout.attendance-remainder-md .attendance-reference-table tbody td,
+.attendance-reference-layout.attendance-remainder-md .attendance-reference-table tbody td.att-session{
+  height:10.2mm!important;min-height:10.2mm!important;max-height:10.2mm!important;
+  font-size:11.8pt!important;padding:.85mm .8mm!important;line-height:1.06!important;
+}
+.attendance-reference-layout.attendance-remainder-lg .attendance-reference-table tbody td,
+.attendance-reference-layout.attendance-remainder-lg .attendance-reference-table tbody td.att-session{
+  height:9.2mm!important;min-height:9.2mm!important;max-height:9.2mm!important;
+  font-size:11.3pt!important;padding:.8mm .75mm!important;line-height:1.05!important;
+}
+.attendance-reference-layout.attendance-remainder-xl .attendance-reference-table tbody td,
+.attendance-reference-layout.attendance-remainder-xl .attendance-reference-table tbody td.att-session{
+  height:7.7mm!important;min-height:7.7mm!important;max-height:7.7mm!important;
+  font-size:10.4pt!important;padding:.6mm .65mm!important;line-height:1.02!important;
+}
+.attendance-reference-layout.attendance-remainder-xxl .attendance-reference-table tbody td,
+.attendance-reference-layout.attendance-remainder-xxl .attendance-reference-table tbody td.att-session{
+  height:6.2mm!important;min-height:6.2mm!important;max-height:6.2mm!important;
+  font-size:9.4pt!important;padding:.4mm .55mm!important;line-height:1!important;
+}
+
+.attendance-reference-layout.attendance-second-sheet .attendance-reference-table tbody td.att-name{
+  font-size:inherit!important;
+  padding-left:1.5mm!important;
+}
+
+/* TTD Ketua Panitia benar-benar di pojok kanan bawah Lembar 2. */
+.attendance-reference-layout.attendance-second-sheet .attendance-chair-signature{
+  display:block!important;
+  position:absolute!important;
+  right:11mm!important;
+  bottom:9mm!important;
+  width:68mm!important;
+  margin:0!important;
+  padding:0!important;
+  text-align:center!important;
+  font-size:11pt!important;
+  line-height:1.22!important;
+  z-index:10!important;
+}
+.attendance-reference-layout.attendance-second-sheet .attendance-chair-space,
+.attendance-reference-layout.attendance-second-sheet .signature-visual-space{
+  height:16mm!important;
+  min-height:16mm!important;
+}
+.attendance-reference-layout.attendance-second-sheet .attendance-chair-name{
+  font-size:11pt!important;
+}
+.attendance-reference-layout.attendance-second-sheet .signature-assets{
+  max-width:48mm!important;
+  height:16mm!important;
+}
+.attendance-reference-layout.attendance-second-sheet .signature-hand-img{
+  max-width:34mm!important;
+  max-height:14mm!important;
+}
+.attendance-reference-layout.attendance-second-sheet .signature-stamp-img{
+  max-width:22mm!important;
+  max-height:22mm!important;
+}
+
+/* Bila lembar 2 kosong (ruang <=20 peserta), lembar tetap ada dan TTD tetap di kanan bawah. */
+.attendance-reference-layout.attendance-second-sheet .attendance-reference-table tbody:empty::after{
+  content:'';
+  display:table-row;
+  height:1mm;
+}
+
+@media print{
+  .attendance-landscape-page.attendance-reference-layout{
+    width:330mm!important;
+    height:290mm!important;
+    min-height:290mm!important;
+    max-height:290mm!important;
+    padding:7mm!important;
+    overflow:hidden!important;
+  }
+  .attendance-reference-layout.attendance-second-sheet .attendance-chair-signature{
+    position:absolute!important;
+    right:11mm!important;
+    bottom:9mm!important;
+    margin:0!important;
+  }
+  .attendance-reference-layout.attendance-reference-table tbody tr{
+    break-inside:avoid!important;
+    page-break-inside:avoid!important;
+  }
+}
+</style>
+
+
+<style id="attendance-page2-same-font-compact-rows-chair-signature-final-20260918">
+/* ============================================================
+   DAFTAR HADIR PESERTA - REVISI LEMBAR 2
+   - Ukuran huruf peserta sama dengan lembar 1.
+   - Tinggi baris lembar 2 dibuat lebih rapat.
+   - TTD/Stempel Ketua Panitia ditampilkan di kanan bawah lembar 2.
+   ============================================================ */
+
+/* Lembar 2: ukuran huruf isi disamakan dengan lembar 1, tetapi baris lebih rendah. */
+.attendance-reference-layout.attendance-second-sheet .attendance-reference-table tbody td,
+.attendance-reference-layout.attendance-second-sheet .attendance-reference-table tbody td.att-session{
+  height:7.4mm!important;
+  min-height:7.4mm!important;
+  max-height:7.4mm!important;
+  padding:.35mm .65mm!important;
+  font-size:11.3pt!important;
+  line-height:1!important;
+  vertical-align:middle!important;
+}
+.attendance-reference-layout.attendance-second-sheet .attendance-reference-table tbody td.att-name{
+  font-size:11.5pt!important;
+  line-height:1!important;
+  font-weight:500!important;
+  padding-left:1.5mm!important;
+  white-space:nowrap!important;
+}
+.attendance-reference-layout.attendance-second-sheet .attendance-reference-table tbody td.att-no,
+.attendance-reference-layout.attendance-second-sheet .attendance-reference-table tbody td.att-class{
+  font-size:11.3pt!important;
+}
+
+/* Paksa blok Ketua Panitia tetap berada di lembar 2. */
+.attendance-reference-layout.attendance-second-sheet .attendance-chair-signature{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:absolute!important;
+  right:11mm!important;
+  bottom:9mm!important;
+  width:72mm!important;
+  margin:0!important;
+  padding:0!important;
+  text-align:center!important;
+  font-size:11.5pt!important;
+  line-height:1.2!important;
+  z-index:50!important;
+}
+.attendance-reference-layout.attendance-second-sheet .attendance-chair-signature > div{
+  font-size:11.5pt!important;
+}
+.attendance-reference-layout.attendance-second-sheet .attendance-chair-space,
+.attendance-reference-layout.attendance-second-sheet .signature-visual-space{
+  display:block!important;
+  visibility:visible!important;
+  position:relative!important;
+  height:18mm!important;
+  min-height:18mm!important;
+}
+.attendance-reference-layout.attendance-second-sheet .signature-visual-space .signature-assets{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  position:relative!important;
+  width:100%!important;
+  height:18mm!important;
+}
+.attendance-reference-layout.attendance-second-sheet .signature-visual-space .signature-hand-img,
+.attendance-reference-layout.attendance-second-sheet .signature-visual-space .signature-stamp-img{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+}
+.attendance-reference-layout.attendance-second-sheet .signature-hand-img{
+  max-width:36mm!important;
+  max-height:16mm!important;
+}
+.attendance-reference-layout.attendance-second-sheet .signature-stamp-img{
+  max-width:23mm!important;
+  max-height:23mm!important;
+}
+.attendance-reference-layout.attendance-second-sheet .attendance-chair-name{
+  font-size:11.5pt!important;
+}
+
+@media print{
+  .attendance-reference-layout.attendance-second-sheet .attendance-reference-table tbody td,
+  .attendance-reference-layout.attendance-second-sheet .attendance-reference-table tbody td.att-session{
+    height:7.4mm!important;
+    min-height:7.4mm!important;
+    max-height:7.4mm!important;
+    padding:.35mm .65mm!important;
+    font-size:11.3pt!important;
+    line-height:1!important;
+  }
+  .attendance-reference-layout.attendance-second-sheet .attendance-reference-table tbody td.att-name{
+    font-size:11.5pt!important;
+    line-height:1!important;
+    white-space:nowrap!important;
+  }
+  .attendance-reference-layout.attendance-second-sheet .attendance-chair-signature{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    position:absolute!important;
+    right:11mm!important;
+    bottom:9mm!important;
+    width:72mm!important;
+    z-index:50!important;
+  }
+  .attendance-reference-layout.attendance-second-sheet .signature-visual-space .signature-assets,
+  .attendance-reference-layout.attendance-second-sheet .signature-visual-space .signature-hand-img,
+  .attendance-reference-layout.attendance-second-sheet .signature-visual-space .signature-stamp-img{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+  }
+}
+</style>
+
+<style id="attendance-exact-two-pages-signature-stays-page2-final-20260918">
+/* ============================================================
+   DAFTAR HADIR PESERTA — PAKSA TEPAT 2 LEMBAR
+   - Cegah overflow/pembulatan browser membuat lembar ke-3.
+   - TTD Ketua Panitia tetap di dalam dan dinaikkan pada lembar 2.
+   ============================================================ */
+@page attendanceReferenceLandscape{
+  size:330mm 290mm!important;
+  margin:0!important;
+}
+
+/* Berlaku pada preview dan cetak agar geometri sama. */
+#app .attendance-landscape-page.attendance-reference-layout{
+  position:relative!important;
+  box-sizing:border-box!important;
+  width:330mm!important;
+  min-width:330mm!important;
+  max-width:330mm!important;
+  height:276mm!important;
+  min-height:276mm!important;
+  max-height:276mm!important;
+  padding:6mm 7mm!important;
+  margin:0 auto 6mm!important;
+  overflow:hidden!important;
+}
+
+/* Lembar 1 hanya memaksa satu perpindahan halaman. */
+#app .attendance-landscape-page.attendance-reference-layout.attendance-first-sheet,
+#app .attendance-landscape-page.attendance-reference-layout.attendance-page-break-after{
+  page-break-after:always!important;
+  break-after:page!important;
+  page-break-before:auto!important;
+  break-before:auto!important;
+}
+
+/* Lembar 2 tidak boleh memicu lembar berikutnya. */
+#app .attendance-landscape-page.attendance-reference-layout.attendance-second-sheet{
+  page-break-before:auto!important;
+  break-before:auto!important;
+  page-break-after:auto!important;
+  break-after:auto!important;
+  overflow:hidden!important;
+}
+
+/* Naikkan blok TTD agar jelas berada di area aman lembar 2. */
+#app .attendance-reference-layout.attendance-second-sheet .attendance-chair-signature{
+  display:block!important;
+  position:absolute!important;
+  right:12mm!important;
+  bottom:18mm!important;
+  width:70mm!important;
+  max-width:70mm!important;
+  margin:0!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+  z-index:80!important;
+  page-break-inside:avoid!important;
+  break-inside:avoid!important;
+}
+
+/* Ruang TTD sedikit dipadatkan agar tidak mendorong layout. */
+#app .attendance-reference-layout.attendance-second-sheet .attendance-chair-space,
+#app .attendance-reference-layout.attendance-second-sheet .signature-visual-space{
+  height:15mm!important;
+  min-height:15mm!important;
+  max-height:15mm!important;
+  overflow:visible!important;
+}
+#app .attendance-reference-layout.attendance-second-sheet .signature-assets{
+  height:15mm!important;
+  max-height:15mm!important;
+}
+#app .attendance-reference-layout.attendance-second-sheet .signature-hand-img{
+  max-height:13mm!important;
+}
+#app .attendance-reference-layout.attendance-second-sheet .signature-stamp-img{
+  max-width:20mm!important;
+  max-height:20mm!important;
+}
+
+@media print{
+  body.force-print-root:has(#app .attendance-landscape-page) .layout,
+  body.force-print-root:has(#app .attendance-landscape-page) main#app,
+  body.force-print-root:has(#app .attendance-landscape-page) #app{
+    display:block!important;
+    width:auto!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:visible!important;
+  }
+
+  body.force-print-root #app .attendance-landscape-page.attendance-reference-layout,
+  #app .attendance-landscape-page.attendance-reference-layout{
+    page:attendanceReferenceLandscape!important;
+    width:330mm!important;
+    min-width:330mm!important;
+    max-width:330mm!important;
+    height:276mm!important;
+    min-height:276mm!important;
+    max-height:276mm!important;
+    margin:0!important;
+    padding:6mm 7mm!important;
+    box-sizing:border-box!important;
+    overflow:hidden!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid-page!important;
+  }
+
+  body.force-print-root #app .attendance-landscape-page.attendance-reference-layout.attendance-first-sheet,
+  body.force-print-root #app .attendance-landscape-page.attendance-reference-layout.attendance-page-break-after,
+  #app .attendance-landscape-page.attendance-reference-layout.attendance-first-sheet,
+  #app .attendance-landscape-page.attendance-reference-layout.attendance-page-break-after{
+    page-break-after:always!important;
+    break-after:page!important;
+  }
+
+  body.force-print-root #app .attendance-landscape-page.attendance-reference-layout.attendance-second-sheet,
+  #app .attendance-landscape-page.attendance-reference-layout.attendance-second-sheet{
+    page-break-before:auto!important;
+    break-before:auto!important;
+    page-break-after:auto!important;
+    break-after:auto!important;
+  }
+
+  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-chair-signature,
+  #app .attendance-reference-layout.attendance-second-sheet .attendance-chair-signature{
+    position:absolute!important;
+    right:12mm!important;
+    bottom:18mm!important;
+    width:70mm!important;
+    max-width:70mm!important;
+    margin:0!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+
+  /* Hindari elemen kontrol tersembunyi menciptakan ruang cetak tambahan. */
+  body.force-print-root #app > .actions.no-print,
+  body.force-print-root .manual-paste-toolbar,
+  body.force-print-root #manualPasteSafeToolbar,
+  body.force-print-root #manualPasteLauncher{
+    display:none!important;
+    height:0!important;
+    margin:0!important;
+    padding:0!important;
+  }
+}
+</style>
+
+<style id="attendance-signature-inside-page2-table-final-20260918">
+/* ============================================================
+   FINAL: TTD Ketua Panitia benar-benar menjadi bagian LEMBAR 2.
+   Tidak lagi diposisikan sebagai elemen absolut setelah tabel,
+   sehingga tidak dapat jatuh menjadi lembar ke-3.
+   ============================================================ */
+#app .attendance-landscape-page.attendance-reference-layout{
+  box-sizing:border-box!important;
+  width:330mm!important;
+  min-width:330mm!important;
+  max-width:330mm!important;
+  height:260mm!important;
+  min-height:260mm!important;
+  max-height:260mm!important;
+  padding:5mm 7mm!important;
+  margin:0 auto!important;
+  overflow:hidden!important;
+  position:relative!important;
+}
+
+/* Lembar 1 saja yang memaksa pindah ke lembar 2. */
+#app .attendance-landscape-page.attendance-reference-layout.attendance-first-sheet,
+#app .attendance-landscape-page.attendance-reference-layout.attendance-page-break-after{
+  page-break-after:always!important;
+  break-after:page!important;
+}
+
+/* Lembar 2 tidak membuat halaman berikutnya. */
+#app .attendance-landscape-page.attendance-reference-layout.attendance-second-sheet{
+  page-break-before:auto!important;
+  break-before:auto!important;
+  page-break-after:auto!important;
+  break-after:auto!important;
+}
+
+/* Area tanda tangan ditempatkan DI DALAM tabel pada lembar 2. */
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-foot td{
+  height:43mm!important;
+  min-height:43mm!important;
+  max-height:43mm!important;
+  padding:3mm 10mm 0 0!important;
+  border:0!important;
+  background:transparent!important;
+  vertical-align:bottom!important;
+  text-align:right!important;
+  page-break-inside:avoid!important;
+  break-inside:avoid!important;
+}
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-wrap{
+  display:flex!important;
+  justify-content:flex-end!important;
+  align-items:flex-end!important;
+  width:100%!important;
+  height:100%!important;
+  margin:0!important;
+  padding:0!important;
+}
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-wrap .attendance-chair-signature{
+  display:block!important;
+  position:static!important;
+  float:none!important;
+  width:72mm!important;
+  max-width:72mm!important;
+  margin:0!important;
+  padding:0!important;
+  text-align:center!important;
+  font-size:11.5pt!important;
+  line-height:1.18!important;
+  transform:none!important;
+  page-break-inside:avoid!important;
+  break-inside:avoid!important;
+}
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-wrap .attendance-chair-space,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-wrap .signature-visual-space{
+  height:14mm!important;
+  min-height:14mm!important;
+  max-height:14mm!important;
+}
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-wrap .signature-assets{
+  height:14mm!important;
+  max-height:14mm!important;
+}
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-wrap .signature-hand-img{
+  max-height:12mm!important;
+  max-width:34mm!important;
+}
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-wrap .signature-stamp-img{
+  max-height:19mm!important;
+  max-width:19mm!important;
+}
+
+@media print{
+  @page attendanceReferenceLandscape{
+    size:330mm 290mm!important;
+    margin:0!important;
+  }
+
+  body.force-print-root #app .attendance-landscape-page.attendance-reference-layout,
+  #app .attendance-landscape-page.attendance-reference-layout{
+    page:attendanceReferenceLandscape!important;
+    width:330mm!important;
+    min-width:330mm!important;
+    max-width:330mm!important;
+    height:260mm!important;
+    min-height:260mm!important;
+    max-height:260mm!important;
+    margin:0!important;
+    padding:5mm 7mm!important;
+    box-sizing:border-box!important;
+    overflow:hidden!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid-page!important;
+  }
+
+  body.force-print-root #app .attendance-landscape-page.attendance-reference-layout.attendance-first-sheet,
+  body.force-print-root #app .attendance-landscape-page.attendance-reference-layout.attendance-page-break-after,
+  #app .attendance-landscape-page.attendance-reference-layout.attendance-first-sheet,
+  #app .attendance-landscape-page.attendance-reference-layout.attendance-page-break-after{
+    page-break-after:always!important;
+    break-after:page!important;
+  }
+
+  body.force-print-root #app .attendance-landscape-page.attendance-reference-layout.attendance-second-sheet,
+  #app .attendance-landscape-page.attendance-reference-layout.attendance-second-sheet{
+    page-break-before:auto!important;
+    break-before:auto!important;
+    page-break-after:auto!important;
+    break-after:auto!important;
+  }
+
+  /* Kalahkan seluruh aturan absolut lama khusus TTD Daftar Hadir. */
+  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-wrap .attendance-chair-signature,
+  #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-wrap .attendance-chair-signature{
+    position:static!important;
+    right:auto!important;
+    bottom:auto!important;
+    top:auto!important;
+    left:auto!important;
+    transform:none!important;
+    width:72mm!important;
+    max-width:72mm!important;
+    margin:0!important;
+  }
+
+  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-foot,
+  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-foot tr,
+  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-foot td{
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+}
+</style>
+
+
+<style id="attendance-page2-signature-no-line-15pt-final-20260918">
+/* Final: TTD Ketua Panitia di lembar 2 tanpa garis/bingkai dan font 15pt. */
+#app .attendance-reference-layout.attendance-second-sheet{
+  position:relative!important;
+}
+
+/* Footer tabel lama tidak digunakan; kalau ada sisa aturan, jangan tampilkan. */
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-foot{
+  display:none!important;
+}
+
+/* TTD ditempatkan absolut di dalam lembar 2 supaya tidak menambah lembar ketiga. */
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-wrap.attendance-page2-signature-free{
+  position:absolute!important;
+  right:12mm!important;
+  bottom:7mm!important;
+  width:78mm!important;
+  height:auto!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  outline:0!important;
+  background:transparent!important;
+  display:block!important;
+  z-index:20!important;
+  box-sizing:border-box!important;
+}
+
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-free .attendance-chair-signature{
+  position:static!important;
+  width:78mm!important;
+  max-width:78mm!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  outline:0!important;
+  background:transparent!important;
+  text-align:center!important;
+  font-size:15pt!important;
+  line-height:1.18!important;
+  transform:none!important;
+}
+
+/* Semua tulisan pada blok TTD 15 pt. */
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-free .attendance-chair-signature > div,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-free .attendance-chair-signature b,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-free .attendance-chair-signature u,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-free .attendance-chair-name{
+  font-size:15pt!important;
+  line-height:1.18!important;
+}
+
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-free .attendance-chair-space,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-free .signature-visual-space{
+  height:16mm!important;
+  min-height:16mm!important;
+  max-height:16mm!important;
+  border:0!important;
+  outline:0!important;
+}
+
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-free .signature-assets{
+  height:16mm!important;
+  max-height:16mm!important;
+  border:0!important;
+}
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-free .signature-hand-img{
+  max-height:14mm!important;
+  max-width:38mm!important;
+  border:0!important;
+}
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-free .signature-stamp-img{
+  max-height:21mm!important;
+  max-width:21mm!important;
+  border:0!important;
+}
+
+@media print{
+  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-wrap.attendance-page2-signature-free,
+  #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-wrap.attendance-page2-signature-free{
+    position:absolute!important;
+    right:12mm!important;
+    bottom:7mm!important;
+    width:78mm!important;
+    height:auto!important;
+    margin:0!important;
+    padding:0!important;
+    border:0!important;
+    outline:0!important;
+    background:transparent!important;
+    display:block!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+
+  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-free .attendance-chair-signature,
+  #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-free .attendance-chair-signature,
+  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-free .attendance-chair-signature > div,
+  #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-free .attendance-chair-signature > div,
+  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-free .attendance-chair-name,
+  #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-free .attendance-chair-name,
+  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-free b,
+  #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-free b,
+  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-free u,
+  #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-free u{
+    font-size:15pt!important;
+    line-height:1.18!important;
+    border:0!important;
+    outline:0!important;
+  }
+}
+</style>
+
+<style id="attendance-page2-signature-inline-with-last-participant-final-20260918">
+/* ============================================================
+   FINAL DAFTAR HADIR PESERTA:
+   TTD Ketua Panitia berada di LEMBAR 2 setelah peserta terakhir.
+   Bukan absolute/fixed, sehingga tidak dapat jatuh sendiri ke lembar 3.
+   ============================================================ */
+
+#app .attendance-landscape-page.attendance-reference-layout.attendance-second-sheet{
+  position:relative!important;
+  overflow:hidden!important;
+}
+
+/* Matikan seluruh wrapper TTD versi lama jika masih tersisa dari cascade. */
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-wrap,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-free,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-foot{
+  display:none!important;
+}
+
+/* Wrapper baru: normal flow tepat setelah tabel peserta terakhir. */
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline{
+  position:static!important;
+  display:flex!important;
+  justify-content:flex-end!important;
+  align-items:flex-start!important;
+  width:100%!important;
+  height:auto!important;
+  margin:6mm 0 0!important;
+  padding:0 12mm 0 0!important;
+  border:0!important;
+  outline:0!important;
+  background:transparent!important;
+  box-sizing:border-box!important;
+  page-break-inside:avoid!important;
+  break-inside:avoid!important;
+  clear:both!important;
+}
+
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-signature{
+  position:static!important;
+  display:block!important;
+  float:none!important;
+  right:auto!important;
+  left:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  transform:none!important;
+  width:78mm!important;
+  max-width:78mm!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  outline:0!important;
+  background:transparent!important;
+  text-align:center!important;
+  font-size:15pt!important;
+  line-height:1.18!important;
+  page-break-inside:avoid!important;
+  break-inside:avoid!important;
+}
+
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-signature > div,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-signature b,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-signature u,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-name{
+  font-size:15pt!important;
+  line-height:1.18!important;
+  border:0!important;
+  outline:0!important;
+}
+
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-space,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .signature-visual-space{
+  height:16mm!important;
+  min-height:16mm!important;
+  max-height:16mm!important;
+  border:0!important;
+  outline:0!important;
+  background:transparent!important;
+}
+
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .signature-assets{
+  height:16mm!important;
+  max-height:16mm!important;
+  border:0!important;
+  outline:0!important;
+}
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .signature-hand-img{
+  max-height:14mm!important;
+  max-width:38mm!important;
+  border:0!important;
+  outline:0!important;
+}
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .signature-stamp-img{
+  max-height:21mm!important;
+  max-width:21mm!important;
+  border:0!important;
+  outline:0!important;
+}
+
+@media print{
+  @page attendanceReferenceLandscape{
+    size:330mm 290mm!important;
+    margin:0!important;
+  }
+
+  /*
+    Sisakan buffer besar dari tinggi fisik 290 mm untuk menghindari
+    pembulatan Chromium/driver printer memindahkan TTD ke lembar 3.
+  */
+  body.force-print-root #app .attendance-landscape-page.attendance-reference-layout,
+  #app .attendance-landscape-page.attendance-reference-layout{
+    page:attendanceReferenceLandscape!important;
+    width:330mm!important;
+    min-width:330mm!important;
+    max-width:330mm!important;
+    height:245mm!important;
+    min-height:245mm!important;
+    max-height:245mm!important;
+    margin:0!important;
+    padding:5mm 7mm!important;
+    box-sizing:border-box!important;
+    overflow:hidden!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid-page!important;
+  }
+
+  /* Hanya lembar 1 yang memaksa pindah halaman. */
+  body.force-print-root #app .attendance-landscape-page.attendance-reference-layout.attendance-first-sheet,
+  body.force-print-root #app .attendance-landscape-page.attendance-reference-layout.attendance-page-break-after.attendance-first-sheet,
+  #app .attendance-landscape-page.attendance-reference-layout.attendance-first-sheet,
+  #app .attendance-landscape-page.attendance-reference-layout.attendance-page-break-after.attendance-first-sheet{
+    page-break-after:always!important;
+    break-after:page!important;
+    page-break-before:auto!important;
+    break-before:auto!important;
+  }
+
+  /* Lembar 2 tidak boleh membuat lembar ketiga. */
+  body.force-print-root #app .attendance-landscape-page.attendance-reference-layout.attendance-second-sheet,
+  #app .attendance-landscape-page.attendance-reference-layout.attendance-second-sheet{
+    page-break-before:auto!important;
+    break-before:auto!important;
+    page-break-after:auto!important;
+    break-after:auto!important;
+    overflow:hidden!important;
+  }
+
+  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline,
+  #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline{
+    position:static!important;
+    display:flex!important;
+    justify-content:flex-end!important;
+    width:100%!important;
+    height:auto!important;
+    margin:6mm 0 0!important;
+    padding:0 12mm 0 0!important;
+    border:0!important;
+    outline:0!important;
+    page-break-inside:avoid!important;
+    break-inside:avoid!important;
+  }
+
+  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-signature,
+  #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-signature{
+    position:static!important;
+    right:auto!important;
+    left:auto!important;
+    top:auto!important;
+    bottom:auto!important;
+    transform:none!important;
+    width:78mm!important;
+    max-width:78mm!important;
+    margin:0!important;
+    padding:0!important;
+    font-size:15pt!important;
+    line-height:1.18!important;
+  }
+
+  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-signature > div,
+  #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-signature > div,
+  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-name,
+  #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-name,
+  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline b,
+  #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline b,
+  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline u,
+  #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline u{
+    font-size:15pt!important;
+    line-height:1.18!important;
+  }
+}
+</style>
 </head>
 <body>
 <div id="loginScreen"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan penyimpanan Supabase. Gunakan akun cloud yang sama agar data dapat dibuka dari komputer/laptop lain.</p></div><div style="font-size:12px;color:#d9eadf">Database Cloud Supabase • Sinkron Otomatis</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">LOGIN ADMIN CLOUD</div><h2>Selamat Datang</h2><div class="sub">Masukkan email dan password Supabase. Akun yang sama dapat digunakan di perangkat lain.</div><div id="loginError" class="login-error">Login gagal.</div><div class="login-field"><label>Email Admin</label><input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com"></div><div class="login-field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -16489,17 +18525,8 @@ function downloadSupervisorFile(id){let f=(db.supervisorFiles||[]).find(x=>x.id=
 function deleteSupervisorFile(id){if(confirm('Hapus lampiran Jadwal Pengawas ini?')){db.supervisorFiles=(db.supervisorFiles||[]).filter(x=>x.id!==id);save();render('supervisors')}}
 
 function supervisorSignatureBlock(){
- let city=db.school.signatureCity||'Wangon';
- let date=formatTanggalIndonesia(db.school.signatureDate||'');
- let chair=db.school.committeeChair||'........................................';
- return `<div class="supervisor-signatures supervisor-signatures-chair-only">
-   <div class="signbox supervisor-chair-signbox">
-     <div>${esc(city)}, ${date}</div>
-     <div>Ketua Panitia</div>
-     <div class="supervisor-sign-space signature-visual-space">${signatureAssetsHtml('chair')}</div>
-     <div><b><u>${esc(chair)}</u></b></div>
-   </div>
- </div>`;
+ // Tanda tangan Ketua Panitia dihapus sesuai permintaan terbaru.
+ return '';
 }
 function groupedSupervisorSchedules(){
  let groups=[],lastDate='';
@@ -16728,11 +18755,93 @@ function supervisorReserveBlankTableHtml(){
  </div>`;
 }
 
+
+function supervisorChairPrintPosGet(){
+ db.school.supervisorChairPrintPos=db.school.supervisorChairPrintPos||{x:0,y:0};
+ let x=Number(db.school.supervisorChairPrintPos.x);
+ let y=Number(db.school.supervisorChairPrintPos.y);
+ if(!Number.isFinite(x))x=0;
+ if(!Number.isFinite(y))y=0;
+ return {x:Math.max(-120,Math.min(120,x)),y:Math.max(-80,Math.min(80,y))};
+}
+
+function supervisorChairPositionStyle(){
+ let p=supervisorChairPrintPosGet();
+ return `--sup-chair-x:${p.x}mm;--sup-chair-y:${p.y}mm;`;
+}
+
+function applySupervisorChairPrintPosition(){
+ let p=supervisorChairPrintPosGet();
+ document.querySelectorAll('.supervisor-page-two-chair-right').forEach(el=>{
+   el.style.setProperty('--sup-chair-x',p.x+'mm');
+   el.style.setProperty('--sup-chair-y',p.y+'mm');
+ });
+ let x=document.getElementById('supervisorChairPosX');
+ let y=document.getElementById('supervisorChairPosY');
+ let status=document.getElementById('supervisorChairPosStatus');
+ if(x)x.value=p.x;
+ if(y)y.value=p.y;
+ if(status)status.textContent=`Posisi: X ${p.x} mm • Y ${p.y} mm`;
+}
+
+function setSupervisorChairPrintPosition(x,y){
+ let nx=Number(x),ny=Number(y);
+ if(!Number.isFinite(nx))nx=0;
+ if(!Number.isFinite(ny))ny=0;
+ db.school.supervisorChairPrintPos={
+   x:Math.max(-120,Math.min(120,nx)),
+   y:Math.max(-80,Math.min(80,ny))
+ };
+ save();
+ applySupervisorChairPrintPosition();
+}
+
+function moveSupervisorChairPrintPosition(dx,dy){
+ let p=supervisorChairPrintPosGet();
+ setSupervisorChairPrintPosition(p.x+Number(dx||0),p.y+Number(dy||0));
+}
+
+function saveSupervisorChairPrintPositionFromInputs(){
+ let p=supervisorChairPrintPosGet();
+ let x=Number(document.getElementById('supervisorChairPosX')?.value);
+ let y=Number(document.getElementById('supervisorChairPosY')?.value);
+ setSupervisorChairPrintPosition(Number.isFinite(x)?x:p.x,Number.isFinite(y)?y:p.y);
+}
+
+function resetSupervisorChairPrintPosition(){
+ db.school.supervisorChairPrintPos={x:0,y:0};
+ save();
+ applySupervisorChairPrintPosition();
+}
+
+function supervisorChairPositionControlsHtml(){
+ let p=supervisorChairPrintPosGet();
+ return `<div class="supervisor-chair-manual-panel no-print">
+   <div class="supervisor-chair-manual-title">✥ Atur Posisi Tanda Tangan Ketua Panitia — Jadwal Pengawas</div>
+   <div class="supervisor-chair-manual-help">Atur langsung dari halaman siap cetak. Nilai positif X = ke kanan, negatif = ke kiri. Nilai positif Y = ke bawah, negatif = ke atas.</div>
+   <div class="supervisor-chair-manual-buttons">
+     <button type="button" class="secondary" onclick="moveSupervisorChairPrintPosition(-5,0)">← Kiri 5 mm</button>
+     <button type="button" class="secondary" onclick="moveSupervisorChairPrintPosition(5,0)">Kanan 5 mm →</button>
+     <button type="button" class="secondary" onclick="moveSupervisorChairPrintPosition(0,-5)">↑ Atas 5 mm</button>
+     <button type="button" class="secondary" onclick="moveSupervisorChairPrintPosition(0,5)">↓ Bawah 5 mm</button>
+   </div>
+   <div class="supervisor-chair-manual-fields">
+     <label>Posisi X (mm)<input id="supervisorChairPosX" type="number" step="1" min="-120" max="120" value="${p.x}"></label>
+     <label>Posisi Y (mm)<input id="supervisorChairPosY" type="number" step="1" min="-80" max="80" value="${p.y}"></label>
+     <button type="button" onclick="saveSupervisorChairPrintPositionFromInputs()">✓ Terapkan Posisi</button>
+     <button type="button" class="secondary" onclick="resetSupervisorChairPrintPosition()">↺ Reset</button>
+   </div>
+   <div id="supervisorChairPosStatus" class="supervisor-chair-manual-status">Posisi: X ${p.x} mm • Y ${p.y} mm</div>
+ </div>`;
+}
+
 function supervisorSecondPrintPage(){
  return `<div class="supervisor-print-page supervisor-page-two supervisor-no-kop-page-two">
    <div class="print-title">DAFTAR NAMA PENGAWAS<br>${esc(assessmentDisplay())}</div>
    ${supervisorCodeLegendHtml(true)}
-   ${supervisorReserveBlankTableHtml()}
+   <div class="supervisor-page-two-bottom-row" style="justify-content:center;align-items:flex-start;">
+     ${supervisorReserveBlankTableHtml()}
+   </div>
  </div>`;
 }
 
@@ -16851,13 +18960,42 @@ function attendanceChairSignature(){
  </div>`;
 }
 
+function attendanceShortParticipantName(name){
+ let original=String(name||'').replace(/\s+/g,' ').trim();
+ if(!original)return '';
+ let words=original.split(' ').filter(Boolean);
+ if(words.length<=2)return original;
+
+ // Daftar Hadir Peserta:
+ // - kata ke-1 dan ke-2 tetap ditulis lengkap;
+ // - mulai kata ke-3 sampai kata terakhir disingkat menjadi inisial kapital + titik.
+ // Contoh: "Muhammad Arif Puji Santoso" -> "Muhammad Arif P.S."
+ let firstTwo=words.slice(0,2).join(' ');
+ let initials=words.slice(2).map(word=>{
+   let clean=String(word||'').replace(/^[^A-Za-zÀ-ÖØ-öø-ÿ]+/,'');
+   let ch=clean.charAt(0);
+   return ch?ch.toLocaleUpperCase('id-ID')+'.':'';
+ }).join('');
+ return initials?`${firstTwo} ${initials}`:firstTwo;
+}
+
 function attendanceParticipantPage(r,students,startIndex=0,pageIndex=0,totalPages=2){
  let sessionCount=attendanceSessionCount();
  let rows=students||[];
  let sessionClass=`att-session-count-${Math.min(sessionCount,30)}`;
  let firstSheet=pageIndex===0;
 
- return `<div class="attendance-landscape-page attendance-reference-layout ${firstSheet?'attendance-first-sheet':'attendance-second-sheet'} ${sessionClass}">
+ // Lembar 1 selalu ditujukan untuk maksimal 20 peserta.
+ // Lembar 2 menampung seluruh sisa peserta dan ukuran baris/huruf menyesuaikan jumlah sisanya.
+ let densityClass=firstSheet
+   ? 'attendance-first-fixed-20'
+   : (rows.length<=8?'attendance-remainder-xs':
+      rows.length<=12?'attendance-remainder-sm':
+      rows.length<=16?'attendance-remainder-md':
+      rows.length<=20?'attendance-remainder-lg':
+      rows.length<=24?'attendance-remainder-xl':'attendance-remainder-xxl');
+
+ return `<div class="attendance-landscape-page attendance-reference-layout ${firstSheet?'attendance-first-sheet':'attendance-second-sheet'} ${sessionClass} ${densityClass}">
    ${firstSheet?`<div class="attendance-reference-title">
      <div>DAFTAR HADIR PESERTA ${esc(assessmentDisplay())}</div>
      <div>RUANG ${String(r.no).padStart(2,'0')}</div>
@@ -16866,12 +19004,12 @@ function attendanceParticipantPage(r,students,startIndex=0,pageIndex=0,totalPage
      ${attendanceHeaderHtml()}
      <tbody>${rows.map((s,i)=>`<tr>
        <td class="att-no">${startIndex+i+1}</td>
-       <td class="att-name">${esc(s.name)}</td>
+       <td class="att-name" title="${esc(s.name||'')}">${esc(attendanceShortParticipantName(s.name))}</td>
        <td class="att-class">${esc(s.class)}</td>
        ${Array.from({length:sessionCount},()=>'<td class="att-session"></td>').join('')}
      </tr>`).join('')}</tbody>
    </table>
-   ${!firstSheet?attendanceChairSignature():''}
+   ${!firstSheet?`<div class="attendance-page2-signature-inline">${attendanceChairSignature()}</div>`:''}
  </div>`;
 }
 
@@ -16879,20 +19017,18 @@ function attendancePagesForRoom(r){
  let students=r?.students||[];
  if(!students.length)return [];
 
- // Setiap ruang selalu disiapkan 2 lembar.
- // Peserta dibagi seimbang agar tulisan dan tinggi baris tetap jelas.
- let firstCount=Math.ceil(students.length/2);
+ // FORMAT TETAP 2 LEMBAR PER RUANG:
+ // Lembar 1 = peserta 1 s.d. 20.
+ // Lembar 2 = seluruh sisa peserta mulai nomor 21.
  let chunks=[
-   students.slice(0,firstCount),
-   students.slice(firstCount)
+   students.slice(0,20),
+   students.slice(20)
  ];
 
- let start=0;
- return chunks.map((chunk,i)=>{
-   let html=attendanceParticipantPage(r,chunk,start,i,2);
-   start+=chunk.length;
-   return html;
- });
+ return [
+   attendanceParticipantPage(r,chunks[0],0,0,2),
+   attendanceParticipantPage(r,chunks[1],20,1,2)
+ ];
 }
 
 function attendance(){
@@ -16900,7 +19036,7 @@ function attendance(){
  return `<div class="card"><h2>10. Daftar Hadir Peserta</h2>
    <div class="notice">
      Format Daftar Hadir mengikuti contoh cetak: <b>tanpa KOP</b>, judul langsung di atas tabel.
-     Setiap ruang dibuat <b>2 lembar</b> dan jumlah peserta dibagi seimbang agar tulisan tetap terbaca jelas. <b>Judul hanya tampil pada Lembar 1</b>; Lembar 2 langsung dimulai dari tabel dan di bagian bawah diberi <b>tanda tangan Ketua Panitia</b>.
+     Setiap ruang dibuat <b>tepat 2 lembar</b>. <b>Lembar 1 berisi maksimal 20 peserta</b>, sedangkan <b>Lembar 2 berisi sisa peserta mulai nomor 21</b>. Ukuran huruf dan tinggi baris menyesuaikan jumlah peserta agar tetap terbaca jelas. <b>Judul hanya tampil pada Lembar 1</b>; Lembar 2 langsung dimulai dari tabel dan <b>tanda tangan Ketua Panitia berada di pojok kanan bawah</b>.
      Kolom awal hanya <b>NO, Nama Peserta, Kelas</b>. Header asesmen mengikuti Jadwal Asesmen:
      baris atas berisi <b>Hari, tanggal</b> seperti <b>Senin, 21/9/2026</b>. Hari pertama memakai kolom
      <b>1, 2, 3</b>, sedangkan hari-hari berikutnya memakai kolom <b>1, 2</b>.
@@ -16975,6 +19111,261 @@ function printHeader(){
    </div>
  </div>`;
 }
+
+/* ============================================================
+   DIRECT PRINT EDITOR — drag blok TTD / gambar TTD / stempel
+   langsung pada setiap halaman siap cetak.
+   ============================================================ */
+let printDirectSelected=null;
+let printDirectDragState=null;
+let printDirectObserver=null;
+
+function printDirectPositionsStore(){
+ db.printDirectPositions=db.printDirectPositions||{};
+ return db.printDirectPositions;
+}
+
+function printDirectPosGet(key){
+ let raw=printDirectPositionsStore()[key]||{};
+ let x=Number(raw.x),y=Number(raw.y);
+ if(!Number.isFinite(x))x=0;
+ if(!Number.isFinite(y))y=0;
+ return {x,y};
+}
+
+function printDirectPosSet(key,x,y,persist=true){
+ if(!key)return;
+ let nx=Number(x),ny=Number(y);
+ if(!Number.isFinite(nx))nx=0;
+ if(!Number.isFinite(ny))ny=0;
+ nx=Math.max(-250,Math.min(250,Math.round(nx*2)/2));
+ ny=Math.max(-180,Math.min(180,Math.round(ny*2)/2));
+ printDirectPositionsStore()[key]={x:nx,y:ny};
+ let el=document.querySelector(`[data-print-drag-key="${CSS.escape(key)}"]`);
+ if(el){
+   el.style.setProperty('--print-direct-x',nx+'mm');
+   el.style.setProperty('--print-direct-y',ny+'mm');
+ }
+ if(persist)save();
+ printDirectUpdateToolbar();
+}
+
+function printDirectPageSelector(){
+ return '.print-page,.participant-list-print-page,.seat-print-page,.schedule-print-page,.supervisor-print-page,.attendance-landscape-page,.card-landscape-page,.desk-landscape-page';
+}
+
+function printDirectSafeKey(value){
+ return String(value||'').replace(/\s+/g,' ').trim().replace(/[^a-zA-Z0-9À-ÿ._|:-]+/g,'_').slice(0,120);
+}
+
+function printDirectPageIdentity(page,index){
+ let kind=[...page.classList].filter(c=>/print|attendance|supervisor|participant|card|desk|schedule|seat/i.test(c)).slice(0,5).join('.');
+ let titleEl=page.querySelector('.print-title,.schedule-custom-title,.attendance-reference-title,.participant-list-title-block,.card-title,.desk-title');
+ let title=titleEl?String(titleEl.textContent||'').replace(/\s+/g,' ').trim().slice(0,70):'';
+ return printDirectSafeKey(`${kind||'print'}|${title||'page'}|${index}`);
+}
+
+function printDirectLabelFor(el){
+ if(!el)return 'Belum memilih objek';
+ if(el.classList.contains('signature-stamp-img'))return 'Stempel';
+ if(el.classList.contains('signature-hand-img'))return 'Gambar Tanda Tangan';
+ return 'Blok Tanda Tangan';
+}
+
+function printDirectSetSelected(el){
+ if(printDirectSelected && printDirectSelected!==el)printDirectSelected.classList.remove('print-direct-selected');
+ printDirectSelected=el||null;
+ if(printDirectSelected)printDirectSelected.classList.add('print-direct-selected');
+ printDirectUpdateToolbar();
+}
+
+function printDirectApplyStored(el){
+ if(!el)return;
+ let key=el.dataset.printDragKey||'';
+ let p=printDirectPosGet(key);
+ el.style.setProperty('--print-direct-x',p.x+'mm');
+ el.style.setProperty('--print-direct-y',p.y+'mm');
+}
+
+function printDirectAttachDrag(el,key,label){
+ if(!el || el.dataset.printDragBound==='1')return;
+ el.dataset.printDragBound='1';
+ el.dataset.printDragKey=key;
+ el.dataset.printDragLabel=label;
+ el.classList.add('print-direct-draggable');
+ printDirectApplyStored(el);
+
+ el.addEventListener('pointerdown',function(ev){
+   if(!document.body.classList.contains('print-direct-edit-active'))return;
+   // Gambar TTD/stempel harus dapat digeser sendiri, bukan menggeser blok induknya.
+   if((el.classList.contains('print-signature-block')) && ev.target.closest('.signature-hand-img,.signature-stamp-img'))return;
+   ev.preventDefault();
+   ev.stopPropagation();
+   printDirectSetSelected(el);
+   let p=printDirectPosGet(key);
+   printDirectDragState={el,key,startX:ev.clientX,startY:ev.clientY,baseX:p.x,baseY:p.y,pointerId:ev.pointerId};
+   try{el.setPointerCapture(ev.pointerId);}catch(_){ }
+  });
+
+ el.addEventListener('pointermove',function(ev){
+   let st=printDirectDragState;
+   if(!st || st.el!==el || st.pointerId!==ev.pointerId)return;
+   ev.preventDefault();
+   // 1 CSS mm = 96 / 25.4 CSS pixel.
+   const pxPerMm=96/25.4;
+   let nx=st.baseX+(ev.clientX-st.startX)/pxPerMm;
+   let ny=st.baseY+(ev.clientY-st.startY)/pxPerMm;
+   printDirectPosSet(key,nx,ny,false);
+  });
+
+ function finish(ev){
+   let st=printDirectDragState;
+   if(!st || st.el!==el || st.pointerId!==ev.pointerId)return;
+   let p=printDirectPosGet(key);
+   printDirectDragState=null;
+   try{el.releasePointerCapture(ev.pointerId);}catch(_){ }
+   save();
+   printDirectPosSet(key,p.x,p.y,false);
+  }
+ el.addEventListener('pointerup',finish);
+ el.addEventListener('pointercancel',finish);
+}
+
+function printDirectAnnotate(){
+ let app=document.getElementById('app');
+ if(!app)return 0;
+ let pages=[...app.querySelectorAll(printDirectPageSelector())];
+ if(!pages.length)return 0;
+ let count=0;
+ pages.forEach((page,pageIndex)=>{
+   let pageKey=printDirectPageIdentity(page,pageIndex);
+   page.dataset.printDirectPageKey=pageKey;
+
+   // Setiap signature-visual-space menentukan satu blok tanda tangan.
+   let spaces=[...page.querySelectorAll('.signature-visual-space')];
+   let blocks=[];
+   spaces.forEach(space=>{
+     let block=space.closest('.supervisor-chair-signbox,.attendance-chair-signature,.signature-card');
+     if(!block)block=space.parentElement;
+     if(block && !blocks.includes(block))blocks.push(block);
+   });
+
+   blocks.forEach((block,blockIndex)=>{
+     block.classList.add('print-signature-block');
+     let base=`${pageKey}|sig${blockIndex}`;
+     printDirectAttachDrag(block,`${base}|block`,'Blok Tanda Tangan');
+     let stamp=block.querySelector('.signature-stamp-img');
+     let hand=block.querySelector('.signature-hand-img');
+     if(stamp)printDirectAttachDrag(stamp,`${base}|stamp`,'Stempel');
+     if(hand)printDirectAttachDrag(hand,`${base}|hand`,'Gambar Tanda Tangan');
+     count++;
+   });
+  });
+ return count;
+}
+
+function printDirectToolbarHtml(){
+ return `<div class="print-direct-editor-toolbar no-print" id="printDirectEditorToolbar">
+   <div class="print-direct-editor-title">✥ Atur Stempel & Tanda Tangan Langsung</div>
+   <div class="print-direct-editor-help">
+     Mode aktif: <b>drag garis putus-putus hijau</b> untuk memindahkan seluruh blok tanda tangan. Drag <b>stempel</b> atau <b>gambar tanda tangan</b> untuk memindahkan gambarnya saja.
+   </div>
+   <div class="print-direct-editor-status" id="printDirectEditorStatus">Pilih objek pada halaman.</div>
+   <div class="print-direct-editor-actions">
+     <button type="button" id="printDirectToggleBtn" class="print-direct-editor-toggle-active" onclick="togglePrintDirectEditMode()">✓ Mode Geser Aktif</button>
+     <button type="button" class="secondary" onclick="nudgePrintDirectSelected(-2,0)">← 2 mm</button>
+     <button type="button" class="secondary" onclick="nudgePrintDirectSelected(2,0)">2 mm →</button>
+     <button type="button" class="secondary" onclick="nudgePrintDirectSelected(0,-2)">↑ 2 mm</button>
+     <button type="button" class="secondary" onclick="nudgePrintDirectSelected(0,2)">↓ 2 mm</button>
+     <button type="button" class="secondary" onclick="resetPrintDirectSelected()">↺ Reset Objek</button>
+     <button type="button" class="secondary" onclick="resetPrintDirectCurrentPage()">↺ Reset Halaman</button>
+   </div>
+ </div>`;
+}
+
+function printDirectUpdateToolbar(){
+ let status=document.getElementById('printDirectEditorStatus');
+ if(status){
+   if(!printDirectSelected){status.textContent='Pilih objek pada halaman.';}
+   else{
+     let p=printDirectPosGet(printDirectSelected.dataset.printDragKey||'');
+     status.textContent=`Dipilih: ${printDirectLabelFor(printDirectSelected)} • X ${p.x} mm • Y ${p.y} mm`;
+   }
+ }
+ let btn=document.getElementById('printDirectToggleBtn');
+ if(btn){
+   let active=document.body.classList.contains('print-direct-edit-active');
+   btn.textContent=active?'✓ Mode Geser Aktif':'Mode Geser Mati';
+   btn.classList.toggle('print-direct-editor-toggle-active',active);
+ }
+}
+
+function togglePrintDirectEditMode(){
+ document.body.classList.toggle('print-direct-edit-active');
+ printDirectUpdateToolbar();
+}
+
+function nudgePrintDirectSelected(dx,dy){
+ if(!printDirectSelected)return alert('Klik blok tanda tangan, stempel, atau gambar tanda tangan terlebih dahulu.');
+ let key=printDirectSelected.dataset.printDragKey||'';
+ let p=printDirectPosGet(key);
+ printDirectPosSet(key,p.x+Number(dx||0),p.y+Number(dy||0),true);
+}
+
+function resetPrintDirectSelected(){
+ if(!printDirectSelected)return alert('Pilih objek yang akan di-reset terlebih dahulu.');
+ let key=printDirectSelected.dataset.printDragKey||'';
+ delete printDirectPositionsStore()[key];
+ save();
+ printDirectApplyStored(printDirectSelected);
+ printDirectUpdateToolbar();
+}
+
+function resetPrintDirectCurrentPage(){
+ if(!printDirectSelected)return alert('Klik salah satu objek pada halaman yang ingin di-reset.');
+ let page=printDirectSelected.closest(printDirectPageSelector());
+ if(!page)return;
+ page.querySelectorAll('[data-print-drag-key]').forEach(el=>{
+   delete printDirectPositionsStore()[el.dataset.printDragKey||''];
+   el.style.setProperty('--print-direct-x','0mm');
+   el.style.setProperty('--print-direct-y','0mm');
+ });
+ save();
+ printDirectUpdateToolbar();
+}
+
+function ensurePrintDirectEditor(){
+ let app=document.getElementById('app');
+ if(!app)return;
+ let pages=app.querySelectorAll(printDirectPageSelector());
+ if(!pages.length){
+   document.body.classList.remove('print-direct-edit-active');
+   printDirectSelected=null;
+   return;
+ }
+ let count=printDirectAnnotate();
+ if(count>0){
+   if(!document.getElementById('printDirectEditorToolbar')){
+     app.insertAdjacentHTML('beforeend',printDirectToolbarHtml());
+   }
+   document.body.classList.add('print-direct-edit-active');
+   printDirectUpdateToolbar();
+ }
+}
+
+function setupPrintDirectEditorObserver(){
+ let app=document.getElementById('app');
+ if(!app || printDirectObserver)return;
+ let timer=null;
+ printDirectObserver=new MutationObserver(()=>{
+   clearTimeout(timer);
+   timer=setTimeout(ensurePrintDirectEditor,0);
+ });
+ printDirectObserver.observe(app,{childList:true,subtree:true});
+ setTimeout(ensurePrintDirectEditor,0);
+}
+setTimeout(setupPrintDirectEditorObserver,0);
+
 function formatTanggalIndonesia(iso){
  if(!iso)return '........ / ........ / ........';
  let p=iso.split('-');
@@ -17126,23 +19517,17 @@ function printSignatureAssetCard(field,label,fileId,kind){
 
 function printSignatureSettingsPanel(){
  return `<div class="card print-signature-settings-card">
-   <h3>Stempel & Tanda Tangan untuk Hasil Cetak</h3>
+   <h3>Stempel Panitia & Tanda Tangan Ketua Panitia</h3>
    <div class="notice">
-     Pengaturan ini khusus untuk <b>hasil cetak/PDF</b>. Upload atau ganti gambar di sini, lalu atur posisi secara manual.
-     <b>Geser Kiri/Kanan</b>, <b>Atas/Bawah</b>, dan <b>Ukuran</b> akan tersimpan dan digunakan pada dokumen yang memakai tanda tangan/stempel tersebut.
+     Pengaturan ini khusus untuk <b>Ketua Panitia</b>. Fitur Stempel Madrasah dan Tanda Tangan Kepala Madrasah sudah dihapus dari halaman cetak.
    </div>
-   <div class="print-signature-grid">
-     ${printSignatureAssetCard('madrasahStamp','Stempel Madrasah','printMadrasahStampFile','stamp')}
+   <div class="print-signature-grid print-signature-grid-chair-only">
      ${printSignatureAssetCard('committeeStamp','Stempel Panitia','printCommitteeStampFile','stamp')}
-     ${printSignatureAssetCard('headSignature','Tanda Tangan Kepala Madrasah','printHeadSignatureFile','signature')}
      ${printSignatureAssetCard('chairSignature','Tanda Tangan Ketua Panitia','printChairSignatureFile','signature')}
    </div>
    <div class="actions">
-     <button class="success" onclick="savePrintSignatureSettings(this)">💾 Simpan Stempel, Tanda Tangan & Posisi</button>
-     <button class="secondary" onclick="resetAllPrintSignaturePositions()">↺ Reset Semua Posisi</button>
-   </div>
-   <div class="notice" style="margin-top:10px">
-     Tip: gunakan angka positif untuk menggeser ke <b>kanan/bawah</b> dan angka negatif untuk <b>kiri/atas</b>. Setelah disimpan, buka pratinjau/cetak dokumen untuk mengecek hasilnya.
+     <button class="success" onclick="savePrintSignatureSettings(this)">💾 Simpan Stempel & TTD Ketua</button>
+     <button class="secondary" onclick="resetAllPrintSignaturePositions()">↺ Reset Posisi Ketua</button>
    </div>
  </div>`;
 }
@@ -17151,28 +19536,24 @@ async function savePrintSignatureSettings(btn){
  try{
    if(btn){btn.disabled=true;btn.textContent='Menyimpan...';}
    readSignatureAdjustFromInputs();
-   let [madStamp,committeeStamp,headSign,chairSign]=await Promise.all([
-     readImageFileAsDataUrl('printMadrasahStampFile',db.school.madrasahStamp),
+   let [committeeStamp,chairSign]=await Promise.all([
      readImageFileAsDataUrl('printCommitteeStampFile',db.school.committeeStamp),
-     readImageFileAsDataUrl('printHeadSignatureFile',db.school.headSignature),
      readImageFileAsDataUrl('printChairSignatureFile',db.school.chairSignature)
    ]);
-   db.school.madrasahStamp=madStamp;
    db.school.committeeStamp=committeeStamp;
-   db.school.headSignature=headSign;
    db.school.chairSignature=chairSign;
    save();
-   alert('Stempel, tanda tangan, posisi, dan ukuran untuk hasil cetak sudah disimpan.');
+   alert('Stempel Panitia dan Tanda Tangan Ketua Panitia sudah disimpan.');
    render('print');
  }catch(err){
    alert('Gagal menyimpan pengaturan cetak: '+(err?.message||err));
  }finally{
-   if(btn){btn.disabled=false;btn.textContent='💾 Simpan Stempel, Tanda Tangan & Posisi';}
+   if(btn){btn.disabled=false;btn.textContent='💾 Simpan Stempel & TTD Ketua';}
  }
 }
 
 function clearPrintSignatureImage(field){
- if(!['headSignature','chairSignature','madrasahStamp','committeeStamp'].includes(field))return;
+ if(!['chairSignature','committeeStamp'].includes(field))return;
  if(!confirm('Hapus gambar ini dari pengaturan cetak?'))return;
  db.school[field]='';
  save();
@@ -17182,7 +19563,7 @@ function clearPrintSignatureImage(field){
 function resetAllPrintSignaturePositions(){
  if(!confirm('Reset semua posisi dan ukuran stempel/tanda tangan ke nilai awal?'))return;
  db.school.signatureAdjust=db.school.signatureAdjust||{};
- ['madrasahStamp','committeeStamp','headSignature','chairSignature'].forEach(field=>{
+ ['committeeStamp','chairSignature'].forEach(field=>{
    db.school.signatureAdjust[field]={...signatureAdjustDefaults(field)};
  });
  save();
@@ -18097,4 +20478,740 @@ document.addEventListener('keydown',e=>{
 render();
 checkLogin();
 </script>
+
+<script id="print-direct-drag-hard-fix-script">
+/* ============================================================
+   HARD FIX DIRECT DRAG
+   Event delegation pada document capture agar native image drag,
+   wrapper pointer-events, atau listener lama tidak menghalangi.
+   ============================================================ */
+(function(){
+  if(window.__printDirectHardDragInstalled)return;
+  window.__printDirectHardDragInstalled=true;
+
+  let hardState=null;
+
+  function hardEditableTarget(raw){
+    if(!raw || !(raw instanceof Element))return null;
+    /* Prioritas gambar yang diklik, lalu blok tanda tangan. */
+    let img=raw.closest('.signature-stamp-img,.signature-hand-img');
+    if(img && img.dataset && img.dataset.printDragKey)return img;
+    let item=raw.closest('[data-print-drag-key]');
+    if(item)return item;
+    return null;
+  }
+
+  function hardStart(ev){
+    if(!document.body.classList.contains('print-direct-edit-active'))return;
+    if(ev.button!==undefined && ev.button!==0)return;
+    let el=hardEditableTarget(ev.target);
+    if(!el)return;
+    let key=el.dataset.printDragKey||'';
+    if(!key)return;
+
+    ev.preventDefault();
+    ev.stopPropagation();
+    if(ev.stopImmediatePropagation)ev.stopImmediatePropagation();
+
+    if(typeof printDirectSetSelected==='function')printDirectSetSelected(el);
+    let p=(typeof printDirectPosGet==='function')?printDirectPosGet(key):{x:0,y:0};
+    hardState={
+      el,key,
+      startX:ev.clientX,
+      startY:ev.clientY,
+      baseX:Number(p.x)||0,
+      baseY:Number(p.y)||0,
+      pointerId:ev.pointerId
+    };
+    el.classList.add('print-direct-dragging');
+    try{ if(ev.pointerId!==undefined)el.setPointerCapture(ev.pointerId); }catch(_e){}
+  }
+
+  function hardMove(ev){
+    if(!hardState)return;
+    if(hardState.pointerId!==undefined && ev.pointerId!==undefined && ev.pointerId!==hardState.pointerId)return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    if(ev.stopImmediatePropagation)ev.stopImmediatePropagation();
+    const pxPerMm=96/25.4;
+    let nx=hardState.baseX+(ev.clientX-hardState.startX)/pxPerMm;
+    let ny=hardState.baseY+(ev.clientY-hardState.startY)/pxPerMm;
+    if(typeof printDirectPosSet==='function')printDirectPosSet(hardState.key,nx,ny,false);
+  }
+
+  function hardEnd(ev){
+    if(!hardState)return;
+    if(hardState.pointerId!==undefined && ev.pointerId!==undefined && ev.pointerId!==hardState.pointerId)return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    if(ev.stopImmediatePropagation)ev.stopImmediatePropagation();
+    let el=hardState.el;
+    let key=hardState.key;
+    try{ if(ev.pointerId!==undefined)el.releasePointerCapture(ev.pointerId); }catch(_e){}
+    el.classList.remove('print-direct-dragging');
+    hardState=null;
+    if(typeof save==='function')save();
+    if(typeof printDirectUpdateToolbar==='function')printDirectUpdateToolbar();
+  }
+
+  /* Hilangkan drag bawaan browser pada gambar. */
+  document.addEventListener('dragstart',function(ev){
+    if(ev.target && ev.target.closest && ev.target.closest('.signature-hand-img,.signature-stamp-img')){
+      ev.preventDefault();
+    }
+  },true);
+
+  /* Pointer Events: jalur utama untuk mouse, touchpad, stylus, touch. */
+  document.addEventListener('pointerdown',hardStart,true);
+  document.addEventListener('pointermove',hardMove,true);
+  document.addEventListener('pointerup',hardEnd,true);
+  document.addEventListener('pointercancel',hardEnd,true);
+
+  /* Saat anotasi dipasang, paksa gambar non-draggable secara native. */
+  const oldAnnotate=window.printDirectAnnotate;
+  if(typeof oldAnnotate==='function'){
+    window.printDirectAnnotate=function(){
+      let n=oldAnnotate.apply(this,arguments);
+      document.querySelectorAll('.signature-hand-img,.signature-stamp-img').forEach(img=>{
+        img.draggable=false;
+        img.setAttribute('draggable','false');
+        img.style.webkitUserDrag='none';
+      });
+      return n;
+    };
+  }
+
+  /* Jika halaman siap print sudah terbuka ketika patch dieksekusi. */
+  setTimeout(function(){
+    try{
+      document.querySelectorAll('.signature-hand-img,.signature-stamp-img').forEach(img=>{
+        img.draggable=false;
+        img.setAttribute('draggable','false');
+        img.style.webkitUserDrag='none';
+      });
+      if(typeof ensurePrintDirectEditor==='function')ensurePrintDirectEditor();
+    }catch(_e){}
+  },50);
+})();
+</script>
+
+
+<script id="print-direct-translate-guarantee-fix">
+(function(){
+  if(window.__printDirectTranslateGuarantee)return;
+  window.__printDirectTranslateGuarantee=true;
+
+  function forceTranslate(el,x,y){
+    if(!el)return;
+    let nx=Number(x)||0, ny=Number(y)||0;
+    el.style.setProperty('--print-direct-x',nx+'mm');
+    el.style.setProperty('--print-direct-y',ny+'mm');
+    /* Direct individual transform agar perpindahan terlihat saat itu juga. */
+    el.style.setProperty('translate',nx+'mm '+ny+'mm','important');
+  }
+
+  if(typeof window.printDirectPosSet==='function'){
+    const originalSet=window.printDirectPosSet;
+    window.printDirectPosSet=function(key,x,y,persist=true){
+      originalSet.call(this,key,x,y,persist);
+      let el=null;
+      try{el=document.querySelector('[data-print-drag-key="'+CSS.escape(key)+'"]');}catch(_e){}
+      forceTranslate(el,x,y);
+    };
+  }
+
+  if(typeof window.printDirectApplyStored==='function'){
+    const originalApply=window.printDirectApplyStored;
+    window.printDirectApplyStored=function(el){
+      originalApply.call(this,el);
+      if(!el)return;
+      let key=el.dataset.printDragKey||'';
+      let p=(typeof printDirectPosGet==='function')?printDirectPosGet(key):{x:0,y:0};
+      forceTranslate(el,p.x,p.y);
+    };
+  }
+
+  /* Fallback mouse events jika Pointer Events bermasalah di perangkat tertentu. */
+  let mouseState=null;
+  function targetFrom(raw){
+    if(!raw || !raw.closest)return null;
+    let img=raw.closest('.signature-stamp-img,.signature-hand-img');
+    if(img && img.dataset.printDragKey)return img;
+    return raw.closest('[data-print-drag-key]');
+  }
+  document.addEventListener('mousedown',function(ev){
+    if(window.PointerEvent)return; // Pointer Events menang bila tersedia.
+    if(!document.body.classList.contains('print-direct-edit-active') || ev.button!==0)return;
+    let el=targetFrom(ev.target); if(!el)return;
+    ev.preventDefault(); ev.stopPropagation();
+    let key=el.dataset.printDragKey||''; if(!key)return;
+    if(typeof printDirectSetSelected==='function')printDirectSetSelected(el);
+    let p=(typeof printDirectPosGet==='function')?printDirectPosGet(key):{x:0,y:0};
+    mouseState={el,key,startX:ev.clientX,startY:ev.clientY,baseX:Number(p.x)||0,baseY:Number(p.y)||0};
+  },true);
+  document.addEventListener('mousemove',function(ev){
+    if(!mouseState)return;
+    ev.preventDefault(); ev.stopPropagation();
+    const pxPerMm=96/25.4;
+    let nx=mouseState.baseX+(ev.clientX-mouseState.startX)/pxPerMm;
+    let ny=mouseState.baseY+(ev.clientY-mouseState.startY)/pxPerMm;
+    if(typeof printDirectPosSet==='function')printDirectPosSet(mouseState.key,nx,ny,false);
+  },true);
+  document.addEventListener('mouseup',function(ev){
+    if(!mouseState)return;
+    ev.preventDefault(); ev.stopPropagation();
+    mouseState=null;
+    if(typeof save==='function')save();
+  },true);
+})();
+</script>
+
+
+<script id="manual-paste-safe-login-script">
+(function(){
+  'use strict';
+
+  const STORAGE_KEY='administrasi_asesmen_manual_print_assets_v1';
+  const PAGE_SELECTOR=[
+    '.print-page',
+    '[class*="-print-page"]',
+    '.participant-list-print-page',
+    '.participant-exact-print-page',
+    '.seat-print-page',
+    '.schedule-print-page',
+    '.schedule-fixed-print-page',
+    '.special-assessment-print-page',
+    '.room-distribution-print-page',
+    '.supervisor-print-page',
+    '.attendance-landscape-page',
+    '.card-landscape-page',
+    '.desk-landscape-page',
+    '.desk16-page',
+    '.room-capacity-print-page'
+  ].join(',');
+
+  let selectedPage=null;
+  let selectedAsset=null;
+  let drag=null;
+  let observer=null;
+  let mutating=false;
+
+  function readStore(){
+    try{
+      let value=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
+      return Array.isArray(value)?value:[];
+    }catch(_){return []}
+  }
+
+  function writeStore(list){
+    try{
+      localStorage.setItem(STORAGE_KEY,JSON.stringify(Array.isArray(list)?list:[]));
+      return true;
+    }catch(err){
+      console.warn('manual paste save',err);
+      return false;
+    }
+  }
+
+  function getPages(){
+    let app=document.getElementById('app');
+    if(!app)return [];
+
+    // Hanya elemen yang benar-benar merupakan lembar preview siap cetak.
+    let found=Array.from(app.querySelectorAll(PAGE_SELECTOR)).filter(el=>{
+      if(!(el instanceof HTMLElement))return false;
+      if(el.closest('.print-signature-settings-card,.print-choice-list'))return false;
+      if(el.matches('.print-signature-settings-card,.print-choice-list,.actions,.no-print'))return false;
+      return true;
+    });
+
+    // Fallback hanya jika sudah ada tombol systemPrint pada preview yang sedang dibuka.
+    if(!found.length){
+      let hasSystemPrint=app.querySelector('.actions.no-print button[onclick*="systemPrint"]');
+      if(hasSystemPrint){
+        found=Array.from(app.children).filter(el=>{
+          if(!(el instanceof HTMLElement))return false;
+          if(el.matches('.actions,.no-print,.card,.print-choice-list,.print-signature-settings-card'))return false;
+          if(el.closest('.print-choice-list,.print-signature-settings-card'))return false;
+          return !!el.querySelector('table,.print-title,.schedule-custom-title,.attendance-reference-title');
+        });
+      }
+    }
+
+    found=found.filter((el,i,arr)=>!arr.some((other,j)=>j!==i && other.contains(el)));
+    return found;
+  }
+
+  function sanitize(s){
+    return String(s||'').replace(/\s+/g,' ').trim().replace(/[^a-zA-Z0-9À-ÿ._|:-]+/g,'_').slice(0,160);
+  }
+
+  function pageTitle(page){
+    let el=page.querySelector('.print-title,.schedule-custom-title,.attendance-reference-title,.participant-list-title-block,.card-title,.desk-title');
+    return el?String(el.textContent||'').replace(/\s+/g,' ').trim().slice(0,90):'';
+  }
+
+  function assignPageKeys(){
+    getPages().forEach((page,index)=>{
+      let cls=Array.from(page.classList).filter(c=>/print|attendance|supervisor|participant|schedule|seat|card|desk|room|distribution|special|capacity/i.test(c)).slice(0,8).join('.');
+      page.dataset.manualPastePageKey=sanitize(`${cls||'page'}|${pageTitle(page)||'print'}|${index}`);
+    });
+  }
+
+  function findPage(key){
+    return getPages().find(p=>p.dataset.manualPastePageKey===key)||null;
+  }
+
+  function clearPageOutline(){
+    getPages().forEach(p=>p.classList.remove('manual-paste-page-selected'));
+  }
+
+  function selectPage(page){
+    if(!page)return;
+    selectedPage=page;
+    clearPageOutline();
+    page.classList.add('manual-paste-page-selected');
+    updateToolbar();
+  }
+
+  function selectAsset(img){
+    document.querySelectorAll('.manual-paste-asset.manual-paste-selected').forEach(x=>x.classList.remove('manual-paste-selected'));
+    selectedAsset=img||null;
+    if(img){
+      img.classList.add('manual-paste-selected');
+      let page=img.closest(PAGE_SELECTOR);
+      if(page)selectPage(page);
+    }
+    updateToolbar();
+  }
+
+  function assetRecord(id){
+    return readStore().find(a=>String(a.id)===String(id))||null;
+  }
+
+  function updateRecord(id,patch){
+    let list=readStore();
+    let i=list.findIndex(a=>String(a.id)===String(id));
+    if(i<0)return null;
+    list[i]=Object.assign({},list[i],patch||{});
+    writeStore(list);
+    return list[i];
+  }
+
+  function removeRecord(id){
+    let list=readStore().filter(a=>String(a.id)!==String(id));
+    writeStore(list);
+  }
+
+  function renderAssets(){
+    if(mutating)return;
+    mutating=true;
+    try{
+      assignPageKeys();
+      document.querySelectorAll('.manual-paste-asset').forEach(x=>x.remove());
+
+      readStore().forEach(asset=>{
+        let page=findPage(asset.pageKey);
+        if(!page)return;
+        let img=document.createElement('img');
+        img.className='manual-paste-asset';
+        img.dataset.manualPasteId=String(asset.id);
+        img.draggable=false;
+        img.setAttribute('draggable','false');
+        img.src=asset.data;
+        img.style.left=(Number(asset.x)||72)+'%';
+        img.style.top=(Number(asset.y)||58)+'%';
+        img.style.width=(Number(asset.w)||18)+'%';
+        img.style.height='auto';
+        page.appendChild(img);
+      });
+
+      ensureToolbar();
+    }finally{mutating=false;}
+  }
+
+  function ensureToolbar(){
+    let app=document.getElementById('app');
+    if(!app || !getPages().length){ hideManualToolbar(); return; }
+    let bar=document.getElementById('manualPasteSafeToolbar');
+    if(!bar){
+      bar=document.createElement('div');
+      bar.id='manualPasteSafeToolbar';
+      bar.className='manual-paste-toolbar no-print';
+      bar.innerHTML=`
+        <div class="manual-paste-toolbar-head" id="manualPasteToolbarDragHandle">
+          <div class="manual-paste-toolbar-title">✍ TTD Ketua / Stempel Panitia</div>
+          <div class="manual-paste-toolbar-window-actions">
+            <button type="button" id="manualPasteMinimize" title="Perkecil / buka panel">▣</button>
+            <button type="button" id="manualPasteHide" title="Sembunyikan panel">×</button>
+          </div>
+        </div>
+        <div class="manual-paste-toolbar-body">
+          <div class="manual-paste-toolbar-help">
+            Klik lembar tujuan → <b>Ctrl+V</b> atau <b>Tambah Gambar</b>. Setelah muncul, klik-tahan gambar lalu drag.
+          </div>
+          <div id="manualPasteSafeStatus" class="manual-paste-toolbar-status">Klik salah satu halaman siap print.</div>
+          <div class="manual-paste-toolbar-actions">
+            <button type="button" class="secondary" id="manualPasteChooseFile">🖼 Tambah Gambar</button>
+            <button type="button" class="secondary" id="manualPasteSmaller">− Kecilkan</button>
+            <button type="button" class="secondary" id="manualPasteLarger">+ Besarkan</button>
+            <button type="button" class="danger" id="manualPasteDelete">🗑 Hapus</button>
+            <button type="button" class="secondary" id="manualPasteClearPage">↺ Hapus Halaman Ini</button>
+            <input class="manual-paste-file-input" id="manualPasteFile" type="file" accept="image/*">
+          </div>
+        </div>`;
+      document.body.appendChild(bar);
+
+      bar.querySelector('#manualPasteChooseFile').addEventListener('click',()=>bar.querySelector('#manualPasteFile').click());
+      bar.querySelector('#manualPasteFile').addEventListener('change',async ev=>{
+        let file=ev.target.files?.[0];
+        if(!file)return;
+        try{
+          let data=await fileToDataUrl(file);
+          addImage(selectedPage||getPages()[0],data);
+        }finally{ev.target.value='';}
+      });
+      bar.querySelector('#manualPasteSmaller').addEventListener('click',()=>resizeSelected(-2));
+      bar.querySelector('#manualPasteLarger').addEventListener('click',()=>resizeSelected(2));
+      bar.querySelector('#manualPasteDelete').addEventListener('click',deleteSelected);
+      bar.querySelector('#manualPasteClearPage').addEventListener('click',clearCurrentPage);
+
+      // Panel dibuat ringkas dan dapat dipindah agar tidak menutupi pekerjaan.
+      bar.classList.add('manual-toolbar-minimized');
+      bar.querySelector('#manualPasteMinimize').addEventListener('click',ev=>{
+        ev.stopPropagation();
+        bar.classList.toggle('manual-toolbar-minimized');
+      });
+      bar.querySelector('#manualPasteHide').addEventListener('click',ev=>{
+        ev.stopPropagation();
+        bar.classList.add('manual-toolbar-user-hidden');
+        let launcher=document.getElementById('manualPasteLauncher');
+        if(launcher)launcher.textContent='✍ Tampilkan TTD / Stempel';
+      });
+
+      let handle=bar.querySelector('#manualPasteToolbarDragHandle');
+      let panelDrag=null;
+      handle.addEventListener('pointerdown',ev=>{
+        if(ev.target.closest('button'))return;
+        ev.preventDefault();
+        let r=bar.getBoundingClientRect();
+        panelDrag={pointerId:ev.pointerId,startX:ev.clientX,startY:ev.clientY,left:r.left,top:r.top,w:r.width,h:r.height};
+        bar.style.left=r.left+'px';
+        bar.style.top=r.top+'px';
+        bar.style.right='auto';
+        bar.style.bottom='auto';
+        try{handle.setPointerCapture(ev.pointerId);}catch(_){ }
+      });
+      handle.addEventListener('pointermove',ev=>{
+        if(!panelDrag || panelDrag.pointerId!==ev.pointerId)return;
+        let left=panelDrag.left+(ev.clientX-panelDrag.startX);
+        let top=panelDrag.top+(ev.clientY-panelDrag.startY);
+        left=Math.max(0,Math.min(window.innerWidth-panelDrag.w,left));
+        top=Math.max(0,Math.min(window.innerHeight-44,top));
+        bar.style.left=left+'px';
+        bar.style.top=top+'px';
+      });
+      function finishPanelDrag(ev){
+        if(!panelDrag || (ev.pointerId!==undefined && panelDrag.pointerId!==ev.pointerId))return;
+        try{handle.releasePointerCapture(panelDrag.pointerId);}catch(_){ }
+        panelDrag=null;
+      }
+      handle.addEventListener('pointerup',finishPanelDrag);
+      handle.addEventListener('pointercancel',finishPanelDrag);
+    }
+    bar.classList.add('manual-toolbar-visible');
+    bar.classList.remove('manual-toolbar-user-hidden');
+    ensureManualLauncher();
+    let launcher=document.getElementById('manualPasteLauncher');
+    if(launcher)launcher.classList.add('manual-launcher-visible');
+    updateToolbar();
+  }
+
+  function hideManualToolbar(){
+    let bar=document.getElementById('manualPasteSafeToolbar');
+    if(bar)bar.classList.remove('manual-toolbar-visible');
+  }
+
+  function ensureManualLauncher(){
+    let launcher=document.getElementById('manualPasteLauncher');
+    if(!launcher){
+      launcher=document.createElement('button');
+      launcher.type='button';
+      launcher.id='manualPasteLauncher';
+      launcher.className='manual-paste-launcher no-print';
+      launcher.textContent='✍ TTD / Stempel';
+      launcher.title='Tampilkan / sembunyikan alat TTD dan stempel manual';
+      launcher.addEventListener('click',()=>{
+        let bar=document.getElementById('manualPasteSafeToolbar');
+        if(!bar){
+          if(typeof window.manualPasteForceShow==='function')window.manualPasteForceShow();
+          bar=document.getElementById('manualPasteSafeToolbar');
+        }
+        if(!bar){
+          alert('Buka dahulu halaman yang sudah siap dicetak, lalu klik tombol TTD / Stempel lagi.');
+          return;
+        }
+        // Jika panel sedang tersembunyi, tampilkan. Jika sudah tampil, klik lagi untuk menyembunyikan.
+        if(bar.classList.contains('manual-toolbar-user-hidden')){
+          bar.classList.remove('manual-toolbar-user-hidden');
+          launcher.textContent='✍ TTD / Stempel';
+        }else if(bar.classList.contains('manual-toolbar-visible')){
+          bar.classList.add('manual-toolbar-user-hidden');
+          launcher.textContent='✍ Tampilkan TTD / Stempel';
+        }else{
+          bar.classList.add('manual-toolbar-visible');
+          bar.classList.remove('manual-toolbar-user-hidden');
+          launcher.textContent='✍ TTD / Stempel';
+        }
+      });
+      document.body.appendChild(launcher);
+    }
+    return launcher;
+  }
+
+  function updateToolbar(){
+    let status=document.getElementById('manualPasteSafeStatus');
+    if(!status)return;
+    if(selectedAsset){
+      let a=assetRecord(selectedAsset.dataset.manualPasteId);
+      status.textContent=a?`Gambar dipilih • X ${Number(a.x).toFixed(1)}% • Y ${Number(a.y).toFixed(1)}% • ukuran ${Number(a.w).toFixed(1)}%`:'Gambar dipilih.';
+      return;
+    }
+    if(selectedPage){
+      let n=getPages().indexOf(selectedPage)+1;
+      status.textContent=`Halaman ${n} dipilih. Sekarang Ctrl+V atau klik Tambah Gambar.`;
+      return;
+    }
+    status.textContent='Klik salah satu halaman siap print.';
+  }
+
+  function fileToDataUrl(file){
+    return new Promise((resolve,reject)=>{
+      let fr=new FileReader();
+      fr.onload=()=>resolve(fr.result);
+      fr.onerror=()=>reject(fr.error||new Error('Gagal membaca gambar'));
+      fr.readAsDataURL(file);
+    });
+  }
+
+  function addImage(page,data){
+    if(!page || !data)return;
+    assignPageKeys();
+    let list=readStore();
+    let same=list.filter(a=>a.pageKey===page.dataset.manualPastePageKey).length;
+    let rec={
+      id:'manual_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),
+      pageKey:page.dataset.manualPastePageKey,
+      data:data,
+      x:75-Math.min(same*2,12),
+      y:58+Math.min(same*2,12),
+      w:18
+    };
+    list.push(rec);
+    if(!writeStore(list)){
+      alert('Gambar terlalu besar untuk disimpan. Coba gunakan gambar PNG/JPG yang ukurannya lebih kecil.');
+      return;
+    }
+    renderAssets();
+    let img=Array.from(document.querySelectorAll('.manual-paste-asset')).find(x=>x.dataset.manualPasteId===rec.id);
+    if(img)selectAsset(img);
+  }
+
+  document.addEventListener('paste',async ev=>{
+    if(!getPages().length)return;
+    let items=Array.from(ev.clipboardData?.items||[]);
+    let item=items.find(i=>String(i.type||'').startsWith('image/'));
+    if(!item)return;
+    ev.preventDefault();
+    let file=item.getAsFile();
+    if(!file)return;
+    try{
+      let data=await fileToDataUrl(file);
+      addImage(selectedPage||getPages()[0],data);
+    }catch(err){
+      alert('Gambar clipboard belum bisa ditempel: '+(err?.message||err));
+    }
+  },true);
+
+  document.addEventListener('pointerdown',ev=>{
+    let img=ev.target?.closest?.('.manual-paste-asset');
+    if(img){
+      ev.preventDefault();
+      ev.stopPropagation();
+      selectAsset(img);
+      let page=img.closest(PAGE_SELECTOR);
+      let rec=assetRecord(img.dataset.manualPasteId);
+      if(!page || !rec)return;
+      let rect=page.getBoundingClientRect();
+      drag={
+        pointerId:ev.pointerId,
+        img,page,rect,
+        id:img.dataset.manualPasteId,
+        startClientX:ev.clientX,
+        startClientY:ev.clientY,
+        startX:Number(rec.x)||50,
+        startY:Number(rec.y)||50,
+        x:Number(rec.x)||50,
+        y:Number(rec.y)||50
+      };
+      try{img.setPointerCapture(ev.pointerId);}catch(_){ }
+      return;
+    }
+    let page=ev.target?.closest?.(PAGE_SELECTOR);
+    if(page){
+      selectAsset(null);
+      selectPage(page);
+    }
+  },true);
+
+  document.addEventListener('pointermove',ev=>{
+    if(!drag || drag.pointerId!==ev.pointerId)return;
+    ev.preventDefault();
+    let dx=(ev.clientX-drag.startClientX)/Math.max(drag.rect.width,1)*100;
+    let dy=(ev.clientY-drag.startClientY)/Math.max(drag.rect.height,1)*100;
+    drag.x=Math.max(0,Math.min(100,drag.startX+dx));
+    drag.y=Math.max(0,Math.min(100,drag.startY+dy));
+    drag.img.style.left=drag.x+'%';
+    drag.img.style.top=drag.y+'%';
+    let status=document.getElementById('manualPasteSafeStatus');
+    if(status)status.textContent=`Menggeser • X ${drag.x.toFixed(1)}% • Y ${drag.y.toFixed(1)}%`;
+  },true);
+
+  function endDrag(ev){
+    if(!drag)return;
+    if(ev.pointerId!==undefined && ev.pointerId!==drag.pointerId)return;
+    updateRecord(drag.id,{x:drag.x,y:drag.y});
+    try{drag.img.releasePointerCapture(drag.pointerId);}catch(_){ }
+    drag=null;
+    updateToolbar();
+  }
+  document.addEventListener('pointerup',endDrag,true);
+  document.addEventListener('pointercancel',endDrag,true);
+  document.addEventListener('dragstart',ev=>{
+    if(ev.target?.closest?.('.manual-paste-asset'))ev.preventDefault();
+  },true);
+
+  function resizeSelected(delta){
+    if(!selectedAsset)return alert('Klik gambar manual terlebih dahulu.');
+    let rec=assetRecord(selectedAsset.dataset.manualPasteId);
+    if(!rec)return;
+    let w=Math.max(4,Math.min(65,(Number(rec.w)||18)+delta));
+    updateRecord(rec.id,{w});
+    selectedAsset.style.width=w+'%';
+    updateToolbar();
+  }
+
+  function deleteSelected(){
+    if(!selectedAsset)return alert('Klik gambar manual terlebih dahulu.');
+    let id=selectedAsset.dataset.manualPasteId;
+    removeRecord(id);
+    selectedAsset.remove();
+    selectedAsset=null;
+    updateToolbar();
+  }
+
+  function clearCurrentPage(){
+    let page=selectedPage||selectedAsset?.closest?.(PAGE_SELECTOR);
+    if(!page)return alert('Klik halaman terlebih dahulu.');
+    if(!confirm('Hapus semua gambar manual pada halaman ini?'))return;
+    let key=page.dataset.manualPastePageKey;
+    writeStore(readStore().filter(a=>a.pageKey!==key));
+    page.querySelectorAll('.manual-paste-asset').forEach(x=>x.remove());
+    selectedAsset=null;
+    updateToolbar();
+  }
+
+  document.addEventListener('keydown',ev=>{
+    if((ev.key==='Delete'||ev.key==='Backspace') && selectedAsset && !/INPUT|TEXTAREA|SELECT/.test(ev.target?.tagName||'')){
+      ev.preventDefault();
+      deleteSelected();
+    }
+  },true);
+
+  function refresh(){
+    if(mutating)return;
+    let p=getPages();
+    if(!p.length){
+      selectedPage=null;
+      selectedAsset=null;
+      hideManualToolbar();
+      return;
+    }
+    renderAssets();
+    if(!selectedPage || !document.documentElement.contains(selectedPage))selectPage(p[0]);
+  }
+
+  window.manualPasteForceShow=function(){
+    let p=getPages();
+    if(!p.length){
+      // Picu ulang deteksi setelah fungsi cetak selesai membangun preview.
+      let app=document.getElementById('app');
+      if(app){
+        let candidates=Array.from(app.children).filter(el=>
+          el instanceof HTMLElement &&
+          !el.matches('.actions,.no-print,#manualPasteSafeToolbar') &&
+          (el.querySelector('table,.print-title,h1,h2,h3') || /(print|cetak)/i.test(String(el.className||'')))
+        );
+        if(candidates.length){
+          candidates.forEach((el,i)=>{
+            if(!el.dataset.manualPastePageKey)el.dataset.manualPastePageKey=sanitize(`forced|${pageTitle(el)||'print'}|${i}`);
+          });
+          // getPages() fallback akan membaca kandidat cetak setelah DOM stabil.
+        }
+      }
+      p=getPages();
+    }
+    if(!p.length)return false;
+    ensureToolbar();
+    let bar=document.getElementById('manualPasteSafeToolbar');
+    if(bar){
+      bar.classList.add('manual-toolbar-visible');
+      bar.classList.remove('manual-toolbar-user-hidden');
+    }
+    let launcher=ensureManualLauncher();
+    if(launcher){
+      launcher.classList.add('manual-launcher-visible');
+      launcher.textContent='✍ TTD / Stempel';
+    }
+    if(!selectedPage || !document.documentElement.contains(selectedPage))selectPage(p[0]);
+    return true;
+  };
+
+  function syncManualLauncherVisibility(){
+    let launcher=ensureManualLauncher();
+    let login=document.getElementById('loginScreen');
+    let loggedIn=!login || getComputedStyle(login).display==='none';
+    let onPrintPreview=getPages().length>0;
+    launcher.classList.toggle('manual-launcher-visible',loggedIn && onPrintPreview);
+    if(!loggedIn || !onPrintPreview){
+      let bar=document.getElementById('manualPasteSafeToolbar');
+      if(bar)bar.classList.remove('manual-toolbar-visible');
+    }
+  }
+
+  function setup(){
+    let app=document.getElementById('app');
+    if(!app)return;
+    let timer=null;
+    observer=new MutationObserver(()=>{
+      if(mutating)return;
+      clearTimeout(timer);
+      timer=setTimeout(refresh,100);
+    });
+    observer.observe(app,{childList:true,subtree:true});
+    ensureManualLauncher();
+    syncManualLauncherVisibility();
+    setInterval(syncManualLauncherVisibility,700);
+    setTimeout(refresh,120);
+    setTimeout(refresh,500);
+  }
+
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',setup,{once:true});
+  }else{
+    setup();
+  }
+})();
+</script>
+
 </body></html>
