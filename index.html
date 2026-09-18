@@ -11393,6 +11393,48 @@ window.pdfjsLibBridge=pdfjsLib;
 }
 </style>
 
+
+<style id="print-signature-settings-final">
+/* ===== PRINT/CETAK: PENGATURAN STEMPEL & TANDA TANGAN ===== */
+.print-signature-settings-card{
+  margin-top:16px!important;
+  border-top:4px solid #c8a646!important;
+}
+.print-signature-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(320px,1fr));
+  gap:14px;
+  margin-top:12px;
+}
+.print-signature-card{
+  border:1px solid #d8dfd4;
+  border-radius:10px;
+  padding:13px;
+  background:#fbfdfb;
+}
+.print-signature-card h4{
+  margin:0 0 9px;
+  color:#0f5c3a;
+  font-size:14px;
+}
+.print-signature-card .identity-image-preview,
+.print-signature-card .identity-image-empty{
+  margin:8px 0;
+}
+.print-signature-card .print-signature-position-editor{
+  margin-top:8px;
+}
+.print-signature-remove{
+  margin-top:8px!important;
+}
+@media(max-width:900px){
+  .print-signature-grid{grid-template-columns:1fr}
+}
+@media print{
+  .print-signature-settings-card{display:none!important}
+}
+</style>
+
 </head>
 <body>
 <div id="loginScreen"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan penyimpanan Supabase. Gunakan akun cloud yang sama agar data dapat dibuka dari komputer/laptop lain.</p></div><div style="font-size:12px;color:#d9eadf">Database Cloud Supabase • Sinkron Otomatis</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">LOGIN ADMIN CLOUD</div><h2>Selamat Datang</h2><div class="sub">Masukkan email dan password Supabase. Akun yang sama dapat digunakan di perangkat lain.</div><div id="loginError" class="login-error">Login gagal.</div><div class="login-field"><label>Email Admin</label><input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com"></div><div class="login-field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -12010,9 +12052,9 @@ function signatureAdjustGet(field){
  };
 }
 
-function signatureAdjustControls(field){
+function signatureAdjustControls(field,context='print'){
  let a=signatureAdjustGet(field);
- return `<div class="identity-position-editor">
+ return `<div class="identity-position-editor print-signature-position-editor">
    <div class="identity-position-title">Atur Posisi Manual</div>
    <div class="identity-position-grid">
      <div><label>Geser Kiri / Kanan (mm)</label><input id="${field}PosX" type="number" step="1" value="${a.x}" title="Nilai positif = ke kanan, negatif = ke kiri"></div>
@@ -12020,19 +12062,19 @@ function signatureAdjustControls(field){
      <div><label>Ukuran Maks. (mm)</label><input id="${field}Size" type="number" min="5" max="80" step="1" value="${a.size}"></div>
    </div>
    <div class="identity-position-help">Kanan/Bawah gunakan angka positif. Kiri/Atas gunakan angka negatif.</div>
-   <button type="button" class="secondary identity-reset-position" onclick="resetSignatureAdjust('${field}')">↺ Reset Posisi</button>
+   <button type="button" class="secondary identity-reset-position" onclick="resetSignatureAdjust('${field}','${context}')">↺ Reset Posisi</button>
  </div>`;
 }
 
-function resetSignatureAdjust(field){
+function resetSignatureAdjust(field,context='print'){
  if(!['headSignature','chairSignature','madrasahStamp','committeeStamp'].includes(field))return;
  db.school.signatureAdjust=db.school.signatureAdjust||{};
  db.school.signatureAdjust[field]={...signatureAdjustDefaults(field)};
  save();
- render('profile');
+ render(context==='profile'?'profile':'print');
 }
 
-function readSignatureAdjustFromProfile(){
+function readSignatureAdjustFromInputs(){
  db.school.signatureAdjust=db.school.signatureAdjust||{};
  ['madrasahStamp','committeeStamp','headSignature','chairSignature'].forEach(field=>{
    let d=signatureAdjustDefaults(field);
@@ -12117,43 +12159,8 @@ function profile(){return `<div class="card"><h2>Identitas Madrasah & Kop Cetak<
 <div><label>Logo Kop (PNG/JPG)</label><input id="schoolLogo" type="file" accept="image/*"></div>
 </div>
 
-<div class="identity-signature-upload-section">
-  <h3>Stempel & Tanda Tangan Otomatis</h3>
-  <div class="notice">Unggah gambar PNG/JPG. Setelah disimpan, gambar otomatis ditempel pada dokumen cetak. Gunakan <b>Atur Posisi Manual</b> untuk menggeser kiri/kanan, atas/bawah, dan mengatur ukuran gambar.</div>
-
-  <div class="identity-signature-grid">
-    <div class="identity-upload-card">
-      <h4>1. Stempel Madrasah</h4>
-      <input id="madrasahStampFile" type="file" accept="image/*">
-      ${identityImagePreview('Stempel Madrasah',db.school.madrasahStamp,'stamp')}
-      ${signatureAdjustControls('madrasahStamp')}
-      ${db.school.madrasahStamp?`<button type="button" class="danger identity-remove-image" onclick="clearIdentityImage('madrasahStamp')">Hapus Stempel Madrasah</button>`:''}
-    </div>
-
-    <div class="identity-upload-card">
-      <h4>2. Stempel Panitia</h4>
-      <input id="committeeStampFile" type="file" accept="image/*">
-      ${identityImagePreview('Stempel Panitia',db.school.committeeStamp,'stamp')}
-      ${signatureAdjustControls('committeeStamp')}
-      ${db.school.committeeStamp?`<button type="button" class="danger identity-remove-image" onclick="clearIdentityImage('committeeStamp')">Hapus Stempel Panitia</button>`:''}
-    </div>
-
-    <div class="identity-upload-card">
-      <h4>3. Tanda Tangan Kepala Madrasah</h4>
-      <input id="headSignatureFile" type="file" accept="image/*">
-      ${identityImagePreview('Tanda Tangan Kepala Madrasah',db.school.headSignature,'signature')}
-      ${signatureAdjustControls('headSignature')}
-      ${db.school.headSignature?`<button type="button" class="danger identity-remove-image" onclick="clearIdentityImage('headSignature')">Hapus Tanda Tangan Kepala</button>`:''}
-    </div>
-
-    <div class="identity-upload-card">
-      <h4>4. Tanda Tangan Ketua Panitia</h4>
-      <input id="chairSignatureFile" type="file" accept="image/*">
-      ${identityImagePreview('Tanda Tangan Ketua Panitia',db.school.chairSignature,'signature')}
-      ${signatureAdjustControls('chairSignature')}
-      ${db.school.chairSignature?`<button type="button" class="danger identity-remove-image" onclick="clearIdentityImage('chairSignature')">Hapus Tanda Tangan Ketua</button>`:''}
-    </div>
-  </div>
+<div class="notice" style="margin-top:14px">
+  <b>Stempel & tanda tangan:</b> upload, ganti gambar, serta pengaturan posisi/ukuran sekarang dilakukan dari menu <b>13. Print / Cetak</b>, bukan dari halaman Identitas Madrasah.
 </div>
 
 <div style="margin-top:12px"><label>Alamat</label><textarea id="schoolAddress">${esc(db.school.address)}</textarea></div>
@@ -12164,31 +12171,18 @@ async function saveProfile(){
  db.school.nsm=v('schoolNsm');db.school.npsn=v('schoolNpsn');db.school.phone=v('schoolPhone');db.school.postal=v('schoolPostal');
  db.school.email=v('schoolEmail');db.school.website=v('schoolWebsite');db.school.head=v('schoolHead');db.school.nip=v('schoolNip');db.school.committeeChair=v('committeeChair');db.school.signatureCity=v('signatureCity')||'Wangon';db.school.signatureDate=v('signatureDate');db.school.signatureTitle=v('signatureTitle')||'Ketua Panitia';db.school.address=v('schoolAddress');
 
- readSignatureAdjustFromProfile();
 
  try{
-   let [headSign,chairSign,madStamp,committeeStamp]=await Promise.all([
-     readImageFileAsDataUrl('headSignatureFile',db.school.headSignature),
-     readImageFileAsDataUrl('chairSignatureFile',db.school.chairSignature),
-     readImageFileAsDataUrl('madrasahStampFile',db.school.madrasahStamp),
-     readImageFileAsDataUrl('committeeStampFile',db.school.committeeStamp)
-   ]);
-
-   db.school.headSignature=headSign;
-   db.school.chairSignature=chairSign;
-   db.school.madrasahStamp=madStamp;
-   db.school.committeeStamp=committeeStamp;
-
    let logoFile=document.getElementById('schoolLogo')?.files?.[0];
    if(logoFile){
      db.school.logo=await readImageFileAsDataUrl('schoolLogo',db.school.logo);
    }
 
    save();
-   alert('Identitas, stempel, dan tanda tangan tersimpan. Gambar akan digunakan otomatis pada dokumen cetak.');
+   alert('Identitas Madrasah tersimpan. Pengaturan stempel dan tanda tangan dilakukan dari menu Print / Cetak.');
    render('profile');
  }catch(err){
-   alert('Gagal menyimpan gambar: '+(err?.message||err));
+   alert('Gagal menyimpan identitas: '+(err?.message||err));
  }
 }
 function previewKop(){document.getElementById('kopPreview').innerHTML=`<div class="print-page" style="min-height:auto;margin-top:15px">${printHeader()}</div>`}
@@ -17006,6 +17000,83 @@ function printRoomCapacitySummary(){
 }
 
 
+
+function printSignatureAssetCard(field,label,fileId,kind){
+ let current=db.school[field]||'';
+ return `<div class="print-signature-card">
+   <h4>${esc(label)}</h4>
+   <input id="${fileId}" type="file" accept="image/*">
+   ${identityImagePreview(label,current,kind)}
+   ${signatureAdjustControls(field,'print')}
+   ${current?`<button type="button" class="danger print-signature-remove" onclick="clearPrintSignatureImage('${field}')">Hapus ${esc(label)}</button>`:''}
+ </div>`;
+}
+
+function printSignatureSettingsPanel(){
+ return `<div class="card print-signature-settings-card">
+   <h3>Stempel & Tanda Tangan untuk Hasil Cetak</h3>
+   <div class="notice">
+     Pengaturan ini khusus untuk <b>hasil cetak/PDF</b>. Upload atau ganti gambar di sini, lalu atur posisi secara manual.
+     <b>Geser Kiri/Kanan</b>, <b>Atas/Bawah</b>, dan <b>Ukuran</b> akan tersimpan dan digunakan pada dokumen yang memakai tanda tangan/stempel tersebut.
+   </div>
+   <div class="print-signature-grid">
+     ${printSignatureAssetCard('madrasahStamp','Stempel Madrasah','printMadrasahStampFile','stamp')}
+     ${printSignatureAssetCard('committeeStamp','Stempel Panitia','printCommitteeStampFile','stamp')}
+     ${printSignatureAssetCard('headSignature','Tanda Tangan Kepala Madrasah','printHeadSignatureFile','signature')}
+     ${printSignatureAssetCard('chairSignature','Tanda Tangan Ketua Panitia','printChairSignatureFile','signature')}
+   </div>
+   <div class="actions">
+     <button class="success" onclick="savePrintSignatureSettings(this)">💾 Simpan Stempel, Tanda Tangan & Posisi</button>
+     <button class="secondary" onclick="resetAllPrintSignaturePositions()">↺ Reset Semua Posisi</button>
+   </div>
+   <div class="notice" style="margin-top:10px">
+     Tip: gunakan angka positif untuk menggeser ke <b>kanan/bawah</b> dan angka negatif untuk <b>kiri/atas</b>. Setelah disimpan, buka pratinjau/cetak dokumen untuk mengecek hasilnya.
+   </div>
+ </div>`;
+}
+
+async function savePrintSignatureSettings(btn){
+ try{
+   if(btn){btn.disabled=true;btn.textContent='Menyimpan...';}
+   readSignatureAdjustFromInputs();
+   let [madStamp,committeeStamp,headSign,chairSign]=await Promise.all([
+     readImageFileAsDataUrl('printMadrasahStampFile',db.school.madrasahStamp),
+     readImageFileAsDataUrl('printCommitteeStampFile',db.school.committeeStamp),
+     readImageFileAsDataUrl('printHeadSignatureFile',db.school.headSignature),
+     readImageFileAsDataUrl('printChairSignatureFile',db.school.chairSignature)
+   ]);
+   db.school.madrasahStamp=madStamp;
+   db.school.committeeStamp=committeeStamp;
+   db.school.headSignature=headSign;
+   db.school.chairSignature=chairSign;
+   save();
+   alert('Stempel, tanda tangan, posisi, dan ukuran untuk hasil cetak sudah disimpan.');
+   render('print');
+ }catch(err){
+   alert('Gagal menyimpan pengaturan cetak: '+(err?.message||err));
+ }finally{
+   if(btn){btn.disabled=false;btn.textContent='💾 Simpan Stempel, Tanda Tangan & Posisi';}
+ }
+}
+
+function clearPrintSignatureImage(field){
+ if(!['headSignature','chairSignature','madrasahStamp','committeeStamp'].includes(field))return;
+ if(!confirm('Hapus gambar ini dari pengaturan cetak?'))return;
+ db.school[field]='';
+ save();
+ render('print');
+}
+
+function resetAllPrintSignaturePositions(){
+ if(!confirm('Reset semua posisi dan ukuran stempel/tanda tangan ke nilai awal?'))return;
+ db.school.signatureAdjust=db.school.signatureAdjust||{};
+ ['madrasahStamp','committeeStamp','headSignature','chairSignature'].forEach(field=>{
+   db.school.signatureAdjust[field]={...signatureAdjustDefaults(field)};
+ });
+ save();
+ render('print');
+}
+
 function printPage(){
  return `<div class="card"><h2>13. Print / Cetak & Unduh PDF/Excel/CSV</h2>
  <div class="notice">
@@ -17016,6 +17087,7 @@ function printPage(){
    Saat membuka dialog printer, pilih ukuran kertas 33 × 29 cm, <b>Margins: None</b>, <b>Scale: 100%</b>, dan matikan <b>Headers and footers</b>, karena margin 1 cm sudah dibuat dari aplikasi. Jika hasil cetak browser kurang maksimal, unduh versi Excel lalu atur kembali melalui Microsoft Excel.
    Untuk dokumen per ruang, pilihan <b>Semua Ruang</b> akan dibuat menjadi beberapa sheet Excel agar lebih mudah ditata dan dicetak.
  </div>
+ ${printSignatureSettingsPanel()}
  <div class="print-choice-list">
    ${printChoiceRow('Daftar Siswa tiap Ruang','Pilih semua ruang atau satu ruang.','pr_students',printRoomOptions(),'students')}
    ${printChoiceRow('Pembagian Ruang Peserta','Portrait 29 × 33 cm; KOP, judul, tabel dan PDF memakai layout khusus maksimal 249mm.','pr_distribution',printRoomOptions(),'distribution')}
