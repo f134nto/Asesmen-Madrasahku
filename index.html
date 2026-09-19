@@ -5500,7 +5500,7 @@ body.pdf-participant-special .participant-list-print-page.participant-exact-prin
 .supervisor-print-page.supervisor-29-print .supervisor-29-table .fixed-no{
   text-align:center!important;
   white-space:nowrap!important;
-  font-size:6.3pt!important;
+  font-size:6.1pt!important;
 }
 
 /* HARI/TANGGAL */
@@ -9906,6 +9906,27 @@ window.pdfjsLibBridge=pdfjsLib;
     overflow:visible!important;
     text-overflow:clip!important;
   }
+
+/* Paksa nama sangat panjang tetap 1 baris */
+.supervisor-page-two .supervisor-code-legend-item.supervisor-code-name-long{
+  white-space:nowrap!important;
+  font-size:6.7pt!important;
+  line-height:1!important;
+  letter-spacing:-0.1px!important;
+}
+.supervisor-page-two .supervisor-code-legend-item.supervisor-code-name-long .supervisor-code-full-name{
+  white-space:nowrap!important;
+}
+.supervisor-page-two .supervisor-code-legend-item.supervisor-code-latifatul-one-line{
+  white-space:nowrap!important;
+  font-size:6.4pt!important;
+  line-height:1!important;
+  letter-spacing:-0.15px!important;
+}
+.supervisor-page-two .supervisor-code-legend-item.supervisor-code-latifatul-one-line .supervisor-code-full-name{
+  white-space:nowrap!important;
+}
+
 }
 </style>
 
@@ -12375,8 +12396,9 @@ body.print-direct-edit-active .print-direct-draggable{
 }
 
 .manual-paste-page-selected{
-  outline:2px dashed #14753d!important;
-  outline-offset:-3px!important;
+  outline:none!important;
+  outline-offset:0!important;
+  box-shadow:none!important;
 }
 
 .manual-paste-asset{
@@ -13583,6 +13605,391 @@ body.print-direct-edit-active .print-direct-draggable{
   }
 }
 </style>
+
+<style id="supervisor-page-two-chair-under-arif-puji-fix">
+.supervisor-page-two .supervisor-page-two-right-sign-row{
+  width:100%!important;
+  display:flex!important;
+  justify-content:flex-end!important;
+  align-items:flex-start!important;
+  margin:3mm 0 4mm 0!important;
+  padding-right:12mm!important;
+}
+.supervisor-page-two .supervisor-page-two-right-signature{
+  width:66mm!important;
+  max-width:66mm!important;
+  min-width:66mm!important;
+  display:block!important;
+  text-align:center!important;
+}
+.supervisor-page-two .supervisor-page-two-right-signature .supervisor-signatures.supervisor-signatures-chair-only,
+.supervisor-page-two .supervisor-page-two-right-signature .supervisor-chair-signbox,
+.supervisor-page-two .supervisor-page-two-right-signature .signbox{
+  display:block!important;
+  width:66mm!important;
+  max-width:66mm!important;
+  min-width:66mm!important;
+  margin:0!important;
+  padding:0!important;
+  text-align:center!important;
+  font-size:14pt!important;
+  line-height:1.3!important;
+}
+.supervisor-page-two .supervisor-page-two-right-signature .supervisor-sign-space{
+  height:18mm!important;
+  min-height:18mm!important;
+}
+.supervisor-page-two .supervisor-page-two-right-signature .supervisor-signatures.supervisor-signatures-chair-only *,
+.supervisor-page-two .supervisor-page-two-right-signature .supervisor-chair-signbox *,
+.supervisor-page-two .supervisor-page-two-right-signature .signbox *{
+  font-size:14pt!important;
+  line-height:1.3!important;
+}
+@media print{
+  .supervisor-page-two .supervisor-page-two-right-sign-row{
+    width:100%!important;
+    display:flex!important;
+    justify-content:flex-end!important;
+    align-items:flex-start!important;
+    margin:3mm 0 4mm 0!important;
+    padding-right:12mm!important;
+  }
+  .supervisor-page-two .supervisor-page-two-right-signature,
+  .supervisor-page-two .supervisor-page-two-right-signature .supervisor-signatures.supervisor-signatures-chair-only,
+  .supervisor-page-two .supervisor-page-two-right-signature .supervisor-chair-signbox,
+  .supervisor-page-two .supervisor-page-two-right-signature .signbox{
+    display:block!important;
+    width:66mm!important;
+    max-width:66mm!important;
+    min-width:66mm!important;
+    text-align:center!important;
+    font-size:14pt!important;
+    line-height:1.3!important;
+  }
+  .supervisor-page-two .supervisor-page-two-right-signature .supervisor-sign-space{
+    height:18mm!important;
+    min-height:18mm!important;
+  }
+}
+</style>
+
+
+<style id="supervisor-page-two-layout-reserve-left-signature-under-arif-final">
+/* Lembar 2 Jadwal Pengawas:
+   - Pengawas Cadangan dinaikkan dan digeser sedikit ke kiri
+   - TTD Ketua Panitia di kanan, tepat di bawah area Arif Puji Santoso, S.Pd.
+*/
+.supervisor-print-page.supervisor-page-two{
+  position:relative!important;
+}
+.supervisor-page-two .supervisor-page-two-lower-row{
+  width:100%!important;
+  margin:2mm auto 0!important;
+  padding:0 8mm 0 12mm!important;
+  display:grid!important;
+  grid-template-columns:132mm 1fr 66mm!important;
+  align-items:start!important;
+  column-gap:0!important;
+  min-height:62mm!important;
+}
+.supervisor-page-two .supervisor-page-two-reserve-left{
+  grid-column:1!important;
+  width:132mm!important;
+  margin-left:-4mm!important;
+  margin-top:0!important;
+  padding:0!important;
+}
+.supervisor-page-two .supervisor-page-two-reserve-left .supervisor-reserve-section,
+.supervisor-page-two .supervisor-page-two-reserve-left .supervisor-reserve-blank{
+  width:132mm!important;
+  max-width:132mm!important;
+  min-width:132mm!important;
+  margin:0!important;
+}
+.supervisor-page-two .supervisor-page-two-reserve-left .supervisor-reserve-section > div:first-child{
+  margin-top:0!important;
+  margin-bottom:2mm!important;
+  text-align:center!important;
+}
+.supervisor-page-two .supervisor-page-two-right-signature{
+  grid-column:3!important;
+  width:66mm!important;
+  max-width:66mm!important;
+  min-width:66mm!important;
+  margin:0!important;
+  padding:0!important;
+  justify-self:end!important;
+  align-self:start!important;
+  display:block!important;
+  text-align:center!important;
+}
+.supervisor-page-two .supervisor-page-two-right-signature .supervisor-signatures,
+.supervisor-page-two .supervisor-page-two-right-signature .supervisor-signatures-chair-only,
+.supervisor-page-two .supervisor-page-two-right-signature .supervisor-chair-signbox,
+.supervisor-page-two .supervisor-page-two-right-signature .signbox{
+  display:block!important;
+  width:66mm!important;
+  max-width:66mm!important;
+  min-width:66mm!important;
+  margin:0!important;
+  padding:0!important;
+  text-align:center!important;
+}
+.supervisor-page-two .supervisor-page-two-right-signature .supervisor-chair-signbox > div,
+.supervisor-page-two .supervisor-page-two-right-signature .supervisor-chair-signbox b,
+.supervisor-page-two .supervisor-page-two-right-signature .supervisor-chair-signbox u{
+  font-size:14pt!important;
+  line-height:1.25!important;
+}
+.supervisor-page-two .supervisor-page-two-right-signature .supervisor-sign-space{
+  height:18mm!important;
+  min-height:18mm!important;
+}
+/* Tampilkan kembali khusus aset TTD/stempel Ketua pada lembar 2 Jadwal Pengawas. */
+.supervisor-page-two .supervisor-page-two-right-signature .signature-assets{
+  display:block!important;
+  width:58mm!important;
+  height:20mm!important;
+}
+.supervisor-page-two .supervisor-page-two-right-signature .signature-hand-img,
+.supervisor-page-two .supervisor-page-two-right-signature .signature-stamp-img{
+  display:block!important;
+}
+@media print{
+  .supervisor-page-two .supervisor-page-two-lower-row{
+    width:100%!important;
+    margin:2mm auto 0!important;
+    padding:0 8mm 0 12mm!important;
+    display:grid!important;
+    grid-template-columns:132mm 1fr 66mm!important;
+    align-items:start!important;
+    column-gap:0!important;
+    min-height:62mm!important;
+    break-inside:avoid!important;
+    page-break-inside:avoid!important;
+  }
+  .supervisor-page-two .supervisor-page-two-reserve-left{
+    grid-column:1!important;
+    width:132mm!important;
+    margin-left:-4mm!important;
+    margin-top:0!important;
+  }
+  .supervisor-page-two .supervisor-page-two-right-signature{
+    grid-column:3!important;
+    width:66mm!important;
+    max-width:66mm!important;
+    min-width:66mm!important;
+    justify-self:end!important;
+    margin:0!important;
+  }
+  .supervisor-page-two .supervisor-page-two-right-signature .supervisor-signatures,
+  .supervisor-page-two .supervisor-page-two-right-signature .supervisor-signatures-chair-only,
+  .supervisor-page-two .supervisor-page-two-right-signature .supervisor-chair-signbox,
+  .supervisor-page-two .supervisor-page-two-right-signature .signbox{
+    display:block!important;
+    width:66mm!important;
+    max-width:66mm!important;
+    min-width:66mm!important;
+    margin:0!important;
+  }
+  .supervisor-page-two .supervisor-page-two-right-signature .signature-assets,
+  .supervisor-page-two .supervisor-page-two-right-signature .signature-hand-img,
+  .supervisor-page-two .supervisor-page-two-right-signature .signature-stamp-img{
+    display:block!important;
+  }
+}
+</style>
+
+
+<style id="supervisor-manual-signature-page2-final">
+.supervisor-print-page.supervisor-page-two{position:relative!important;overflow:visible!important;}
+.supervisor-page-two .supervisor-page-two-lower-row-no-auto-signature{
+  display:block!important;width:100%!important;margin-top:2mm!important;padding:0!important;
+}
+.supervisor-page-two .supervisor-page-two-lower-row-no-auto-signature .supervisor-page-two-reserve-left{
+  width:132mm!important;max-width:132mm!important;min-width:132mm!important;margin:0 0 0 26mm!important;padding:0!important;
+}
+.supervisor-page-two .supervisor-page-two-lower-row-no-auto-signature .supervisor-reserve-section,
+.supervisor-page-two .supervisor-page-two-lower-row-no-auto-signature .supervisor-reserve-blank{
+  width:132mm!important;max-width:132mm!important;min-width:132mm!important;margin:0!important;
+}
+/* Blok TTD manual lengkap: kota/tanggal + jabatan + gambar + nama */
+.supervisor-manual-signature-block{
+  position:absolute!important;
+  z-index:500!important;
+  transform:translate(-50%,0)!important;
+  width:68mm!important;
+  min-width:68mm!important;
+  max-width:68mm!important;
+  text-align:center!important;
+  color:#000!important;
+  cursor:grab!important;
+  user-select:none!important;
+  -webkit-user-select:none!important;
+  touch-action:none!important;
+  pointer-events:auto!important;
+  outline:2px dashed #d99b00!important;
+  outline-offset:4px!important;
+  line-height:1.3!important;
+  padding:1mm 0!important;
+  background:rgba(255,255,255,.82)!important;
+}
+.supervisor-manual-signature-block:active{cursor:grabbing!important;}
+.supervisor-manual-signature-block .supervisor-manual-citydate,
+.supervisor-manual-signature-block .supervisor-manual-role,
+.supervisor-manual-signature-block .supervisor-manual-name{
+  font-size:var(--sup-manual-font,14pt)!important;
+  line-height:1.3!important;
+}
+.supervisor-manual-signature-block .supervisor-manual-role{margin-top:1mm!important;}
+.supervisor-manual-signature-block .supervisor-manual-name{font-weight:700!important;text-decoration:underline!important;white-space:nowrap!important;}
+.supervisor-manual-signature-space{
+  height:18mm!important;
+  min-height:18mm!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  position:relative!important;
+  overflow:visible!important;
+}
+.supervisor-manual-signature-img{
+  display:block!important;
+  width:var(--sup-manual-img-w,18%)!important;
+  max-width:58mm!important;
+  max-height:18mm!important;
+  height:auto!important;
+  object-fit:contain!important;
+  pointer-events:none!important;
+  user-select:none!important;
+  -webkit-user-drag:none!important;
+}
+.supervisor-manual-ttd-launcher{
+  position:fixed!important;right:14px!important;bottom:14px!important;z-index:999990!important;
+  padding:8px 12px!important;border-radius:18px!important;background:#173b67!important;color:#fff!important;
+  font-weight:800!important;font-size:12px!important;box-shadow:0 3px 12px rgba(0,0,0,.2)!important;cursor:pointer!important;
+}
+.supervisor-manual-ttd-panel{
+  display:none!important;position:fixed!important;right:14px!important;bottom:54px!important;z-index:999991!important;
+  width:500px!important;max-width:calc(100vw - 28px)!important;background:#fff!important;border:1px solid #b8c6d6!important;
+  border-radius:10px!important;box-shadow:0 6px 20px rgba(0,0,0,.18)!important;padding:10px!important;
+}
+.supervisor-manual-ttd-panel.show{display:block!important;}
+.supervisor-manual-ttd-title{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;font-weight:900!important;color:#173b67!important;margin-bottom:7px!important;}
+.supervisor-manual-ttd-title button{padding:3px 8px!important;}
+.supervisor-manual-ttd-fields{display:grid!important;grid-template-columns:1fr 1fr!important;gap:7px!important;margin-bottom:8px!important;}
+.supervisor-manual-ttd-fields label{font-size:11px!important;font-weight:800!important;margin:0!important;}
+.supervisor-manual-ttd-fields input{margin-top:3px!important;padding:6px 7px!important;font-size:12px!important;}
+.supervisor-manual-ttd-actions{display:flex!important;flex-wrap:wrap!important;gap:5px!important;}
+.supervisor-manual-ttd-actions button{padding:6px 9px!important;font-size:11px!important;}
+.supervisor-manual-ttd-help{font-size:11px!important;line-height:1.35!important;margin-top:7px!important;color:#425466!important;}
+@media(max-width:650px){.supervisor-manual-ttd-fields{grid-template-columns:1fr!important;}}
+@media print{
+  .supervisor-manual-ttd-launcher,.supervisor-manual-ttd-panel{display:none!important;}
+  .supervisor-manual-signature-block{outline:none!important;cursor:default!important;background:transparent!important;}
+  .supervisor-page-two .supervisor-page-two-lower-row-no-auto-signature .supervisor-page-two-reserve-left{margin-left:26mm!important;}
+}
+</style>
+
+
+<style id="supervisor-manual-text-direct-edit-fix-20260919">
+.supervisor-manual-signature-block .supervisor-manual-editable-text{
+  pointer-events:auto!important;
+  user-select:text!important;
+  -webkit-user-select:text!important;
+  cursor:text!important;
+  min-height:1.35em!important;
+  border-radius:3px!important;
+}
+.supervisor-manual-signature-block .supervisor-manual-editable-text:focus{
+  outline:1.5px dashed #1d6fb8!important;
+  outline-offset:2px!important;
+  background:#eef7ff!important;
+}
+.supervisor-manual-ttd-panel input{
+  pointer-events:auto!important;
+  user-select:text!important;
+  cursor:text!important;
+}
+.supervisor-manual-ttd-fields{grid-template-columns:1fr 1fr 1fr!important;}
+@media(max-width:850px){.supervisor-manual-ttd-fields{grid-template-columns:1fr!important;}}
+@media print{
+  .supervisor-manual-signature-block .supervisor-manual-editable-text:focus{outline:none!important;background:transparent!important;}
+}
+</style>
+
+<style id="supervisor-manual-signature-remove-helper-lines-final">
+/* Hapus seluruh garis bantu pada blok TTD manual, tetapi fungsi drag/edit tetap aktif */
+.supervisor-manual-signature-block,
+.supervisor-manual-signature-block:hover,
+.supervisor-manual-signature-block:active,
+.supervisor-manual-signature-block:focus,
+.supervisor-manual-signature-block:focus-within{
+  outline:none!important;
+  outline-offset:0!important;
+  border:none!important;
+  box-shadow:none!important;
+  background:transparent!important;
+}
+.supervisor-manual-signature-block .supervisor-manual-editable-text,
+.supervisor-manual-signature-block .supervisor-manual-editable-text:hover,
+.supervisor-manual-signature-block .supervisor-manual-editable-text:focus,
+.supervisor-manual-signature-block .supervisor-manual-editable-text:focus-visible{
+  outline:none!important;
+  outline-offset:0!important;
+  border:none!important;
+  box-shadow:none!important;
+  background:transparent!important;
+}
+@media print{
+  .supervisor-manual-signature-block,
+  .supervisor-manual-signature-block *,
+  .supervisor-manual-signature-block .supervisor-manual-editable-text{
+    outline:none!important;
+    border:none!important;
+    box-shadow:none!important;
+    background:transparent!important;
+  }
+}
+</style>
+
+
+<style id="final-fix-green-line-latifatul-oneline-20260919">
+/* Hilangkan garis hijau penanda halaman terpilih agar area print bersih */
+.manual-paste-page-selected,
+#printPages .manual-paste-page-selected,
+#app .manual-paste-page-selected{
+  outline:none!important;
+  outline-offset:0!important;
+  box-shadow:none!important;
+  border-color:transparent!important;
+}
+
+/* Atur grid keterangan kode pengawas supaya kolom D sedikit lebih lebar */
+.supervisor-page-two .supervisor-code-legend-grid{
+  grid-template-columns:1fr 1fr 1fr 1.22fr!important;
+  column-gap:3mm!important;
+}
+
+/* Nama panjang dipadatkan supaya tidak turun baris */
+.supervisor-page-two .supervisor-code-legend-item.supervisor-code-name-long,
+.supervisor-page-two .supervisor-code-legend-item.supervisor-code-latifatul-one-line{
+  white-space:nowrap!important;
+  line-height:1!important;
+}
+.supervisor-page-two .supervisor-code-legend-item.supervisor-code-name-long{
+  font-size:6.8pt!important;
+  letter-spacing:-0.1px!important;
+}
+.supervisor-page-two .supervisor-code-legend-item.supervisor-code-latifatul-one-line{
+  font-size:6.3pt!important;
+  letter-spacing:-0.15px!important;
+}
+.supervisor-page-two .supervisor-code-legend-item.supervisor-code-name-long .supervisor-code-full-name,
+.supervisor-page-two .supervisor-code-legend-item.supervisor-code-latifatul-one-line .supervisor-code-full-name{
+  white-space:nowrap!important;
+}
+</style>
+
 </head>
 <body>
 <div id="loginScreen"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan penyimpanan Supabase. Gunakan akun cloud yang sama agar data dapat dibuka dari komputer/laptop lain.</p></div><div style="font-size:12px;color:#d9eadf">Database Cloud Supabase • Sinkron Otomatis</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">LOGIN ADMIN CLOUD</div><h2>Selamat Datang</h2><div class="sub">Masukkan email dan password Supabase. Akun yang sama dapat digunakan di perangkat lain.</div><div id="loginError" class="login-error">Login gagal.</div><div class="login-field"><label>Email Admin</label><input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com"></div><div class="login-field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -16911,8 +17318,10 @@ function supervisorCodeLegendHtml(printMode=false){
      <div class="legend-title">KETERANGAN KODE PENGAWAS</div>
      <div class="supervisor-code-legend-grid">
        ${names.map((n,i)=>{
-         let longName=String(n||'').trim().length>27;
-         return `<div class="supervisor-code-legend-item ${longName?'supervisor-code-name-long':''}"><b>${esc(supervisorCode(n))}</b> <span class="supervisor-code-full-name">${esc(n)}</span></div>`;
+         let nameText=String(n||'').trim();
+         let longName=nameText.length>27;
+         let extraClass=(/Latifatul\s+Munawaroh/i.test(nameText)?' supervisor-code-latifatul-one-line':'');
+         return `<div class="supervisor-code-legend-item ${longName?'supervisor-code-name-long':''}${extraClass}"><b>${esc(supervisorCode(n))}</b> <span class="supervisor-code-full-name">${esc(n)}</span></div>`;
        }).join('')}
      </div>
    </div>`;
@@ -18525,7 +18934,7 @@ function downloadSupervisorFile(id){let f=(db.supervisorFiles||[]).find(x=>x.id=
 function deleteSupervisorFile(id){if(confirm('Hapus lampiran Jadwal Pengawas ini?')){db.supervisorFiles=(db.supervisorFiles||[]).filter(x=>x.id!==id);save();render('supervisors')}}
 
 function supervisorSignatureBlock(){
- // Tanda tangan Ketua Panitia dihapus sesuai permintaan terbaru.
+ // Tidak ada tanda tangan otomatis pada Jadwal Pengawas.
  return '';
 }
 function groupedSupervisorSchedules(){
@@ -18835,13 +19244,177 @@ function supervisorChairPositionControlsHtml(){
  </div>`;
 }
 
+function supervisorManualSignatureData(){
+ db.school=db.school||{};
+ let rec=db.school.supervisorManualChairSignaturePage2;
+ if(!rec || typeof rec!=='object'){
+   rec={data:'',cityDate:'Wangon, ....................',role:'Ketua Panitia',name:'',x:84,y:64,w:42,font:14};
+   db.school.supervisorManualChairSignaturePage2=rec;
+ }
+ if(typeof rec.data!=='string')rec.data='';
+ if(typeof rec.cityDate!=='string' || !rec.cityDate.trim())rec.cityDate='Wangon, ....................';
+ if(typeof rec.role!=='string' || !rec.role.trim())rec.role='Ketua Panitia';
+ if(typeof rec.name!=='string')rec.name='';
+ if(!Number.isFinite(Number(rec.x)))rec.x=84;
+ if(!Number.isFinite(Number(rec.y)))rec.y=64;
+ if(!Number.isFinite(Number(rec.w)))rec.w=42;
+ if(!Number.isFinite(Number(rec.font)))rec.font=14;
+ return rec;
+}
+
+function supervisorManualSignatureHtml(){
+ let rec=supervisorManualSignatureData();
+ let x=Math.max(8,Math.min(94,Number(rec.x)||84));
+ let y=Math.max(8,Math.min(90,Number(rec.y)||64));
+ let w=Math.max(20,Math.min(100,Number(rec.w)||42));
+ let font=Math.max(10,Math.min(22,Number(rec.font)||14));
+ let image=rec.data?`<img class="supervisor-manual-signature-img" src="${rec.data}" alt="Tanda Tangan Ketua Panitia" draggable="false" style="--sup-manual-img-w:${w}%;">`:'';
+ return `<div class="supervisor-manual-signature-block" id="supervisorManualSignatureBlock" draggable="false" style="left:${x}%;top:${y}%;--sup-manual-font:${font}pt;">
+   <div class="supervisor-manual-citydate supervisor-manual-editable-text" contenteditable="true" spellcheck="false" title="Klik lalu ketik Wangon/tanggal" onblur="saveSupervisorManualInlineText()">${esc(rec.cityDate||'Wangon, ....................')}</div>
+   <div class="supervisor-manual-role supervisor-manual-editable-text" contenteditable="true" spellcheck="false" title="Klik lalu ketik jabatan" onblur="saveSupervisorManualInlineText()">${esc(rec.role||'Ketua Panitia')}</div>
+   <div class="supervisor-manual-signature-space">${image}</div>
+   <div class="supervisor-manual-name supervisor-manual-editable-text" contenteditable="true" spellcheck="false" title="Klik lalu ketik nama Ketua Panitia" onblur="saveSupervisorManualInlineText()">${esc(rec.name||'........................................')}</div>
+ </div>`;
+}
+
+function supervisorManualSignatureToolbarHtml(){
+ let rec=supervisorManualSignatureData();
+ return `<div class="supervisor-manual-ttd-launcher no-print" id="supervisorManualTtdLauncher" onclick="toggleSupervisorManualTtdPanel()">✍ TTD Manual</div>
+ <div class="supervisor-manual-ttd-panel no-print" id="supervisorManualTtdPanel">
+   <div class="supervisor-manual-ttd-title">
+     <span>✍ Ketua Panitia — Lembar 2</span>
+     <button type="button" class="secondary" onclick="toggleSupervisorManualTtdPanel(false)">×</button>
+   </div>
+   <div class="supervisor-manual-ttd-fields">
+     <label>Wangon / Tanggal
+       <input id="supervisorManualCityDate" value="${esc(rec.cityDate||'Wangon, ....................')}" placeholder="Contoh: Wangon, 19 September 2026">
+     </label>
+     <label>Jabatan
+       <input id="supervisorManualChairRole" value="${esc(rec.role||'Ketua Panitia')}" placeholder="Contoh: Ketua Panitia">
+     </label>
+     <label>Nama Ketua Panitia
+       <input id="supervisorManualChairName" value="${esc(rec.name||'')}" placeholder="Ketik nama Ketua Panitia">
+     </label>
+   </div>
+   <div class="supervisor-manual-ttd-actions">
+     <button type="button" onclick="saveSupervisorManualSignatureText()">💾 Simpan Teks</button>
+     <button type="button" onclick="document.getElementById('supervisorManualTtdFile').click()">📁 Pilih TTD</button>
+     <button type="button" class="secondary" onclick="resizeSupervisorManualSignature(-5)">− TTD</button>
+     <button type="button" class="secondary" onclick="resizeSupervisorManualSignature(5)">+ TTD</button>
+     <button type="button" class="secondary" onclick="resizeSupervisorManualSignatureFont(-1)">A−</button>
+     <button type="button" class="secondary" onclick="resizeSupervisorManualSignatureFont(1)">A+</button>
+     <button type="button" class="secondary" onclick="resetSupervisorManualSignaturePosition()">↺ Posisi</button>
+     <button type="button" class="danger" onclick="deleteSupervisorManualSignatureImage()">🗑 Hapus TTD</button>
+     <input id="supervisorManualTtdFile" type="file" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="uploadSupervisorManualSignature(this)">
+   </div>
+   <div class="supervisor-manual-ttd-help">Isi teks <b>Wangon/tanggal</b>, <b>Jabatan</b>, dan <b>nama Ketua Panitia</b>, lalu Simpan Teks. Anda juga bisa <b>klik langsung teks di lembar 2 lalu ketik</b>. Untuk memindahkan posisi, tarik area kosong pada blok tanda tangan. Seluruh teks + gambar TTD bergerak bersama. Panel dan garis bantu tidak ikut tercetak.</div>
+ </div>`;
+}
+
+function renderSupervisorManualSignature(){
+ let page=document.querySelector('.supervisor-print-page.supervisor-page-two');
+ if(!page)return;
+ let old=page.querySelector('#supervisorManualSignatureBlock');
+ if(old)old.remove();
+ page.insertAdjacentHTML('beforeend',supervisorManualSignatureHtml());
+}
+
+function saveSupervisorManualSignatureText(){
+ let rec=supervisorManualSignatureData();
+ let city=document.getElementById('supervisorManualCityDate')?.value?.trim();
+ let role=document.getElementById('supervisorManualChairRole')?.value?.trim();
+ let name=document.getElementById('supervisorManualChairName')?.value?.trim();
+ rec.cityDate=city||'Wangon, ....................';
+ rec.role=role||'Ketua Panitia';
+ rec.name=name||'';
+ save();
+ renderSupervisorManualSignature();
+}
+
+function saveSupervisorManualInlineText(){
+ let block=document.getElementById('supervisorManualSignatureBlock');
+ if(!block)return;
+ let rec=supervisorManualSignatureData();
+ let city=block.querySelector('.supervisor-manual-citydate')?.textContent?.replace(/\s+/g,' ')?.trim();
+ let role=block.querySelector('.supervisor-manual-role')?.textContent?.replace(/\s+/g,' ')?.trim();
+ let name=block.querySelector('.supervisor-manual-name')?.textContent?.replace(/\s+/g,' ')?.trim();
+ rec.cityDate=city||'Wangon, ....................';
+ rec.role=role||'Ketua Panitia';
+ rec.name=(name==='........................................'?'':(name||''));
+ save();
+ let cityInput=document.getElementById('supervisorManualCityDate');
+ let roleInput=document.getElementById('supervisorManualChairRole');
+ let nameInput=document.getElementById('supervisorManualChairName');
+ if(cityInput)cityInput.value=rec.cityDate;
+ if(roleInput)roleInput.value=rec.role;
+ if(nameInput)nameInput.value=rec.name;
+}
+
+function uploadSupervisorManualSignature(input){
+ let file=input?.files?.[0];
+ if(!file)return;
+ if(!/^image\//i.test(file.type||''))return alert('Pilih file gambar PNG, JPG, atau WebP.');
+ let rd=new FileReader();
+ rd.onload=()=>{
+   let rec=supervisorManualSignatureData();
+   rec.data=String(rd.result||'');
+   if(!Number.isFinite(Number(rec.x)))rec.x=84;
+   if(!Number.isFinite(Number(rec.y)))rec.y=64;
+   if(!Number.isFinite(Number(rec.w)))rec.w=42;
+   save();
+   renderSupervisorManualSignature();
+   input.value='';
+ };
+ rd.readAsDataURL(file);
+}
+
+function resizeSupervisorManualSignature(delta){
+ let rec=supervisorManualSignatureData();
+ rec.w=Math.max(20,Math.min(100,(Number(rec.w)||42)+Number(delta||0)));
+ save();
+ renderSupervisorManualSignature();
+}
+
+function resizeSupervisorManualSignatureFont(delta){
+ let rec=supervisorManualSignatureData();
+ rec.font=Math.max(10,Math.min(22,(Number(rec.font)||14)+Number(delta||0)));
+ save();
+ renderSupervisorManualSignature();
+}
+
+function resetSupervisorManualSignaturePosition(){
+ let rec=supervisorManualSignatureData();
+ rec.x=84; rec.y=64;
+ save();
+ renderSupervisorManualSignature();
+}
+
+function deleteSupervisorManualSignatureImage(){
+ let rec=supervisorManualSignatureData();
+ if(!rec.data)return;
+ if(!confirm('Hapus gambar tanda tangan? Teks Wangon, Ketua Panitia, dan nama tetap ada.'))return;
+ rec.data='';
+ save();
+ renderSupervisorManualSignature();
+}
+
+function toggleSupervisorManualTtdPanel(force){
+ let panel=document.getElementById('supervisorManualTtdPanel');
+ if(!panel)return;
+ let show=typeof force==='boolean'?force:!panel.classList.contains('show');
+ panel.classList.toggle('show',show);
+}
+
 function supervisorSecondPrintPage(){
  return `<div class="supervisor-print-page supervisor-page-two supervisor-no-kop-page-two">
    <div class="print-title">DAFTAR NAMA PENGAWAS<br>${esc(assessmentDisplay())}</div>
    ${supervisorCodeLegendHtml(true)}
-   <div class="supervisor-page-two-bottom-row" style="justify-content:center;align-items:flex-start;">
-     ${supervisorReserveBlankTableHtml()}
+   <div class="supervisor-page-two-lower-row supervisor-page-two-lower-row-no-auto-signature">
+     <div class="supervisor-page-two-reserve-left">
+       ${supervisorReserveBlankTableHtml()}
+     </div>
    </div>
+   ${supervisorManualSignatureHtml()}
  </div>`;
 }
 
@@ -18858,6 +19431,7 @@ function printSupervisorMatrix(){
  </div>
  ${supervisorSecondPrintPage()}
  ${supervisorMissingPrintPage()}
+ ${supervisorManualSignatureToolbarHtml()}
  <div class="actions no-print"><button onclick="systemPrint()">🖨 Cetak 3 Lembar</button><button class="secondary" onclick="render('supervisors')">Kembali</button></div>`;
 }
 
@@ -20671,7 +21245,8 @@ checkLogin();
 (function(){
   'use strict';
 
-  const STORAGE_KEY='administrasi_asesmen_manual_print_assets_v1';
+  const STORAGE_KEY='administrasi_asesmen_manual_print_assets_v2';
+  try{ if(localStorage.getItem('administrasi_asesmen_manual_print_assets_v1')){ /* asset lama diabaikan pada revisi ini agar artefak garis hijau tidak muncul lagi */ } }catch(_e){}
   const PAGE_SELECTOR=[
     '.print-page',
     '[class*="-print-page"]',
@@ -21211,6 +21786,96 @@ checkLogin();
   }else{
     setup();
   }
+})();
+</script>
+
+
+<script id="supervisor-manual-signature-page2-drag-script">
+(function(){
+ let drag=null;
+ document.addEventListener('dragstart',function(ev){
+   if(ev.target?.closest?.('.supervisor-manual-signature-block'))ev.preventDefault();
+ },true);
+ document.addEventListener('pointerdown',function(ev){
+   if(ev.target?.closest?.('[contenteditable="true"]'))return;
+   let block=ev.target?.closest?.('.supervisor-manual-signature-block');
+   if(!block)return;
+   let page=block.closest('.supervisor-print-page.supervisor-page-two');
+   let rec=typeof supervisorManualSignatureData==='function'?supervisorManualSignatureData():null;
+   if(!page||!rec)return;
+   ev.preventDefault();
+   ev.stopPropagation();
+   let rect=page.getBoundingClientRect();
+   drag={
+     block,page,rect,pointerId:ev.pointerId,
+     startClientX:ev.clientX,startClientY:ev.clientY,
+     startX:Number(rec.x)||84,startY:Number(rec.y)||64
+   };
+   try{block.setPointerCapture(ev.pointerId);}catch(_e){}
+ },true);
+ document.addEventListener('pointermove',function(ev){
+   if(!drag||drag.pointerId!==ev.pointerId)return;
+   ev.preventDefault();
+   let dx=(ev.clientX-drag.startClientX)/Math.max(1,drag.rect.width)*100;
+   let dy=(ev.clientY-drag.startClientY)/Math.max(1,drag.rect.height)*100;
+   let x=Math.max(8,Math.min(94,drag.startX+dx));
+   let y=Math.max(8,Math.min(90,drag.startY+dy));
+   drag.block.style.left=x+'%';
+   drag.block.style.top=y+'%';
+   drag.x=x;drag.y=y;
+ },true);
+ function finish(ev){
+   if(!drag)return;
+   if(ev.pointerId!==undefined&&drag.pointerId!==ev.pointerId)return;
+   let rec=typeof supervisorManualSignatureData==='function'?supervisorManualSignatureData():null;
+   if(rec){
+     rec.x=Number.isFinite(drag.x)?drag.x:drag.startX;
+     rec.y=Number.isFinite(drag.y)?drag.y:drag.startY;
+     try{save();}catch(_e){}
+   }
+   try{drag.block.releasePointerCapture(drag.pointerId);}catch(_e){}
+   drag=null;
+ }
+ document.addEventListener('pointerup',finish,true);
+ document.addEventListener('pointercancel',finish,true);
+})();
+</script>
+
+
+<script id="green-artifact-cleaner-supervisor-page-two-20260919">
+(function(){
+  function isGreenish(str){
+    str = String(str||'');
+    return /(20,\s*117,\s*61|11,\s*107,\s*70|15,\s*92,\s*58|24,\s*121,\s*78|25,\s*121,\s*78|0,\s*128,\s*0)/.test(str);
+  }
+  function cleanGreenArtifacts(){
+    const page = document.querySelector('.supervisor-print-page.supervisor-page-two');
+    if(!page) return;
+    const pr = page.getBoundingClientRect();
+    page.querySelectorAll('*').forEach(el=>{
+      if(el.closest('.supervisor-code-legend-grid') || el.closest('.supervisor-reserve-section') || el.closest('.supervisor-manual-signature-block')) return;
+      const cs = getComputedStyle(el);
+      const r = el.getBoundingClientRect();
+      if(r.width < 80 || r.height < 1 || r.height > 14) return;
+      if(r.top > pr.top + 120) return;
+      if(r.left < pr.left + pr.width * 0.62) return;
+      const borderTopW = parseFloat(cs.borderTopWidth || '0') || 0;
+      const borderBottomW = parseFloat(cs.borderBottomWidth || '0') || 0;
+      const bg = cs.backgroundColor || '';
+      const bt = cs.borderTopColor || '';
+      const bb = cs.borderBottomColor || '';
+      const green = isGreenish(bg) || isGreenish(bt) || isGreenish(bb);
+      const lineLike = borderTopW > 0 || borderBottomW > 0 || (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent');
+      if(green && lineLike){
+        el.style.setProperty('display','none','important');
+        el.setAttribute('data-removed-green-artifact','1');
+      }
+    });
+  }
+  window.addEventListener('load', ()=>{ setTimeout(cleanGreenArtifacts, 300); setTimeout(cleanGreenArtifacts, 1200); setTimeout(cleanGreenArtifacts, 2500); });
+  window.addEventListener('beforeprint', cleanGreenArtifacts);
+  const mo = new MutationObserver(()=> cleanGreenArtifacts());
+  window.addEventListener('DOMContentLoaded', ()=>{ mo.observe(document.body,{childList:true,subtree:true}); cleanGreenArtifacts(); });
 })();
 </script>
 
