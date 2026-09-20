@@ -220,6 +220,14 @@
 body{background:linear-gradient(180deg,#f7f9f4 0%,#eef3eb 100%)!important;color:#153226!important}
 header{background:linear-gradient(135deg,#083d29 0%,#0f5c3a 68%,#8b6b18 140%)!important;border-bottom:3px solid #c8a646!important;box-shadow:0 5px 18px rgba(8,61,41,.18)!important}
 header small{color:#f7e8ad!important}
+/* Dashboard top-left owner label */
+header{justify-content:space-between!important;align-items:center!important}
+.header-left{display:flex;align-items:center;min-width:240px}
+.dashboard-fitrianto-label{display:inline-flex;align-items:center;justify-content:flex-start;min-width:230px;min-height:38px;padding:6px 6px;border:none;color:#fff4c7;font-weight:600;font-size:20px;line-height:1.15;background:transparent;border-radius:0;white-space:nowrap;font-family:'Segoe Print','Comic Sans MS','Trebuchet MS',cursive;letter-spacing:.2px;text-shadow:0 1px 1px rgba(0,0,0,.20)}
+.header-center{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;text-align:center}
+.header-right{display:flex;align-items:center;gap:10px;justify-content:flex-end;min-width:420px;flex-wrap:wrap}
+@media(max-width:1100px){header{flex-wrap:wrap;gap:10px}.header-left{order:1;min-width:unset}.header-center{order:2;width:100%}.header-right{order:3;width:100%;justify-content:flex-end}}
+@media print{.header-left,.header-right,header{display:none!important}}
 aside{background:linear-gradient(180deg,#083d29,#0b4a32)!important;border-right:2px solid #c8a646!important}
 aside button{color:#eaf5ee!important;border-left:3px solid transparent!important}
 aside button:hover{background:rgba(200,166,70,.14)!important;border-left-color:#c8a646!important;color:#fff8d4!important}
@@ -284,11 +292,13 @@ th{background:linear-gradient(180deg,#0f633f,#0b5435)!important;color:#fff!impor
   margin-bottom:0!important;
 }
 .print-header.simple-kop .kop-main h2:after{
-  content:""!important;
-  display:block!important;
-  width:100%!important;
-  border-bottom:1.4px solid #0f5c3a!important;
-  margin-top:3mm!important;
+  content:none!important;
+  display:none!important;
+  width:0!important;
+  height:0!important;
+  border:0!important;
+  margin:0!important;
+  padding:0!important;
 }
 
 /* ===== CETAK JADWAL PENGAWAS 33cm x 21cm LANDSCAPE ===== */
@@ -325,7 +335,13 @@ th{background:linear-gradient(180deg,#0f633f,#0b5435)!important;color:#fff!impor
   padding-bottom:1.5mm!important;
 }
 .supervisor-print-page .print-header.simple-kop .kop-main h2:after{
-  margin-top:1.5mm!important;
+  content:none!important;
+  display:none!important;
+  border:0!important;
+  width:0!important;
+  height:0!important;
+  margin:0!important;
+  padding:0!important;
 }
 .supervisor-print-page .print-title{
   font-size:11pt!important;
@@ -13990,6 +14006,215 @@ body.print-direct-edit-active .print-direct-draggable{
 }
 </style>
 
+
+<style id="supervisor-print-final-no-green-line-show-sign-stamp-20260919">
+/* Blok aset TTD manual: stempel di belakang, tanda tangan di depan */
+.supervisor-manual-assets{
+  position:relative!important;
+  width:58mm!important;
+  height:18mm!important;
+  margin:0 auto!important;
+  overflow:visible!important;
+  display:block!important;
+}
+.supervisor-manual-stamp-img{
+  position:absolute!important;
+  left:38%!important;
+  top:50%!important;
+  transform:translate(-50%,-50%)!important;
+  max-width:24mm!important;
+  max-height:24mm!important;
+  width:auto!important;
+  height:auto!important;
+  object-fit:contain!important;
+  opacity:.88!important;
+  z-index:1!important;
+  display:block!important;
+  pointer-events:none!important;
+}
+.supervisor-manual-signature-img{
+  position:absolute!important;
+  left:52%!important;
+  top:50%!important;
+  transform:translate(-50%,-50%)!important;
+  width:var(--sup-manual-img-w,42%)!important;
+  max-width:42mm!important;
+  max-height:17mm!important;
+  height:auto!important;
+  object-fit:contain!important;
+  z-index:2!important;
+  display:block!important;
+  pointer-events:none!important;
+}
+
+@media print{
+  /* Lembar Jadwal Pengawas memang tanpa KOP: jangan izinkan sisa header/pemisah KOP tercetak. */
+  body.force-print-root .supervisor-print-page .print-header,
+  .supervisor-print-page .print-header{
+    display:none!important;
+    border:0!important;
+    height:0!important;
+    min-height:0!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+  }
+  body.force-print-root .supervisor-print-page .print-header.simple-kop .kop-main h2::after,
+  .supervisor-print-page .print-header.simple-kop .kop-main h2::after{
+    content:none!important;
+    display:none!important;
+    border:0!important;
+    width:0!important;
+    height:0!important;
+  }
+
+  /* Lembar 2 tidak memerlukan pseudo-element dekoratif; ini menghilangkan artefak garis hijau print. */
+  body.force-print-root .supervisor-page-two *::before,
+  body.force-print-root .supervisor-page-two *::after,
+  .supervisor-page-two *::before,
+  .supervisor-page-two *::after{
+    content:none!important;
+    display:none!important;
+    border:0!important;
+    box-shadow:none!important;
+  }
+
+  /* Paksa aset manual tetap terlihat di hasil print. */
+  body.force-print-root .supervisor-page-two .supervisor-manual-signature-block,
+  body.force-print-root .supervisor-page-two .supervisor-manual-signature-space,
+  body.force-print-root .supervisor-page-two .supervisor-manual-assets,
+  body.force-print-root .supervisor-page-two .supervisor-manual-signature-img,
+  body.force-print-root .supervisor-page-two .supervisor-manual-stamp-img,
+  .supervisor-page-two .supervisor-manual-signature-block,
+  .supervisor-page-two .supervisor-manual-signature-space,
+  .supervisor-page-two .supervisor-manual-assets,
+  .supervisor-page-two .supervisor-manual-signature-img,
+  .supervisor-page-two .supervisor-manual-stamp-img{
+    visibility:visible!important;
+    opacity:1!important;
+  }
+  body.force-print-root .supervisor-page-two .supervisor-manual-assets,
+  body.force-print-root .supervisor-page-two .supervisor-manual-signature-img,
+  body.force-print-root .supervisor-page-two .supervisor-manual-stamp-img,
+  .supervisor-page-two .supervisor-manual-assets,
+  .supervisor-page-two .supervisor-manual-signature-img,
+  .supervisor-page-two .supervisor-manual-stamp-img{
+    display:block!important;
+  }
+  body.force-print-root .supervisor-page-two .supervisor-manual-stamp-img,
+  .supervisor-page-two .supervisor-manual-stamp-img{
+    opacity:.88!important;
+  }
+
+  /* Jika pengguna menempel TTD/stempel lewat fitur copy-paste, aset itu juga wajib tercetak. */
+  body.force-print-root .supervisor-page-two .manual-paste-asset,
+  .supervisor-page-two .manual-paste-asset{
+    display:block!important;
+    visibility:visible!important;
+    opacity:1!important;
+    outline:none!important;
+    border:none!important;
+  }
+
+  /* Jaga teks manual tetap hitam dan bersih. */
+  .supervisor-page-two .supervisor-manual-signature-block,
+  .supervisor-page-two .supervisor-manual-signature-block *{
+    color:#000!important;
+    outline:none!important;
+    border:none!important;
+    box-shadow:none!important;
+    background:transparent!important;
+  }
+}
+</style>
+
+
+<style id="dashboard-owner-name-fitrianto-final-20260919">
+.dashboard-owner-name{
+  display:block!important;
+  margin:0 0 10px 2px!important;
+  padding:0!important;
+  text-align:left!important;
+  font-size:14pt!important;
+  line-height:1.2!important;
+  font-weight:900!important;
+  color:#0f5c3a!important;
+  letter-spacing:.1px!important;
+}
+@media print{
+  .dashboard-owner-name{display:none!important;}
+}
+</style>
+
+
+<style id="global-print-no-green-separator-show-chair-assets-20260920">
+/* FINAL GLOBAL FIX: garis hijau pemisah KOP tidak boleh tampil pada preview/cetak mana pun. */
+html body .print-header.simple-kop .kop-main h2::after,
+html body .print-header.simple-kop .kop-main h2:after,
+html body.force-print-root .print-header.simple-kop .kop-main h2::after,
+html body.force-print-root .print-header.simple-kop .kop-main h2:after{
+  content:none!important;
+  display:none!important;
+  visibility:hidden!important;
+  width:0!important;
+  min-width:0!important;
+  max-width:0!important;
+  height:0!important;
+  min-height:0!important;
+  max-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-top:0!important;
+  border-bottom:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  background:none!important;
+}
+
+/* Hilangkan penanda halaman/objek editor dari hasil cetak. */
+@media print{
+  .manual-paste-page-selected,
+  .manual-paste-asset.manual-paste-selected,
+  .print-direct-selected,
+  .print-direct-draggable,
+  .supervisor-manual-signature-block,
+  .supervisor-manual-signature-block *{
+    outline:none!important;
+    box-shadow:none!important;
+  }
+
+  /* TTD dan stempel yang memang ada pada dokumen tetap terlihat saat dicetak. */
+  .signature-visual-space,
+  .signature-visual-space .signature-assets,
+  .signature-visual-space .signature-hand-img,
+  .signature-visual-space .signature-stamp-img,
+  .supervisor-manual-signature-space,
+  .supervisor-manual-assets,
+  .supervisor-manual-signature-img,
+  .supervisor-manual-stamp-img,
+  .manual-paste-asset{
+    visibility:visible!important;
+    opacity:1!important;
+  }
+  .signature-visual-space .signature-assets,
+  .supervisor-manual-assets{
+    display:block!important;
+  }
+  .signature-visual-space .signature-hand-img,
+  .signature-visual-space .signature-stamp-img,
+  .supervisor-manual-signature-img,
+  .supervisor-manual-stamp-img,
+  .manual-paste-asset{
+    display:block!important;
+  }
+  .supervisor-manual-stamp-img,
+  .signature-visual-space .signature-stamp-img{
+    opacity:.88!important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="loginScreen"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan penyimpanan Supabase. Gunakan akun cloud yang sama agar data dapat dibuka dari komputer/laptop lain.</p></div><div style="font-size:12px;color:#d9eadf">Database Cloud Supabase • Sinkron Otomatis</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">LOGIN ADMIN CLOUD</div><h2>Selamat Datang</h2><div class="sub">Masukkan email dan password Supabase. Akun yang sama dapat digunakan di perangkat lain.</div><div id="loginError" class="login-error">Login gagal.</div><div class="login-field"><label>Email Admin</label><input id="loginEmail" type="email" autocomplete="username" placeholder="nama@email.com"></div><div class="login-field"><label>Password</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter')doLogin()"></div>
@@ -14023,7 +14248,7 @@ body.print-direct-edit-active .print-direct-draggable{
 </div>
 
 <div id="cloudLoginNote" class="login-foot">Untuk login biasa, isi email + password lalu klik <b>Masuk ke Aplikasi</b>. Jika lupa password, klik <b>🔑 Lupa Password</b>; Supabase akan mengirim email pemulihan.</div></section></div></div>
-<header><div><h1>Administrasi Asesmen</h1><small>Sistem Administrasi Asesmen Madrasah</small></div><div class="no-print"><select id="assessment" onchange="setAssessment(this.value)">
+<header><div class="header-left no-print"><div class="dashboard-fitrianto-label">FITRIANTO PUJI P, S.Kom</div></div><div class="header-center"><h1>Administrasi Asesmen</h1><small>Sistem Administrasi Asesmen Madrasah</small></div><div class="header-right no-print"><select id="assessment" onchange="setAssessment(this.value)">
 <option value="Asesmen Sumatif Tengah Semester Gasal">ASESMEN SUMATIF TENGAH SEMESTER GASAL</option>
 <option value="Asesmen Sumatif Akhir Semester Gasal">ASESMEN SUMATIF AKHIR SEMESTER GASAL</option>
 <option value="Asesmen Sumatif Tengah Semester Genap">ASESMEN SUMATIF TENGAH SEMESTER GENAP</option>
@@ -19268,11 +19493,16 @@ function supervisorManualSignatureHtml(){
  let y=Math.max(8,Math.min(90,Number(rec.y)||64));
  let w=Math.max(20,Math.min(100,Number(rec.w)||42));
  let font=Math.max(10,Math.min(22,Number(rec.font)||14));
- let image=rec.data?`<img class="supervisor-manual-signature-img" src="${rec.data}" alt="Tanda Tangan Ketua Panitia" draggable="false" style="--sup-manual-img-w:${w}%;">`:'';
+ let signData=rec.data||db.school.chairSignature||'';
+ let stampData=db.school.committeeStamp||'';
+ let assets=(signData||stampData)?`<div class="supervisor-manual-assets">
+   ${stampData?`<img class="supervisor-manual-stamp-img" src="${stampData}" alt="Stempel Panitia" draggable="false">`:''}
+   ${signData?`<img class="supervisor-manual-signature-img" src="${signData}" alt="Tanda Tangan Ketua Panitia" draggable="false" style="--sup-manual-img-w:${w}%;">`:''}
+ </div>`:'';
  return `<div class="supervisor-manual-signature-block" id="supervisorManualSignatureBlock" draggable="false" style="left:${x}%;top:${y}%;--sup-manual-font:${font}pt;">
    <div class="supervisor-manual-citydate supervisor-manual-editable-text" contenteditable="true" spellcheck="false" title="Klik lalu ketik Wangon/tanggal" onblur="saveSupervisorManualInlineText()">${esc(rec.cityDate||'Wangon, ....................')}</div>
    <div class="supervisor-manual-role supervisor-manual-editable-text" contenteditable="true" spellcheck="false" title="Klik lalu ketik jabatan" onblur="saveSupervisorManualInlineText()">${esc(rec.role||'Ketua Panitia')}</div>
-   <div class="supervisor-manual-signature-space">${image}</div>
+   <div class="supervisor-manual-signature-space">${assets}</div>
    <div class="supervisor-manual-name supervisor-manual-editable-text" contenteditable="true" spellcheck="false" title="Klik lalu ketik nama Ketua Panitia" onblur="saveSupervisorManualInlineText()">${esc(rec.name||'........................................')}</div>
  </div>`;
 }
