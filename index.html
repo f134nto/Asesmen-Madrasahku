@@ -14443,7 +14443,7 @@ function manualSaveFromHeader(){
  save();
  showToast('Data berhasil disimpan di ' + getDeviceName() + '!', 'success');
  if(cloudClient && !cloudLoading){
-  saveCloudNow(false);
+  saveCloudNow(true);
  }
 }
 
@@ -14647,7 +14647,7 @@ async function saveCloudNow(silent=true, forceOverwrite=false){
   console.warn('saveCloudNow notice:', err?.message || err);
   setCloudStatus('Tersimpan di Komputer Ini', 'ok');
   if(!silent){
-   showToast('Data tersimpan di komputer ini (' + getDeviceName() + '). Sinkronisasi Cloud sedang offline.', 'info');
+   showToast('Data tersimpan di komputer ini (' + getDeviceName() + ').', 'success');
   }
   return false;
  }finally{
@@ -16454,12 +16454,15 @@ function composition(r){
 
 function saveRoomSettingsSnapshot(){
  db.savedRoomSettings={
- savedAt:new Date().toISOString(),
- rooms:JSON.parse(JSON.stringify(db.rooms||[])),
- gradeRoomPlan:JSON.parse(JSON.stringify(db.gradeRoomPlan||{}))
+  savedAt:new Date().toISOString(),
+  rooms:JSON.parse(JSON.stringify(db.rooms||[])),
+  gradeRoomPlan:JSON.parse(JSON.stringify(db.gradeRoomPlan||{}))
  };
+ try{
+  if(typeof deriveGradeRoomPlanFromRooms === 'function') deriveGradeRoomPlanFromRooms();
+ }catch(e){}
  save();
- alert('Pengaturan jumlah ruang, kapasitas, lokasi ruangan, dan pembagian yang terkait berhasil disimpan.');
+ showToast('Pengaturan jumlah ruang, kapasitas, dan lokasi ruangan berhasil disimpan.', 'success');
  render('rooms');
 }
 
@@ -16494,7 +16497,90 @@ function restoreRoomSettingsSnapshot(){
  render('rooms');
 }
 
+function deriveGradeRoomPlanFromRooms(force=false){
+ db.gradeRoomPlan = db.gradeRoomPlan || {};
+ let changed = false;
+
+ let totalAssignedInRooms = 0;
+ (db.rooms || []).forEach(r => totalAssignedInRooms += (r.students || []).length);
+
+ // 1. Jika r.students sudah terisi, buat gradeRoomPlan sinkron persis dengan r.students
+ (db.rooms || []).forEach(r => {
+  let existingPlan = db.gradeRoomPlan[r.no];
+  let hasPlanValues = false;
+  if(existingPlan){
+   [7, 8, 9].forEach(lvl => {
+    if(existingPlan[lvl] && (existingPlan[lvl].countA > 0 || existingPlan[lvl].countB > 0 || existingPlan[lvl].classA || existingPlan[lvl].classB)){
+     hasPlanValues = true;
+    }
+   });
+  }
+
+  if((!hasPlanValues || force) && r.students && r.students.length > 0){
+   let newPlanForRoom = { 7: {}, 8: {}, 9: {} };
+   [7, 8, 9].forEach(lvl => {
+    let studsInLevel = r.students.filter(s => getClassLevel(s.class) === lvl);
+    let byClass = {};
+    studsInLevel.forEach(s => {
+     let c = String(s.class || '').trim();
+     byClass[c] = (byClass[c] || 0) + 1;
+    });
+    let k = Object.keys(byClass);
+    newPlanForRoom[lvl] = {
+     classA: k[0] || '',
+     countA: byClass[k[0]] || 0,
+     classB: k[1] || '',
+     countB: byClass[k[1]] || 0
+    };
+   });
+   db.gradeRoomPlan[r.no] = newPlanForRoom;
+   changed = true;
+  }
+ });
+
+ // 2. Jika SELURUH gradeRoomPlan dan r.students masih kosong, tapi data siswa & ruang tersedia:
+ // Otomatis jalankan pembagian berdasarkan lokasi rombel di Halaman 2 atau mixed
+ let anyPlanFilled = Object.values(db.gradeRoomPlan).some(rp => {
+  return [7,8,9].some(lvl => rp[lvl] && (rp[lvl].countA > 0 || rp[lvl].classA));
+ });
+
+ if(!anyPlanFilled && totalAssignedInRooms === 0 && (db.students||[]).length > 0 && (db.rooms||[]).length > 0){
+  let hasMatchingLoc = (db.rooms||[]).some(r => {
+   let loc = String(r.location || r.roomName || '').trim().toUpperCase();
+   return (db.students||[]).some(s => {
+    let cu = String(s.class||'').trim().toUpperCase();
+    return loc === cu || loc === ('KELAS ' + cu) || loc === ('RUANG ' + cu) || (loc.length >= 2 && loc.includes(cu));
+   });
+  });
+
+  let mode = hasMatchingLoc ? 'by_room_location' : 'mixed_3';
+  if(typeof calculateAutoDistribution === 'function'){
+   let autoRes = calculateAutoDistribution(db, {
+    levels: [7, 8, 9],
+    mode: mode,
+    crossPair: '7_8',
+    sortStudents: 'order',
+    customRatios: { 7: 1, 8: 1, 9: 1 }
+   });
+
+   if(autoRes && autoRes.plan){
+    db.gradeRoomPlan = JSON.parse(JSON.stringify(autoRes.plan));
+    (db.rooms || []).forEach(r => {
+     r.students = JSON.parse(JSON.stringify(autoRes.roomStudents[r.no] || []));
+    });
+    changed = true;
+   }
+  }
+ }
+
+ if(changed){
+  save();
+ }
+ return db.gradeRoomPlan;
+}
+
 function participants(){
+ deriveGradeRoomPlanFromRooms();
  let classes=[...new Set(db.students.map(s=>s.class))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
  let byLevel=level=>classes.filter(c=>String(c).startsWith(String(level)));
  db.gradeRoomPlan=db.gradeRoomPlan||{};
@@ -16597,16 +16683,19 @@ db.savedRoomSettings=db.savedRoomSettings||null;
 }
 
 function readGradeRoomPlan(){
+ if(!document.querySelector('.grade-class-a')){
+  return db.gradeRoomPlan || {};
+ }
  let plan={};
  db.rooms.forEach(r=>{
- plan[r.no]={};
- [7,8,9].forEach(level=>{
- let classA=document.querySelector(`.grade-class-a[data-room="${r.no}"][data-level="${level}"]`)?.value||'';
- let classB=document.querySelector(`.grade-class-b[data-room="${r.no}"][data-level="${level}"]`)?.value||'';
- let countA=+(document.querySelector(`.grade-count-a[data-room="${r.no}"][data-level="${level}"]`)?.value||0);
- let countB=+(document.querySelector(`.grade-count-b[data-room="${r.no}"][data-level="${level}"]`)?.value||0);
- plan[r.no][level]={classA,classB,countA:Math.max(0,countA),countB:Math.max(0,countB)};
- });
+  plan[r.no]={};
+  [7,8,9].forEach(level=>{
+   let classA=document.querySelector(`.grade-class-a[data-room="${r.no}"][data-level="${level}"]`)?.value||'';
+   let classB=document.querySelector(`.grade-class-b[data-room="${r.no}"][data-level="${level}"]`)?.value||'';
+   let countA=+(document.querySelector(`.grade-count-a[data-room="${r.no}"][data-level="${level}"]`)?.value||0);
+   let countB=+(document.querySelector(`.grade-count-b[data-room="${r.no}"][data-level="${level}"]`)?.value||0);
+   plan[r.no][level]={classA,classB,countA:Math.max(0,countA),countB:Math.max(0,countB)};
+  });
  });
  return plan;
 }
@@ -16773,9 +16862,11 @@ function saveGradeRoomPlan(){
  let errors=syncParticipantsFromGradeRoomPlan();
  save();
  recalcGradeRoomPlan();
- alert(errors.length
- ? 'Pengaturan tersimpan dan Daftar Peserta sudah diperbarui otomatis, tetapi ada catatan:\n\n'+errors.join('\n')
- : 'Pengaturan pembagian ruang berhasil disimpan. Daftar Peserta otomatis sudah disesuaikan dengan Data Siswa dan jumlah peserta tiap ruang.');
+ if(errors.length){
+  showToast('Pengaturan tersimpan dengan catatan: ' + errors[0], 'warning');
+ } else {
+  showToast('Pengaturan pembagian ruang berhasil disimpan. Daftar Peserta otomatis disesuaikan.', 'success');
+ }
 }
 
 function applyGradeRoomPlan(){
@@ -16786,17 +16877,31 @@ function applyGradeRoomPlan(){
  render('participants');
 
  if(errors.length){
- setTimeout(()=>alert('Pembagian selesai dan Daftar Peserta diperbarui otomatis dengan catatan:\n\n'+errors.join('\n')),100);
+  showToast('Pembagian selesai dengan catatan: ' + errors.join('; '), 'warning', 4000);
  }else{
- setTimeout(()=>alert('Pembagian peserta berhasil. Daftar Peserta per ruang sudah terhubung dan diperbarui otomatis.'),80);
+  showToast('Pembagian peserta berhasil. Daftar Peserta per ruang sudah terhubung dan diperbarui otomatis.', 'success');
  }
 }
 
 function clearDistribution(){if(confirm('Kosongkan semua pembagian peserta?')){db.rooms.forEach(r=>r.students=[]);save();render('participants')}}
 
-
-
-function saveRoomDistributionSnapshot(){try{if(typeof readGradeRoomPlan==='function')db.gradeRoomPlan=readGradeRoomPlan();if(typeof syncParticipantsFromGradeRoomPlan==='function')syncParticipantsFromGradeRoomPlan()}catch(e){}db.savedRoomDistribution={savedAt:new Date().toISOString(),gradeRoomPlan:JSON.parse(JSON.stringify(db.gradeRoomPlan||{})),rooms:(db.rooms||[]).map(r=>({no:r.no,capacity:r.capacity,roomName:r.roomName||r.location||'',students:JSON.parse(JSON.stringify(r.students||[]))}))};save();let el=document.getElementById('roomPlanSaveStatus');if(el)el.textContent='Tersimpan: '+new Date(db.savedRoomDistribution.savedAt).toLocaleString('id-ID');alert('Pembagian ruang dan peserta berhasil disimpan.')}
+function saveRoomDistributionSnapshot(silent=false){
+ try{
+  if(document.querySelector('.grade-class-a')){
+   if(typeof readGradeRoomPlan==='function') db.gradeRoomPlan=readGradeRoomPlan();
+   if(typeof syncParticipantsFromGradeRoomPlan==='function') syncParticipantsFromGradeRoomPlan();
+  }
+ }catch(e){}
+ db.savedRoomDistribution={
+  savedAt:new Date().toISOString(),
+  gradeRoomPlan:JSON.parse(JSON.stringify(db.gradeRoomPlan||{})),
+  rooms:(db.rooms||[]).map(r=>({no:r.no,capacity:r.capacity,roomName:r.roomName||r.location||'',students:JSON.parse(JSON.stringify(r.students||[]))}))
+ };
+ save();
+ let el=document.getElementById('roomPlanSaveStatus');
+ if(el) el.textContent='Tersimpan: '+new Date(db.savedRoomDistribution.savedAt).toLocaleString('id-ID');
+ if(!silent) showToast('Pembagian ruang dan peserta berhasil disimpan.', 'success');
+}
 function resetRoomDistribution(){if(!confirm('Reset Pembagian Ruang Peserta?\\n\\nPilihan rombel, jumlah peserta per rombel, dan hasil pembagian peserta pada semua ruang akan dikosongkan.\\n\\nData siswa dan data ruang tidak akan dihapus.'))return;db.gradeRoomPlan={};db.pairPlan={};(db.rooms||[]).forEach(r=>{r.students=[]});save();render('participants');setTimeout(()=>alert('Pengaturan Pembagian Ruang Peserta sudah direset. Data siswa dan kapasitas ruang tetap aman.'),50)}
 function restoreRoomDistributionSnapshot(){let s=db.savedRoomDistribution;if(!s)return alert('Belum ada simpanan Pembagian Ruang Peserta.');if(!confirm('Pulihkan pembagian ruang dari simpanan terakhir?'))return;db.gradeRoomPlan=JSON.parse(JSON.stringify(s.gradeRoomPlan||{}));let map={};(s.rooms||[]).forEach(r=>map[String(r.no)]=r);(db.rooms||[]).forEach(r=>{let old=map[String(r.no)];if(old){r.capacity=old.capacity??r.capacity;if(old.roomName!==undefined){if('roomName' in r)r.roomName=old.roomName;else if('location' in r)r.location=old.roomName}r.students=JSON.parse(JSON.stringify(old.students||[]))}else r.students=[]});save();render('participants');setTimeout(()=>alert('Pembagian ruang berhasil dipulihkan dari simpanan terakhir.'),50)}
 function seats(){
@@ -22631,7 +22736,7 @@ document.addEventListener('keydown',e=>{
 // ============================================================
 let autoRoomState = {
   levels: [7, 8, 9],
-  mode: 'mixed_3', // 'mixed_3', 'mixed_cross', 'sequential', 'custom'
+  mode: 'by_room_location', // 'by_room_location', 'mixed_3', 'mixed_cross', 'sequential', 'custom'
   crossPair: '7_8', // '7_8', '7_9', '8_9', 'cycle'
   sortStudents: 'order', // 'order', 'name'
   customRatios: { 7: 1, 8: 1, 9: 1 }
@@ -22647,11 +22752,19 @@ function getClassLevel(cls){
 function openAutoRoomDistributionModal(){
   let el = document.getElementById('autoRoomModal');
   if(!el) return;
-  // Pastikan levels yang dicentang sesuai dengan data yang tersedia jika baru dibuka
   let availLevels = [7, 8, 9].filter(lvl => (db.students||[]).some(s => getClassLevel(s.class) === lvl));
   if(availLevels.length > 0 && !autoRoomState.initialized){
     autoRoomState.levels = availLevels;
-    if(availLevels.length === 3) autoRoomState.mode = 'mixed_3';
+    let hasRoomLocClass = (db.rooms||[]).some(r => {
+      let loc = String(r.location || r.roomName || '').trim().toUpperCase();
+      return (db.students||[]).some(s => {
+        let cu = String(s.class||'').trim().toUpperCase();
+        return loc === cu || loc === ('KELAS ' + cu) || loc === ('RUANG ' + cu) || (loc.length >= 2 && loc.includes(cu));
+      });
+    });
+    if(hasRoomLocClass){
+      autoRoomState.mode = 'by_room_location';
+    } else if(availLevels.length === 3) autoRoomState.mode = 'mixed_3';
     else if(availLevels.length === 2){
       autoRoomState.mode = 'mixed_cross';
       autoRoomState.crossPair = availLevels.join('_');
@@ -22739,10 +22852,130 @@ function autoAdjustRoomsToFit(neededTotal){
 
 function calculateAutoDistribution(currentDb, options){
   let selLevels = options.levels || [7, 8, 9];
-  let mode = options.mode || 'mixed_3';
+  let mode = options.mode || 'by_room_location';
   let crossPair = options.crossPair || '7_8';
   let sortMode = options.sortStudents || 'order';
   let customRatios = options.customRatios || { 7: 1, 8: 1, 9: 1 };
+
+  let simPlan = {};
+  let simRoomStudents = {};
+  let roomStats = [];
+  let remaining = {};
+
+  // JIKA MODE = by_room_location (Sesuai Rombel / Ruangan Halaman 2)
+  if(mode === 'by_room_location'){
+    let classPools = {};
+    (currentDb.students || []).forEach(s => {
+      let lvl = getClassLevel(s.class);
+      if(selLevels.includes(lvl)){
+        let c = String(s.class || '').trim();
+        if(!classPools[c]) classPools[c] = [];
+        classPools[c].push(s);
+      }
+    });
+
+    Object.values(classPools).forEach(list => {
+      if(sortMode === 'name'){
+        list.sort((a,b) => a.name.localeCompare(b.name, 'id'));
+      } else {
+        list.sort(sortStudent);
+      }
+    });
+
+    (currentDb.rooms || []).forEach(r => {
+      simPlan[r.no] = { 7: {}, 8: {}, 9: {} };
+      simRoomStudents[r.no] = [];
+      let cap = r.capacity || 30;
+      let loc = String(r.location || r.roomName || '').trim().toUpperCase();
+
+      let matchedClass = Object.keys(classPools).find(c => {
+        let cu = c.toUpperCase();
+        return loc === cu || loc === ('KELAS ' + cu) || loc === ('RUANG ' + cu) || (loc.length >= 2 && loc.includes(cu));
+      });
+
+      let roomStudents = [];
+      let details = {};
+
+      if(matchedClass && classPools[matchedClass] && classPools[matchedClass].length > 0){
+        let lvl = getClassLevel(matchedClass);
+        let q = Math.min(cap, classPools[matchedClass].length);
+        let taken = classPools[matchedClass].splice(0, q);
+        roomStudents.push(...taken);
+        simPlan[r.no][lvl] = {
+          classA: matchedClass,
+          countA: taken.length,
+          classB: '',
+          countB: 0
+        };
+        details[lvl] = {
+          total: taken.length,
+          classes: matchedClass + ': ' + taken.length
+        };
+      }
+
+      simRoomStudents[r.no] = roomStudents;
+      roomStats.push({
+        roomNo: r.no,
+        capacity: cap,
+        filled: roomStudents.length,
+        details: details
+      });
+    });
+
+    let remainingPool = [];
+    Object.keys(classPools).sort().forEach(c => {
+      if(classPools[c].length > 0){
+        remainingPool.push(...classPools[c]);
+      }
+    });
+
+    if(remainingPool.length > 0){
+      (currentDb.rooms || []).forEach(r => {
+        let cap = r.capacity || 30;
+        let space = cap - simRoomStudents[r.no].length;
+        if(space > 0 && remainingPool.length > 0){
+          let taken = remainingPool.splice(0, space);
+          simRoomStudents[r.no].push(...taken);
+
+          [7, 8, 9].forEach(lvl => {
+            let studsInLevel = simRoomStudents[r.no].filter(s => getClassLevel(s.class) === lvl);
+            let byClass = {};
+            studsInLevel.forEach(s => { byClass[s.class] = (byClass[s.class] || 0) + 1; });
+            let k = Object.keys(byClass);
+            simPlan[r.no][lvl] = {
+              classA: k[0] || '',
+              countA: byClass[k[0]] || 0,
+              classB: k[1] || '',
+              countB: byClass[k[1]] || 0
+            };
+            let statItem = roomStats.find(st => st.roomNo === r.no);
+            if(statItem){
+              if(studsInLevel.length > 0){
+                statItem.details[lvl] = {
+                  total: studsInLevel.length,
+                  classes: Object.entries(byClass).map(([cls, cnt]) => cls + ': ' + cnt).join(' + ')
+                };
+              }
+              statItem.filled = simRoomStudents[r.no].length;
+            }
+          });
+        }
+      });
+    }
+
+    remaining = {};
+    selLevels.forEach(lvl => {
+      let assignedIds = new Set(Object.values(simRoomStudents).flat().map(s => s.id));
+      remaining[lvl] = (currentDb.students || []).filter(s => getClassLevel(s.class) === lvl && !assignedIds.has(s.id)).length;
+    });
+
+    return {
+      plan: simPlan,
+      roomStudents: simRoomStudents,
+      roomStats: roomStats,
+      remaining: remaining
+    };
+  }
 
   // 1. Kumpulkan siswa per tingkatan terpilih
   let pools = {};
@@ -22760,9 +22993,9 @@ function calculateAutoDistribution(currentDb, options){
     pools[lvl] = list.slice();
   });
 
-  let simPlan = {};
-  let simRoomStudents = {};
-  let roomStats = [];
+  simPlan = {};
+  simRoomStudents = {};
+  roomStats = [];
 
   (currentDb.rooms || []).forEach((r, rIdx) => {
     simPlan[r.no] = { 7: {}, 8: {}, 9: {} };
@@ -22882,7 +23115,7 @@ function calculateAutoDistribution(currentDb, options){
     });
   });
 
-  let remaining = {};
+  remaining = {};
   selLevels.forEach(lvl => {
     remaining[lvl] = pools[lvl] ? pools[lvl].length : 0;
   });
@@ -22977,6 +23210,13 @@ function renderAutoRoomModalContent(){
   html += '<div class="auto-step-card">';
   html += '<h3>3. Model Pembagian Siswa dalam Satu Ruang (Bisa Disesuaikan)</h3>';
   html += '<div class="auto-mode-pills">';
+
+  // Mode 0: Sesuai Rombel / Ruangan Halaman 2 (Otomatis)
+  let selLoc = autoRoomState.mode === 'by_room_location' ? 'selected' : '';
+  html += '<div class="auto-mode-pill ' + selLoc + '" onclick="onAutoRoomModeSelect(\'by_room_location\')">';
+  html += '<b>Sesuai Rombel / Ruangan Halaman 2 (Otomatis)</b>';
+  html += '<span>Membagi otomatis berdasarkan rombel yang tertera di kolom Ruangan pada Halaman 2 (contoh: 9F, 9G, 8J). Praktis dan langsung sinkron!</span>';
+  html += '</div>';
 
   // Mode 1: Campuran 3 Tingkat
   let selM3 = autoRoomState.mode === 'mixed_3' ? 'selected' : '';
@@ -23104,7 +23344,7 @@ function renderAutoRoomModalContent(){
 
 function applyAutoRoomDistributionNow(){
   if(!lastAutoRoomCalcResult){
-    alert('Simulasi belum siap. Silakan periksa kembali pengaturan.');
+    showToast('Simulasi belum siap. Silakan periksa kembali pengaturan.', 'warning');
     return;
   }
   let res = lastAutoRoomCalcResult;
@@ -23112,7 +23352,7 @@ function applyAutoRoomDistributionNow(){
   Object.values(res.roomStudents).forEach(arr => totalAssigned += arr.length);
 
   if(totalAssigned === 0){
-    alert('Tidak ada siswa yang dapat dibagikan. Pastikan data siswa dan ruang tersedia.');
+    showToast('Tidak ada siswa yang dapat dibagikan. Pastikan data siswa dan ruang tersedia.', 'warning');
     return;
   }
 
@@ -23122,22 +23362,22 @@ function applyAutoRoomDistributionNow(){
   let confirmMsg = 'Terapkan pembagian otomatis ini ke seluruh ruang asesmen?\n\n' +
                    '- Total siswa yang dibagikan: ' + totalAssigned + ' siswa\n' +
                    (remCount > 0 ? '- Peringatan: masih ada ' + remCount + ' siswa belum kebagian kursi!\n' : '- Seluruh siswa berhasil terbagi 100%!\n') +
-                   '\nHasil pembagian akan otomatis memperbarui Daftar Peserta, Denah Tempat Duduk, Nomor Meja, dan Kartu Peserta.';
+                   '\nHasil pembagian akan otomatis mengisi Rombel & Jumlah di Halaman 3 (Pembagian Ruang Peserta), Daftar Peserta, Denah Tempat Duduk, Nomor Meja, dan Kartu Peserta.';
 
   if(!confirm(confirmMsg)) return;
 
   // 1. Terapkan ke gradeRoomPlan
-  db.gradeRoomPlan = res.plan;
+  db.gradeRoomPlan = JSON.parse(JSON.stringify(res.plan));
 
   // 2. Terapkan langsung ke db.rooms[i].students
   (db.rooms || []).forEach(r => {
-    r.students = res.roomStudents[r.no] || [];
+    r.students = JSON.parse(JSON.stringify(res.roomStudents[r.no] || []));
   });
 
-  // 3. Simpan snapshot otomatis
+  // 3. Simpan snapshot otomatis tanpa membaca DOM yang belum dirender
   try{
     if(typeof saveRoomDistributionSnapshot === 'function'){
-      saveRoomDistributionSnapshot();
+      saveRoomDistributionSnapshot(true);
     }
   }catch(e){}
 
@@ -23147,9 +23387,7 @@ function applyAutoRoomDistributionNow(){
   closeAutoRoomModal();
   render('participants');
 
-  setTimeout(() => {
-    alert('Pembagian Ruang Asesmen berhasil diterapkan!\n\nSeluruh siswa telah otomatis dibagi ke tiap ruang berdasarkan kapasitas kursi dan kombinasi tingkatan kelas yang Anda pilih.');
-  }, 100);
+  showToast('Pembagian Ruang Asesmen berhasil diterapkan! Seluruh rombel dan jumlah peserta di halaman 3 sudah terisi otomatis.', 'success', 4000);
 }
 
 
