@@ -14816,7 +14816,7 @@ function assessmentDisplay(value=db.assessment){
  return String(value||'').toLocaleUpperCase('id-ID');
 }
 function setAssessment(x){db.assessment=x;save();render('dashboard')}
-const pages=[['dashboard','Dashboard'],['profile','Identitas Madrasah'],['students','1. Data Siswa tiap Kelas'],['rooms','2. Jumlah Siswa tiap Ruang'],['participants','3. Pembagian Ruang Peserta'],['seats','4. Denah Tempat Duduk'],['participantList','5. Daftar Peserta'],['deskNumbers','6. Nomor Meja Peserta'],['participantCards','7. Kartu Peserta'],['schedule','8. Jadwal Asesmen'],['supervisors','9. Jadwal Pengawas'],['attendance','10. Daftar Hadir Peserta'],['attendanceSup','11. Daftar Hadir Pengawas'],['berita','12. Berita Acara'],['print','13. Print / Cetak'],['backup','Backup Data']];
+const pages=[['dashboard','Dashboard'],['profile','Identitas Madrasah'],['students','1. Data Siswa'],['rooms','2. Jumlah Siswa tiap Ruang'],['participants','3. Pembagian Ruang Peserta'],['seats','4. Denah Tempat Duduk'],['participantList','5. Daftar Peserta'],['deskNumbers','6. Nomor Meja Peserta'],['participantCards','7. Kartu Peserta'],['schedule','8. Jadwal Asesmen'],['supervisors','9. Jadwal Pengawas'],['attendance','10. Daftar Hadir Peserta'],['attendanceSup','11. Daftar Hadir Pengawas'],['berita','12. Berita Acara'],['print','13. Print / Cetak'],['backup','Backup Data']];
 function menu(active){menuEl=document.getElementById('menu');menuEl.innerHTML=pages.map(p=>`<button class="${active===p[0]?'active':''}" onclick="render('${p[0]}')">${p[1]}</button>`).join('')}function migrateParticipantNumberOverridesToHyphen(){
  db.participantNumberOverrides=db.participantNumberOverrides||{};
  let changed=false;
@@ -14990,97 +14990,867 @@ async function saveProfile(){
  }
 }
 function previewKop(){document.getElementById('kopPreview').innerHTML=`<div class="print-page" style="min-height:auto;margin-top:15px">${printHeader()}</div>`}
-function students(){
- let all=[...db.students].sort(sortStudent);
- let countLevel=n=>all.filter(s=>String(s.class).trim().startsWith(String(n))).length;
- return `<div class="card"><h2>1. Data Siswa tiap Kelas</h2>
- <div class="notice">Data siswa dipisahkan berdasarkan tingkat <b>Kelas 7, Kelas 8, dan Kelas 9</b>. Gunakan pencarian untuk mencari berdasarkan <b>No Urut, NIS, Nama, L/P, atau Kelas</b>.</div>
+// ============================================================
+// MODUL 1. DATA SISWA LENGKAP & IMPORT EXCEL / PDF MULTI-KELAS
+// ============================================================
 
- <div class="grid">
- <div class="stat">Kelas 7<b>${countLevel(7)}</b></div>
- <div class="stat">Kelas 8<b>${countLevel(8)}</b></div>
- <div class="stat">Kelas 9<b>${countLevel(9)}</b></div>
- <div class="stat">Total Siswa<b>${all.length}</b></div>
- </div>
-
- <div class="card" style="margin-top:16px">
- <h3>Tambah Data Siswa</h3>
- <div class="grid">
- <div><label>No Urut</label><input id="sOrder" type="number"></div>
- <div><label>NIS</label><input id="sNis"></div>
- <div><label>Nama</label><input id="sName"></div>
- <div><label>L/P</label><select id="sGender"><option value="L">L</option><option value="P">P</option></select></div>
- <div><label>Kelas</label><input id="sClass" placeholder="7A / 8A / 9A"></div>
- </div>
- <div class="actions">
- <button onclick="addStudent()">+ Tambah Siswa</button>
- <button class="secondary" onclick="document.getElementById('studentFile').click()"> Import Excel</button>
- <button class="secondary" onclick="downloadStudentTemplate()"> Template Excel</button>
- <button class="danger" onclick="clearStudents()">Hapus Semua</button>
- <input id="studentFile" type="file" accept=".xlsx,.xls,.csv" class="hidden">
- </div>
- <div id="studentPreview"></div>
- </div>
-
- <div class="card">
- <h3>Pencarian Siswa</h3>
- <div class="grid">
- <div><label>Cari Siswa</label><input id="studentSearch" placeholder="Ketik NIS, nama, kelas, L/P atau no urut..." oninput="filterStudentTables()"></div>
- <div><label>Filter Tingkat</label><select id="studentLevelFilter" onchange="filterStudentTables()"><option value="">Semua Kelas</option><option value="7">Kelas 7</option><option value="8">Kelas 8</option><option value="9">Kelas 9</option></select></div>
- </div>
- <div id="searchInfo" class="notice" style="display:none"></div>
- </div>
-
- ${[7,8,9].map(level=>{
- let arr=all.filter(s=>String(s.class).trim().startsWith(String(level)));
- let rombels=[...new Set(arr.map(s=>s.class))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
- return `<div class="card student-level-card" data-level="${level}">
- <h3>Kelas ${level} <span class="badge">${arr.length} siswa</span></h3>
- ${rombels.length?rombels.map(cls=>{
- let ca=arr.filter(s=>s.class===cls);
- return `<div class="student-class-block" data-level="${level}" data-class="${esc(cls)}">
-  <h3 style="font-size:15px;margin-top:18px">${esc(cls)} <span class="badge">${ca.length} siswa</span></h3>
-  <div class="tablewrap"><table>
-  <thead><tr><th>No Urut</th><th>NIS</th><th>Nama</th><th>L/P</th><th>Kelas</th><th>Aksi</th></tr></thead>
-  <tbody>${ca.map(s=>`<tr class="student-row" data-search="${esc(`${s.order} ${s.nis} ${s.name} ${s.gender} ${s.class}`.toLowerCase())}">
-  <td>${s.order}</td><td>${esc(s.nis)}</td><td>${esc(s.name)}</td><td>${esc(s.gender)}</td><td>${esc(s.class)}</td>
-  <td><button class="danger" onclick="delStudent(${s.id})">Hapus</button></td>
-  </tr>`).join('')}</tbody>
-  </table></div>
- </div>`;
- }).join(''):'<div class="notice">Belum ada data siswa kelas '+level+'.</div>'}
- </div>`;
- }).join('')}
- </div>`;
+function normalizeClassName(str){
+  if(!str) return '';
+  let s = String(str).trim().toUpperCase();
+  s = s.replace(/\bVIII\b/g, '8')
+       .replace(/\bVII\b/g, '7')
+       .replace(/\bIX\b/g, '9');
+  s = s.replace(/KELAS|ROMBEL|TINGKAT/g, '').trim();
+  let m = s.match(/([789])\s*[-_ ]*\s*([A-Za-z])/);
+  if(m) return m[1] + m[2].toUpperCase();
+  let m2 = s.match(/([789][A-Za-z])/);
+  if(m2) return m2[1].toUpperCase();
+  return s.replace(/\s+/g, '');
 }
+
+function normalizeGender(x){
+  let s = String(x||'').trim().toUpperCase();
+  if(['L','LAKI','LAKI-LAKI','LAKILAKI','M','MALE'].includes(s)) return 'L';
+  if(['P','PEREMPUAN','WANITA','F','FEMALE'].includes(s)) return 'P';
+  if(s.startsWith('L')) return 'L';
+  if(s.startsWith('P')) return 'P';
+  return s || 'L';
+}
+
+function detectClassFromText(text){
+  if(!text) return '';
+  let s = String(text);
+  let m = s.match(/\b(VIII|VII|IX|[789])\s*([A-Za-z])\b/i);
+  if(m){
+    let lvl = m[1].toUpperCase();
+    let sec = m[2].toUpperCase();
+    if(lvl === 'VIII') lvl = '8';
+    else if(lvl === 'VII') lvl = '7';
+    else if(lvl === 'IX') lvl = '9';
+    return lvl + sec;
+  }
+  let m2 = s.match(/^(?:Kls|Kelas|Rombel)\s*[:=]?\s*(VIII|VII|IX|[789])\s*([A-Za-z])$/i);
+  if(m2){
+    let lvl = m2[1].toUpperCase();
+    let sec = m2[2].toUpperCase();
+    if(lvl === 'VIII') lvl = '8';
+    else if(lvl === 'VII') lvl = '7';
+    else if(lvl === 'IX') lvl = '9';
+    return lvl + sec;
+  }
+  return '';
+}
+
+function norm(s){
+  return String(s??'').toLowerCase().replace(/[^a-z0-9]/g,'');
+}
+
+function detectStudent(row, defaultClass=''){
+  let n = {};
+  Object.keys(row).forEach(k => n[norm(k)] = row[k]);
+  let pick = ks => {
+    for(let k of ks){
+      if(n[k] !== undefined && String(n[k]).trim() !== '') return n[k];
+    }
+    return '';
+  };
+  let name = pick(['nama','namasiswa','namapeserta','namalengkap','name']);
+  if(!name) return null;
+  let cls = normalizeClassName(pick(['kelas','rombel','tingkat','tingkatkelas','class']) || defaultClass);
+  return {
+    order: +String(pick(['nourut','nomorurut','nourutabsen','no','nomor','urut'])).replace(/\D/g,'') || 0,
+    nis: String(pick(['nis','nomorinduk','noinduk','nomorinduksiswa','nisn'])).trim(),
+    name: String(name).trim(),
+    gender: normalizeGender(pick(['lp','jeniskelamin','jk','gender','kelamin'])),
+    class: cls
+  };
+}
+
+function parseStudentTableRow(line, fallbackClass=''){
+  line = String(line||'').replace(/[|\t]+/g, ' ').replace(/\s+/g, ' ').trim();
+  if(!line) return null;
+  if(/^(no|nomor|nis|nama|peserta|daftar|rekapitulasi|lembaga|kementerian|madrasah)\b/i.test(line) && /nama|nis|rombel|kelas/i.test(line)){
+    return null;
+  }
+  
+  let matchWithClass = line.match(/^(\d{1,4})[\.\x29\s]+(?:(\d{3,18})\s+)?(.*?)\s+([LP]|LAKI-LAKI|PEREMPUAN|LAKI|WANITA)\s+([789]\s*[A-Za-z]|VII\s*[A-Za-z]|VIII\s*[A-Za-z]|IX\s*[A-Za-z])(?:\s+.*)?$/i);
+  if(matchWithClass){
+    return {
+      order: +matchWithClass[1],
+      nis: matchWithClass[2] || '',
+      name: matchWithClass[3].trim(),
+      gender: normalizeGender(matchWithClass[4]),
+      class: normalizeClassName(matchWithClass[5])
+    };
+  }
+  
+  if(fallbackClass){
+    let matchWithGender = line.match(/^(\d{1,4})[\.\x29\s]+(?:(\d{3,18})\s+)?(.*?)\s+([LP]|LAKI-LAKI|PEREMPUAN|LAKI|WANITA)$/i);
+    if(matchWithGender){
+      return {
+        order: +matchWithGender[1],
+        nis: matchWithGender[2] || '',
+        name: matchWithGender[3].trim(),
+        gender: normalizeGender(matchWithGender[4]),
+        class: normalizeClassName(fallbackClass)
+      };
+    }
+  }
+  return null;
+}
+
+function parseBiodataPage(lines, defaultClass=''){
+  let nama = '', nis = '', gender = 'L', cls = defaultClass;
+  for(let line of lines){
+    let l = line.trim();
+    if(/1\.\s*Nama\s+Peserta\s+Didik/i.test(l)){
+      let parts = l.split(/:\s*/);
+      if(parts.length > 1) nama = parts.slice(1).join(':').trim();
+    } else if(/2\.\s*NIS\b/i.test(l)){
+      let parts = l.split(/:\s*/);
+      if(parts.length > 1) nis = parts.slice(1).join(':').trim();
+    } else if(/5\.\s*Jenis\s+Kelamin/i.test(l)){
+      let parts = l.split(/:\s*/);
+      if(parts.length > 1) gender = normalizeGender(parts.slice(1).join(':').trim());
+    } else if(/kelas/i.test(l) && !cls){
+      let m = l.match(/([789]\s*[A-Za-z]|VII\s*[A-Za-z]|VIII\s*[A-Za-z]|IX\s*[A-Za-z])/i);
+      if(m) cls = normalizeClassName(m[1]);
+    }
+  }
+  if(nama){
+    return {
+      order: 0,
+      nis: nis,
+      name: nama,
+      gender: gender,
+      class: normalizeClassName(cls || defaultClass)
+    };
+  }
+  return null;
+}
+
+async function parseStudentExcelFile(file){
+  if(typeof XLSX === 'undefined') throw new Error('Library XLSX belum termuat. Periksa koneksi internet saat membuka aplikasi.');
+  let buf = await file.arrayBuffer();
+  let wb = XLSX.read(buf, {type: 'array', cellDates: false});
+  let results = [];
+  let fileClass = normalizeClassName(file.name.replace(/\.(xlsx|xls|csv)$/i, ''));
+
+  wb.SheetNames.forEach(sheetName => {
+    if(!sheetName || sheetName.startsWith('_') || sheetName.includes('microsoft.com') || /Print_Titles/i.test(sheetName)) return;
+
+    let ws = wb.Sheets[sheetName];
+    if(!ws) return;
+
+    let sheetClass = normalizeClassName(sheetName);
+    let currentClass = sheetClass || fileClass || '';
+
+    let aoa = XLSX.utils.sheet_to_json(ws, {header: 1, defval: '', raw: false});
+    if(!aoa || !aoa.length) return;
+
+    let colOrder = -1, colNis = -1, colName = -1, colGender = -1, colClass = -1;
+
+    for(let r = 0; r < aoa.length; r++){
+      let row = aoa[r] || [];
+      if(!row.length) continue;
+
+      let rowStr = row.map(c => String(c||'').trim()).filter(Boolean).join(' ');
+      let detectedCls = detectClassFromText(rowStr);
+      if(detectedCls && (!currentClass || detectedCls.length >= 2)){
+        currentClass = detectedCls;
+      }
+
+      let headerMatches = 0;
+      let tempOrder = -1, tempNis = -1, tempName = -1, tempGender = -1, tempClass = -1;
+      for(let c = 0; c < row.length; c++){
+        let cell = String(row[c]||'').toLowerCase().replace(/[^a-z0-9]/g, '');
+        if(!cell) continue;
+        if(['nourut','nomorurut','nourutabsen','no','nomor','urut'].includes(cell)){
+          tempOrder = c; headerMatches++;
+        } else if(['nis','nomorinduk','noinduk','nomorinduksiswa','nisn'].includes(cell)){
+          tempNis = c; headerMatches++;
+        } else if(['nama','namasiswa','namapeserta','namalengkap','name'].includes(cell)){
+          tempName = c; headerMatches++;
+        } else if(['lp','jeniskelamin','jk','gender','kelamin'].includes(cell)){
+          tempGender = c; headerMatches++;
+        } else if(['kelas','rombel','tingkat','class'].includes(cell)){
+          tempClass = c; headerMatches++;
+        }
+      }
+
+      if(headerMatches >= 2 && (tempName !== -1 || tempNis !== -1)){
+        colOrder = tempOrder;
+        colNis = tempNis;
+        colName = tempName;
+        colGender = tempGender;
+        colClass = tempClass;
+        continue;
+      }
+
+      let orderVal = '', nisVal = '', nameVal = '', genderVal = '', classVal = '';
+
+      if(colName !== -1){
+        nameVal = String(row[colName]||'').trim();
+        orderVal = colOrder !== -1 ? String(row[colOrder]||'').trim() : '';
+        nisVal = colNis !== -1 ? String(row[colNis]||'').trim() : '';
+        genderVal = colGender !== -1 ? String(row[colGender]||'').trim() : '';
+        classVal = colClass !== -1 ? String(row[colClass]||'').trim() : '';
+      } else {
+        let c0 = String(row[0]||'').trim();
+        let c1 = String(row[1]||'').trim();
+        let c2 = String(row[2]||'').trim();
+        let c3 = String(row[3]||'').trim();
+        let c4 = String(row[4]||'').trim();
+
+        if(/^\d{1,3}$/.test(c0) && +c0 > 0 && +c0 <= 100 && c2 && c2.length > 2 && !/^(nama|peserta|jumlah|total|absen|wali|ket|jml)\b/i.test(c2)){
+          orderVal = c0;
+          nisVal = c1;
+          nameVal = c2;
+          genderVal = c3;
+          classVal = c4;
+        } else if(/^\d{1,3}$/.test(c0) && +c0 > 0 && +c0 <= 100 && c1 && c1.length > 2 && !/^\d+$/.test(c1) && !/^(nama|peserta|jumlah|total|absen)\b/i.test(c1)){
+          orderVal = c0;
+          nisVal = '';
+          nameVal = c1;
+          genderVal = c2;
+          classVal = c3;
+        }
+      }
+
+      if(!nameVal || nameVal.length < 2) continue;
+      if(/^(nama|peserta|jumlah|total|absen|wali\s+kelas|waka|mengetahui|rumus|nip)\b/i.test(nameVal)) continue;
+
+      let finalClass = normalizeClassName(classVal || currentClass || sheetClass || fileClass);
+      if(!finalClass) finalClass = '7A';
+
+      results.push({
+        order: +orderVal.replace(/\D/g, '') || (results.filter(x => x.class === finalClass).length + 1),
+        nis: nisVal.replace(/\s+/g, ''),
+        name: nameVal,
+        gender: normalizeGender(genderVal),
+        class: finalClass
+      });
+    }
+  });
+
+  return results;
+}
+
+async function parseStudentPdfFile(file){
+  let pdfjs = window.pdfjsLibBridge;
+  if(!pdfjs) throw new Error('Library pembaca PDF belum aktif. Pastikan terhubung internet saat pertama membuka aplikasi.');
+  let buf = await file.arrayBuffer();
+  let pdf = await pdfjs.getDocument({data: buf}).promise;
+  let fileClass = normalizeClassName(file.name.replace(/\.pdf$/i, ''));
+  let students = [];
+  let currentClass = fileClass;
+
+  for(let p = 1; p <= pdf.numPages; p++){
+    let page = await pdf.getPage(p);
+    let content = await page.getTextContent();
+    let groups = {};
+    content.items.forEach(item => {
+      let y = Math.round(item.transform?.[5] || 0);
+      if(!groups[y]) groups[y] = [];
+      groups[y].push({x: item.transform?.[4] || 0, text: item.str || ''});
+    });
+
+    let pageLines = [];
+    Object.keys(groups).sort((a,b) => +b - +a).forEach(y => {
+      let line = groups[y].sort((a,b) => a.x - b.x).map(z => z.text).join(' ').trim();
+      if(line) pageLines.push(line);
+    });
+
+    let isBiodata = pageLines.some(l => /Nama\s+Peserta\s+Didik/i.test(l));
+    if(isBiodata){
+      let s = parseBiodataPage(pageLines, currentClass || fileClass);
+      if(s && s.name){
+        students.push(s);
+        continue;
+      }
+    }
+
+    for(let line of pageLines){
+      let detectedCls = detectClassFromText(line);
+      if(detectedCls && detectedCls.length >= 2){
+        currentClass = detectedCls;
+        continue;
+      }
+      let parsed = parseStudentTableRow(line, currentClass || fileClass);
+      if(parsed && parsed.name){
+        students.push(parsed);
+      }
+    }
+  }
+
+  let classCounters = {};
+  students.forEach(s => {
+    classCounters[s.class] = classCounters[s.class] || 0;
+    if(!s.order) {
+      classCounters[s.class]++;
+      s.order = classCounters[s.class];
+    } else {
+      classCounters[s.class] = Math.max(classCounters[s.class], s.order);
+    }
+  });
+
+  return students;
+}
+
+let pendingImportStudents = [];
+
+async function handleStudentFileUpload(input){
+  let files = input?.files;
+  if(!files || !files.length) return;
+
+  let progressEl = document.getElementById('studentUploadProgress');
+  if(progressEl){
+    progressEl.style.display = 'block';
+    progressEl.innerHTML = '<div class="notice">Memproses <b>' + files.length + '</b> file data siswa...</div>';
+  }
+
+  let allExtracted = [];
+  let fileReports = [];
+  let errors = [];
+
+  for(let i = 0; i < files.length; i++){
+    let file = files[i];
+    if(progressEl){
+      progressEl.innerHTML = '<div class="notice">Membaca file (' + (i + 1) + '/' + files.length + '): <b>' + esc(file.name) + '</b>...</div>';
+    }
+    try {
+      let lower = file.name.toLowerCase();
+      let list = [];
+      if(/\.(xlsx|xls|csv)$/.test(lower)){
+        list = await parseStudentExcelFile(file);
+      } else if(/\.pdf$/.test(lower)){
+        list = await parseStudentPdfFile(file);
+      } else {
+        errors.push(file.name + ': Format tidak didukung (harus .xlsx, .xls, .csv, atau .pdf)');
+        continue;
+      }
+
+      if(list && list.length){
+        allExtracted.push(...list);
+        fileReports.push({ name: file.name, count: list.length });
+      } else {
+        fileReports.push({ name: file.name, count: 0 });
+      }
+    } catch(err){
+      errors.push(file.name + ': ' + err.message);
+    }
+  }
+
+  if(progressEl) progressEl.style.display = 'none';
+  input.value = '';
+
+  if(!allExtracted.length){
+    let msg = 'Tidak ada data siswa yang berhasil dibaca dari file yang dipilih.';
+    if(errors.length) msg += '\n\nCatatan:\n' + errors.join('\n');
+    return alert(msg);
+  }
+
+  pendingImportStudents = allExtracted;
+  showStudentImportPreview(allExtracted, fileReports, errors);
+}
+
+function showStudentImportPreview(students, fileReports, errors){
+  let area = document.getElementById('studentImportPreviewArea');
+  if(!area) return;
+
+  let rombelMap = {};
+  students.forEach(s => {
+    rombelMap[s.class] = (rombelMap[s.class] || 0) + 1;
+  });
+  let rombelList = Object.keys(rombelMap).sort((a,b) => a.localeCompare(b, undefined, {numeric: true}));
+
+  let html = '<div class="card" style="margin-top:16px;border:2px solid #52c41a;background:#f6ffed;box-shadow:0 4px 12px rgba(0,0,0,0.08)">';
+  html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:gap:10px">';
+  html += '<div>';
+  html += '<h3 style="color:#237804;margin:0 0 6px 0;font-size:18px">Preview Hasil Pembacaan File Siswa</h3>';
+  html += '<p style="margin:0;color:#333;font-size:14px">Berhasil membaca total <b>' + students.length + '</b> data siswa dari <b>' + fileReports.length + '</b> file.</p>';
+  html += '</div>';
+  html += '<button type="button" class="secondary" onclick="closeStudentImportPreview()" style="font-size:12px;padding:4px 10px">Tutup (X)</button>';
+  html += '</div>';
+
+  html += '<div style="margin-top:12px;padding:10px;background:#fff;border-radius:6px;border:1px solid #d9d9d9">';
+  html += '<div style="font-size:13px;font-weight:bold;margin-bottom:6px">File yang diproses:</div>';
+  html += '<div style="display:flex;flex-wrap:wrap;gap:8px">';
+  fileReports.forEach(f => {
+    html += '<span class="badge" style="background:#e6f7ff;color:#096dd9;border:1px solid #91d5ff;padding:4px 8px;font-size:12px"><b>' + esc(f.name) + '</b>: ' + f.count + ' siswa</span>';
+  });
+  html += '</div></div>';
+
+  html += '<div style="margin-top:12px;padding:10px;background:#fff;border-radius:6px;border:1px solid #d9d9d9">';
+  html += '<div style="font-size:13px;font-weight:bold;margin-bottom:6px">Rincian Rombel / Kelas yang ditemukan:</div>';
+  html += '<div style="display:flex;flex-wrap:wrap;gap:6px">';
+  rombelList.forEach(cls => {
+    html += '<span style="background:#f0f5ff;border:1px solid #adc6ff;padding:4px 10px;border-radius:4px;font-size:13px"><b>' + esc(cls) + '</b>: ' + rombelMap[cls] + ' siswa</span>';
+  });
+  html += '</div></div>';
+
+  if(errors && errors.length){
+    html += '<div class="notice" style="margin-top:10px;background:#fff1f0;border-color:#ffa39e;color:#cf1322"><b>Peringatan:</b> ' + errors.map(e => esc(e)).join('<br>') + '</div>';
+  }
+
+  html += '<div style="margin-top:12px"><div style="font-size:13px;font-weight:bold;margin-bottom:6px">Contoh 25 Data Siswa Teratas:</div>';
+  html += '<div class="tablewrap" style="max-height:300px;overflow-y:auto;background:#fff;border:1px solid #d9d9d9;border-radius:6px"><table>';
+  html += '<thead><tr><th>No Urut</th><th>NIS</th><th>Nama Siswa</th><th>L/P</th><th>Kelas</th></tr></thead>';
+  html += '<tbody>';
+  students.slice(0, 25).forEach(s => {
+    html += '<tr><td>' + s.order + '</td><td>' + esc(s.nis) + '</td><td>' + esc(s.name) + '</td><td>' + esc(s.gender) + '</td><td><b>' + esc(s.class) + '</b></td></tr>';
+  });
+  if(students.length > 25){
+    html += '<tr><td colspan="5" style="text-align:center;color:#666;font-style:italic">... dan ' + (students.length - 25) + ' data siswa lainnya ...</td></tr>';
+  }
+  html += '</tbody></table></div></div>';
+
+  html += '<div style="margin-top:14px;padding:12px;background:#fafafa;border:1px solid #e8e8e8;border-radius:6px">';
+  html += '<div style="font-weight:bold;font-size:13px;margin-bottom:8px">Pilih Metode Penyimpanan:</div>';
+  html += '<div style="display:flex;flex-direction:column;gap:6px;font-size:13px">';
+  html += '<label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="radio" name="studentImportMode" value="merge" checked> <b>Tambah & Perbarui (Disarankan)</b> - Siswa baru ditambahkan, siswa dengan NIS / Nama+Kelas yang sama diperbarui.</label>';
+  html += '<label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="radio" name="studentImportMode" value="overwrite"> <b>Ganti / Timpa Seluruh Data Siswa</b> - Hapus semua data siswa lama dan gunakan data dari file ini saja.</label>';
+  html += '</div>';
+  html += '<div class="actions" style="margin-top:12px">';
+  html += '<button type="button" class="success" style="font-size:14px;font-weight:bold;padding:9px 18px" onclick="confirmSaveImportedStudents()">Simpan ' + students.length + ' Siswa ke Database</button>';
+  html += '<button type="button" class="secondary" onclick="closeStudentImportPreview()">Batal</button>';
+  html += '</div></div>';
+
+  html += '</div>';
+  area.innerHTML = html;
+  area.scrollIntoView({ behavior: 'smooth' });
+}
+
+function closeStudentImportPreview(){
+  let area = document.getElementById('studentImportPreviewArea');
+  if(area) area.innerHTML = '';
+  pendingImportStudents = [];
+}
+
+function confirmSaveImportedStudents(){
+  if(!pendingImportStudents || !pendingImportStudents.length) return alert('Tidak ada data siswa untuk disimpan.');
+  let mode = document.querySelector('input[name="studentImportMode"]:checked')?.value || 'merge';
+
+  if(mode === 'overwrite'){
+    if(!confirm('PERINGATAN: Seluruh data siswa yang ada saat ini akan DIHAPUS dan digantikan dengan data baru (' + pendingImportStudents.length + ' siswa). Lanjutkan?')){
+      return;
+    }
+    db.students = [];
+    db.rooms.forEach(r => r.students = []);
+  }
+
+  let added = 0, updated = 0;
+  pendingImportStudents.forEach((s, idx) => {
+    let cls = normalizeClassName(s.class);
+    let nis = String(s.nis || '').trim();
+    let name = String(s.name || '').trim();
+    let gender = normalizeGender(s.gender);
+    let order = +String(s.order).replace(/\D/g, '') || 0;
+
+    let ex = null;
+    if(mode !== 'overwrite'){
+      ex = db.students.find(x => (nis && String(x.nis).trim() === nis) || (x.name.toLowerCase() === name.toLowerCase() && normalizeClassName(x.class) === cls));
+    }
+
+    if(ex){
+      ex.order = order || ex.order;
+      ex.nis = nis || ex.nis;
+      ex.name = name;
+      ex.gender = gender || ex.gender;
+      ex.class = cls;
+      updated++;
+    } else {
+      db.students.push({
+        id: Date.now() + Math.random() + idx,
+        order: order || nextOrder(cls),
+        nis: nis,
+        name: name,
+        gender: gender,
+        class: cls
+      });
+      added++;
+    }
+  });
+
+  save();
+  closeStudentImportPreview();
+  alert('Berhasil menyimpan data siswa!\n- Siswa Ditambahkan: ' + added + '\n- Siswa Diperbarui: ' + updated + '\n- Total Siswa di Database: ' + db.students.length);
+  render('students');
+}
+
+function exportStudentsToExcel(){
+  if(typeof XLSX === 'undefined') return alert('Library Excel belum termuat.');
+  let all = [...(db.students || [])].sort(sortStudent);
+  if(!all.length) return alert('Belum ada data siswa untuk diekspor.');
+
+  let rows = [
+    ['No Urut', 'NIS', 'Nama Siswa', 'L/P', 'Kelas']
+  ];
+  all.forEach(s => {
+    rows.push([s.order, s.nis || '', s.name || '', s.gender || 'L', s.class || '']);
+  });
+
+  let wb = XLSX.utils.book_new();
+  let wsAll = XLSX.utils.aoa_to_sheet(rows);
+  XLSX.utils.book_append_sheet(wb, wsAll, 'Semua Siswa');
+
+  [7, 8, 9].forEach(lvl => {
+    let lvlStudents = all.filter(s => String(s.class).trim().startsWith(String(lvl)));
+    if(lvlStudents.length){
+      let lvlRows = [['No Urut', 'NIS', 'Nama Siswa', 'L/P', 'Kelas']];
+      lvlStudents.forEach(s => lvlRows.push([s.order, s.nis || '', s.name || '', s.gender || 'L', s.class || '']));
+      let wsLvl = XLSX.utils.aoa_to_sheet(lvlRows);
+      XLSX.utils.book_append_sheet(wb, wsLvl, 'Kelas ' + lvl);
+    }
+  });
+
+  XLSX.writeFile(wb, 'Data_Siswa_Madrasah_' + new Date().toISOString().slice(0,10) + '.xlsx');
+}
+
+function downloadStudentTemplate(){
+  let rows = [
+    ['No Urut', 'NIS', 'Nama', 'L/P', 'Kelas'],
+    [1, '260001', 'Afiif Ibnu Aziz', 'L', '7A'],
+    [2, '260002', 'Ahmad Fauzan Alevin', 'L', '7A'],
+    [3, '260006', 'Azwa Zahwa Bilqis', 'P', '7A'],
+    [1, '260033', 'Abyudaya Akbar S', 'L', '7B'],
+    [1, '250001', 'Adila Zaneta', 'P', '8A'],
+    [1, '240001', 'Adhwa Fauziyah Ramadhani', 'P', '9A']
+  ];
+  let ws = XLSX.utils.aoa_to_sheet(rows);
+  let wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Template Siswa');
+  XLSX.writeFile(wb, 'Template_Data_Siswa.xlsx');
+}
+
+function toggleStudentManualForm(){
+  let f = document.getElementById('studentManualFormCard');
+  if(!f) return;
+  f.style.display = f.style.display === 'none' ? 'block' : 'none';
+  if(f.style.display === 'block'){
+    document.getElementById('sName')?.focus();
+  }
+}
+
+function addStudent(){
+  let name = v('sName'), cls = normalizeClassName(v('sClass'));
+  if(!name || !cls) return alert('Nama Siswa dan Kelas wajib diisi.');
+  let order = +v('sOrder') || nextOrder(cls);
+  let nis = v('sNis');
+  let gender = normalizeGender(v('sGender'));
+
+  db.students.push({
+    id: Date.now() + Math.random(),
+    order: order,
+    nis: nis,
+    name: name,
+    gender: gender,
+    class: cls
+  });
+  save();
+  alert('Siswa berhasil ditambahkan ke kelas ' + cls + '!');
+  render('students');
+}
+
+function delStudent(id){
+  let s = (db.students || []).find(x => x.id == id);
+  let name = s ? s.name : 'siswa ini';
+  if(!confirm('Hapus ' + name + ' dari data siswa?')) return;
+  db.students = (db.students || []).filter(x => x.id != id);
+  (db.rooms || []).forEach(r => {
+    r.students = (r.students || []).filter(x => x.id != id);
+  });
+  save();
+  render('students');
+}
+
+function editStudent(id){
+  let s = (db.students || []).find(x => x.id == id);
+  if(!s) return;
+  
+  let modal = document.getElementById('editStudentModal');
+  if(!modal){
+    let div = document.createElement('div');
+    div.id = 'editStudentModal';
+    div.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:999999;padding:16px';
+    document.body.appendChild(div);
+    modal = div;
+  }
+  
+  modal.innerHTML = '<div style="background:#fff;border-radius:10px;padding:24px;width:100%;max-width:500px;box-shadow:0 8px 30px rgba(0,0,0,0.25)">'
+    + '<h3 style="margin:0 0 16px;color:#1890ff">Edit Data Siswa</h3>'
+    + '<div style="display:flex;flex-direction:column;gap:12px">'
+    + '<div><label style="font-weight:bold;font-size:12px;display:block;margin-bottom:4px">No Urut</label><input id="editStudentOrder" type="number" value="' + s.order + '" style="width:100%;padding:8px"></div>'
+    + '<div><label style="font-weight:bold;font-size:12px;display:block;margin-bottom:4px">NIS</label><input id="editStudentNis" value="' + esc(s.nis) + '" style="width:100%;padding:8px"></div>'
+    + '<div><label style="font-weight:bold;font-size:12px;display:block;margin-bottom:4px">Nama Siswa *</label><input id="editStudentName" value="' + esc(s.name) + '" style="width:100%;padding:8px"></div>'
+    + '<div><label style="font-weight:bold;font-size:12px;display:block;margin-bottom:4px">Jenis Kelamin (L/P)</label><select id="editStudentGender" style="width:100%;padding:8px"><option value="L"' + (s.gender==='L'?' selected':'') + '>L (Laki-laki)</option><option value="P"' + (s.gender==='P'?' selected':'') + '>P (Perempuan)</option></select></div>'
+    + '<div><label style="font-weight:bold;font-size:12px;display:block;margin-bottom:4px">Kelas *</label><input id="editStudentClass" value="' + esc(s.class) + '" style="width:100%;padding:8px"></div>'
+    + '</div>'
+    + '<div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px">'
+    + '<button type="button" class="secondary" onclick="document.getElementById(\'editStudentModal\').style.display=\'none\'">Batal</button>'
+    + '<button type="button" class="success" onclick="saveEditedStudent(' + s.id + ')">Simpan Perubahan</button>'
+    + '</div></div>';
+  modal.style.display = 'flex';
+}
+
+function saveEditedStudent(id){
+  let s = (db.students || []).find(x => x.id == id);
+  if(!s) return;
+  let order = +document.getElementById('editStudentOrder')?.value || s.order;
+  let nis = (document.getElementById('editStudentNis')?.value || '').trim();
+  let name = (document.getElementById('editStudentName')?.value || '').trim();
+  let gender = document.getElementById('editStudentGender')?.value || 'L';
+  let cls = normalizeClassName(document.getElementById('editStudentClass')?.value || s.class);
+
+  if(!name || !cls) return alert('Nama dan Kelas wajib diisi.');
+
+  s.order = order;
+  s.nis = nis;
+  s.name = name;
+  s.gender = gender;
+  s.class = cls;
+
+  (db.rooms || []).forEach(r => {
+    (r.students || []).forEach(st => {
+      if(st.id == id){
+        st.order = order;
+        st.nis = nis;
+        st.name = name;
+        st.gender = gender;
+        st.class = cls;
+      }
+    });
+  });
+
+  save();
+  document.getElementById('editStudentModal').style.display = 'none';
+  render('students');
+}
+
+function clearStudents(){
+  if(!confirm('PERINGATAN: Apakah Anda yakin ingin menghapus SELURUH data siswa? Pembagian ruang peserta yang ada juga akan dikosongkan.')){
+    return;
+  }
+  db.students = [];
+  (db.rooms || []).forEach(r => {
+    r.students = [];
+  });
+  save();
+  alert('Seluruh data siswa telah dibersihkan.');
+  render('students');
+}
+
+function setStudentFilterLevel(lvl){
+  let sel = document.getElementById('studentLevelFilter');
+  if(sel) sel.value = lvl;
+  window._activeStudentRombel = lvl;
+  filterStudentTables();
+  updateStudentQuickPillsUI(lvl);
+}
+
+function setStudentQuickFilter(cls){
+  let levelSelect = document.getElementById('studentLevelFilter');
+  if(cls === ''){
+    if(levelSelect) levelSelect.value = '';
+  } else if(['7','8','9'].includes(cls)){
+    if(levelSelect) levelSelect.value = cls;
+  } else {
+    let lvl = cls.charAt(0);
+    if(levelSelect && ['7','8','9'].includes(lvl)) levelSelect.value = lvl;
+  }
+  window._activeStudentRombel = cls;
+  filterStudentTables();
+  updateStudentQuickPillsUI(cls);
+}
+
+function updateStudentQuickPillsUI(activeCls){
+  document.querySelectorAll('.student-pill-btn').forEach(btn => {
+    let btnCls = btn.dataset.class;
+    if(btnCls === activeCls){
+      btn.style.background = '#1890ff';
+      btn.style.color = '#fff';
+      btn.style.borderColor = '#1890ff';
+    } else {
+      btn.style.background = '#f0f5ff';
+      btn.style.color = '#1890ff';
+      btn.style.borderColor = '#adc6ff';
+    }
+  });
+}
+
 function filterStudentTables(){
- let q=(document.getElementById('studentSearch')?.value||'').trim().toLowerCase();
- let level=document.getElementById('studentLevelFilter')?.value||'';
- let shown=0;
- document.querySelectorAll('.student-level-card').forEach(card=>{
- let levelOK=!level||card.dataset.level===level;
- let cardHas=false;
- card.querySelectorAll('.student-class-block').forEach(block=>{
- let blockHas=false;
- block.querySelectorAll('.student-row').forEach(row=>{
- let ok=levelOK&&(!q||row.dataset.search.includes(q));
- row.style.display=ok?'':'none';
- if(ok){shown++;blockHas=true;cardHas=true}
- });
- block.style.display=(levelOK&&blockHas)?'':'none';
- });
- card.style.display=(levelOK&&cardHas)?'':'none';
- });
- let info=document.getElementById('searchInfo');
- if(q||level){info.style.display='block';info.innerHTML=`Ditemukan <b>${shown}</b> siswa${q?` untuk pencarian "<b>${esc(q)}</b>"`:''}${level?` pada <b>Kelas ${level}</b>`:''}.`;}
- else info.style.display='none';
+  let q = (document.getElementById('studentSearch')?.value || '').trim().toLowerCase();
+  let level = document.getElementById('studentLevelFilter')?.value || '';
+  let activeRombel = window._activeStudentRombel || '';
+  let shown = 0;
+
+  document.querySelectorAll('.student-level-card').forEach(card => {
+    let cardLevel = card.dataset.level;
+    let levelOK = !level || cardLevel === level;
+    let cardHas = false;
+
+    card.querySelectorAll('.student-class-block').forEach(block => {
+      let blockClass = block.dataset.class;
+      let rombelOK = !activeRombel || activeRombel === cardLevel || activeRombel === blockClass;
+      let blockHas = false;
+
+      block.querySelectorAll('.student-row').forEach(row => {
+        let text = row.dataset.search || '';
+        let matchQ = !q || text.includes(q);
+        let ok = levelOK && rombelOK && matchQ;
+        row.style.display = ok ? '' : 'none';
+        if(ok){
+          shown++;
+          blockHas = true;
+          cardHas = true;
+        }
+      });
+      block.style.display = (levelOK && rombelOK && blockHas) ? '' : 'none';
+    });
+    card.style.display = (levelOK && cardHas) ? '' : 'none';
+  });
+
+  let info = document.getElementById('searchInfo');
+  if(info){
+    if(q || level || activeRombel){
+      info.style.display = 'block';
+      let desc = [];
+      if(activeRombel && !['7','8','9'].includes(activeRombel)) desc.push('Rombel <b>' + esc(activeRombel) + '</b>');
+      else if(level) desc.push('Kelas <b>' + level + '</b>');
+      if(q) desc.push('kata kunci "<b>' + esc(q) + '</b>"');
+      info.innerHTML = 'Ditemukan <b>' + shown + '</b> siswa untuk ' + (desc.join(' dan ') || 'filter ini') + '. <button type="button" class="secondary" style="font-size:11px;padding:2px 8px;margin-left:8px" onclick="setStudentQuickFilter(\'\')">Reset Filter</button>';
+    } else {
+      info.style.display = 'none';
+    }
+  }
 }
-function addStudent(){let name=v('sName'),cls=v('sClass').toUpperCase();if(!name||!cls)return alert('Nama dan kelas wajib diisi.');db.students.push({id:Date.now()+Math.random(),order:+v('sOrder')||nextOrder(cls),nis:v('sNis'),name,gender:v('sGender'),class:cls});save();render('students')}function delStudent(id){db.students=db.students.filter(s=>s.id!=id);db.rooms.forEach(r=>r.students=r.students.filter(s=>s.id!=id));save();render('students')}function clearStudents(){if(confirm('Hapus seluruh data siswa?')){db.students=[];db.rooms.forEach(r=>r.students=[]);save();render('students')}}
-function norm(s){return String(s??'').toLowerCase().replace(/[^a-z0-9]/g,'')}function detectStudent(row){let n={};Object.keys(row).forEach(k=>n[norm(k)]=row[k]);let pick=ks=>{for(let k of ks)if(n[k]!==undefined&&String(n[k]).trim()!=='')return n[k];return ''};return{order:pick(['nourut','nomorurut','no','nomor','urut']),nis:pick(['nis','nomorinduksiswa']),name:pick(['nama','namasiswa','namalengkap','namapeserta','name']),gender:pick(['lp','jeniskelamin','jk','gender','kelamin']),class:pick(['kelas','rombel','class','tingkatkelas'])}}
-function normalizeGender(x){let s=String(x||'').trim().toUpperCase();if(['L','LAKI','LAKI-LAKI','LAKILAKI','M','MALE'].includes(s))return'L';if(['P','PEREMPUAN','WANITA','F','FEMALE'].includes(s))return'P';return s}
-function importStudents(file){let r=new FileReader();r.onload=e=>{try{let wb=XLSX.read(e.target.result,{type:'array'}),data=[];wb.SheetNames.forEach(sn=>XLSX.utils.sheet_to_json(wb.Sheets[sn],{defval:'',raw:false}).forEach(row=>{let s=detectStudent(row);if(s.name&&s.class)data.push(s)}));if(!data.length)return alert('Data siswa tidak ditemukan. Pastikan kolom: No Urut, NIS, Nama, L/P, Kelas.');document.getElementById('studentPreview').innerHTML=`<div class="card"><h3>Preview Import</h3><p>Ditemukan <b>${data.length}</b> data siswa.</p><div class="tablewrap"><table><thead><tr><th>No Urut</th><th>NIS</th><th>Nama</th><th>L/P</th><th>Kelas</th></tr></thead><tbody>${data.slice(0,15).map(s=>`<tr><td>${esc(s.order)}</td><td>${esc(s.nis)}</td><td>${esc(s.name)}</td><td>${esc(normalizeGender(s.gender))}</td><td>${esc(String(s.class).toUpperCase())}</td></tr>`).join('')}</tbody></table></div><div class="actions"><button id="confirmStudentImport"> Simpan ${data.length} Siswa</button></div></div>`;document.getElementById('confirmStudentImport').onclick=()=>saveImportedStudents(data)}catch(err){alert('File tidak dapat dibaca: '+err.message)}};r.readAsArrayBuffer(file)}
-function saveImportedStudents(data){let added=0,updated=0;data.forEach((s,i)=>{let cls=String(s.class).trim().toUpperCase(),nis=String(s.nis||'').trim(),name=String(s.name).trim(),gender=normalizeGender(s.gender)||'',order=+String(s.order).replace(/\D/g,'')||0;let ex=db.students.find(x=>(nis&&String(x.nis)===nis)||(x.name.toLowerCase()===name.toLowerCase()&&x.class===cls));if(ex){ex.order=order||ex.order;ex.nis=nis||ex.nis;ex.name=name;ex.gender=gender||ex.gender;ex.class=cls;updated++}else{db.students.push({id:Date.now()+Math.random()+i,order:order||nextOrder(cls),nis,name,gender,class:cls});added++}});save();alert(`Import selesai. ${added} baru, ${updated} diperbarui.`);render('students')}
-function downloadStudentTemplate(){let rows=[['No Urut','NIS','Nama','L/P','Kelas'],[1,'1001','Ahmad Fauzi','L','7A'],[2,'1002','Siti Aminah','P','7A']];let ws=XLSX.utils.aoa_to_sheet(rows),wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Data Siswa');XLSX.writeFile(wb,'Template_Data_Siswa.xlsx')}
+
+function students(){
+  let all = [...(db.students || [])].sort(sortStudent);
+  let countLevel = n => all.filter(s => String(s.class).trim().startsWith(String(n))).length;
+  let rombelsLevel = n => [...new Set(all.filter(s => String(s.class).trim().startsWith(String(n))).map(s => s.class))].sort((a,b) => a.localeCompare(b, undefined, {numeric: true}));
+  let allRombels = [...new Set(all.map(s => s.class))].sort((a,b) => a.localeCompare(b, undefined, {numeric: true}));
+
+  let html = '<div class="card">';
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:12px">';
+  html += '<div>';
+  html += '<h2 style="margin:0">1. Data Siswa</h2>';
+  html += '<p style="margin:4px 0 0;color:#666;font-size:14px">Master data seluruh peserta didik: Kelas 7 (7A-7H), Kelas 8 (8A-8J), Kelas 9 (9A-9K). Bisa upload file Excel atau PDF sekaligus.</p>';
+  html += '</div>';
+  html += '</div>';
+
+  html += '<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px">';
+  html += '<div class="stat" style="cursor:pointer" onclick="setStudentFilterLevel(\'\')">Total Semua Siswa<b>' + all.length + '</b><span style="font-size:11px;color:#666">' + allRombels.length + ' Total Rombel</span></div>';
+  html += '<div class="stat" style="cursor:pointer" onclick="setStudentFilterLevel(\'7\')">Kelas 7<b>' + countLevel('7') + '</b><span style="font-size:11px;color:#666">' + rombelsLevel('7').length + ' Rombel (' + (rombelsLevel('7').slice(0,3).join(', ') + (rombelsLevel('7').length > 3 ? '...' : '')) + ')</span></div>';
+  html += '<div class="stat" style="cursor:pointer" onclick="setStudentFilterLevel(\'8\')">Kelas 8<b>' + countLevel('8') + '</b><span style="font-size:11px;color:#666">' + rombelsLevel('8').length + ' Rombel (' + (rombelsLevel('8').slice(0,3).join(', ') + (rombelsLevel('8').length > 3 ? '...' : '')) + ')</span></div>';
+  html += '<div class="stat" style="cursor:pointer" onclick="setStudentFilterLevel(\'9\')">Kelas 9<b>' + countLevel('9') + '</b><span style="font-size:11px;color:#666">' + rombelsLevel('9').length + ' Rombel (' + (rombelsLevel('9').slice(0,3).join(', ') + (rombelsLevel('9').length > 3 ? '...' : '')) + ')</span></div>';
+  html += '</div>';
+
+  html += '<div class="card" style="margin-top:0;background:#f8fafc;border:1px solid #e2e8f0;padding:14px">';
+  html += '<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">';
+  html += '<button type="button" class="success" style="font-size:14px;padding:9px 16px;font-weight:bold" onclick="document.getElementById(\'studentFileInput\').click()">+ Upload File Excel / PDF (Bisa Sekaligus)</button>';
+  html += '<input id="studentFileInput" type="file" accept=".xlsx,.xls,.csv,.pdf" multiple onchange="handleStudentFileUpload(this)" style="display:none">';
+  html += '<button type="button" class="secondary" onclick="downloadStudentTemplate()">Download Template Excel</button>';
+  html += '<button type="button" class="secondary" onclick="exportStudentsToExcel()">Export Data ke Excel</button>';
+  html += '<button type="button" class="secondary" onclick="toggleStudentManualForm()">+ Tambah Siswa Manual</button>';
+  html += '<button type="button" class="danger" style="margin-left:auto" onclick="clearStudents()">Hapus Semua Siswa</button>';
+  html += '</div>';
+  html += '<div style="margin-top:8px;font-size:12px;color:#555;line-height:1.4"><b>Petunjuk Upload:</b> Anda dapat memilih <b>satu file gabungan</b> (misal Excel berisi kelas 7A-7H sekaligus) ATAU memilih <b>banyak file sekaligus</b> (tekan Ctrl/Shift lalu pilih file PDF/Excel 7A, 7B, 8A, dst.). Kolom yang dibaca otomatis: <b>Nomor Urut, NIS, Nama Siswa, L/P, Kelas</b>.</div>';
+  html += '<div id="studentUploadProgress" style="display:none;margin-top:10px"></div>';
+  html += '</div>';
+
+  html += '<div id="studentManualFormCard" class="card" style="display:none;margin-top:14px;border:1px solid #bae0ff;background:#f0f5ff">';
+  html += '<h3 style="margin-top:0">Tambah Siswa Secara Manual</h3>';
+  html += '<div class="grid" style="grid-template-columns:100px 140px 1fr 100px 140px;gap:10px">';
+  html += '<div><label>No Urut</label><input id="sOrder" type="number" placeholder="Otomatis"></div>';
+  html += '<div><label>NIS</label><input id="sNis" placeholder="NIS Siswa"></div>';
+  html += '<div><label>Nama Siswa *</label><input id="sName" placeholder="Nama Lengkap"></div>';
+  html += '<div><label>L/P</label><select id="sGender"><option value="L">L (Laki-laki)</option><option value="P">P (Perempuan)</option></select></div>';
+  html += '<div><label>Kelas *</label><input id="sClass" placeholder="Contoh: 7A, 8B, 9K"></div>';
+  html += '</div>';
+  html += '<div class="actions" style="margin-top:10px">';
+  html += '<button type="button" onclick="addStudent()">+ Simpan Siswa</button>';
+  html += '<button type="button" class="secondary" onclick="toggleStudentManualForm()">Batal</button>';
+  html += '</div></div>';
+
+  html += '<div id="studentImportPreviewArea"></div>';
+
+  html += '<div class="card" style="margin-top:14px">';
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">';
+  html += '<h3 style="margin:0">Daftar Seluruh Siswa</h3>';
+  html += '<div style="display:flex;gap:8px;flex-wrap:wrap">';
+  html += '<input id="studentSearch" placeholder="Cari NIS, Nama, Kelas, L/P..." oninput="filterStudentTables()" style="width:260px">';
+  html += '<select id="studentLevelFilter" onchange="filterStudentTables()" style="width:160px">';
+  html += '<option value="">Semua Tingkat</option><option value="7">Kelas 7</option><option value="8">Kelas 8</option><option value="9">Kelas 9</option>';
+  html += '</select>';
+  html += '</div></div>';
+
+  if(allRombels.length){
+    html += '<div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center">';
+    html += '<span style="font-size:12px;font-weight:bold;color:#666">Pilih Rombel Cepat:</span>';
+    html += '<button type="button" class="student-pill-btn secondary" data-class="" style="font-size:11px;padding:3px 8px;border-radius:12px;cursor:pointer" onclick="setStudentQuickFilter(\'\')">Semua (' + all.length + ')</button>';
+    allRombels.forEach(cls => {
+      let count = all.filter(s => s.class === cls).length;
+      html += '<button type="button" class="student-pill-btn secondary" data-class="' + esc(cls) + '" style="font-size:11px;padding:3px 8px;border-radius:12px;cursor:pointer" onclick="setStudentQuickFilter(\'' + esc(cls) + '\')">' + esc(cls) + ' (' + count + ')</button>';
+    });
+    html += '</div>';
+  }
+
+  html += '<div id="searchInfo" class="notice" style="display:none;margin-top:10px"></div>';
+  html += '</div>';
+
+  [7, 8, 9].forEach(level => {
+    let arr = all.filter(s => String(s.class).trim().startsWith(String(level)));
+    let rombels = [...new Set(arr.map(s => s.class))].sort((a,b) => a.localeCompare(b, undefined, {numeric: true}));
+    html += '<div class="card student-level-card" data-level="' + level + '">';
+    html += '<h3 style="display:flex;justify-content:space-between;align-items:center">';
+    html += '<span>Kelas ' + level + '</span>';
+    html += '<span class="badge">' + arr.length + ' siswa / ' + rombels.length + ' rombel</span>';
+    html += '</h3>';
+
+    if(rombels.length){
+      rombels.forEach(cls => {
+        let ca = arr.filter(s => s.class === cls);
+        let countL = ca.filter(s => s.gender === 'L').length;
+        let countP = ca.filter(s => s.gender === 'P').length;
+        html += '<div class="student-class-block" data-level="' + level + '" data-class="' + esc(cls) + '">';
+        html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px;margin-bottom:6px">';
+        html += '<h4 style="margin:0;font-size:15px;color:#1890ff">Rombel ' + esc(cls) + ' <span class="badge" style="margin-left:6px">' + ca.length + ' siswa (' + countL + ' L / ' + countP + ' P)</span></h4>';
+        html += '</div>';
+        html += '<div class="tablewrap"><table><thead><tr>';
+        html += '<th style="width:70px">No Urut</th>';
+        html += '<th style="width:120px">NIS</th>';
+        html += '<th>Nama Peserta Didik</th>';
+        html += '<th style="width:70px;text-align:center">L/P</th>';
+        html += '<th style="width:90px;text-align:center">Kelas</th>';
+        html += '<th style="width:140px;text-align:center">Aksi</th>';
+        html += '</tr></thead><tbody>';
+        ca.forEach(s => {
+          let searchKey = esc((s.order + ' ' + (s.nis || '') + ' ' + s.name + ' ' + s.gender + ' ' + s.class).toLowerCase());
+          html += '<tr class="student-row" data-search="' + searchKey + '">';
+          html += '<td>' + s.order + '</td>';
+          html += '<td>' + esc(s.nis || '-') + '</td>';
+          html += '<td><b>' + esc(s.name) + '</b></td>';
+          html += '<td style="text-align:center"><span class="badge" style="background:' + (s.gender==='L'?'#e6f7ff':'#fff0f6') + ';color:' + (s.gender==='L'?'#096dd9':'#c41d7f') + ';border:1px solid ' + (s.gender==='L'?'#91d5ff':'#ffadd2') + '">' + esc(s.gender) + '</span></td>';
+          html += '<td style="text-align:center"><b>' + esc(s.class) + '</b></td>';
+          html += '<td style="text-align:center">';
+          html += '<button type="button" class="secondary" style="font-size:11px;padding:3px 8px;margin-right:4px" onclick="editStudent(' + s.id + ')">Edit</button>';
+          html += '<button type="button" class="danger" style="font-size:11px;padding:3px 8px" onclick="delStudent(' + s.id + ')">Hapus</button>';
+          html += '</td>';
+          html += '</tr>';
+        });
+        html += '</tbody></table></div></div>';
+      });
+    } else {
+      html += '<div class="notice">Belum ada data siswa kelas ' + level + '. Silakan unggah file Excel atau PDF di atas.</div>';
+    }
+    html += '</div>';
+  });
+
+  html += '</div>';
+  return html;
+}
+
 
 function roomLocation(room){
  return room.location||'';
@@ -21748,7 +22518,7 @@ function renderAutoRoomModalContent(){
 
   if(totalStudents === 0){
     html += '<div class="notice" style="background:#fffbe6;border-color:#ffe58f;color:#ad6800">';
-    html += '<b>Data siswa masih kosong.</b> Silakan input data siswa terlebih dahulu di menu <b>1. Data Siswa tiap Kelas</b>.';
+    html += '<b>Data siswa masih kosong.</b> Silakan input data siswa terlebih dahulu di menu <b>1. Data Siswa</b>.';
     html += '</div></div>';
     body.innerHTML = html;
     return;
