@@ -14309,6 +14309,24 @@ Terapkan Pembagian Otomatis Sekarang
 </div>
 </div>
 
+<div id="multiPcSyncModal" class="auto-room-modal-backdrop" style="display:none" onclick="if(event.target===this)closeMultiPcSyncModal()">
+<div class="auto-room-modal-dialog" style="max-width:780px">
+<div class="auto-room-modal-header" style="background:linear-gradient(90deg,#e6f7ff,#bae7ff);border-bottom:2px solid #1890ff">
+<div>
+<h2 style="margin:0;color:#003a8c;font-size:19px;display:flex;align-items:center;gap:8px">
+<span>ðŸ”„</span> Pusat Sinkronisasi Multi-Komputer (Komputer 1, 2, dan 3)
+</h2>
+<small style="color:#002766;font-size:13px">MTs Ma'arif NU 1 Wangon - Samakan data antar komputer secara instan & aman tanpa takut data hilang.</small>
+</div>
+<button type="button" class="secondary" onclick="closeMultiPcSyncModal()" style="padding:4px 12px;font-size:16px;font-weight:700;line-height:1;border-radius:8px">âœ•</button>
+</div>
+<div class="auto-room-modal-body" id="multiPcSyncModalBody"></div>
+<div class="auto-room-modal-footer">
+<button type="button" class="secondary" onclick="closeMultiPcSyncModal()">Tutup</button>
+</div>
+</div>
+</div>
+
 
 
 <header><div class="header-left no-print"><div class="dashboard-fitrianto-label">FITRIANTO PUJI P, S.Kom</div></div><div class="header-center"><h1>Administrasi Asesmen</h1><small>Sistem Administrasi Asesmen Madrasah</small></div><div class="header-right no-print">
@@ -14321,6 +14339,7 @@ Terapkan Pembagian Otomatis Sekarang
 <option value="Ujian Madrasah">UJIAN MADRASAH</option>
 </select>
 <button type="button" class="header-sync-btn" style="background:#faad14;border-color:#d48806;color:#613400;font-weight:700" onclick="openDataRecoveryModal()" title="Buka Pusat Pemulihan Data Asesmen">Pulihkan Data</button>
+<button type="button" class="header-sync-btn" style="background:#096dd9;border-color:#0050b3;color:#fff;font-weight:700" onclick="openMultiPcSyncModal()" title="Sinkronisasi Data Antar Komputer 1, 2, dan 3">ðŸ”„ Sinkron 3 Komputer</button>
 <button id="btnPullHeader" type="button" class="header-sync-btn" onclick="pullCloudNow()" title="Tarik data terbaru dari Supabase Cloud">Tarik Data Cloud</button>
 <button id="btnPushHeader" type="button" class="header-sync-btn" onclick="manualSyncToCloud()" title="Kirim data komputer ini ke Supabase Cloud">Simpan ke Cloud</button>
 <span id="cloudStatus" class="cloud-status" onclick="handleCloudStatusClick()" title="Status koneksi Cloud">Cloud: Memuat...</span>
@@ -14564,7 +14583,7 @@ async function loadCloudState(isManualPull=false){
  console.error('loadCloudState', err);
  setCloudStatus('Mode Lokal Aktif', 'ok');
  if(isManualPull){
- alert('Data cloud belum dapat dibaca. Pastikan tabel administrasi_asesmen_state sudah dibuat di SQL Editor Supabase.\n\n' + (err?.message || err));
+ showToast('Tidak dapat terhubung ke Cloud Supabase. Silakan gunakan fitur Sinkronisasi 3 Komputer (Salin Kode) untuk menyamakan data.', 'warning', 4500);
  }
  return false;
  }finally{
@@ -14753,6 +14772,407 @@ function restoreSafetyPrevSnapshot(){
  }
 }
 
+
+// =========================================================================
+// SISTEM SINKRONISASI MULTI-KOMPUTER (KOMPUTER 1, 2, DAN 3)
+// MTs MA'ARIF NU 1 WANGON
+// =========================================================================
+
+// 1. Inisialisasi Otomatis Data Master saat Buka di Komputer Baru (Komputer 2 / 3)
+function ensureMasterDatabaseInitialized(){
+  let isChanged = false;
+  if((!Array.isArray(db.students) || db.students.length === 0) && typeof MASTER_STUDENTS_WANGON !== 'undefined'){
+    console.log('Komputer Baru Terdeteksi: Otomatis memuat master 1.021 siswa MTs Wangon...');
+    db.students = JSON.parse(JSON.stringify(MASTER_STUDENTS_WANGON));
+    isChanged = true;
+  }
+  if((!Array.isArray(db.rooms) || db.rooms.length === 0) && typeof MASTER_ROOMS_WANGON !== 'undefined'){
+    console.log('Komputer Baru Terdeteksi: Otomatis memuat 28 ruang asesmen MTs Wangon...');
+    db.rooms = JSON.parse(JSON.stringify(MASTER_ROOMS_WANGON));
+    isChanged = true;
+  }
+  let hasAssignedStudents = (db.rooms || []).some(r => Array.isArray(r.students) && r.students.length > 0);
+  if(!hasAssignedStudents && typeof calculateAutoDistribution === 'function' && Array.isArray(db.students) && db.students.length > 0){
+    try{
+      let autoRes = calculateAutoDistribution(db, {
+        levels: [7, 8, 9],
+        mode: 'by_room_location',
+        crossPair: '7_8',
+        sortStudents: 'order',
+        customRatios: { 7: 1, 8: 1, 9: 1 }
+      });
+      if(autoRes && autoRes.plan && autoRes.roomStudents){
+        db.gradeRoomPlan = JSON.parse(JSON.stringify(autoRes.plan));
+        (db.rooms || []).forEach(r => {
+          r.students = JSON.parse(JSON.stringify(autoRes.roomStudents[r.no] || []));
+        });
+        isChanged = true;
+      }
+    }catch(e){
+      console.warn('Auto dist init fallback:', e);
+    }
+  }
+  if(!db.gradeRoomPlan && typeof deriveGradeRoomPlanFromRooms === 'function'){
+    try{
+      db.gradeRoomPlan = deriveGradeRoomPlanFromRooms();
+      isChanged = true;
+    }catch(e){}
+  }
+  if(isChanged){
+    try{
+      localStorage.setItem(KEY, JSON.stringify(db));
+    }catch(e){}
+  }
+}
+
+// 2. Buka & Tutup Modal Sinkronisasi Multi-Komputer
+let activeMultiPcTab = 'send';
+function openMultiPcSyncModal(tab='send'){
+  let m = document.getElementById('multiPcSyncModal');
+  if(!m) return;
+  activeMultiPcTab = tab;
+  m.style.display = 'flex';
+  renderMultiPcSyncModalBody(tab);
+}
+function closeMultiPcSyncModal(){
+  let m = document.getElementById('multiPcSyncModal');
+  if(m) m.style.display = 'none';
+}
+
+// 3. Render Isi Modal Sinkronisasi
+function renderMultiPcSyncModalBody(tab='send'){
+  let body = document.getElementById('multiPcSyncModalBody');
+  if(!body) return;
+  activeMultiPcTab = tab;
+
+  let curDevice = getDeviceName();
+  let sCount = (db.students || []).length;
+  let rCount = (db.rooms || []).length;
+  let lastSavedText = cloudLastSavedAt ? new Date(cloudLastSavedAt).toLocaleString('id-ID') : 'Belum tersimpan ke cloud pada sesi ini';
+  let curCustomUrl = localStorage.getItem('supabase_custom_url') || DEFAULT_SUPABASE_URL;
+  let curCustomKey = localStorage.getItem('supabase_custom_key') || DEFAULT_SUPABASE_KEY;
+
+  let html = '<div style="display:flex;flex-direction:column;gap:14px">';
+
+  // Top Status Bar
+  html += '<div style="padding:10px 14px;background:#f0f5ff;border:1.5px solid #adc6ff;border-radius:10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">';
+  html += '<div>Status Komputer Ini: <span class="device-badge" onclick="changeDeviceNamePrompt()" style="cursor:pointer;font-weight:bold">' + esc(curDevice) + '</span></div>';
+  html += '<div style="font-size:13px;color:#1d39c4">Data Aktif: <b>' + sCount + ' Siswa</b> | <b>' + rCount + ' Ruang</b></div>';
+  html += '</div>';
+
+  // Navigation Tabs
+  html += '<div style="display:flex;gap:8px;border-bottom:2px solid #e8e8e8;padding-bottom:2px">';
+  html += '<button type="button" onclick="renderMultiPcSyncModalBody(\'send\')" style="flex:1;padding:10px 14px;font-size:13.5px;font-weight:700;border:none;border-bottom:3px solid ' + (tab==='send'?'#1890ff':'transparent') + ';background:' + (tab==='send'?'#e6f7ff':'#f5f5f5') + ';color:' + (tab==='send'?'#096dd9':'#555') + ';border-radius:8px 8px 0 0;cursor:pointer">';
+  html += 'ðŸ“‹ 1. Kirim dari Komputer 1';
+  html += '</button>';
+  html += '<button type="button" onclick="renderMultiPcSyncModalBody(\'receive\')" style="flex:1;padding:10px 14px;font-size:13.5px;font-weight:700;border:none;border-bottom:3px solid ' + (tab==='receive'?'#52c41a':'transparent') + ';background:' + (tab==='receive'?'#f6ffed':'#f5f5f5') + ';color:' + (tab==='receive'?'#237804':'#555') + ';border-radius:8px 8px 0 0;cursor:pointer">';
+  html += 'ðŸ“¥ 2. Terima di Komputer 2 & 3';
+  html += '</button>';
+  html += '<button type="button" onclick="renderMultiPcSyncModalBody(\'cloud\')" style="flex:1;padding:10px 14px;font-size:13.5px;font-weight:700;border:none;border-bottom:3px solid ' + (tab==='cloud'?'#722ed1':'transparent') + ';background:' + (tab==='cloud'?'#f9f0ff':'#f5f5f5') + ';color:' + (tab==='cloud'?'#531dab':'#555') + ';border-radius:8px 8px 0 0;cursor:pointer">';
+  html += 'â˜ï¸ 3. Pengaturan Cloud Supabase';
+  html += '</button>';
+  html += '</div>';
+
+  if(tab === 'send'){
+    // TAB 1: KIRIM DARI KOMPUTER 1
+    html += '<div style="background:#fff;border:1.5px solid #91d5ff;border-radius:12px;padding:18px">';
+    html += '<h3 style="margin:0 0 6px;color:#096dd9;font-size:16px">Bagikan Data Terbaru dari Komputer Ini</h3>';
+    html += '<p style="margin:0 0 14px;font-size:13px;color:#444;line-height:1.5">';
+    html += 'Gunakan menu ini setelah Anda selesai input/edit data di <b>' + esc(curDevice) + '</b>. Pilih salah satu cara tercepat di bawah ini untuk mengirim data ke Komputer 2 atau Komputer 3:';
+    html += '</p>';
+
+    html += '<div style="display:flex;flex-direction:column;gap:12px">';
+    
+    // Opsi A: Salin Kode
+    html += '<div style="border:1.5px solid #52c41a;background:#f6ffed;border-radius:10px;padding:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">';
+    html += '<div>';
+    html += '<h4 style="margin:0 0 2px;color:#135200;font-size:14.5px">Cara Tercepat: 1-Klik Salin Kode Sinkronisasi</h4>';
+    html += '<small style="color:#274933">Salin kode teks dan kirimkan via WhatsApp Web, Telegram, atau Chat ke Komputer 2/3.</small>';
+    html += '</div>';
+    html += '<button type="button" onclick="copySyncCodeToClipboard()" style="background:#237804;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:13.5px">';
+    html += 'ðŸ“‹ Salin Kode Sinkronisasi';
+    html += '</button>';
+    html += '</div>';
+
+    // Opsi B: Unduh File JSON
+    html += '<div style="border:1.5px solid #1890ff;background:#e6f7ff;border-radius:10px;padding:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">';
+    html += '<div>';
+    html += '<h4 style="margin:0 0 2px;color:#003a8c;font-size:14.5px">Cara Offline / Flashdisk: Unduh File Sinkron (.json)</h4>';
+    html += '<small style="color:#002766">Simpan file ke Flashdisk atau Folder Bersama (LAN) untuk dibuka di Komputer 2/3.</small>';
+    html += '</div>';
+    html += '<button type="button" onclick="downloadSyncFile()" style="background:#096dd9;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:13.5px">';
+    html += 'ðŸ’¾ Unduh File Sinkron (.json)';
+    html += '</button>';
+    html += '</div>';
+
+    html += '</div>';
+    html += '</div>';
+  } else if(tab === 'receive'){
+    // TAB 2: TERIMA DI KOMPUTER 2 & 3
+    html += '<div style="background:#fff;border:1.5px solid #b7eb8f;border-radius:12px;padding:18px">';
+    html += '<h3 style="margin:0 0 6px;color:#237804;font-size:16px">Terapkan Data Terbaru di Komputer Ini (' + esc(curDevice) + ')</h3>';
+    html += '<p style="margin:0 0 12px;font-size:13px;color:#444;line-height:1.5">';
+    html += 'Buka menu ini di <b>Komputer 2</b> atau <b>Komputer 3</b>. Tempelkan kode yang disalin dari Komputer 1 pada kotak di bawah, lalu klik <b>Terapkan Sinkronisasi</b>:';
+    html += '</p>';
+
+    html += '<textarea id="syncInputCodeBox" rows="4" placeholder="Tempel (Paste / Ctrl+V) kode sinkronisasi dari Komputer 1 di sini..." style="width:100%;box-sizing:border-box;border:1.5px solid #adc6ff;border-radius:8px;padding:10px;font-family:monospace;font-size:12px;margin-bottom:12px;resize:vertical"></textarea>';
+
+    html += '<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:space-between">';
+    html += '<button type="button" onclick="applySyncCodeFromInputBox()" style="background:#237804;color:#fff;border:none;padding:11px 24px;border-radius:8px;font-weight:700;cursor:pointer;font-size:14px;box-shadow:0 2px 8px rgba(35,120,4,.3)">';
+    html += 'âš¡ Terapkan Sinkronisasi ke ' + esc(curDevice);
+    html += '</button>';
+
+    html += '<label style="display:inline-flex;align-items:center;gap:8px;background:#f0f5ff;border:1.5px dashed #1890ff;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:13px;color:#096dd9;font-weight:600">';
+    html += 'ðŸ“ Atau Pilih File Sinkron (.json)';
+    html += '<input type="file" accept=".json" onchange="handleSyncFileInput(this)" style="display:none">';
+    html += '</label>';
+    html += '</div>';
+
+    html += '<div style="margin-top:14px;padding:10px 12px;background:#fffbe6;border:1px solid #ffe58f;border-radius:8px;font-size:12px;color:#ad6800">';
+    html += '<b>Keamanan Terjamin:</b> Sebelum data diterapkan, aplikasi otomatis membuat snapshot cadangan data lokal Anda. Anda dapat mengembalikannya kapan saja jika diperlukan.';
+    html += '</div>';
+
+    html += '</div>';
+  } else if(tab === 'cloud'){
+    // TAB 3: PENGATURAN SUPABASE
+    html += '<div style="background:#fff;border:1.5px solid #d3adf7;border-radius:12px;padding:18px">';
+    html += '<h3 style="margin:0 0 6px;color:#531dab;font-size:16px">Pengaturan Koneksi Supabase Cloud (Otomatis)</h3>';
+    html += '<p style="margin:0 0 12px;font-size:13px;color:#444;line-height:1.5">';
+    html += 'Jika madrasah memiliki akun Supabase pribadi, Anda dapat memasukkan URL Proyek dan Anon Key di bawah ini agar sinkronisasi data antar komputer berjalan otomatis secara realtime:';
+    html += '</p>';
+
+    html += '<div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px">';
+    html += '<div>';
+    html += '<label style="display:block;font-size:12px;font-weight:bold;color:#333;margin-bottom:3px">Supabase Project URL:</label>';
+    html += '<input type="text" id="customSupabaseUrlInput" value="' + esc(curCustomUrl) + '" placeholder="https://your-project.supabase.co" style="width:100%;box-sizing:border-box;border:1.5px solid #d9d9d9;border-radius:7px;padding:8px 10px;font-size:13px">';
+    html += '</div>';
+
+    html += '<div>';
+    html += '<label style="display:block;font-size:12px;font-weight:bold;color:#333;margin-bottom:3px">Supabase Anon / Publishable Key:</label>';
+    html += '<input type="text" id="customSupabaseKeyInput" value="' + esc(curCustomKey) + '" placeholder="sb_publishable_... atau eyJhbGci..." style="width:100%;box-sizing:border-box;border:1.5px solid #d9d9d9;border-radius:7px;padding:8px 10px;font-size:13px">';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">';
+    html += '<button type="button" onclick="testAndSaveCustomSupabase()" style="background:#722ed1;color:#fff;border:none;padding:9px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:13px">';
+    html += 'ðŸ”Œ Tes Koneksi & Simpan Pengaturan';
+    html += '</button>';
+    html += '<button type="button" class="secondary" onclick="resetSupabaseSettingsToDefault()" style="padding:9px 16px;border-radius:8px;font-size:13px">';
+    html += 'ðŸ”„ Reset Pengaturan';
+    html += '</button>';
+    html += '</div>';
+
+    html += '<div style="margin-top:14px;padding:10px 12px;background:#f9fbf9;border:1px solid #cce5d5;border-radius:8px;font-size:12px;color:#274933;line-height:1.45">';
+    html += '<b>Tips:</b> Jika Supabase belum dikonfigurasi, Anda tetap dapat menyinkronkan data 100% lancar menggunakan <b>Tab 1 (Salin Kode)</b> dan <b>Tab 2 (Terima Kode)</b> tanpa perlu internet maupun setup database!';
+    html += '</div>';
+
+    html += '</div>';
+  }
+
+  html += '</div>';
+  body.innerHTML = html;
+}
+
+// 4. Salin Kode Sinkronisasi ke Clipboard
+function generateSyncCodeString(){
+  let payload = {
+    app: 'administrasi_asesmen_madrasah',
+    version: 4,
+    timestamp: new Date().toISOString(),
+    device: getDeviceName(),
+    data: db
+  };
+  let json = JSON.stringify(payload);
+  try{
+    return 'PKSSYNC:' + btoa(unescape(encodeURIComponent(json)));
+  }catch(e){
+    return json;
+  }
+}
+
+function copySyncCodeToClipboard(){
+  let code = generateSyncCodeString();
+  let ok = false;
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(code).then(()=>{
+      showToast('Kode Sinkronisasi Data berhasil disalin ke Clipboard! Silakan kirimkan ke Komputer 2/3.', 'success', 5000);
+    }).catch(()=>{
+      fallbackCopyTextToClipboard(code);
+    });
+    return;
+  }
+  fallbackCopyTextToClipboard(code);
+}
+
+function fallbackCopyTextToClipboard(text){
+  let ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try{
+    document.execCommand('copy');
+    showToast('Kode Sinkronisasi Data berhasil disalin ke Clipboard! Silakan kirimkan ke Komputer 2/3.', 'success', 5000);
+  }catch(e){
+    prompt('Salin kode sinkronisasi berikut secara manual (Ctrl+C):', text);
+  }
+  document.body.removeChild(ta);
+}
+
+// 5. Unduh File Sinkron (.json)
+function downloadSyncFile(){
+  let payload = {
+    app: 'administrasi_asesmen_madrasah',
+    version: 4,
+    timestamp: new Date().toISOString(),
+    device: getDeviceName(),
+    data: db
+  };
+  let blob = new Blob([JSON.stringify(payload, null, 2)], {type: 'application/json'});
+  let url = URL.createObjectURL(blob);
+  let a = document.createElement('a');
+  let dStr = new Date().toISOString().slice(0, 10);
+  let devClean = getDeviceName().replace(/[^a-zA-Z0-9]/g, '_');
+  a.href = url;
+  a.download = 'Sinkron_Asesmen_MTS_Wangon_' + devClean + '_' + dStr + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('File sinkronisasi berhasil diunduh. Salin file ini ke Komputer 2/3 via flashdisk/LAN.', 'success', 4000);
+}
+
+// 6. Terapkan Sinkronisasi dari Kode / File
+function applySyncCodeFromInputBox(){
+  let box = document.getElementById('syncInputCodeBox');
+  if(!box) return;
+  applySyncCodeString(box.value);
+}
+
+function handleSyncFileInput(inputEl){
+  let f = inputEl && inputEl.files && inputEl.files[0];
+  if(!f) return;
+  let reader = new FileReader();
+  reader.onload = ()=>{
+    applySyncCodeString(reader.result);
+    inputEl.value = '';
+  };
+  reader.readAsText(f);
+}
+
+function applySyncCodeString(rawInput){
+  let text = String(rawInput || '').trim();
+  if(!text){
+    showToast('Tempel kode sinkronisasi atau pilih file .json terlebih dahulu.', 'warning', 3500);
+    return false;
+  }
+
+  let parsedDb = null;
+  let senderDevice = 'Komputer Pengirim';
+  let senderTime = '';
+
+  try{
+    let jsonText = text;
+    if(text.startsWith('PKSSYNC:')){
+      let b64 = text.substring(8);
+      jsonText = decodeURIComponent(escape(atob(b64)));
+    }
+    let parsedObj = JSON.parse(jsonText);
+    if(parsedObj && parsedObj.data && Array.isArray(parsedObj.data.students)){
+      parsedDb = parsedObj.data;
+      senderDevice = parsedObj.device || senderDevice;
+      senderTime = parsedObj.timestamp ? new Date(parsedObj.timestamp).toLocaleString('id-ID') : '';
+    } else if(parsedObj && Array.isArray(parsedObj.students)){
+      parsedDb = parsedObj;
+    }
+  }catch(err){
+    console.warn('Sync parse error:', err);
+    showToast('Format kode tidak valid. Pastikan seluruh teks kode tersalin secara utuh.', 'danger', 4500);
+    return false;
+  }
+
+  if(!parsedDb || !Array.isArray(parsedDb.students) || parsedDb.students.length === 0){
+    showToast('Data sinkronisasi tidak valid atau tidak memiliki data siswa.', 'danger', 4500);
+    return false;
+  }
+
+  let sCount = parsedDb.students.length;
+  let rCount = (parsedDb.rooms || []).length;
+
+  let msg = 'Terapkan Sinkronisasi Data dari ' + senderDevice + '?\n\n' +
+            '- Asal Data: ' + senderDevice + (senderTime ? ' (' + senderTime + ')' : '') + '\n' +
+            '- Jumlah Siswa: ' + sCount + ' siswa\n' +
+            '- Jumlah Ruang: ' + rCount + ' ruang\n\n' +
+            'Data di ' + getDeviceName() + ' akan diperbarui sesuai data terbaru dari ' + senderDevice + '.\n' +
+            'Snapshot cadangan lokal akan dibuat otomatis untuk keamanan.';
+
+  if(!confirm(msg)) return false;
+
+  // Buat safety snapshot lokal sebelum tertimpa
+  try{
+    localStorage.setItem('administrasi_asesmen_safety_prev', JSON.stringify({
+      timestamp: new Date().toISOString(),
+      device: getDeviceName(),
+      data: db
+    }));
+  }catch(e){}
+
+  // Terapkan data baru
+  let normalized = typeof normalizeLoadedCloudDb === 'function' ? normalizeLoadedCloudDb(parsedDb) : null;
+  db = normalized || parsedDb;
+  save();
+  if(typeof saveCloudNow === 'function') saveCloudNow(true);
+
+  render(currentPage || 'dashboard');
+  closeMultiPcSyncModal();
+  showToast('Sinkronisasi Sukses! Data dari ' + senderDevice + ' berhasil diterapkan (' + sCount + ' Siswa, ' + rCount + ' Ruang).', 'success', 5000);
+  return true;
+}
+
+// 7. Pengujian & Simpan Supabase Kustom
+async function testAndSaveCustomSupabase(){
+  let urlEl = document.getElementById('customSupabaseUrlInput');
+  let keyEl = document.getElementById('customSupabaseKeyInput');
+  let url = (urlEl?.value || '').trim();
+  let key = (keyEl?.value || '').trim();
+
+  if(!url || !key){
+    showToast('URL dan Anon Key Supabase wajib diisi.', 'warning');
+    return;
+  }
+  if(!url.startsWith('https://')){
+    showToast('URL Supabase harus diawali dengan https://', 'warning');
+    return;
+  }
+
+  showToast('Menguji koneksi ke Supabase Cloud...', 'info', 3000);
+  try{
+    if(!window.supabase || !window.supabase.createClient){
+      throw new Error('Library Supabase-JS belum termuat di browser.');
+    }
+    let testClient = window.supabase.createClient(url, key);
+    let { data, error } = await testClient.from('administrasi_asesmen_state').select('updated_at').limit(1);
+    if(error) throw error;
+
+    localStorage.setItem('supabase_custom_url', url);
+    localStorage.setItem('supabase_custom_key', key);
+    showToast('Koneksi Supabase Berhasil! Pengaturan disimpan. Memuat ulang aplikasi...', 'success', 4000);
+    setTimeout(() => { location.reload(); }, 1200);
+  }catch(err){
+    alert('Gagal terhubung ke Supabase Cloud:\n\n' + (err?.message || err) + '\n\nPastikan:\n1. URL dan Key benar\n2. Tabel "administrasi_asesmen_state" sudah dibuat di SQL Editor Supabase.');
+  }
+}
+
+function resetSupabaseSettingsToDefault(){
+  if(!confirm('Kembalikan pengaturan Supabase ke konfigurasi default?')) return;
+  localStorage.removeItem('supabase_custom_url');
+  localStorage.removeItem('supabase_custom_key');
+  showToast('Pengaturan Supabase dikembalikan ke default. Memuat ulang aplikasi...', 'info', 3000);
+  setTimeout(() => { location.reload(); }, 1000);
+}
+
 // FUNGSI UTAMA STARTUP: LANGSUNG BUKA APLIKASI TANPA USERNAME / PASSWORD
 async function checkLogin(){
  try{
@@ -14761,6 +15181,12 @@ async function checkLogin(){
   if(scr) scr.style.display = 'none';
  }catch(e){
   console.warn('checkLogin pre-render error:', e);
+ }
+
+  try{
+  ensureMasterDatabaseInitialized();
+ }catch(e){
+  console.warn('ensureMasterDatabaseInitialized error:', e);
  }
 
  try{
@@ -22593,6 +23019,32 @@ function backup(){
  <p style="margin:0;font-size:13px;color:#274933">Aplikasi dapat dibuka langsung di Komputer 1, 2, dan 3 tanpa perlu mengingat email atau password sehingga tidak membingungkan.</p>
  </div>
  <span class="device-badge" onclick="changeDeviceNamePrompt()" style="font-size:13px;padding:6px 14px">Komputer Ini: <b>${esc(curDevice)}</b></span>
+ </div>
+
+  <!-- KARTU UTAMA SINKRONISASI 1-KLIK 3 KOMPUTER -->
+ <div style="background:linear-gradient(135deg,#e6f7ff 0%,#f0f5ff 100%);border:2px solid #1890ff;border-radius:14px;padding:18px;margin-bottom:16px;box-shadow:0 4px 14px rgba(24,144,255,.15)">
+ <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px">
+ <div>
+ <h3 style="margin:0 0 4px;color:#003a8c;font-size:17px;display:flex;align-items:center;gap:8px">
+ <span style="font-size:22px">ðŸ”„</span> <b>Sinkronisasi 1-Klik Antar Komputer (Komputer 1, 2, dan 3)</b>
+ </h3>
+ <p style="margin:0;font-size:13px;color:#002766">Kirim hasil input/edit dari Komputer 1 ke Komputer 2 atau Komputer 3 secara instan tanpa perlu akun cloud.</p>
+ </div>
+ <button type="button" onclick="openMultiPcSyncModal()" style="background:#096dd9;color:#fff;border:none;padding:10px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:13.5px">
+ Buka Pusat Sinkronisasi...
+ </button>
+ </div>
+ <div style="display:flex;gap:10px;flex-wrap:wrap">
+ <button type="button" onclick="copySyncCodeToClipboard()" style="background:#237804;color:#fff;border:none;padding:9px 18px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer">
+ ðŸ“‹ 1. Salin Kode Data (Di Komputer 1)
+ </button>
+ <button type="button" onclick="openMultiPcSyncModal('receive')" style="background:#1890ff;color:#fff;border:none;padding:9px 18px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer">
+ ðŸ“¥ 2. Tempel Kode Data (Di Komputer 2 &amp; 3)
+ </button>
+ <button type="button" onclick="downloadSyncFile()" style="background:#fff;border:1.5px solid #096dd9;color:#096dd9;padding:9px 18px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer">
+ ðŸ’¾ Unduh File .json
+ </button>
+ </div>
  </div>
 
  <!-- PANEL SINKRONISASI 3 KOMPUTER -->
