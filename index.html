@@ -14460,8 +14460,8 @@ Terapkan Pembagian Otomatis Sekarang
 <span style="font-size:11px;font-weight:600;color:#f7e8ad;background:rgba(0,0,0,.25);padding:4px 8px;border-radius:4px;border:1px solid rgba(200,166,70,.35);white-space:nowrap" title="Pengembang / Admin Sistem">FITRIANTO PUJI P, S.Kom</span>
 <span id="deviceBadge" class="device-badge" onclick="changeDeviceNamePrompt()" title="Klik untuk mengganti identitas komputer ini">Komputer 1</span>
 <select id="assessment" onchange="setAssessment(this.value)">
-<option value="Asesmen Sumatif Tengah Semester Gasal">ASESMEN SUMATIF TENGAH SEMESTER GASAL</option>
-<option value="Asesmen Sumatif Akhir Semester Gasal">ASESMEN SUMATIF AKHIR SEMESTER GASAL</option>
+<option value="Asesmen Sumatif Tengah Semester Ganjil">ASESMEN SUMATIF TENGAH SEMESTER GANJIL</option>
+<option value="Asesmen Sumatif Akhir Semester Ganjil">ASESMEN SUMATIF AKHIR SEMESTER GANJIL</option>
 <option value="Asesmen Sumatif Tengah Semester Genap">ASESMEN SUMATIF TENGAH SEMESTER GENAP</option>
 <option value="Asesmen Sumatif Akhir Tahun">ASESMEN SUMATIF AKHIR TAHUN</option>
 <option value="Ujian Madrasah">UJIAN MADRASAH</option>
@@ -14475,7 +14475,7 @@ Terapkan Pembagian Otomatis Sekarang
 <script>
 window.__EMBEDDED_DATA_PACK__ = window.__EMBEDDED_DATA_PACK__ || null;
 const KEY='administrasi_asesmen_madrasah_v4';
-let db=JSON.parse(localStorage.getItem(KEY)||'null')||{assessment:'Asesmen Sumatif Tengah Semester Gasal',school:{foundation:"LEMBAGA PENDIDIKAN MA'ARIF NU CABANG BANYUMAS",name:"MTs MA\'ARIF NU 1 WANGON",accreditation:'Terakreditasi "A"',nsm:'121233020002',npsn:'20363455',address:'Jalan Raya Timur Wangon Kabupaten Banyumas',phone:'(0281) 513047',postal:'53176',email:'mtsmaarif1wangon@yahoo.co.id',website:'www.mtsmaarifnuwangon.sch.id',head:'',nip:'',logo:''},students:[],rooms:[],schedules:[],supervisors:[],berita:[],compositionPlan:{}};
+let db=JSON.parse(localStorage.getItem(KEY)||'null')||{assessment:'Asesmen Sumatif Tengah Semester Ganjil',school:{foundation:"LEMBAGA PENDIDIKAN MA'ARIF NU CABANG BANYUMAS",name:"MTs MA\'ARIF NU 1 WANGON",accreditation:'Terakreditasi "A"',nsm:'121233020002',npsn:'20363455',address:'Jalan Raya Timur Wangon Kabupaten Banyumas',phone:'(0281) 513047',postal:'53176',email:'mtsmaarif1wangon@yahoo.co.id',website:'www.mtsmaarifnuwangon.sch.id',head:'',nip:'',logo:''},students:[],rooms:[],schedules:[],supervisors:[],berita:[],compositionPlan:{}};
 db.school.foundation=db.school.foundation||"LEMBAGA PENDIDIKAN MA'ARIF NU CABANG BANYUMAS";
 db.school.name="MTs MA\'ARIF NU 1 WANGON";
 db.school.accreditation=db.school.accreditation||'Terakreditasi "A"';
@@ -14632,7 +14632,7 @@ function normalizeLoadedCloudDb(value){
  value.supervisorScheduleOverrides=value.supervisorScheduleOverrides||{};
  value.savedAssessmentSchedule=value.savedAssessmentSchedule||null;
  value.savedSupervisorSchedule=value.savedSupervisorSchedule||null;
- value.assessment=value.assessment||'Asesmen Sumatif Tengah Semester Gasal';
+ value.assessment=value.assessment||'Asesmen Sumatif Tengah Semester Ganjil';
  return value;
 }
 
@@ -14909,6 +14909,10 @@ function restoreSafetyPrevSnapshot(){
 // 1. Inisialisasi Otomatis Data Master saat Buka di Komputer Baru (Komputer 2 / 3)
 function ensureMasterDatabaseInitialized(){
   let isChanged = false;
+  if(db.assessment && /gasal/i.test(db.assessment)){
+    db.assessment = db.assessment.replace(/gasal/gi, m => m === 'GASAL' ? 'GANJIL' : (m === 'Gasal' ? 'Ganjil' : 'ganjil'));
+    isChanged = true;
+  }
   if(window.__EMBEDDED_DATA_PACK__ && window.__EMBEDDED_DATA_PACK__.db){
     try{
       let emb = window.__EMBEDDED_DATA_PACK__;
@@ -15532,7 +15536,9 @@ function participantNo(room,pos){
  return manual||participantNoByStudent(s);
 }
 function assessmentDisplay(value=db.assessment){
- return String(value||'').toLocaleUpperCase('id-ID');
+ let str = String(value||'');
+ if(/gasal/i.test(str)) str = str.replace(/gasal/gi, m => m === 'GASAL' ? 'GANJIL' : (m === 'Gasal' ? 'Ganjil' : 'ganjil'));
+ return str.toLocaleUpperCase('id-ID');
 }
 function setAssessment(x){db.assessment=x;save();render('dashboard')}
 const pages=[['dashboard','Dashboard'],['profile','Identitas Madrasah'],['students','1. Data Siswa'],['rooms','2. Jumlah Siswa tiap Ruang'],['participants','3. Pembagian Ruang Peserta'],['roomDistributionTable','Daftar Pembagian Ruang Asesmen'],['seats','4. Denah Tempat Duduk'],['participantList','5. Daftar Peserta'],['deskNumbers','6. Nomor Meja Peserta'],['participantCards','7. Kartu Peserta'],['schedule','8. Jadwal Asesmen'],['supervisors','9. Jadwal Pengawas'],['attendance','10. Daftar Hadir Peserta'],['attendanceSup','11. Daftar Hadir Pengawas'],['berita','12. Berita Acara'],['print','13. Print / Cetak'],['backup','Backup Data']];
@@ -19530,7 +19536,7 @@ db.supervisorFiles=db.supervisorFiles||[];
  <div class="card">
  <h3>Upload File Jadwal</h3>
  <div class="grid">
- <div><label>Judul/Keterangan File</label><input id="scheduleFileTitle" placeholder="Contoh: Jadwal ASTS Gasal"></div>
+ <div><label>Judul/Keterangan File</label><input id="scheduleFileTitle" placeholder="Contoh: Jadwal ASTS Ganjil"></div>
  <div><label>Pilih File Jadwal</label><input id="scheduleUpload" type="file" accept=".xlsx,.xls,.csv,.pdf,.doc,.docx"></div>
  </div>
  <div class="actions"><button onclick="uploadScheduleFile(this)"> Upload & Baca Jadwal Otomatis</button></div>
@@ -22291,7 +22297,7 @@ function printSupervisorMatrix(){
  syncFlatSupervisors();
  document.getElementById('app').innerHTML=`<div class="supervisor-print-page supervisor-page-one supervisor-29-print supervisor-no-kop-page-one">
  <div class="print-title supervisor-main-title">
- <div>JADWAL PENGAWAS ASESMEN SUMATIF TENGAH SEMESTER GASAL</div>
+ <div>JADWAL PENGAWAS ASESMEN SUMATIF TENGAH SEMESTER GANJIL</div>
  <div class="supervisor-main-title-sub">MTs MA'ARIF NU 1 WANGON TAHUN AJARAN 2026/2027</div>
  </div>
  ${supervisorMatrixTable(true)}
@@ -23829,7 +23835,7 @@ function printScheduleDoc(){
  let col=schedulePrintColumnWidths();
  document.getElementById('app').innerHTML=`<div class="print-page schedule-print-page schedule-fixed-print-page schedule-no-kop-print">
  <div class="schedule-custom-title" style="width:${col.total}mm;max-width:${col.total}mm;">
- <div>Jadwal Asesmen Sumatif Tengah Semester Gasal</div>
+ <div>Jadwal Asesmen Sumatif Tengah Semester Ganjil</div>
  <div>MTs Ma'arif NU 1 Wangon</div>
  <div>Tahun Ajaran 2026/2027</div>
  </div>
