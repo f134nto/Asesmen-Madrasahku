@@ -15540,7 +15540,12 @@ function assessmentDisplay(value=db.assessment){
  if(/gasal/i.test(str)) str = str.replace(/gasal/gi, m => m === 'GASAL' ? 'GANJIL' : (m === 'Gasal' ? 'Ganjil' : 'ganjil'));
  return str.toLocaleUpperCase('id-ID');
 }
-function setAssessment(x){db.assessment=x;save();render('dashboard')}
+function setAssessment(x){
+  db.assessment=x;
+  save();
+  render(currentPage||'dashboard');
+  if(typeof showToast==='function') showToast('Pengaturan asesmen diubah: ' + esc(assessmentDisplay()), 'success', 3500);
+}
 const pages=[['dashboard','Dashboard'],['profile','Identitas Madrasah'],['students','1. Data Siswa'],['rooms','2. Jumlah Siswa tiap Ruang'],['participants','3. Pembagian Ruang Peserta'],['roomDistributionTable','Daftar Pembagian Ruang Asesmen'],['seats','4. Denah Tempat Duduk'],['participantList','5. Daftar Peserta'],['deskNumbers','6. Nomor Meja Peserta'],['participantCards','7. Kartu Peserta'],['schedule','8. Jadwal Asesmen'],['supervisors','9. Jadwal Pengawas'],['attendance','10. Daftar Hadir Peserta'],['attendanceSup','11. Daftar Hadir Pengawas'],['berita','12. Berita Acara'],['print','13. Print / Cetak'],['backup','Backup Data']];
 function menu(active){menuEl=document.getElementById('menu');menuEl.innerHTML=pages.map(p=>`<button class="${active===p[0]?'active':''}" onclick="render('${p[0]}')">${p[1]}</button>`).join('')}function migrateParticipantNumberOverridesToHyphen(){
  db.participantNumberOverrides=db.participantNumberOverrides||{};
@@ -19142,7 +19147,7 @@ function deskNumbers(){
  <h3>Lembar ${page.pageNo} dari ${page.totalPages}</h3>
  <div class="desknum-grid desknum-grid-16">
  ${page.entries.map(entry=>`<div class="desknum-card desknum-card-16">
- <div class="exam">ASESMEN SUMATIF TENGAH SEMESTER</div>
+ <div class="exam">${esc(assessmentDisplay())}</div>
  <div class="school">MTs MA'ARIF NU 1 WANGON</div>
  <div class="participant">${esc(entry.participantNo)}</div>
  <div class="name">${esc(entry.student.name)}</div>
@@ -19162,7 +19167,7 @@ function deskPrintCard(item){
  let longName=String(s.name||'').trim().length>23;
  let veryLong=String(s.name||'').trim().length>32;
  return `<div class="desk16-card ${longName?'desk16-long-name':''} ${veryLong?'desk16-very-long-name':''}">
- <div class="desk16-line desk16-title">ASESMEN SUMATIF TENGAH SEMESTER</div>
+ <div class="desk16-line desk16-title">${esc(assessmentDisplay())}</div>
  <div class="desk16-line desk16-school">MTs MA'ARIF NU 1 WANGON</div>
  <div class="desk16-divider"></div>
  <div class="desk16-number">${esc(item.participantNo||participantNo(item.roomNo,item.roomIndex||1))}</div>
@@ -19202,7 +19207,7 @@ function exportDeskNumbers(){
  'Kelas':entry.className||'',
  'Ruang':deskCardRoomLabel(entry),
  'No Ruang':entry.roomNo,
- 'Asesmen':'ASESMEN SUMATIF TENGAH SEMESTER'
+ 'Asesmen': assessmentDisplay() || 'ASESMEN'
  }));
  });
  let ws=XLSX.utils.json_to_sheet(rows),wb=XLSX.utils.book_new();
@@ -19280,7 +19285,7 @@ function deskWordCell(item){
  <w:right w:w="70" w:type="dxa"/>
  </w:tcMar>
  </w:tcPr>
- ${deskWordParagraph('ASESMEN SUMATIF TENGAH SEMESTER',16,true,0,20,false)}
+ ${deskWordParagraph(assessmentDisplay()||'ASESMEN',16,true,0,20,false)}
  ${deskWordParagraph("MTs MA'ARIF NU 1 WANGON",16,true,0,30,false)}
  ${deskWordParagraph('',1,false,0,20,true)}
  ${deskWordParagraph(number,34,true,95,40,false)}
@@ -19972,7 +19977,10 @@ function deleteSchedule(id){db.schedules=db.schedules.filter(x=>x.id!==id);save(
 
 
 function supervisorTitleValue(){
- return db.supervisorTitle||`JADWAL PENGAWAS ${assessmentDisplay()}`;
+  if(db.supervisorTitle && db.supervisorTitle !== 'JADWAL PENGAWAS ASESMEN SUMATIF TENGAH SEMESTER GANJIL' && !/tengah semester/i.test(db.supervisorTitle)){
+    return db.supervisorTitle;
+  }
+  return `JADWAL PENGAWAS ${assessmentDisplay()}`;
 }
 function supScheduleValue(s,field){
  let o=(db.supervisorScheduleOverrides||{})[s.id]||{};
@@ -22297,8 +22305,8 @@ function printSupervisorMatrix(){
  syncFlatSupervisors();
  document.getElementById('app').innerHTML=`<div class="supervisor-print-page supervisor-page-one supervisor-29-print supervisor-no-kop-page-one">
  <div class="print-title supervisor-main-title">
- <div>JADWAL PENGAWAS ASESMEN SUMATIF TENGAH SEMESTER GANJIL</div>
- <div class="supervisor-main-title-sub">MTs MA'ARIF NU 1 WANGON TAHUN AJARAN 2026/2027</div>
+ <div>JADWAL PENGAWAS ${esc(assessmentDisplay())}</div>
+ <div class="supervisor-main-title-sub">MTs MA'ARIF NU 1 WANGON TAHUN AJARAN ${esc(getSchoolYear() || '2026/2027')}</div>
  </div>
  ${supervisorMatrixTable(true)}
  </div>
@@ -23835,9 +23843,9 @@ function printScheduleDoc(){
  let col=schedulePrintColumnWidths();
  document.getElementById('app').innerHTML=`<div class="print-page schedule-print-page schedule-fixed-print-page schedule-no-kop-print">
  <div class="schedule-custom-title" style="width:${col.total}mm;max-width:${col.total}mm;">
- <div>Jadwal Asesmen Sumatif Tengah Semester Ganjil</div>
- <div>MTs Ma'arif NU 1 Wangon</div>
- <div>Tahun Ajaran 2026/2027</div>
+ <div>JADWAL ${esc(assessmentDisplay())}</div>
+ <div>MTs MA'ARIF NU 1 WANGON</div>
+ <div>TAHUN AJARAN ${esc(getSchoolYear() || '2026/2027')}</div>
  </div>
  <table class="schedule-fixed-table schedule-auto-width-table" style="-schedule-table-width:${col.total}mm;-schedule-time-width:${col.time}mm;-schedule-allocation-width:${col.allocation}mm;-schedule-subject-width:${col.subject}mm;-schedule-note-width:${col.note}mm;">
  <colgroup>
@@ -25417,7 +25425,7 @@ function exportGanjil29RoomsExcel(){
 
   // Sheet 1: Pembagian Ruang Peserta (G4:G32 & H4:H32)
   let headerRows = [
-    ['PEMBAGIAN RUANG ASESMEN SUMATIF SEMESTER GANJIL'],
+    ['PEMBAGIAN RUANG ' + (assessmentDisplay() || 'ASESMEN')],
     ["MTs MA'ARIF NU 1 WANGON TAHUN AJARAN " + (typeof getSchoolYear === 'function' ? getSchoolYear() : '2026/2027')],
     ['Total Siswa: 1.023 (Kelas 7: 250, Kelas 8: 364, Kelas 9: 409)'],
     []
@@ -25506,7 +25514,7 @@ function exportGanjil29RoomsExcel(){
 
   // Sheet 2: Daftar Lengkap 1.023 Siswa dengan Penempatan Ruang
   let studentRows = [
-    ['DAFTAR PESERTA ASESMEN SUMATIF SEMESTER GANJIL'],
+    ['DAFTAR PESERTA ' + (assessmentDisplay() || 'ASESMEN')],
     ["MTs MA'ARIF NU 1 WANGON"],
     [],
     ['No', 'NIS', 'Nama Siswa', 'L/P', 'Kelas', 'Ruang Asesmen', 'Lokasi Ruangan', 'No Peserta', 'No Meja']
