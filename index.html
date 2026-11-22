@@ -14912,6 +14912,13 @@ function ensureMasterDatabaseInitialized(){
     db.assessment = db.assessment.replace(/gasal/gi, m => m === 'GASAL' ? 'GANJIL' : (m === 'Gasal' ? 'Ganjil' : 'ganjil'));
     isChanged = true;
   }
+  if(!db.participantCodeSettings){
+    db.participantCodeSettings = {
+      7: { mode: 'class', code: '07', sep: '-', digits: 3, numMode: 'cumulative', start: 1 },
+      8: { mode: 'class', code: '08', sep: '-', digits: 3, numMode: 'cumulative', start: 1 },
+      9: { mode: 'class', code: '09', sep: '-', digits: 3, numMode: 'cumulative', start: 1 }
+    };
+  }
   if(db.school){
     if(!db.school.committeeChair || db.school.committeeChair === 'FITRIANTO PUJI P, S.Kom' || !db.school.committeeChair.trim()){
       db.school.committeeChair = 'Latifatul Munawaroh, S.Pd.I., M.Pd';
@@ -15449,14 +15456,177 @@ function getStudentGradeSerial(student){
  return 1;
 }
 
+let _cachedClassSerials = null;
+function getClassSerialMap(){
+ if(_cachedClassSerials && _cachedClassSerials.studentsLength === (db.students||[]).length){
+   return _cachedClassSerials.map;
+ }
+ let map = new Map();
+ let byClass = {};
+ (db.students||[]).forEach(s => {
+   let c = String(s.class || '').trim().toUpperCase();
+   if(!byClass[c]) byClass[c] = [];
+   byClass[c].push(s);
+ });
+ Object.keys(byClass).sort((a,b)=>a.localeCompare(b, undefined, {numeric:true})).forEach(c => {
+   let list = byClass[c].sort((a,b)=>sortStudent(a,b));
+   list.forEach((s, idx) => {
+     let serial = idx + 1;
+     if(s.id) map.set('id_' + s.id, serial);
+     if(s.nis) map.set('nis_' + s.nis, serial);
+     map.set('name_' + String(s.name).trim().toUpperCase() + '_' + c, serial);
+   });
+ });
+ _cachedClassSerials = { studentsLength: (db.students||[]).length, map };
+ return map;
+}
+
+function getStudentClassSerial(student){
+ if(!student) return 1;
+ let map = getClassSerialMap();
+ if(student.id && map.has('id_' + student.id)) return map.get('id_' + student.id);
+ if(student.nis && map.has('nis_' + student.nis)) return map.get('nis_' + student.nis);
+ let key = 'name_' + String(student.name||'').trim().toUpperCase() + '_' + String(student.class||'').trim().toUpperCase();
+ if(map.has(key)) return map.get(key);
+ return Number(student.order) || 1;
+}
+
 function participantSerialInClass(student){
  return getStudentGradeSerial(student);
 }
 
+function getParticipantCodeSettings(grade){
+ db.participantCodeSettings = db.participantCodeSettings || {};
+ let def = {
+   7: { mode: 'class', code: '07', sep: '-', digits: 3, numMode: 'cumulative', start: 1 },
+   8: { mode: 'class', code: '08', sep: '-', digits: 3, numMode: 'cumulative', start: 1 },
+   9: { mode: 'class', code: '09', sep: '-', digits: 3, numMode: 'cumulative', start: 1 }
+ };
+ let g = String(grade || '7');
+ if(!def[g]) g = '7';
+ let s = db.participantCodeSettings[g] || {};
+ return {
+   mode: s.mode || def[g].mode,
+   code: s.code !== undefined && s.code !== null && String(s.code).trim() !== '' ? String(s.code).trim() : def[g].code,
+   sep: s.sep !== undefined && s.sep !== null ? String(s.sep) : def[g].sep,
+   digits: Number(s.digits) || def[g].digits,
+   numMode: s.numMode || def[g].numMode,
+   start: Number(s.start) || def[g].start
+ };
+}
+
 function participantNoByStudent(student){
  if(!student) return '';
- let kelas = String(student.class||'').trim().toUpperCase();
- return kelas + '-' + String(getStudentGradeSerial(student)).padStart(3, '0');
+ let cls = String(student.class || '').trim().toUpperCase();
+ let grade = (cls.match(/[789]/) || ['7'])[0];
+ let cfg = getParticipantCodeSettings(grade);
+
+ let prefix = '';
+ if(cfg.mode === 'class'){
+   prefix = cls;
+ } else if(cfg.mode === 'code'){
+   prefix = cfg.code || ('0' + grade);
+ } else if(cfg.mode === 'code_class'){
+   prefix = (cfg.code || ('0' + grade)) + (cfg.sep !== undefined ? cfg.sep : '-') + cls;
+ } else if(cfg.mode === 'grade_only'){
+   prefix = grade;
+ } else if(cfg.mode === 'custom'){
+   prefix = cfg.code || '';
+ }
+
+ let num = 1;
+ let offset = (Number(cfg.start) || 1) - 1;
+ if(cfg.numMode === 'cumulative'){
+   num = getStudentGradeSerial(student) + offset;
+ } else if(cfg.numMode === 'class_reset'){
+   num = getStudentClassSerial(student) + offset;
+ } else if(cfg.numMode === 'order'){
+   num = (Number(student.order) || 1) + offset;
+ } else {
+   num = getStudentGradeSerial(student) + offset;
+ }
+
+ let padLen = Math.max(1, Math.min(6, Number(cfg.digits) || 3));
+ let numStr = String(Math.max(1, num)).padStart(padLen, '0');
+
+ if(prefix){
+   return prefix + (cfg.sep !== undefined ? cfg.sep : '-') + numStr;
+ } else {
+   return numStr;
+ }
+}
+
+function getGradeStudents(grade){
+ let g = String(grade);
+ return (db.students||[])
+   .filter(x => (String(x.class||'').match(/[789]/)||[0])[0] === g)
+   .sort((a,b) => {
+     let ca = String(a.class||'').trim().toUpperCase();
+     let cb = String(b.class||'').trim().toUpperCase();
+     if(ca !== cb) return ca.localeCompare(cb, undefined, {numeric:true});
+     return sortStudent(a,b);
+   });
+}
+
+function getParticipantExample(grade, pos = 'first'){
+ let list = getGradeStudents(grade);
+ if(!list.length) return '-';
+ let target = (pos === 'last') ? list[list.length - 1] : list[0];
+ return participantNoByStudent(target);
+}
+
+function describeParticipantCodeMode(grade){
+ let cfg = getParticipantCodeSettings(grade);
+ let g = String(grade);
+ let modeNames = {
+   class: 'Nama Kelas (' + g + 'A, ' + g + 'B...)',
+   code: 'Kode Jenjang (' + cfg.code + ')',
+   code_class: 'Kode + Kelas (' + cfg.code + (cfg.sep || '-') + g + 'A...)',
+   grade_only: 'Angka Tingkat (' + g + ')',
+   custom: 'Kustom (' + cfg.code + ')'
+ };
+ let numNames = {
+   cumulative: 'Urut Berlanjut 1 s.d. ' + getGradeStudents(grade).length,
+   class_reset: 'Reset 001 Tiap Kelas',
+   order: 'Nomor Absen Siswa'
+ };
+ return (modeNames[cfg.mode] || cfg.mode) + ' • ' + (numNames[cfg.numMode] || cfg.numMode);
+}
+
+function applyParticipantCodePreset(presetKey){
+ db.participantCodeSettings = db.participantCodeSettings || {};
+ if(presetKey === 'class_std'){
+   db.participantCodeSettings = {
+     7: { mode: 'class', code: '07', sep: '-', digits: 3, numMode: 'cumulative', start: 1 },
+     8: { mode: 'class', code: '08', sep: '-', digits: 3, numMode: 'cumulative', start: 1 },
+     9: { mode: 'class', code: '09', sep: '-', digits: 3, numMode: 'cumulative', start: 1 }
+   };
+ } else if(presetKey === 'code_only'){
+   db.participantCodeSettings = {
+     7: { mode: 'code', code: '07', sep: '-', digits: 3, numMode: 'cumulative', start: 1 },
+     8: { mode: 'code', code: '08', sep: '-', digits: 3, numMode: 'cumulative', start: 1 },
+     9: { mode: 'code', code: '09', sep: '-', digits: 3, numMode: 'cumulative', start: 1 }
+   };
+ } else if(presetKey === 'code_class'){
+   db.participantCodeSettings = {
+     7: { mode: 'code_class', code: '07', sep: '-', digits: 3, numMode: 'cumulative', start: 1 },
+     8: { mode: 'code_class', code: '08', sep: '-', digits: 3, numMode: 'cumulative', start: 1 },
+     9: { mode: 'code_class', code: '09', sep: '-', digits: 3, numMode: 'cumulative', start: 1 }
+   };
+ } else if(presetKey === 'class_reset'){
+   db.participantCodeSettings = {
+     7: { mode: 'class', code: '07', sep: '-', digits: 3, numMode: 'class_reset', start: 1 },
+     8: { mode: 'class', code: '08', sep: '-', digits: 3, numMode: 'class_reset', start: 1 },
+     9: { mode: 'class', code: '09', sep: '-', digits: 3, numMode: 'class_reset', start: 1 }
+   };
+ }
+ _cachedGradeSerials = null;
+ _cachedClassSerials = null;
+ save();
+ if(typeof showToast === 'function'){
+   showToast('Preset kode nomor peserta berhasil diterapkan ke seluruh dokumen!', 'success', 3500);
+ }
+ render(currentPage || 'rooms');
 }
 
 function normalizeParticipantNumberFormat(value){
@@ -17645,6 +17815,348 @@ function roomStudentControlSummary(){
  </div>`;
 }
 
+function renderParticipantCodeQuickPanel(){
+ let c7 = getParticipantCodeSettings(7);
+ let c8 = getParticipantCodeSettings(8);
+ let c9 = getParticipantCodeSettings(9);
+
+ let ex7First = getParticipantExample(7, 'first');
+ let ex7Last = getParticipantExample(7, 'last');
+ let ex8First = getParticipantExample(8, 'first');
+ let ex8Last = getParticipantExample(8, 'last');
+ let ex9First = getParticipantExample(9, 'first');
+ let ex9Last = getParticipantExample(9, 'last');
+
+ let count7 = getGradeStudents(7).length || 250;
+ let count8 = getGradeStudents(8).length || 364;
+ let count9 = getGradeStudents(9).length || 409;
+
+ return `<div class="card" style="background:#ffffff;border:2px solid #d46b08;border-radius:12px;padding:16px 20px;margin-bottom:18px;box-shadow:0 3px 12px rgba(212,107,8,.08)">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px;border-bottom:1.5px solid #ffd591;padding-bottom:10px">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:22px">🔢</span>
+        <h3 style="margin:0;font-size:16px;color:#873800;font-weight:800">Format & Kode Nomor Urut Peserta Tiap Tingkatan</h3>
+      </div>
+      <p style="margin:4px 0 0;font-size:12.5px;color:#ad4e00">Nomor peserta otomatis dibuat dan terhubung ke seluruh dokumen cetak (Kartu, Denah, Daftar Hadir, Meja). Tiap tingkatan (Kelas 7, 8, dan 9) dapat memiliki kode yang berbeda sesuai kebutuhan madrasah.</p>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button type="button" class="success" onclick="openParticipantCodeModal()" style="font-weight:800;padding:8px 16px;background:#d46b08;color:#fff;border-color:#ad4e00;box-shadow:0 2px 6px rgba(212,107,8,.2)">⚙️ Atur Kode Nomor Urut</button>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(270px, 1fr));gap:12px;margin-bottom:14px">
+    <!-- Tingkat 7 -->
+    <div style="background:#fff7e6;border:1.5px solid #ffd591;border-radius:10px;padding:12px 14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <b style="color:#873800;font-size:14px">Tingkat 7 (7A s.d. 7H)</b>
+        <span style="font-size:11px;background:#ffe7ba;color:#d46b08;padding:2px 8px;border-radius:12px;font-weight:700">${count7} Siswa</span>
+      </div>
+      <div style="font-size:11.5px;color:#595959;margin-bottom:4px">Pola: <b>${describeParticipantCodeMode(7)}</b></div>
+      <div style="background:#ffffff;border:1px dashed #d46b08;border-radius:6px;padding:6px 10px;font-size:13px;font-weight:800;color:#d46b08;display:flex;justify-content:space-between;align-items:center">
+        <span>${ex7First}</span>
+        <span style="font-size:11px;color:#8c8c8c;font-weight:normal">s.d.</span>
+        <span>${ex7Last}</span>
+      </div>
+    </div>
+
+    <!-- Tingkat 8 -->
+    <div style="background:#e6f7ff;border:1.5px solid #91d5ff;border-radius:10px;padding:12px 14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <b style="color:#003a8c;font-size:14px">Tingkat 8 (8A s.d. 8J)</b>
+        <span style="font-size:11px;background:#bae7ff;color:#096dd9;padding:2px 8px;border-radius:12px;font-weight:700">${count8} Siswa</span>
+      </div>
+      <div style="font-size:11.5px;color:#595959;margin-bottom:4px">Pola: <b>${describeParticipantCodeMode(8)}</b></div>
+      <div style="background:#ffffff;border:1px dashed #096dd9;border-radius:6px;padding:6px 10px;font-size:13px;font-weight:800;color:#096dd9;display:flex;justify-content:space-between;align-items:center">
+        <span>${ex8First}</span>
+        <span style="font-size:11px;color:#8c8c8c;font-weight:normal">s.d.</span>
+        <span>${ex8Last}</span>
+      </div>
+    </div>
+
+    <!-- Tingkat 9 -->
+    <div style="background:#f6ffed;border:1.5px solid #b7eb8f;border-radius:10px;padding:12px 14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <b style="color:#135200;font-size:14px">Tingkat 9 (9A s.d. 9K)</b>
+        <span style="font-size:11px;background:#d9f7be;color:#237804;padding:2px 8px;border-radius:12px;font-weight:700">${count9} Siswa</span>
+      </div>
+      <div style="font-size:11.5px;color:#595959;margin-bottom:4px">Pola: <b>${describeParticipantCodeMode(9)}</b></div>
+      <div style="background:#ffffff;border:1px dashed #237804;border-radius:6px;padding:6px 10px;font-size:13px;font-weight:800;color:#237804;display:flex;justify-content:space-between;align-items:center">
+        <span>${ex9First}</span>
+        <span style="font-size:11px;color:#8c8c8c;font-weight:normal">s.d.</span>
+        <span>${ex9Last}</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:#fbfbfb;border:1px solid #f0f0f0;border-radius:8px;padding:8px 12px">
+    <span style="font-size:11.5px;font-weight:700;color:#595959">Pilih Cepat (1-Klik):</span>
+    <button type="button" class="secondary" onclick="applyParticipantCodePreset('class_std')" style="font-size:11.5px;padding:4px 10px;border-radius:4px" title="Kelas 7: 7A-001..7H-250, Kelas 8: 8A-001..8J-364, Kelas 9: 9A-001..9K-409">🎯 Standar Kelas (7A-001 / 8A-001 / 9A-001)</button>
+    <button type="button" class="secondary" onclick="applyParticipantCodePreset('code_only')" style="font-size:11.5px;padding:4px 10px;border-radius:4px" title="Kode Jenjang: 07-001..250, 08-001..364, 09-001..409">🏷️ Kode Jenjang (07-001 / 08-001 / 09-001)</button>
+    <button type="button" class="secondary" onclick="applyParticipantCodePreset('code_class')" style="font-size:11.5px;padding:4px 10px;border-radius:4px" title="Gabungan: 07-7A-001, 08-8A-001, 09-9A-001">🔗 Gabungan (07-7A-001 / 08-8A-001 / 09-9A-001)</button>
+    <button type="button" class="secondary" onclick="applyParticipantCodePreset('class_reset')" style="font-size:11.5px;padding:4px 10px;border-radius:4px" title="Reset tiap kelas mulai 001: 7A-001..032, 7B-001..032, dst">🔄 Reset Tiap Kelas (001 s.d. 032)</button>
+  </div>
+</div>`;
+}
+
+function openParticipantCodeModal(){
+ let old = document.getElementById('participantCodeModalOverlay');
+ if(old) old.remove();
+
+ let html = renderParticipantCodeModalHtml();
+ document.body.insertAdjacentHTML('beforeend', html);
+ updateParticipantCodeModalPreviews();
+}
+
+function closeParticipantCodeModal(){
+ let old = document.getElementById('participantCodeModalOverlay');
+ if(old) old.remove();
+}
+
+function renderParticipantCodeModalHtml(){
+ let c7 = getParticipantCodeSettings(7);
+ let c8 = getParticipantCodeSettings(8);
+ let c9 = getParticipantCodeSettings(9);
+
+ function renderGradeForm(grade, cfg, title, color, bg, border, countStr){
+   let g = String(grade);
+   return `<div style="background:${bg};border:1.5px solid ${border};border-radius:10px;padding:16px;margin-bottom:14px">
+     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+       <b style="color:${color};font-size:15px">${title}</b>
+       <span style="font-size:11.5px;background:#ffffff;color:${color};border:1px solid ${border};padding:2px 10px;border-radius:12px;font-weight:700">${countStr}</span>
+     </div>
+
+     <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(190px, 1fr));gap:10px">
+       <div>
+         <label style="font-size:11.5px;font-weight:700;display:block;margin-bottom:4px">Format Pola Kode</label>
+         <select id="pcm_mode_${g}" style="width:100%;padding:6px 8px;border-radius:6px;border:1px solid #ccc;font-size:12px" onchange="updateParticipantCodeModalPreviews()">
+           <option value="class" ${cfg.mode==='class'?'selected':''}>Nama Kelas (${g}A, ${g}B, ${g}C...)</option>
+           <option value="code" ${cfg.mode==='code'?'selected':''}>Kode Khusus Jenjang (Contoh: 0${g})</option>
+           <option value="code_class" ${cfg.mode==='code_class'?'selected':''}>Kode Jenjang + Kelas (0${g}-${g}A...)</option>
+           <option value="grade_only" ${cfg.mode==='grade_only'?'selected':''}>Angka Tingkat Saja (${g})</option>
+           <option value="custom" ${cfg.mode==='custom'?'selected':''}>Kustom Bebas</option>
+         </select>
+       </div>
+
+       <div>
+         <label style="font-size:11.5px;font-weight:700;display:block;margin-bottom:4px">Teks Kode Khusus</label>
+         <input id="pcm_code_${g}" type="text" value="${esc(cfg.code)}" placeholder="Contoh: 0${g}" style="width:100%;padding:6px 8px;border-radius:6px;border:1px solid #ccc;font-size:12px" oninput="updateParticipantCodeModalPreviews()">
+       </div>
+
+       <div>
+         <label style="font-size:11.5px;font-weight:700;display:block;margin-bottom:4px">Tanda Pemisah</label>
+         <select id="pcm_sep_${g}" style="width:100%;padding:6px 8px;border-radius:6px;border:1px solid #ccc;font-size:12px" onchange="updateParticipantCodeModalPreviews()">
+           <option value="-" ${cfg.sep==='-'?'selected':''}>Strip / Tanda Hubung ( - )</option>
+           <option value="." ${cfg.sep==='.'?'selected':''}>Titik ( . )</option>
+           <option value="/" ${cfg.sep==='/'?'selected':''}>Garis Miring ( / )</option>
+           <option value="" ${cfg.sep===''?'selected':''}>Tanpa Pemisah</option>
+         </select>
+       </div>
+
+       <div>
+         <label style="font-size:11.5px;font-weight:700;display:block;margin-bottom:4px">Jumlah Digit Nomor</label>
+         <select id="pcm_digits_${g}" style="width:100%;padding:6px 8px;border-radius:6px;border:1px solid #ccc;font-size:12px" onchange="updateParticipantCodeModalPreviews()">
+           <option value="3" ${cfg.digits===3?'selected':''}>3 Digit (001, 002...)</option>
+           <option value="4" ${cfg.digits===4?'selected':''}>4 Digit (0001, 0002...)</option>
+           <option value="2" ${cfg.digits===2?'selected':''}>2 Digit (01, 02...)</option>
+         </select>
+       </div>
+
+       <div>
+         <label style="font-size:11.5px;font-weight:700;display:block;margin-bottom:4px">Sistem Nomor Urut</label>
+         <select id="pcm_numMode_${g}" style="width:100%;padding:6px 8px;border-radius:6px;border:1px solid #ccc;font-size:12px" onchange="updateParticipantCodeModalPreviews()">
+           <option value="cumulative" ${cfg.numMode==='cumulative'?'selected':''}>Akumulatif Se-Tingkatan (1 s.d. Total Siswa)</option>
+           <option value="class_reset" ${cfg.numMode==='class_reset'?'selected':''}>Reset Tiap Kelas Mulai 001</option>
+           <option value="order" ${cfg.numMode==='order'?'selected':''}>Sesuai Nomor Absen Siswa (Order)</option>
+         </select>
+       </div>
+
+       <div>
+         <label style="font-size:11.5px;font-weight:700;display:block;margin-bottom:4px">Nomor Awal (Start)</label>
+         <input id="pcm_start_${g}" type="number" min="1" value="${cfg.start||1}" style="width:100%;padding:6px 8px;border-radius:6px;border:1px solid #ccc;font-size:12px" oninput="updateParticipantCodeModalPreviews()">
+       </div>
+     </div>
+
+     <div style="margin-top:10px;padding:8px 12px;background:#ffffff;border:1px solid ${border};border-radius:6px;display:flex;justify-content:space-between;align-items:center">
+       <span style="font-size:12px;color:#595959">Contoh Hasil:</span>
+       <b id="pcm_preview_${g}" style="font-size:13px;color:${color}">Memuat preview...</b>
+     </div>
+   </div>`;
+ }
+
+ return `<div id="participantCodeModalOverlay" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.68);z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box">
+  <div style="background:#ffffff;border-radius:14px;max-width:960px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:0 16px 40px rgba(0,0,0,.35);padding:24px;border-top:6px solid #d46b08;box-sizing:border-box">
+    
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;border-bottom:1.5px solid #f0f0f0;padding-bottom:12px">
+      <div>
+        <h2 style="margin:0 0 4px;font-size:19px;color:#1f1f1f;font-weight:800;display:flex;align-items:center;gap:8px">
+          <span>🔢</span> Pengaturan Kode Nomor Urut Peserta Tiap Tingkatan
+        </h2>
+        <p style="margin:0;font-size:12.5px;color:#595959">Atur pola kode awalan, pemisah, digit, dan sistem nomor urut untuk Kelas 7A–7H, 8A–8J, dan 9A–9K. Tiap tingkatan dapat diatur kodenya secara independen.</p>
+      </div>
+      <button type="button" onclick="closeParticipantCodeModal()" style="background:transparent;border:none;font-size:20px;cursor:pointer;color:#8c8c8c;padding:0 6px">&times;</button>
+    </div>
+
+    <!-- Preset Cepat di dalam Modal -->
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:#fbfbfb;border:1px solid #e8e8e8;border-radius:8px;padding:10px 14px;margin-bottom:16px">
+      <span style="font-size:12px;font-weight:700;color:#1f1f1f">Pilih Preset Cepat:</span>
+      <button type="button" class="secondary" onclick="loadPresetIntoModal('class_std')" style="font-size:11.5px;padding:5px 12px">🎯 Standar Kelas (7A-001 / 8A-001 / 9A-001)</button>
+      <button type="button" class="secondary" onclick="loadPresetIntoModal('code_only')" style="font-size:11.5px;padding:5px 12px">🏷️ Kode Jenjang (07-001 / 08-001 / 09-001)</button>
+      <button type="button" class="secondary" onclick="loadPresetIntoModal('code_class')" style="font-size:11.5px;padding:5px 12px">🔗 Gabungan (07-7A-001 / 08-8A-001 / 09-9A-001)</button>
+      <button type="button" class="secondary" onclick="loadPresetIntoModal('class_reset')" style="font-size:11.5px;padding:5px 12px">🔄 Reset Tiap Kelas (001 s.d. 032)</button>
+    </div>
+
+    ${renderGradeForm(7, c7, 'Tingkat 7 (Kelas 7A s.d. 7H)', '#873800', '#fff7e6', '#ffd591', (getGradeStudents(7).length || 250) + ' Siswa')}
+    ${renderGradeForm(8, c8, 'Tingkat 8 (Kelas 8A s.d. 8J)', '#003a8c', '#e6f7ff', '#91d5ff', (getGradeStudents(8).length || 364) + ' Siswa')}
+    ${renderGradeForm(9, c9, 'Tingkat 9 (Kelas 9A s.d. 9K)', '#135200', '#f6ffed', '#b7eb8f', (getGradeStudents(9).length || 409) + ' Siswa')}
+
+    <label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;margin:16px 0;cursor:pointer;color:#1f1f1f">
+      <input type="checkbox" id="pcm_clear_overrides" checked style="width:16px;height:16px">
+      Perbarui seluruh nomor peserta (bersihkan nomor manual lama agar semua siswa seragam 100%)
+    </label>
+
+    <div style="display:flex;justify-content:flex-end;gap:10px;border-top:1.5px solid #f0f0f0;padding-top:16px;flex-wrap:wrap">
+      <button type="button" class="secondary" onclick="closeParticipantCodeModal()" style="padding:9px 18px;font-size:13px">Batal / Tutup</button>
+      <button type="button" class="secondary" onclick="loadPresetIntoModal('class_std')" style="padding:9px 18px;font-size:13px">🔄 Reset ke Standar Kelas</button>
+      <button type="button" class="success" onclick="saveParticipantCodeFromModal()" style="font-weight:800;padding:10px 24px;background:#135200;color:#fff;border-radius:6px;font-size:13.5px;box-shadow:0 3px 10px rgba(19,82,0,.25)">💾 Simpan & Terapkan Nomor Peserta</button>
+    </div>
+
+  </div>
+ </div>`;
+}
+
+function loadPresetIntoModal(presetKey){
+ let p = {
+   class_std: {
+     7: { mode: 'class', code: '07', sep: '-', digits: 3, numMode: 'cumulative', start: 1 },
+     8: { mode: 'class', code: '08', sep: '-', digits: 3, numMode: 'cumulative', start: 1 },
+     9: { mode: 'class', code: '09', sep: '-', digits: 3, numMode: 'cumulative', start: 1 }
+   },
+   code_only: {
+     7: { mode: 'code', code: '07', sep: '-', digits: 3, numMode: 'cumulative', start: 1 },
+     8: { mode: 'code', code: '08', sep: '-', digits: 3, numMode: 'cumulative', start: 1 },
+     9: { mode: 'code', code: '09', sep: '-', digits: 3, numMode: 'cumulative', start: 1 }
+   },
+   code_class: {
+     7: { mode: 'code_class', code: '07', sep: '-', digits: 3, numMode: 'cumulative', start: 1 },
+     8: { mode: 'code_class', code: '08', sep: '-', digits: 3, numMode: 'cumulative', start: 1 },
+     9: { mode: 'code_class', code: '09', sep: '-', digits: 3, numMode: 'cumulative', start: 1 }
+   },
+   class_reset: {
+     7: { mode: 'class', code: '07', sep: '-', digits: 3, numMode: 'class_reset', start: 1 },
+     8: { mode: 'class', code: '08', sep: '-', digits: 3, numMode: 'class_reset', start: 1 },
+     9: { mode: 'class', code: '09', sep: '-', digits: 3, numMode: 'class_reset', start: 1 }
+   }
+ };
+ let chosen = p[presetKey] || p.class_std;
+ [7, 8, 9].forEach(g => {
+   let cfg = chosen[g];
+   let modeEl = document.getElementById('pcm_mode_' + g);
+   let codeEl = document.getElementById('pcm_code_' + g);
+   let sepEl = document.getElementById('pcm_sep_' + g);
+   let digitsEl = document.getElementById('pcm_digits_' + g);
+   let numModeEl = document.getElementById('pcm_numMode_' + g);
+   let startEl = document.getElementById('pcm_start_' + g);
+
+   if(modeEl) modeEl.value = cfg.mode;
+   if(codeEl) codeEl.value = cfg.code;
+   if(sepEl) sepEl.value = cfg.sep;
+   if(digitsEl) digitsEl.value = String(cfg.digits);
+   if(numModeEl) numModeEl.value = cfg.numMode;
+   if(startEl) startEl.value = String(cfg.start);
+ });
+ updateParticipantCodeModalPreviews();
+}
+
+function updateParticipantCodeModalPreviews(){
+ [7, 8, 9].forEach(g => {
+   let mode = document.getElementById('pcm_mode_' + g)?.value || 'class';
+   let code = document.getElementById('pcm_code_' + g)?.value || ('0' + g);
+   let sep = document.getElementById('pcm_sep_' + g)?.value ?? '-';
+   let digits = Number(document.getElementById('pcm_digits_' + g)?.value) || 3;
+   let numMode = document.getElementById('pcm_numMode_' + g)?.value || 'cumulative';
+   let start = Number(document.getElementById('pcm_start_' + g)?.value) || 1;
+
+   let cfg = { mode, code, sep, digits, numMode, start };
+   let list = getGradeStudents(g);
+   let firstStudent = list[0] || { class: g + 'A', name: 'Siswa Pertama' };
+   let lastStudent = list[list.length - 1] || { class: (g === '7' ? '7H' : (g === '8' ? '8J' : '9K')), name: 'Siswa Terakhir' };
+
+   let countTotal = list.length || (g === '7' ? 250 : (g === '8' ? 364 : 409));
+   let countFirstClass = (db.students||[]).filter(s => s.class === firstStudent.class).length || 32;
+   let countLastClass = (db.students||[]).filter(s => s.class === lastStudent.class).length || 32;
+
+   function calcPrev(student, gradeIdx, classIdx){
+     let cls = String(student.class || '').trim().toUpperCase();
+     let prefix = '';
+     if(cfg.mode === 'class') prefix = cls;
+     else if(cfg.mode === 'code') prefix = cfg.code || ('0' + g);
+     else if(cfg.mode === 'code_class') prefix = (cfg.code || ('0' + g)) + (cfg.sep !== undefined ? cfg.sep : '-') + cls;
+     else if(cfg.mode === 'grade_only') prefix = String(g);
+     else if(cfg.mode === 'custom') prefix = cfg.code || '';
+
+     let num = 1;
+     let offset = (Number(cfg.start) || 1) - 1;
+     if(cfg.numMode === 'cumulative') num = gradeIdx + offset;
+     else if(cfg.numMode === 'class_reset') num = classIdx + offset;
+     else num = gradeIdx + offset;
+
+     let padLen = Math.max(1, Math.min(6, Number(cfg.digits) || 3));
+     let numStr = String(Math.max(1, num)).padStart(padLen, '0');
+     return prefix ? (prefix + (cfg.sep !== undefined ? cfg.sep : '-') + numStr) : numStr;
+   }
+
+   let prevFirst = calcPrev(firstStudent, 1, 1);
+   let prevLast = calcPrev(lastStudent, countTotal, countLastClass);
+
+   let el = document.getElementById('pcm_preview_' + g);
+   if(el){
+     el.innerHTML = esc(prevFirst) + ' <span style="font-weight:normal;color:#8c8c8c;font-size:11.5px">s.d.</span> ' + esc(prevLast);
+   }
+ });
+}
+
+function saveParticipantCodeFromModal(){
+ db.participantCodeSettings = {
+   7: {
+     mode: document.getElementById('pcm_mode_7')?.value || 'class',
+     code: document.getElementById('pcm_code_7')?.value || '07',
+     sep: document.getElementById('pcm_sep_7')?.value ?? '-',
+     digits: Number(document.getElementById('pcm_digits_7')?.value) || 3,
+     numMode: document.getElementById('pcm_numMode_7')?.value || 'cumulative',
+     start: Number(document.getElementById('pcm_start_7')?.value) || 1
+   },
+   8: {
+     mode: document.getElementById('pcm_mode_8')?.value || 'class',
+     code: document.getElementById('pcm_code_8')?.value || '08',
+     sep: document.getElementById('pcm_sep_8')?.value ?? '-',
+     digits: Number(document.getElementById('pcm_digits_8')?.value) || 3,
+     numMode: document.getElementById('pcm_numMode_8')?.value || 'cumulative',
+     start: Number(document.getElementById('pcm_start_8')?.value) || 1
+   },
+   9: {
+     mode: document.getElementById('pcm_mode_9')?.value || 'class',
+     code: document.getElementById('pcm_code_9')?.value || '09',
+     sep: document.getElementById('pcm_sep_9')?.value ?? '-',
+     digits: Number(document.getElementById('pcm_digits_9')?.value) || 3,
+     numMode: document.getElementById('pcm_numMode_9')?.value || 'cumulative',
+     start: Number(document.getElementById('pcm_start_9')?.value) || 1
+   }
+ };
+
+ if(document.getElementById('pcm_clear_overrides')?.checked){
+   db.participantNumberOverrides = {};
+ }
+ _cachedGradeSerials = null;
+ _cachedClassSerials = null;
+ save();
+ closeParticipantCodeModal();
+ if(typeof showToast === 'function'){
+   showToast('Pengaturan kode nomor urut peserta berhasil disimpan ke seluruh dokumen!', 'success', 3500);
+ }
+ render(currentPage || 'rooms');
+}
+
 function rooms(){
  db.savedRoomSettings=db.savedRoomSettings||null;
  let suggested=Math.max(1,Math.ceil((db.students||[]).length/30));
@@ -17661,9 +18173,12 @@ function rooms(){
 <button type="button" class="secondary" onclick="exportGanjil29RoomsExcel()" style="font-weight:700;padding:10px 16px">📊 Unduh Excel Pembagian Ruang</button>
 <button type="button" class="secondary" onclick="render('roomDistributionTable')" style="font-weight:700;padding:10px 16px;background:#722ed1;color:#fff;border-color:#531dab">📋 Buka Daftar Pembagian Ruang Asesmen</button>
 <button type="button" class="secondary" onclick="openUnassignedStudentsTrackerModal()" style="font-weight:700;padding:10px 16px;background:#096dd9;color:#fff;border-color:#0050b3">🔍 Lacak Siswa Belum Masuk Ruang</button>
+<button type="button" class="success" onclick="openParticipantCodeModal()" style="font-weight:700;padding:10px 16px;background:#d46b08;color:#fff;border-color:#ad4e00;box-shadow:0 2px 6px rgba(212,107,8,.25)">🔢 Atur Kode Nomor Urut Peserta</button>
 </div>
 </div>
 </div>
+
+ ${renderParticipantCodeQuickPanel()}
 
  <div class="room-settings-toolbar">
  <div class="left-actions">
