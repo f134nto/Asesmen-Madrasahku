@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="id">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -6826,10 +6826,18 @@ window.pdfjsLibBridge=pdfjsLib;
  margin-top:1.2mm;
  letter-spacing:.2px;
 }
+.desk16-year{
+ font-size:8.8pt!important;
+ line-height:1.05!important;
+ margin-top:0.9mm!important;
+ letter-spacing:.3px!important;
+ font-weight:700!important;
+ text-transform:none!important;
+}
 .desk16-divider{
  width:100%;
  border-top:1.2px solid #000;
- margin:2.2mm 0 2.6mm;
+ margin:1.8mm 0 2.2mm;
 }
 .desk16-number{
  font-size:30pt;
@@ -14475,7 +14483,7 @@ Terapkan Pembagian Otomatis Sekarang
 <script>
 window.__EMBEDDED_DATA_PACK__ = window.__EMBEDDED_DATA_PACK__ || null;
 const KEY='administrasi_asesmen_madrasah_v4';
-let db=JSON.parse(localStorage.getItem(KEY)||'null')||{assessment:'Asesmen Sumatif Tengah Semester Ganjil',school:{foundation:"LEMBAGA PENDIDIKAN MA'ARIF NU CABANG BANYUMAS",name:"MTs MA\'ARIF NU 1 WANGON",accreditation:'Terakreditasi "A"',nsm:'121233020002',npsn:'20363455',address:'Jalan Raya Timur Wangon Kabupaten Banyumas',phone:'(0281) 513047',postal:'53176',email:'mtsmaarif1wangon@yahoo.co.id',website:'www.mtsmaarifnuwangon.sch.id',head:'',nip:'',logo:''},students:[],rooms:[],schedules:[],supervisors:[],berita:[],compositionPlan:{}};
+let db=JSON.parse(localStorage.getItem(KEY)||'null')||{assessment:'ASESMEN SUMATIF AKHIR SEMESTER GANJIL',school:{foundation:"LEMBAGA PENDIDIKAN MA'ARIF NU CABANG BANYUMAS",name:"MTs MA\'ARIF NU 1 WANGON",accreditation:'Terakreditasi "A"',nsm:'121233020002',npsn:'20363455',address:'Jalan Raya Timur Wangon Kabupaten Banyumas',phone:'(0281) 513047',postal:'53176',email:'mtsmaarif1wangon@yahoo.co.id',website:'www.mtsmaarifnuwangon.sch.id',head:'',nip:'',logo:''},students:[],rooms:[],schedules:[],supervisors:[],berita:[],compositionPlan:{}};
 db.school.foundation=db.school.foundation||"LEMBAGA PENDIDIKAN MA'ARIF NU CABANG BANYUMAS";
 db.school.name="MTs MA\'ARIF NU 1 WANGON";
 db.school.accreditation=db.school.accreditation||'Terakreditasi "A"';
@@ -14910,6 +14918,10 @@ function ensureMasterDatabaseInitialized(){
   let isChanged = false;
   if(db.assessment && /gasal/i.test(db.assessment)){
     db.assessment = db.assessment.replace(/gasal/gi, m => m === 'GASAL' ? 'GANJIL' : (m === 'Gasal' ? 'Ganjil' : 'ganjil'));
+    isChanged = true;
+  }
+  if(!db.assessment || /tengah semester/i.test(db.assessment)){
+    db.assessment = 'ASESMEN SUMATIF AKHIR SEMESTER GANJIL';
     isChanged = true;
   }
   if(!db.participantCodeSettings){
@@ -19712,6 +19724,27 @@ function deskPageSummary(){
  return {entries,pages,total:entries.length,roomStats};
 }
 
+function deskYear(){
+ let y = typeof getSchoolYear === 'function' ? getSchoolYear() : '2026/2027';
+ return String(y || '2026/2027').replace(/\s+/g, '');
+}
+
+function deskCardHeaderTitle(){
+ let raw = String(assessmentDisplay() || '').trim().toUpperCase();
+ if(/AKHIR SEMESTER GANJIL/i.test(raw) || /ASAS.*GANJIL/i.test(raw)){
+   return 'PANITIA ASAS GANJIL';
+ } else if(/TENGAH SEMESTER GANJIL/i.test(raw) || /ASTS.*GANJIL/i.test(raw)){
+   return 'PANITIA ASTS GANJIL';
+ } else if(/TENGAH SEMESTER GENAP/i.test(raw) || /ASTS.*GENAP/i.test(raw)){
+   return 'PANITIA ASTS GENAP';
+ } else if(/AKHIR TAHUN/i.test(raw) || /ASAT/i.test(raw)){
+   return 'PANITIA ASAT';
+ } else if(/UJIAN MADRASAH/i.test(raw) || /\bUM\b/i.test(raw)){
+   return 'PANITIA UJIAN MADRASAH';
+ }
+ return 'PANITIA ASAS GANJIL';
+}
+
 function deskAssessmentTitleLines(){
  let title=assessmentDisplay()||'ASESMEN';
  let words=title.split(/\s+/).filter(Boolean);
@@ -19759,8 +19792,9 @@ function deskNumbers(){
  <h3>Lembar ${page.pageNo} dari ${page.totalPages}</h3>
  <div class="desknum-grid desknum-grid-16">
  ${page.entries.map(entry=>`<div class="desknum-card desknum-card-16">
- <div class="exam">${esc(assessmentDisplay())}</div>
+ <div class="exam">${esc(deskCardHeaderTitle())}</div>
  <div class="school">MTs MA'ARIF NU 1 WANGON</div>
+ <div class="year" style="font-size:9.5px;font-weight:700;color:#555;margin:-6px 0 8px 0;letter-spacing:.3px">Tahun Ajaran ${esc(deskYear())}</div>
  <div class="participant">${esc(entry.participantNo)}</div>
  <div class="name">${esc(entry.student.name)}</div>
  <div class="room">${esc(deskCardRoomLabel(entry))}</div>
@@ -19779,8 +19813,9 @@ function deskPrintCard(item){
  let longName=String(s.name||'').trim().length>23;
  let veryLong=String(s.name||'').trim().length>32;
  return `<div class="desk16-card ${longName?'desk16-long-name':''} ${veryLong?'desk16-very-long-name':''}">
- <div class="desk16-line desk16-title">${esc(assessmentDisplay())}</div>
+ <div class="desk16-line desk16-title">${esc(deskCardHeaderTitle())}</div>
  <div class="desk16-line desk16-school">MTs MA'ARIF NU 1 WANGON</div>
+ <div class="desk16-line desk16-year">Tahun Ajaran ${esc(deskYear())}</div>
  <div class="desk16-divider"></div>
  <div class="desk16-number">${esc(item.participantNo||participantNo(item.roomNo,item.roomIndex||1))}</div>
  <div class="desk16-name">${esc(s.name)}</div>
@@ -19897,11 +19932,12 @@ function deskWordCell(item){
  <w:right w:w="70" w:type="dxa"/>
  </w:tcMar>
  </w:tcPr>
- ${deskWordParagraph(assessmentDisplay()||'ASESMEN',16,true,0,20,false)}
- ${deskWordParagraph("MTs MA'ARIF NU 1 WANGON",16,true,0,30,false)}
- ${deskWordParagraph('',1,false,0,20,true)}
- ${deskWordParagraph(number,34,true,95,40,false)}
- ${deskWordParagraph(name.toUpperCase(),nameSize,true,nameBefore,30,false)}
+ ${deskWordParagraph(deskCardHeaderTitle(),16,true,0,10,false)}
+ ${deskWordParagraph("MTs MA'ARIF NU 1 WANGON",16,true,0,8,false)}
+ ${deskWordParagraph(`Tahun Ajaran ${deskYear()}`,13,false,0,18,false)}
+ ${deskWordParagraph('',1,false,0,18,true)}
+ ${deskWordParagraph(number,34,true,80,35,false)}
+ ${deskWordParagraph(name.toUpperCase(),nameSize,true,nameBefore,25,false)}
  ${deskWordParagraph(room,18,true,roomBefore,0,false)}
  </w:tc>`;
 }
