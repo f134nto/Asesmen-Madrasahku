@@ -877,27 +877,42 @@ th{background:linear-gradient(180deg,#0f633f,#0b5435)!important;color:#fff!impor
 }
 
 
-/* ===== PRINT: DENAH PORTRAIT ===== */
+/* ===== PRINT: DENAH TEMPAT DUDUK LANDSCAPE 33 cm x 21.5 cm (FOLIO / F4) ===== */
+@page seatLandscape{size:330mm 215mm;margin:0}
 .seat-print-page{
- page:seatPortrait!important;
- width:290mm!important;
- min-height:330mm!important;
- height:auto!important;
+ page:seatLandscape!important;
+ width:330mm!important;
+ height:215mm!important;
+ min-height:215mm!important;
+ max-height:215mm!important;
  margin:0 auto!important;
- padding:10mm!important;
+ padding:5mm 8mm 4mm 8mm!important;
  box-sizing:border-box!important;
- overflow:visible!important;
+ overflow:hidden!important;
+ background:#fff!important;
+ color:#000!important;
+ page-break-after:always!important;
+ page-break-inside:avoid!important;
 }
-.seat-print-page .print-header.simple-kop{margin-bottom:3mm!important;min-height:22mm!important}
-.seat-print-page .print-title{font-size:16pt!important;line-height:1.3!important;margin:3mm 0!important}
-.seat-print-page .board{margin:2mm 0 3mm!important;padding:2.5mm!important;font-size:12pt!important}
-.seat-print-page .seat-supervisor{margin:2mm auto 4mm!important;padding:2.8mm!important;font-size:12pt!important}
-.seat-print-page .seat-layout{gap:5mm!important;margin-top:2mm!important}
-.seat-print-page .seat-column{min-width:0!important;gap:4mm!important}
-.seat-print-page .seat-box{min-height:24mm!important;padding:3mm 3.5mm!important}
-.seat-print-page .seat-number{font-size:13pt!important;line-height:1.15!important;font-weight:800!important}
-.seat-print-page .seat-control-info{font-size:10pt!important;margin-top:5mm!important}
-@page seatPortrait{size:290mm 330mm;margin:0}
+.seat-print-page .print-title{font-size:13.5pt!important;font-weight:900!important;line-height:1.25!important;margin:0 0 1.5mm 0!important;text-align:center!important;letter-spacing:0.3px!important}
+.seat-print-page .seat-room-class-summary{font-size:9.5pt!important;font-weight:700!important;margin:0 auto 1.5mm!important;text-align:center!important;color:#111!important}
+.seat-print-page .board{font-size:9.5pt!important;font-weight:800!important;margin:0 auto 1.2mm!important;padding:0.5mm 0!important;letter-spacing:1px!important;border:none!important;text-align:center!important}
+.seat-print-page .seat-supervisor{display:block!important;width:130mm!important;max-width:48%!important;margin:1mm auto 2.5mm!important;padding:2mm 5mm!important;border:1.6px solid #111!important;border-radius:4px!important;font-size:10.5pt!important;font-weight:800!important;letter-spacing:0.5px!important;text-align:center!important;background:#fafafa!important;box-sizing:border-box!important}
+.seat-print-page .seat-area-wrap{width:100%!important;max-width:none!important;margin:0 auto!important;overflow:visible!important}
+.seat-print-page .seat-layout{display:grid!important;grid-template-columns:repeat(4,1fr)!important;column-gap:5.5mm!important;row-gap:0!important;width:100%!important;max-width:none!important;margin:1.5mm auto 0!important;align-items:stretch!important}
+.seat-print-page .seat-column{display:grid!important;grid-template-rows:repeat(5,1fr)!important;row-gap:2mm!important;width:100%!important;min-width:0!important}
+.seat-print-page .seat-box{display:grid!important;grid-template-columns:1fr 1fr!important;column-gap:0!important;border:1.5px solid #111!important;border-radius:3.5px!important;min-height:19.5mm!important;height:19.5mm!important;padding:1.8mm 2.2mm!important;background:#fff!important;box-sizing:border-box!important;align-items:center!important}
+.seat-print-page .seat-cell{display:flex!important;flex-direction:column!important;justify-content:center!important;height:100%!important;overflow:hidden!important;box-sizing:border-box!important}
+.seat-print-page .seat-cell.left{text-align:left!important;border-right:1px dashed #999!important;padding-right:2.2mm!important}
+.seat-print-page .seat-cell.right{text-align:right!important;padding-left:2.2mm!important}
+.seat-print-page .seat-number{font-size:11pt!important;font-weight:900!important;line-height:1.15!important;letter-spacing:0.2px!important;white-space:nowrap!important;color:#000!important}
+.seat-print-page .seat-student-name{font-size:7.8pt!important;font-weight:700!important;line-height:1.15!important;margin-top:1px!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;color:#111!important}
+.seat-print-page .seat-control{width:100%!important;max-width:none!important;margin:2.5mm auto 0!important;border:1.2px solid #333!important;border-radius:4px!important;padding:2mm 4mm!important;background:#fafbfc!important;box-sizing:border-box!important}
+.seat-print-page .seat-control-title{font-size:9.5pt!important;font-weight:900!important;text-align:center!important;margin-bottom:0.8mm!important;color:#000!important}
+.seat-print-page .seat-control-summary{font-size:8.5pt!important;font-weight:700!important;text-align:center!important;margin-bottom:1.5mm!important;color:#111!important}
+.seat-print-page .seat-control table{width:100%!important;border-collapse:collapse!important;font-size:8.5pt!important;margin:0!important}
+.seat-print-page .seat-control th{background:#f0f4f2!important;color:#000!important;border:1px solid #444!important;padding:1.2mm 2mm!important;font-weight:800!important;font-size:8.5pt!important;text-align:center!important}
+.seat-print-page .seat-control td{border:1px solid #444!important;padding:1mm 2mm!important;font-size:8.5pt!important;font-weight:600!important;text-align:center!important}
 
 /* ===== DAFTAR HADIR PESERTA LANDSCAPE MEMANJANG KE KANAN ===== */
 .attendance-landscape-page{
@@ -966,7 +981,7 @@ th{background:linear-gradient(180deg,#0f633f,#0b5435)!important;color:#fff!impor
  .print-choice-row{grid-template-columns:1fr}
 }
 @media print{
- .seat-print-page{width:290mm!important;min-height:330mm!important;padding:10mm!important}
+ .seat-print-page{width:330mm!important;height:215mm!important;min-height:215mm!important;max-height:215mm!important;padding:5mm 8mm 4mm 8mm!important;page-break-after:always!important}
  .attendance-landscape-page{width:330mm!important;height:210mm!important;min-height:210mm!important;padding:6mm 7mm!important}
 }
 
@@ -2885,12 +2900,13 @@ th{background:linear-gradient(180deg,#0f633f,#0b5435)!important;color:#fff!impor
 
 /* Denah Tempat Duduk */
 .seat-print-page{
- page:seatPortrait!important;
- width:290mm!important;
- min-height:330mm!important;
- height:330mm!important;
+ page:seatLandscape!important;
+ width:330mm!important;
+ height:215mm!important;
+ min-height:215mm!important;
+ max-height:215mm!important;
  margin:0 auto!important;
- padding:15mm!important;
+ padding:5mm 8mm 4mm 8mm!important;
  box-sizing:border-box!important;
  overflow:hidden!important;
 }
@@ -5909,55 +5925,42 @@ window.pdfjsLibBridge=pdfjsLib;
  margin-top:0 !important;
  margin-bottom:3mm !important;
 }
-/* Judul dan isi denah digeser: kiri tambah 1 cm, kanan tambah 1,5 cm */
-.seat-print-page .print-title,
-.seat-print-page .board,
-.seat-print-page .seat-supervisor,
-.seat-print-page .seat-layout,
-.seat-print-page .seat-control,
-.seat-print-page .seat-control-info{
- margin-left:10mm !important;
- margin-right:15mm !important;
- width:auto !important;
- max-width:none !important;
-}
+/* Penyelarasan Layout Denah Tempat Duduk Landscape 33 cm x 21.5 cm */
 .seat-print-page .print-title{
- margin-top:3mm !important;
- margin-bottom:3mm !important;
-}
-.seat-print-page .board,
-.seat-print-page .seat-supervisor{
+ margin:0 0 1.5mm 0 !important;
  text-align:center !important;
 }
+.seat-print-page .board{
+ margin:0 auto 1.2mm !important;
+ text-align:center !important;
+}
+.seat-print-page .seat-supervisor{
+ width:130mm !important;
+ max-width:48% !important;
+ margin:1mm auto 2.5mm !important;
+ padding:2mm 5mm !important;
+ text-align:center !important;
+ box-sizing:border-box !important;
+}
 .seat-print-page .seat-layout{
- gap:4mm !important;
+ width:100% !important;
+ max-width:none !important;
+ margin:1.5mm auto 0 !important;
 }
 .seat-print-page .seat-column{
- flex:1 1 0 !important;
- width:auto !important;
+ width:100% !important;
  min-width:0 !important;
 }
-.seat-print-page .seat-box{
- min-height:24mm !important;
-}
 .seat-print-page .seat-control{
- margin-top:5mm !important;
+ width:100% !important;
+ max-width:none !important;
+ margin:2.5mm auto 0 !important;
 }
 @media print{
- .seat-print-page .print-header.simple-kop{
- margin-left:14mm !important;
- margin-right:10mm !important;
- }
- .seat-print-page .print-title,
- .seat-print-page .board,
- .seat-print-page .seat-supervisor,
- .seat-print-page .seat-layout,
- .seat-print-page .seat-control,
- .seat-print-page .seat-control-info{
- margin-left:10mm !important;
- margin-right:15mm !important;
- width:auto !important;
- max-width:none !important;
+ .seat-print-page .seat-supervisor{
+ width:130mm !important;
+ max-width:48% !important;
+ margin:1mm auto 2.5mm !important;
  }
 }
 </style>
@@ -5968,17 +5971,23 @@ window.pdfjsLibBridge=pdfjsLib;
  margin-top:0 !important;
  padding-top:0 !important;
 }
-.seat-no-kop-print .board,
-.seat-no-kop-print .seat-supervisor,
+.seat-no-kop-print .board{
+ margin:0 auto 1.2mm !important;
+}
+.seat-no-kop-print .seat-supervisor{
+ width:130mm !important;
+ max-width:48% !important;
+ margin:1mm auto 2.5mm !important;
+}
 .seat-no-kop-print .seat-layout,
-.seat-no-kop-print .seat-control,
-.seat-no-kop-print .seat-control-info{
- margin-left:10mm !important;
- margin-right:15mm !important;
+.seat-no-kop-print .seat-control{
+ margin-left:0 !important;
+ margin-right:0 !important;
+ width:100% !important;
 }
 @media print{
- .seat-no-kop-print{padding-top:10mm !important;}
- .seat-no-kop-print .print-title{margin-top:0 !important;padding-top:0 !important;}
+ .seat-no-kop-print{padding:5mm 8mm 4mm 8mm !important;}
+ .seat-no-kop-print .print-title{margin:0 0 1.5mm 0 !important;padding-top:0 !important;}
 }
 </style>
 <style>
@@ -18905,9 +18914,8 @@ function seats(){
  <h2>4. Denah Tempat Duduk Peserta</h2>
 
  <div class="notice">
- Setiap ruang menggunakan denah tetap <b>20 meja</b>: <b>4 meja ke samping</b> dari kiri ke kanan
- dan <b>5 meja ke belakang</b>. Setiap meja mempunyai maksimal <b>2 kursi</b>, sehingga satu denah
- menampung maksimal <b>40 peserta</b>. Nomor peserta otomatis terhubung langsung dengan hasil Pembagian Ruang Peserta.
+ Denah tempat duduk peserta didesain khusus untuk kertas <b>33 cm x 21.5 cm orientasi landscape (Folio / F4)</b> dengan tampilan penuh besar dan proporsional.<br>
+ Setiap ruang menampung <b>20 meja (4 meja ke samping x 5 meja ke belakang)</b> dengan kapasitas maksimal <b>40 peserta</b>. Nomor peserta otomatis terhubung langsung dengan hasil Pembagian Ruang Peserta.<br>
  <b>Ruang 1 s.d. 21</b> berisi peserta <b>Kelas 9</b> di sebelah kiri (20 meja pola ular) dan berdampingan dengan Kelas 8 atau 7 di sebelah kanan.
  </div>
 
@@ -18949,8 +18957,14 @@ function seats(){
    <button type="button" class="secondary" onclick="db.seatManualPlans={}; save(); showSeat(window.currentSeatRoomNo||1); if(typeof showToast==='function') showToast('Denah berhasil disegarkan otomatis dari daftar peserta!', 'info');" style="background:#096dd9;color:#fff;font-weight:700;padding:8px 14px;border-radius:6px;border:none;cursor:pointer">
      🔄 Segarkan Denah dari Daftar Peserta
    </button>
-   <button type="button" class="secondary" onclick="printAllSeats()" style="padding:8px 14px;border-radius:6px;cursor:pointer">
+   <button type="button" class="secondary" onclick="printAllSeats(window.currentSeatRoomNo||1)" style="font-weight:700;padding:8px 14px;border-radius:6px;cursor:pointer">
+     🖨️ Cetak Denah Ruang Terpilih
+   </button>
+   <button type="button" class="secondary" onclick="printAllSeats('all')" style="font-weight:700;padding:8px 14px;border-radius:6px;cursor:pointer">
      🖨️ Cetak Semua Denah (29 Ruang)
+   </button>
+   <button type="button" class="secondary" onclick="exportPdfFromPrintMenu('seats',String(window.currentSeatRoomNo||'all'))" style="font-weight:700;background:#fff1f0;border-color:#ffa39e;color:#cf1322;padding:8px 14px;border-radius:6px;cursor:pointer">
+     📄 Unduh PDF Denah
    </button>
  </div>
 
@@ -19173,7 +19187,7 @@ function seatHtml(r){
    ? distinctClasses.map(c => `Kelas ${c} (${(r.students||[]).filter(s=>s.class===c).length} siswa)`).join(' &bull; ')
    : 'Belum ada peserta';
 
- return `<div class="print-page seat-print-page seat-no-kop-print">
+ return `<div class="print-page seat-print-page seat-landscape-page seat-no-kop-print">
  <div class="print-title">DENAH TEMPAT DUDUK PESERTA<br>${esc(assessmentDisplay())}<br>RUANG ${String(r.no).padStart(2,'0')}</div>
  <div class="seat-room-class-summary">
   📋 ${classSummary} &nbsp; (Total: ${(r.students||[]).length} Siswa)
@@ -19372,7 +19386,8 @@ function showSeat(no){
  let manual=manualSeatPlanValid(r,(db.seatManualPlans||{})[no]);
  document.getElementById('seatOut').innerHTML=seatHtml(r)+
  `<div class="actions no-print" style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
- <button type="button" onclick="systemPrint()">🖨️ Cetak Denah Ruang ${String(r.no).padStart(2,'0')}</button>
+ <button type="button" onclick="printAllSeats(${r.no})">🖨️ Cetak Denah Ruang ${String(r.no).padStart(2,'0')}</button>
+ <button type="button" class="secondary" onclick="exportPdfFromPrintMenu('seats','${r.no}')">📄 Unduh PDF Ruang ${String(r.no).padStart(2,'0')}</button>
  <button type="button" class="secondary" onclick="showSeatEditor(${r.no})">✏️ Edit Manual Denah</button>
  ${manual?`<button type="button" class="danger" onclick="resetManualSeatPlan(${r.no})">🔄 Reset ke Denah Otomatis</button>`:''}
  </div>`;
@@ -23944,7 +23959,7 @@ function printPage(){
  ${printChoiceRow('Pembagian Ruang Peserta','Portrait 29 x 33 cm; KOP, judul, tabel dan PDF memakai layout khusus maksimal 249mm.','pr_distribution',printRoomOptions(),'distribution')}
  ${printSingleRow('Pembagian Siswa Tiap Ruang','Terhubung ke halaman Jumlah Siswa tiap Ruang: No, Ruang, Kapasitas, Tempat/Ruangan. Judul menampilkan nama kegiatan dan Tahun Ajaran.','roomCapacity')}
  ${printSingleRow('Daftar Pembagian Ruang Asesmen','Tabel Rekapitulasi Pembagian Ruang: Ruang, Kelas 7, Kelas 8, Kelas 9, Jumlah, Ruang Kelas, Jumlah Ruang, dengan jumlah total tiap kelas di bawah.','roomDistributionTable')}
- ${printChoiceRow('Denah','Kertas A4 portrait; nama kegiatan asesmen tampil otomatis di bawah judul.','pr_seats',printRoomOptions(),'seats')}
+ ${printChoiceRow('Denah','33 x 21.5 cm landscape (Folio / F4); 20 meja (4 x 5), tampilan penuh besar, meja pengawas proporsional; tersedia Cetak, PDF, Excel dan CSV.','pr_seats',printRoomOptions(),'seats')}
  ${printChoiceRow('Daftar Peserta','Portrait 29 x 33 cm; KOP mulai tepat 15mm dari tepi atas, hanya 1 garis KOP, jarak garis->judul 4mm dan judul->tabel 3mm, margin kanan 26mm.','pr_participants',printRoomOptions(),'participants')}
  ${printChoiceRow('Nomor Meja Peserta','33 x 29 cm landscape; 16 kartu per lembar; dibuat tiap tingkatan (Kelas 7, 8, 9) dikumpulkan jadi satu untuk memudahkan cetak; tersedia Cetak, PDF, Word, Excel dan CSV.','pr_desks',printDeskOptions(),'desks')}
  ${printChoiceRow('Kartu Peserta','33 x 29 cm landscape, 3 kartu per lembar.','pr_cards',printRoomOptions(),'cards')}
@@ -24562,8 +24577,11 @@ function getPdfPrintablePages(){
 }
 
 function pdfPageSizeForElement(el){
+ if(el.classList.contains('seat-print-page') || el.classList.contains('seat-landscape-page')){
+  return {width:330,height:215,orientation:'landscape'};
+ }
  if(el.classList.contains('supervisor-print-page')){
- return {width:330,height:215,orientation:'landscape'};
+  return {width:330,height:215,orientation:'landscape'};
  }
 
  let landscape=
@@ -24618,7 +24636,9 @@ async function canvasForPdfPage(page){
 }
 
 async function exportPdfFromPrintMenu(type,selectId){
- let value=selectId?(document.getElementById(selectId)?.value||'all'):'all';
+ let value=(typeof selectId==='string' && document.getElementById(selectId))
+  ? document.getElementById(selectId).value
+  : (selectId || 'all');
  let participantPdfSpecial=(type==='participants');
  if(participantPdfSpecial)document.body.classList.add('pdf-participant-special');
 
