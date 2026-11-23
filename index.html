@@ -13,7 +13,7 @@
 <style>
 :root{-p:#173b67;-p2:#235b91;-bg:#f3f6fa;-line:#dbe4ec;-danger:#b42318;-ok:#18794e}*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(-bg);color:#17212b}header{background:linear-gradient(135deg,var(-p),var(-p2));color:#fff;padding:16px 22px;display:flex;justify-content:flex-end;align-items:center;gap:14px;position:sticky;top:0;z-index:10}header h1{margin:0;font-size:22px}.layout{display:flex;min-height:calc(100vh - 70px)}aside{width:270px;background:#102f52;padding:12px;position:sticky;top:70px;height:calc(100vh - 70px);overflow:auto}aside button{width:100%;text-align:left;border:0;background:transparent;color:#dcecff;padding:11px 12px;border-radius:8px;margin:2px 0;cursor:pointer}aside button:hover,aside button.active{background:#235b91;color:#fff}main{flex:1;padding:22px;max-width:1500px;margin:auto;width:100%}.card{background:#fff;border:1px solid var(-line);border-radius:12px;padding:18px;margin-bottom:18px;box-shadow:0 2px 8px #102f520d}h2,h3{color:var(-p)}h2{margin-top:0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}label{display:block;font-size:13px;font-weight:700;margin-bottom:5px}input,select,textarea{width:100%;padding:9px 10px;border:1px solid #cbd5df;border-radius:7px;background:#fff}textarea{min-height:90px}button{border:0;border-radius:7px;padding:9px 13px;background:var(-p2);color:#fff;cursor:pointer;font-weight:700}button.secondary{background:#e9eef4;color:var(-p)}button.danger{background:var(-danger)}button.success{background:var(-ok)}.actions{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.notice{padding:11px;background:#fff8e5;border:1px solid #f2d68a;border-radius:8px;margin:10px 0}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:13px}th,td{border:1px solid var(-line);padding:8px;text-align:left}th{background:#edf3f8;color:var(-p)}.stat{padding:16px;border-radius:10px;background:#edf5ff;border:1px solid #d7e8fb}.stat b{font-size:27px;display:block;color:var(-p)}.hidden{display:none}.print-page{background:#fff;width:210mm;min-height:297mm;margin:auto;padding:15mm;color:#000}.print-header{display:grid;grid-template-columns:75px 1fr 75px;align-items:center;text-align:center;border-bottom:3px double #000;padding-bottom:8px;margin-bottom:15px}.print-header h1{font-size:14px;margin:2px}.print-header h2{font-size:16px;color:#000;margin:2px}.print-header p{font-size:10px;margin:2px}.print-title{text-align:center;font-weight:bold;font-size:16px;margin:16px 0}.signature{display:grid;grid-template-columns:1fr 1fr;text-align:center;margin-top:40px}.board{text-align:center;border:2px solid #173b67;padding:8px;margin:10px 0 18px;font-weight:bold}.seatgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.desk{border:2px solid #9db2c7;border-radius:7px;padding:7px;background:#f8fbff;text-align:center;min-height:80px}.desk small{display:block;color:#637587}.page-break{page-break-after:always}@media(max-width:850px){aside{width:210px}main{padding:12px}.seatgrid{grid-template-columns:repeat(2,1fr)}}@media print{@page{size:330mm 290mm;margin:0}header,aside,.no-print{display:none!important}main{padding:0;max-width:none}.card{border:0;box-shadow:none;margin:0;padding:0}.print-page{width:330mm;min-height:290mm;margin:0;padding:15mm}.page-break{page-break-after:always}}
 
-.print-header{grid-template-columns:115px 1fr 20px!important;border-bottom:4px double #1b6f54!important;padding-bottom:7px!important;color:#287f61!important}
+.print-header{grid-template-columns:115px 1fr 20px!important;border:none!important;border-bottom:none!important;padding-bottom:7px!important;color:#287f61!important}
 .print-logo-wrap{display:flex;align-items:center;justify-content:center;height:82px}
 .print-logo-wrap img{max-width:105px;max-height:78px;object-fit:contain}
 .print-header .kop-main h1{font-size:14px!important;color:#4aa987!important;font-weight:800;letter-spacing:.2px}
@@ -14367,6 +14367,95 @@ html body.force-print-root .print-header.simple-kop .kop-main h2:after{
   }
 }
 </style>
+
+<style id="global-no-green-line-artifacts-style">
+/* ============================================================
+   PENGHAPUSAN MUTLAK ARTEFAK GARIS HIJAU PADA SEMUA HALAMAN CETAK
+   (Denah Tempat Duduk, Daftar Peserta, Jadwal, Pengawas, dsb.)
+   ============================================================ */
+/* 1. Denah Tempat Duduk tidak boleh memiliki manual paste asset, gambar asing, atau garis di atas meja */
+.seat-print-page .manual-paste-asset,
+.seat-no-kop-print .manual-paste-asset,
+#seatOut .manual-paste-asset,
+.seat-print-page img:not(.logo-kop-img),
+.seat-no-kop-print img:not(.logo-kop-img),
+[data-manual-paste-page-key*="seat"] .manual-paste-asset {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  opacity: 0 !important;
+  border: none !important;
+  pointer-events: none !important;
+}
+
+/* 2. Semua halaman cetak: hilangkan pseudo-elements dan dekorasi header */
+.print-title::before,
+.print-title::after,
+.seat-print-page::before,
+.seat-print-page::after,
+.seat-no-kop-print::before,
+.seat-no-kop-print::after,
+.kop-main h2::after,
+.kop-main h2:after,
+.simple-kop::before,
+.simple-kop::after,
+.print-header::before,
+.print-header::after {
+  display: none !important;
+  content: none !important;
+  border: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: none !important;
+  visibility: hidden !important;
+}
+
+/* 3. Denah dan halaman cetak: pastikan judul bersih dari border atau garis dekoratif */
+.seat-print-page .print-title,
+.print-page .print-title,
+.print-title {
+  border: none !important;
+  background: transparent !important;
+  outline: none !important;
+}
+
+/* 4. Sembunyikan outline/garis seleksi editor manual agar tidak muncul di layar maupun cetak */
+.manual-paste-page-selected,
+#printPages .manual-paste-page-selected,
+#app .manual-paste-page-selected,
+.print-direct-selected,
+.print-direct-draggable {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+
+/* 5. Denah Tempat Duduk: pastikan tidak ada garis di atas / samping judul */
+.seat-print-page,
+.seat-no-kop-print {
+  border-top: none !important;
+  border-right: none !important;
+}
+
+/* 6. Aturan print universal */
+@media print {
+  .seat-print-page .manual-paste-asset,
+  .seat-no-kop-print .manual-paste-asset,
+  #seatOut .manual-paste-asset,
+  .seat-print-page img:not(.logo-kop-img),
+  .seat-no-kop-print img:not(.logo-kop-img),
+  [data-manual-paste-page-key*="seat"] .manual-paste-asset {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    opacity: 0 !important;
+    border: none !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="loginScreen" style="display:none!important"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan sinkronisasi Komputer 1, 2, dan 3. Aplikasi ini dirancang dapat dibuka langsung tanpa login.</p></div><div style="font-size:12px;color:#d9eadf"> Database Cloud Supabase Sinkronisasi Multi-Komputer</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">PENGATURAN AKUN CLOUD (OPSIONAL)</div><h2>Masuk Tanpa Password</h2><div class="sub">Aplikasi saat ini telah disetel masuk langsung tanpa username & password agar praktis dan tidak membingungkan.</div>
@@ -14915,6 +15004,29 @@ function restoreSafetyPrevSnapshot(){
 
 // 1. Inisialisasi Otomatis Data Master saat Buka di Komputer Baru (Komputer 2 / 3)
 function ensureMasterDatabaseInitialized(){
+  // Bersihkan artefak aset manual lama yang menyebabkan garis hijau
+  try {
+    ['administrasi_asesmen_manual_print_assets_v1', 'administrasi_asesmen_manual_print_assets_v2'].forEach(function(k){
+      var raw = localStorage.getItem(k);
+      if(raw) {
+        try {
+          var arr = JSON.parse(raw);
+          if(Array.isArray(arr)) {
+            var cleaned = arr.filter(function(a){
+              var y = Number(a.y) || 0;
+              // Jika aset berada di area atas halaman (y < 25%) hapus
+              if(y < 25) return false;
+              return true;
+            });
+            if(cleaned.length !== arr.length) {
+              localStorage.setItem(k, JSON.stringify(cleaned));
+            }
+          }
+        } catch(_e) {}
+      }
+    });
+  } catch(_err) {}
+
   let isChanged = false;
   if(db.assessment && /gasal/i.test(db.assessment)){
     db.assessment = db.assessment.replace(/gasal/gi, m => m === 'GASAL' ? 'GANJIL' : (m === 'Gasal' ? 'Ganjil' : 'ganjil'));
@@ -23002,16 +23114,22 @@ function attendanceCompactDate(value){
 
 function attendanceScheduleGroups(){
  let groups=groupedAssessmentSchedules();
- return groups.map((g,index)=>{
+ if(!groups.length) return [];
+ return groups.map((g)=>{
  let rows=(g.rows||[]).filter(s=>
  String(scheduleSubject(s)||'').trim() || String(s.time||'').trim()
  );
 
- // Format daftar hadir:
- // Hari pertama = maksimal 3 kolom mapel (1,2,3)
- // Hari-hari berikutnya = maksimal 2 kolom mapel (1,2)
- let maxMapel=index===0?3:2;
+ // Format daftar hadir peserta:
+ // Setiap hari HANYA kolom 1 dan 2 saja (maksimal 2 kolom tanda tangan per hari)
+ let maxMapel=2;
  rows=rows.slice(0,maxMapel);
+ if(rows.length === 1){
+   // Jika jadwal pada hari tersebut hanya 1 mapel, sediakan tetap 2 kolom (1 dan 2) untuk tanda tangan
+   rows = [rows[0], { subject: '', time: '' }];
+ } else if(rows.length === 0){
+   rows = [{ subject: '', time: '' }, { subject: '', time: '' }];
+ }
 
  return {
  date:g.date||'',
@@ -23024,12 +23142,18 @@ function attendanceScheduleGroups(){
 function attendanceHeaderHtml(){
  let groups=attendanceScheduleGroups();
  if(!groups.length){
- return `<thead><tr>
- <th class="att-no">NO</th>
- <th class="att-name">Nama Peserta</th>
- <th class="att-class">Kelas</th>
- <th class="att-session">1</th>
- </tr></thead>`;
+ return `<thead>
+ <tr>
+ <th class="att-no" rowspan="2">NO</th>
+ <th class="att-name" rowspan="2">Nama Peserta</th>
+ <th class="att-class" rowspan="2">Kelas</th>
+ <th class="att-day-group" colspan="2">Hari / Tanggal</th>
+ </tr>
+ <tr>
+ <th class="att-mapel-number">1</th>
+ <th class="att-mapel-number">2</th>
+ </tr>
+ </thead>`;
  }
 
  let first=`<tr>
@@ -23047,8 +23171,10 @@ function attendanceHeaderHtml(){
 }
 
 function attendanceSessionCount(){
- let n=attendanceScheduleGroups().reduce((sum,g)=>sum+g.rows.length,0);
- return Math.max(n,1);
+ let groups=attendanceScheduleGroups();
+ if(!groups.length) return 2;
+ let n=groups.reduce((sum,g)=>sum+g.rows.length,0);
+ return Math.max(n,2);
 }
 
 function attendanceChairSignature(){
@@ -23143,9 +23269,9 @@ function attendance(){
  Format Daftar Hadir mengikuti contoh cetak: <b>tanpa KOP</b>, judul langsung di atas tabel.
  Setiap ruang dibuat <b>tepat 2 lembar</b>. <b>Lembar 1 berisi maksimal 20 peserta</b>, sedangkan <b>Lembar 2 berisi sisa peserta mulai nomor 21</b>. Ukuran huruf dan tinggi baris menyesuaikan jumlah peserta agar tetap terbaca jelas. <b>Judul hanya tampil pada Lembar 1</b>; Lembar 2 langsung dimulai dari tabel dan <b>tanda tangan Ketua Panitia berada di pojok kanan bawah</b>.
  Kolom awal hanya <b>NO, Nama Peserta, Kelas</b>. Header asesmen mengikuti Jadwal Asesmen:
- baris atas berisi <b>Hari, tanggal</b> seperti <b>Senin, 21/9/2026</b>. Hari pertama memakai kolom
- <b>1, 2, 3</b>, sedangkan hari-hari berikutnya memakai kolom <b>1, 2</b>.
- Jumlah kolom mapel saat ini: <b>${sessionTotal}</b>.
+ baris atas berisi <b>Hari, tanggal</b> seperti <b>Senin, 21/9/2026</b>. Setiap hari memakai kolom tanda tangan
+ <b>1 dan 2</b> saja.
+ Jumlah kolom tanda tangan saat ini: <b>${sessionTotal}</b>.
  </div>
  <div class="actions">${db.rooms.map(r=>`<button onclick="showAttendance(${r.no})">Ruang ${r.no}</button>`).join('')}
  <button class="secondary" onclick="printAttendanceAll()">Tampilkan Semua Ruang</button></div>
@@ -23848,17 +23974,24 @@ function exportSupervisorNamesRows(){
 function exportSupervisorMatrixRows(){return exportSupervisorMatrixPack().rows;}
 
 function exportAttendanceRowsForRoom(r){
- let schedules=db.schedules||[];
+ let groups=attendanceScheduleGroups();
  let rows=exportSchoolTitleRows('DAFTAR HADIR PESERTA',`RUANG ${String(r.no).padStart(2,'0')}`);
  let headers=['No','No Peserta','Nama Peserta','Kelas'];
- if(schedules.length){
- headers.push(...schedules.map((s,i)=>`${i+1}. ${s.date||''} - ${scheduleSubject(s)}`));
+ if(groups.length){
+   groups.forEach(g=>{
+     g.rows.forEach((s,i)=>{
+       let sub=scheduleSubject(s);
+       headers.push(`${g.label} - Kolom ${i+1}${sub?' ('+sub+')':''}`);
+     });
+   });
  }else{
- headers.push('Tanda Tangan');
+   headers.push('Hari 1 - Kolom 1', 'Hari 1 - Kolom 2');
  }
  rows.push(headers);
  (r.students||[]).forEach((s,i)=>{
- rows.push([i+1,participantNo(r.no,i+1),s.name||'',s.class||'',...(schedules.length?schedules.map(()=>''):[''])]);
+   let pNo=participantNoForStudent(r,s);
+   let colCount=groups.length ? groups.reduce((acc,g)=>acc+g.rows.length,0) : 2;
+   rows.push([i+1,pNo,s.name||'',s.class||'',...Array(colCount).fill('')]);
  });
  return rows;
 }
@@ -26398,14 +26531,25 @@ checkLogin();
 (function(){
  'use strict';
 
- const STORAGE_KEY='administrasi_asesmen_manual_print_assets_v2';
- try{ if(localStorage.getItem('administrasi_asesmen_manual_print_assets_v1')){ /* asset lama diabaikan pada revisi ini agar artefak garis hijau tidak muncul lagi */ } }catch(_e){}
+ const STORAGE_KEY='administrasi_asesmen_manual_print_assets_v3';
+ try{
+   localStorage.removeItem('administrasi_asesmen_manual_print_assets_v1');
+   localStorage.removeItem('administrasi_asesmen_manual_print_assets_v2');
+   localStorage.removeItem('administrasi_asesmen_manual_print_assets');
+   let _raw = localStorage.getItem('administrasi_asesmen_manual_print_assets_v3');
+   if(_raw){
+     let _list = JSON.parse(_raw);
+     if(Array.isArray(_list)){
+       _list = _list.filter(a => !String(a.pageKey||'').toLowerCase().includes('seat') && !(Number(a.y) < 35 && Number(a.x) > 55));
+       localStorage.setItem('administrasi_asesmen_manual_print_assets_v3', JSON.stringify(_list));
+     }
+   }
+ }catch(_e){}
  const PAGE_SELECTOR=[
- '.print-page',
- '[class*="-print-page"]',
+ '.print-page:not(.seat-print-page):not(.seat-no-kop-print)',
+ '[class*="-print-page"]:not(.seat-print-page):not(.seat-no-kop-print)',
  '.participant-list-print-page',
  '.participant-exact-print-page',
- '.seat-print-page',
  '.schedule-print-page',
  '.schedule-fixed-print-page',
  '.special-assessment-print-page',
@@ -26537,10 +26681,12 @@ checkLogin();
  try{
  assignPageKeys();
  document.querySelectorAll('.manual-paste-asset').forEach(x=>x.remove());
+ document.querySelectorAll('.seat-print-page .manual-paste-asset, .seat-no-kop-print .manual-paste-asset, #seatOut .manual-paste-asset').forEach(x=>x.remove());
 
  readStore().forEach(asset=>{
  let page=findPage(asset.pageKey);
  if(!page)return;
+ if(page.classList.contains('seat-print-page') || page.classList.contains('seat-no-kop-print') || page.closest('.seat-print-page') || page.closest('#seatOut')) return;
  let img=document.createElement('img');
  img.className='manual-paste-asset';
  img.dataset.manualPasteId=String(asset.id);
@@ -26995,40 +27141,133 @@ checkLogin();
 </script>
 
 
-<script id="green-artifact-cleaner-supervisor-page-two-20260919">
+<script id="green-artifact-cleaner-all-pages-20261123">
 (function(){
- function isGreenish(str){
- str = String(str||'');
- return /(20,\s*117,\s*61|11,\s*107,\s*70|15,\s*92,\s*58|24,\s*121,\s*78|25,\s*121,\s*78|0,\s*128,\s*0)/.test(str);
- }
- function cleanGreenArtifacts(){
- const page = document.querySelector('.supervisor-print-page.supervisor-page-two');
- if(!page) return;
- const pr = page.getBoundingClientRect();
- page.querySelectorAll('*').forEach(el=>{
- if(el.closest('.supervisor-code-legend-grid') || el.closest('.supervisor-reserve-section') || el.closest('.supervisor-manual-signature-block')) return;
- const cs = getComputedStyle(el);
- const r = el.getBoundingClientRect();
- if(r.width < 80 || r.height < 1 || r.height > 14) return;
- if(r.top > pr.top + 120) return;
- if(r.left < pr.left + pr.width * 0.62) return;
- const borderTopW = parseFloat(cs.borderTopWidth || '0') || 0;
- const borderBottomW = parseFloat(cs.borderBottomWidth || '0') || 0;
- const bg = cs.backgroundColor || '';
- const bt = cs.borderTopColor || '';
- const bb = cs.borderBottomColor || '';
- const green = isGreenish(bg) || isGreenish(bt) || isGreenish(bb);
- const lineLike = borderTopW > 0 || borderBottomW > 0 || (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent');
- if(green && lineLike){
- el.style.setProperty('display','none','important');
- el.setAttribute('data-removed-green-artifact','1');
- }
- });
- }
- window.addEventListener('load', ()=>{ setTimeout(cleanGreenArtifacts, 300); setTimeout(cleanGreenArtifacts, 1200); setTimeout(cleanGreenArtifacts, 2500); });
- window.addEventListener('beforeprint', cleanGreenArtifacts);
- const mo = new MutationObserver(()=> cleanGreenArtifacts());
- window.addEventListener('DOMContentLoaded', ()=>{ mo.observe(document.body,{childList:true,subtree:true}); cleanGreenArtifacts(); });
+  'use strict';
+  // Hapus seketika artefak lama dari localStorage browser
+  try {
+    localStorage.removeItem('administrasi_asesmen_manual_print_assets_v1');
+    localStorage.removeItem('administrasi_asesmen_manual_print_assets_v2');
+    localStorage.removeItem('administrasi_asesmen_manual_print_assets');
+  } catch(_e){}
+
+  // Deteksi warna kehijauan (HEX, RGB, RGBA, maupun CSS color names)
+  function isGreenish(str){
+    if(!str) return false;
+    str = String(str).toLowerCase().trim();
+    if(str === 'transparent' || str === 'rgba(0, 0, 0, 0)' || str === 'none') return false;
+    
+    // Periksa nama warna & hex hijau madrasah
+    if(/green|#1b6f54|#287f61|#0f5c3a|#14753d|#0b6b46|#237804|#135200|#17724a|#17804f|#18794e|#52c41a|#73d13d|#274933|#2f6042|#306845|#4aa987|#43a27e|#11633f/.test(str)) {
+      return true;
+    }
+    
+    // Periksa format rgb(r, g, b) atau rgba(r, g, b, a)
+    var m = str.match(/rgba?\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+    if(m){
+      var r = parseInt(m[1], 10), g = parseInt(m[2], 10), b = parseInt(m[3], 10);
+      if(g > 40 && g > r * 1.05 && g > b * 1.05) return true;
+      if(g > 45 && r < 90 && b < 90) return true;
+    }
+    return false;
+  }
+
+  function cleanGreenArtifactsFromAllPages(){
+    // 1. Khusus Denah Tempat Duduk: Denah sama sekali TIDAK MEMILIKI GAMBAR ATAU MANUAL ASSET.
+    // Hapus tuntas seluruh .manual-paste-asset atau gambar apa pun yang ada pada denah!
+    document.querySelectorAll('.seat-print-page .manual-paste-asset, .seat-no-kop-print .manual-paste-asset, #seatOut .manual-paste-asset, .seat-print-page img:not(.logo-kop-img)').forEach(function(el){
+      try { el.remove(); } catch(_){ el.style.setProperty('display', 'none', 'important'); }
+    });
+
+    // 2. Seluruh halaman dokumen cetak/preview yang ada di DOM
+    var pageSelector = [
+      '.print-page',
+      '[class*="-print-page"]',
+      '.seat-print-page',
+      '.supervisor-print-page',
+      '.attendance-landscape-page',
+      '.card-landscape-page',
+      '.desk-landscape-page',
+      '.desk16-page',
+      '.room-distribution-print-page',
+      '.participant-list-print-page',
+      '.schedule-print-page',
+      '#seatOut',
+      '#printPages'
+    ].join(',');
+
+    var pages = document.querySelectorAll(pageSelector);
+    if(!pages || !pages.length) return;
+
+    pages.forEach(function(page){
+      var pr = page.getBoundingClientRect();
+      page.querySelectorAll('*').forEach(function(el){
+        // Jangan sembunyikan teks peserta, tabel denah meja, atau kontrol form
+        if(el.matches('button, select, input, option') || el.closest('.seat-layout') || el.closest('.seat-box') || el.closest('table:not(.simple-kop)') || el.closest('.actions')) {
+          return;
+        }
+        if(el.closest('.supervisor-code-legend-grid') || el.closest('.supervisor-reserve-section') || el.closest('.supervisor-manual-signature-block')) {
+          return;
+        }
+
+        // Hapus langsung artefak manual-paste-asset yang berada di area atas halaman
+        if(el.classList && el.classList.contains('manual-paste-asset')){
+          var rImg = el.getBoundingClientRect();
+          if(rImg.top <= pr.top + 260 || rImg.height <= 25 || rImg.left >= pr.left + pr.width * 0.45){
+            try { el.remove(); } catch(_){ el.style.setProperty('display', 'none', 'important'); }
+            return;
+          }
+        }
+
+        var cs = getComputedStyle(el);
+        var r = el.getBoundingClientRect();
+
+        var borderTopW = parseFloat(cs.borderTopWidth || '0') || 0;
+        var borderBottomW = parseFloat(cs.borderBottomWidth || '0') || 0;
+        var borderLeftW = parseFloat(cs.borderLeftWidth || '0') || 0;
+        var borderRightW = parseFloat(cs.borderRightWidth || '0') || 0;
+        var bg = cs.backgroundColor || '';
+        var bt = cs.borderTopColor || '';
+        var bb = cs.borderBottomColor || '';
+        var bl = cs.borderLeftColor || '';
+        var br = cs.borderRightColor || '';
+
+        var hasGreenColor = isGreenish(bg) || isGreenish(bt) || isGreenish(bb) || isGreenish(bl) || isGreenish(br);
+        var isHorizontalLine = (r.height >= 1 && r.height <= 25 && r.width >= 20);
+        var hasLineBorder = (borderTopW > 0 && isGreenish(bt)) || (borderBottomW > 0 && isGreenish(bb));
+        var isGreenLine = (hasGreenColor && (isHorizontalLine || hasLineBorder));
+
+        // Jika berada di bagian atas atau pojok kanan atas halaman tanpa perintah
+        if(isGreenLine && (r.top <= pr.top + 280 || isHorizontalLine || r.left >= pr.left + pr.width * 0.5)){
+          el.style.setProperty('display', 'none', 'important');
+          el.style.setProperty('visibility', 'hidden', 'important');
+          el.style.setProperty('width', '0', 'important');
+          el.style.setProperty('height', '0', 'important');
+          el.style.setProperty('border', 'none', 'important');
+          el.style.setProperty('background', 'none', 'important');
+          try { el.remove(); } catch(_){}
+        }
+      });
+    });
+  }
+
+  // Jalankan saat load, render, cetak, dan saat DOM berubah
+  window.addEventListener('load', function(){
+    cleanGreenArtifactsFromAllPages();
+    setTimeout(cleanGreenArtifactsFromAllPages, 50);
+    setTimeout(cleanGreenArtifactsFromAllPages, 150);
+    setTimeout(cleanGreenArtifactsFromAllPages, 400);
+    setTimeout(cleanGreenArtifactsFromAllPages, 1000);
+    setTimeout(cleanGreenArtifactsFromAllPages, 2000);
+  });
+  window.addEventListener('beforeprint', cleanGreenArtifactsFromAllPages);
+  var mo = new MutationObserver(function(){ cleanGreenArtifactsFromAllPages(); });
+  window.addEventListener('DOMContentLoaded', function(){
+    mo.observe(document.body, { childList: true, subtree: true });
+    cleanGreenArtifactsFromAllPages();
+  });
+  setInterval(cleanGreenArtifactsFromAllPages, 1000);
+  window.cleanGreenArtifactsFromAllPages = cleanGreenArtifactsFromAllPages;
 })();
 </script>
 
