@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="id">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -6789,21 +6789,27 @@ window.pdfjsLibBridge=pdfjsLib;
 /* Print/PDF layout */
 .desk16-page{
  width:330mm;
- min-height:290mm;
+ height:215mm;
+ min-height:215mm;
+ max-height:215mm;
  box-sizing:border-box;
  margin:0 auto;
- padding:5mm;
+ padding:5mm 7mm;
  background:#fff;
  page:deskLandscape;
+ overflow:hidden;
 }
 .desk16-grid{
  width:100%;
  height:100%;
- min-height:280mm;
+ min-height:205mm;
+ max-height:205mm;
  display:grid;
  grid-template-columns:repeat(4,minmax(0,1fr));
- grid-template-rows:repeat(4,1fr);
- gap:4mm;
+ grid-template-rows:repeat(3,minmax(0,1fr));
+ column-gap:4mm;
+ row-gap:4.5mm;
+ box-sizing:border-box;
 }
 .desk16-card{
  border:1.4px solid #000;
@@ -6875,30 +6881,42 @@ window.pdfjsLibBridge=pdfjsLib;
 }
 
 @page deskLandscape{
- size:330mm 290mm;
+ size:330mm 215mm;
  margin:0;
 }
 
 @media print{
  @page deskLandscape{
- size:330mm 290mm;
- margin:0;
+ size:330mm 215mm;
+ margin:0!important;
  }
  .desk16-page{
  width:330mm!important;
- min-height:290mm!important;
+ height:215mm!important;
+ min-height:215mm!important;
+ max-height:215mm!important;
  margin:0!important;
- padding:5mm!important;
+ padding:5mm 7mm!important;
  page-break-after:always;
  break-after:page;
+ box-sizing:border-box!important;
+ overflow:hidden!important;
+ -webkit-print-color-adjust:exact!important;
+ print-color-adjust:exact!important;
  }
  .desk16-page:last-of-type{
  page-break-after:auto;
  break-after:auto;
  }
  .desk16-grid{
- min-height:280mm!important;
- gap:4mm!important;
+ width:316mm!important;
+ height:205mm!important;
+ min-height:205mm!important;
+ max-height:205mm!important;
+ grid-template-columns:repeat(4,minmax(0,1fr))!important;
+ grid-template-rows:repeat(3,minmax(0,1fr))!important;
+ column-gap:4mm!important;
+ row-gap:4.5mm!important;
  }
  .desk16-card{
  break-inside:avoid;
@@ -6909,11 +6927,11 @@ window.pdfjsLibBridge=pdfjsLib;
 </style>
 
 <style id="desk16-spacing-override">
-/* Pengaturan nomor meja final: kertas 29 x 33 cm landscape,
- margin 7.5mm, kotak 70 x 60 mm, jarak potong 5 mm */
+/* Pengaturan nomor meja final: kertas landscape 21.5 x 33 cm,
+ 12 kartu per lembar (4 ke kanan x 3 ke bawah), kotak besar proporsional */
 .desknum-grid-16{
  grid-template-columns:repeat(4,minmax(0,1fr))!important;
- gap:20px!important;
+ gap:16px!important;
  padding:8px 4px!important;
 }
 .desknum-card-16{
@@ -6926,100 +6944,138 @@ window.pdfjsLibBridge=pdfjsLib;
 
 .desk16-page{
  width:330mm!important;
- min-height:290mm!important;
+ height:215mm!important;
+ min-height:215mm!important;
+ max-height:215mm!important;
  box-sizing:border-box!important;
  margin:0 auto!important;
- padding:7.5mm!important;
+ padding:5mm 7mm!important;
  background:#fff!important;
+ overflow:hidden!important;
+ page:deskLandscape!important;
 }
 .desk16-grid{
- width:315mm!important;
- height:275mm!important;
- min-height:275mm!important;
+ width:316mm!important;
+ height:205mm!important;
+ min-height:205mm!important;
+ max-height:205mm!important;
  display:grid!important;
- grid-template-columns:repeat(4,70mm)!important;
- grid-template-rows:repeat(4,60mm)!important;
- column-gap:5mm!important;
+ grid-template-columns:repeat(4,76mm)!important;
+ grid-template-rows:repeat(3,65mm)!important;
+ column-gap:4mm!important;
  row-gap:5mm!important;
- justify-content:start!important;
- align-content:start!important;
+ justify-content:center!important;
+ align-content:center!important;
+ box-sizing:border-box!important;
 }
 .desk16-card{
- width:70mm!important;
- height:60mm!important;
- min-height:60mm!important;
- padding:3.5mm 3mm!important;
+ width:76mm!important;
+ height:65mm!important;
+ min-width:76mm!important;
+ min-height:65mm!important;
+ max-width:76mm!important;
+ max-height:65mm!important;
+ padding:3mm 2.5mm!important;
  box-sizing:border-box!important;
- border:1.4px solid #000!important;
+ border:1.5px solid #000!important;
  display:flex!important;
  flex-direction:column!important;
  align-items:center!important;
  justify-content:center!important;
  text-align:center!important;
+ overflow:hidden!important;
+ background:#fff!important;
 }
 .desk16-title{
- font-size:10.8pt!important;
- line-height:1.05!important;
- letter-spacing:0!important;
+ font-size:11pt!important;
+ line-height:1.1!important;
+ letter-spacing:.2px!important;
  white-space:nowrap!important;
+ font-weight:900!important;
 }
 .desk16-school{
- font-size:9.8pt!important;
- line-height:1.04!important;
+ font-size:10pt!important;
+ line-height:1.05!important;
  margin-top:1mm!important;
- letter-spacing:0!important;
+ letter-spacing:.2px!important;
  white-space:nowrap!important;
+ font-weight:800!important;
+}
+.desk16-year{
+ font-size:8pt!important;
+ line-height:1!important;
+ margin-top:0.8mm!important;
+ letter-spacing:.3px!important;
+ font-weight:700!important;
+ text-transform:none!important;
 }
 .desk16-divider{
  width:100%!important;
- border-top:1.5px solid #000!important;
- margin:1.8mm 0 2.2mm!important;
+ border-top:1.6px solid #000!important;
+ margin:1.6mm 0 2mm!important;
 }
 .desk16-number{
- font-size:27pt!important;
+ font-size:30pt!important;
  line-height:1!important;
- margin-bottom:2.2mm!important;
+ margin-bottom:2mm!important;
+ font-weight:900!important;
+ letter-spacing:.5px!important;
 }
 .desk16-name{
- font-size:11pt!important;
- line-height:1.12!important;
+ font-size:11.5pt!important;
+ line-height:1.15!important;
  margin-top:0!important;
+ font-weight:800!important;
 }
 .desk16-room{
  font-size:10.5pt!important;
  line-height:1.1!important;
  margin-top:1.5mm!important;
+ font-weight:800!important;
 }
-.desk16-long-name .desk16-name{font-size:10.4pt!important;}
-.desk16-very-long-name .desk16-name{font-size:9.8pt!important;line-height:1.06!important;}
+.desk16-long-name .desk16-name{font-size:10.5pt!important; line-height:1.1!important;}
+.desk16-very-long-name .desk16-name{font-size:9.6pt!important; line-height:1.05!important;}
 
 @media print{
- @page deskLandscape{size:330mm 290mm; margin:0!important;}
+ @page deskLandscape{size:330mm 215mm; margin:0!important;}
  .desk16-page{
  width:330mm!important;
- min-height:290mm!important;
+ height:215mm!important;
+ min-height:215mm!important;
+ max-height:215mm!important;
  margin:0!important;
- padding:7.5mm!important;
+ padding:5mm 7mm!important;
  page-break-after:always!important;
  break-after:page!important;
+ box-sizing:border-box!important;
+ overflow:hidden!important;
+ -webkit-print-color-adjust:exact!important;
+ print-color-adjust:exact!important;
  }
  .desk16-page:last-of-type{
  page-break-after:auto!important;
  break-after:auto!important;
  }
  .desk16-grid{
- width:315mm!important;
- height:275mm!important;
- min-height:275mm!important;
- grid-template-columns:repeat(4,70mm)!important;
- grid-template-rows:repeat(4,60mm)!important;
- column-gap:5mm!important;
+ width:316mm!important;
+ height:205mm!important;
+ min-height:205mm!important;
+ max-height:205mm!important;
+ display:grid!important;
+ grid-template-columns:repeat(4,76mm)!important;
+ grid-template-rows:repeat(3,65mm)!important;
+ column-gap:4mm!important;
  row-gap:5mm!important;
+ justify-content:center!important;
+ align-content:center!important;
  }
  .desk16-card{
- width:70mm!important;
- height:60mm!important;
- min-height:60mm!important;
+ width:76mm!important;
+ height:65mm!important;
+ min-width:76mm!important;
+ min-height:65mm!important;
+ max-width:76mm!important;
+ max-height:65mm!important;
  break-inside:avoid!important;
  page-break-inside:avoid!important;
  }
@@ -19806,7 +19862,7 @@ function deskEntriesByRoom(roomFilter='all'){
 }
 
 function deskLayoutPages(filter='all'){
- let perPage=16;
+ let perPage=12;
  let all=deskAllEntries();
  let filterStr=String(filter??'all').trim().toLowerCase();
 
@@ -19934,10 +19990,10 @@ function getDeskFilterValue(){
 }
 
 function printDeskOptions(){
- return `<option value="all">🏛️ Semua Tingkatan (Kelas 7, 8, 9 &bull; 65 Lembar)</option>
-<option value="grade_7">🟢 Tingkat Kelas 7 (Semua 7A - 7H &bull; 16 Lembar)</option>
-<option value="grade_8">🔵 Tingkat Kelas 8 (Semua 8A - 8J &bull; 23 Lembar)</option>
-<option value="grade_9">🟣 Tingkat Kelas 9 (Semua 9A - 9K &bull; 26 Lembar)</option>
+ return `<option value="all">🏛️ Semua Tingkatan (Kelas 7, 8, 9 &bull; 87 Lembar)</option>
+<option value="grade_7">🟢 Tingkat Kelas 7 (Semua 7A - 7H &bull; 21 Lembar)</option>
+<option value="grade_8">🔵 Tingkat Kelas 8 (Semua 8A - 8J &bull; 31 Lembar)</option>
+<option value="grade_9">🟣 Tingkat Kelas 9 (Semua 9A - 9K &bull; 35 Lembar)</option>
 <optgroup label="Cetak Berdasarkan Ruang">
 ` + (db.rooms||[]).filter(r=>(r.students||[]).length).map(r=>`<option value="${r.no}">Ruang ${String(r.no).padStart(2,'0')} (${r.students.length} Siswa)</option>`).join('') + `</optgroup>`;
 }
@@ -20012,7 +20068,7 @@ function deskNumbers(){
  return `<div class="card"><h2>6. Nomor Meja Peserta</h2>
  <div class="notice">
  Nomor meja peserta dibuat <b>tiap tingkatan (Kelas 7, Kelas 8, dan Kelas 9) dikumpulkan jadi satu</b> untuk memudahkan cetak dan pemotongan.<br>
- Setiap tingkatan dicetak pada lembar tersendiri dan tidak bercampur. Kertas cetak menggunakan <b>29 cm x 33 cm landscape</b>, <b>16 kartu per lembar (4 kolom x 4 baris)</b>.
+ Setiap tingkatan dicetak pada lembar tersendiri dan tidak bercampur. Kertas cetak menggunakan <b>21.5 cm x 33 cm landscape</b>, <b>12 kartu per lembar (4 kotak ke kanan x 3 kotak ke bawah)</b> dengan kotak besar proporsional sesuai ukuran kertas.
  </div>
 
  <!-- PILIH TINGKATAN CETAK -->
@@ -20020,10 +20076,10 @@ function deskNumbers(){
    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
      <label for="deskFilterSelect" style="font-weight:800;color:#135200;font-size:14px">🎯 Pilih Tingkatan / Tampilan:</label>
      <select id="deskFilterSelect" onchange="changeDeskFilter(this.value)" style="font-weight:700;padding:7px 12px;border:1.5px solid #27ae60;border-radius:6px;background:#fff;font-size:13.5px">
-       <option value="all" ${currentDeskFilter==='all'?'selected':''}>🏛️ Semua Tingkatan (Kelas 7, 8, 9 &bull; 65 Lembar)</option>
-       <option value="grade_7" ${currentDeskFilter==='grade_7'?'selected':''}>🟢 Tingkat Kelas 7 (250 Siswa &bull; 16 Lembar)</option>
-       <option value="grade_8" ${currentDeskFilter==='grade_8'?'selected':''}>🔵 Tingkat Kelas 8 (364 Siswa &bull; 23 Lembar)</option>
-       <option value="grade_9" ${currentDeskFilter==='grade_9'?'selected':''}>🟣 Tingkat Kelas 9 (409 Siswa &bull; 26 Lembar)</option>
+       <option value="all" ${currentDeskFilter==='all'?'selected':''}>🏛️ Semua Tingkatan (Kelas 7, 8, 9 &bull; 87 Lembar)</option>
+       <option value="grade_7" ${currentDeskFilter==='grade_7'?'selected':''}>🟢 Tingkat Kelas 7 (250 Siswa &bull; 21 Lembar)</option>
+       <option value="grade_8" ${currentDeskFilter==='grade_8'?'selected':''}>🔵 Tingkat Kelas 8 (364 Siswa &bull; 31 Lembar)</option>
+       <option value="grade_9" ${currentDeskFilter==='grade_9'?'selected':''}>🟣 Tingkat Kelas 9 (409 Siswa &bull; 35 Lembar)</option>
        <optgroup label="Cetak Berdasarkan Ruang">
          ${(db.rooms||[]).filter(r=>(r.students||[]).length).map(r=>`<option value="${r.no}" ${String(currentDeskFilter)===String(r.no)?'selected':''}>Ruang ${String(r.no).padStart(2,'0')} (${r.students.length} Siswa)</option>`).join('')}
        </optgroup>
@@ -20040,9 +20096,9 @@ function deskNumbers(){
  <div class="grid" style="grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:12px;margin-bottom:14px">
    <div class="stat">Total Peserta Tampil<b>${summary.total}</b></div>
    <div class="stat">Total Lembar<b>${summary.pages.length}</b></div>
-   <div class="stat">Tingkat Kelas 7<b>${summary.k7Count} siswa (16 lembar)</b></div>
-   <div class="stat">Tingkat Kelas 8<b>${summary.k8Count} siswa (23 lembar)</b></div>
-   <div class="stat">Tingkat Kelas 9<b>${summary.k9Count} siswa (26 lembar)</b></div>
+   <div class="stat">Tingkat Kelas 7<b>${summary.k7Count} siswa (${Math.ceil(summary.k7Count/12)} lembar)</b></div>
+   <div class="stat">Tingkat Kelas 8<b>${summary.k8Count} siswa (${Math.ceil(summary.k8Count/12)} lembar)</b></div>
+   <div class="stat">Tingkat Kelas 9<b>${summary.k9Count} siswa (${Math.ceil(summary.k9Count/12)} lembar)</b></div>
  </div>
 
  <div class="actions">
@@ -20054,10 +20110,10 @@ function deskNumbers(){
 
  <div class="actions" style="margin-top:-6px;margin-bottom:14px">
    <span style="font-size:12px;font-weight:700;color:#555;align-self:center">⚡ Cetak Cepat:</span>
-   <button class="secondary" onclick="printDeskNumbersAll('grade_7')" style="font-size:12px;font-weight:700;background:#f6ffed;border-color:#b7eb8f;color:#135200">🖨️ Cetak Tingkat 7 (16 Lembar)</button>
-   <button class="secondary" onclick="printDeskNumbersAll('grade_8')" style="font-size:12px;font-weight:700;background:#e6f7ff;border-color:#91d5ff;color:#003a8c">🖨️ Cetak Tingkat 8 (23 Lembar)</button>
-   <button class="secondary" onclick="printDeskNumbersAll('grade_9')" style="font-size:12px;font-weight:700;background:#f9f0ff;border-color:#d3adf7;color:#531dab">🖨️ Cetak Tingkat 9 (26 Lembar)</button>
-   <button class="secondary" onclick="printDeskNumbersAll('all')" style="font-size:12px;font-weight:700">🖨️ Cetak Semua (65 Lembar)</button>
+   <button class="secondary" onclick="printDeskNumbersAll('grade_7')" style="font-size:12px;font-weight:700;background:#f6ffed;border-color:#b7eb8f;color:#135200">🖨️ Cetak Tingkat 7 (21 Lembar)</button>
+   <button class="secondary" onclick="printDeskNumbersAll('grade_8')" style="font-size:12px;font-weight:700;background:#e6f7ff;border-color:#91d5ff;color:#003a8c">🖨️ Cetak Tingkat 8 (31 Lembar)</button>
+   <button class="secondary" onclick="printDeskNumbersAll('grade_9')" style="font-size:12px;font-weight:700;background:#f9f0ff;border-color:#d3adf7;color:#531dab">🖨️ Cetak Tingkat 9 (35 Lembar)</button>
+   <button class="secondary" onclick="printDeskNumbersAll('all')" style="font-size:12px;font-weight:700">🖨️ Cetak Semua (87 Lembar)</button>
  </div>
 
  ${summary.pages.slice(0,6).map(page=>`<div class="card">
@@ -20139,7 +20195,7 @@ function exportDeskNumbers(filter=currentDeskFilter||'all'){
 
 /* ===========================
  WORD (.docx) NOMOR MEJA
- layout 4 kolom x 4 baris
+ layout 4 kolom x 3 baris (12 kartu, 21.5 x 33 cm landscape)
  =========================== */
 function deskXmlEscape(value){
  return String(value??'')
@@ -20220,12 +20276,12 @@ function deskWordCell(item){
 function deskWordTable(page){
  let slots=page.slots||[];
  let rows=[];
- for(let r=0;r<4;r++){
+ for(let r=0;r<3;r++){
  let cells=slots.slice(r*4,r*4+4).map(deskWordCell).join('');
  rows.push(`<w:tr>
  <w:trPr>
  <w:cantSplit/>
- <w:trHeight w:val="3270" w:hRule="exact"/>
+ <w:trHeight w:val="3750" w:hRule="exact"/>
  </w:trPr>
  ${cells}
  </w:tr>`);
@@ -20262,7 +20318,7 @@ function deskWordDocumentXml(pages){
  <w:body>
  ${body}
  <w:sectPr>
- <w:pgSz w:w="18709" w:h="16441" w:orient="landscape"/>
+ <w:pgSz w:w="18709" w:h="12189" w:orient="landscape"/>
  <w:pgMar w:top="283" w:right="283" w:bottom="283" w:left="283" w:header="0" w:footer="0" w:gutter="0"/>
  <w:cols w:space="0"/>
  <w:docGrid w:linePitch="360"/>
@@ -23961,7 +24017,7 @@ function printPage(){
  ${printSingleRow('Daftar Pembagian Ruang Asesmen','Tabel Rekapitulasi Pembagian Ruang: Ruang, Kelas 7, Kelas 8, Kelas 9, Jumlah, Ruang Kelas, Jumlah Ruang, dengan jumlah total tiap kelas di bawah.','roomDistributionTable')}
  ${printChoiceRow('Denah','33 x 21.5 cm landscape (Folio / F4); 20 meja (4 x 5), tampilan penuh besar, meja pengawas proporsional; tersedia Cetak, PDF, Excel dan CSV.','pr_seats',printRoomOptions(),'seats')}
  ${printChoiceRow('Daftar Peserta','Portrait 29 x 33 cm; KOP mulai tepat 15mm dari tepi atas, hanya 1 garis KOP, jarak garis->judul 4mm dan judul->tabel 3mm, margin kanan 26mm.','pr_participants',printRoomOptions(),'participants')}
- ${printChoiceRow('Nomor Meja Peserta','33 x 29 cm landscape; 16 kartu per lembar; dibuat tiap tingkatan (Kelas 7, 8, 9) dikumpulkan jadi satu untuk memudahkan cetak; tersedia Cetak, PDF, Word, Excel dan CSV.','pr_desks',printDeskOptions(),'desks')}
+ ${printChoiceRow('Nomor Meja Peserta','21.5 x 33 cm landscape; 12 kartu per lembar (4 ke kanan x 3 ke bawah); dibuat tiap tingkatan (Kelas 7, 8, 9) dikumpulkan jadi satu untuk memudahkan cetak; kotak besar sesuai ukuran kertas; tersedia Cetak, PDF, Word, Excel dan CSV.','pr_desks',printDeskOptions(),'desks')}
  ${printChoiceRow('Kartu Peserta','33 x 29 cm landscape, 3 kartu per lembar.','pr_cards',printRoomOptions(),'cards')}
  ${printSingleRow('Jadwal Asesmen','Portrait 29 x 33 cm; judul mengikuti asesmen aktif, Hari/Tanggal dua baris, Mata Pelajaran dipersempit dan ditambah kolom Keterangan.','schedule')}
  ${printSingleRow('Jadwal Pengawas','Mencetak jadwal pengawas yang aktif.','supervisors')}
@@ -24583,11 +24639,13 @@ function pdfPageSizeForElement(el){
  if(el.classList.contains('supervisor-print-page')){
   return {width:330,height:215,orientation:'landscape'};
  }
+ if(el.classList.contains('desk-landscape-page') || el.classList.contains('desk16-page')){
+  return {width:330,height:215,orientation:'landscape'};
+ }
 
  let landscape=
  el.classList.contains('attendance-landscape-page') ||
- el.classList.contains('card-landscape-page') ||
- el.classList.contains('desk-landscape-page');
+ el.classList.contains('card-landscape-page');
 
  return landscape
  ? {width:330,height:290,orientation:'landscape'}
