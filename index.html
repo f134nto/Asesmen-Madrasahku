@@ -25,12 +25,12 @@
 
 
 .desknum-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
-.desknum-card{border:2px solid #1b6f54;border-radius:10px;padding:14px;background:#fff;text-align:center;position:relative}
-.desknum-card .deskno{font-size:28px;font-weight:900;color:#11633f;line-height:1}
-.desknum-card .exam{font-size:11px;font-weight:700;color:#2c7c60;margin:8px 0 10px;text-transform:uppercase}
+.desknum-card{border:1.5px solid #000!important;border-radius:0!important;padding:14px;background:#fff;text-align:center;position:relative;outline:none!important;box-shadow:none!important}
+.desknum-card .deskno{font-size:28px;font-weight:900;color:#000;line-height:1}
+.desknum-card .exam{font-size:11px;font-weight:700;color:#111;margin:8px 0 10px;text-transform:uppercase}
 .desknum-card .participant{font-size:20px;font-weight:900;color:#111;margin:6px 0}
 .desknum-card .name{font-size:16px;font-weight:700;margin:5px 0}
-.desknum-card .room{display:inline-block;margin-top:8px;padding:5px 10px;border-radius:18px;background:#eaf7f0;color:#17633f;font-weight:700}
+.desknum-card .room{display:inline-block;margin-top:8px;padding:5px 10px;border-radius:4px;background:#f5f5f5;color:#111;font-weight:700}
 .desknum-print{display:grid;grid-template-columns:repeat(2,1fr);gap:12mm}
 .desknum-print-card{border:1.5px solid #000;border-radius:3mm;padding:7mm;text-align:center;min-height:72mm;display:flex;flex-direction:column;justify-content:center}
 .desknum-print-card .deskno{font-size:28pt;font-weight:900}
@@ -14443,13 +14443,20 @@ html body.force-print-root .print-header.simple-kop .kop-main h2:after{
    PENGHAPUSAN MUTLAK ARTEFAK GARIS HIJAU PADA SEMUA HALAMAN CETAK
    (Denah Tempat Duduk, Daftar Peserta, Jadwal, Pengawas, dsb.)
    ============================================================ */
-/* 1. Denah Tempat Duduk tidak boleh memiliki manual paste asset, gambar asing, atau garis di atas meja */
+/* 1. Denah Tempat Duduk & Nomor Meja Peserta: tidak boleh memiliki manual paste asset, gambar asing, atau garis dekoratif */
 .seat-print-page .manual-paste-asset,
 .seat-no-kop-print .manual-paste-asset,
 #seatOut .manual-paste-asset,
 .seat-print-page img:not(.logo-kop-img),
 .seat-no-kop-print img:not(.logo-kop-img),
-[data-manual-paste-page-key*="seat"] .manual-paste-asset {
+[data-manual-paste-page-key*="seat"] .manual-paste-asset,
+.desk16-page .manual-paste-asset,
+.desk-landscape-page .manual-paste-asset,
+[class*="desk"] .manual-paste-asset,
+[data-manual-paste-page-key*="desk"] .manual-paste-asset,
+.desk16-page img,
+.desk-landscape-page img,
+.desknum-card .manual-paste-asset {
   display: none !important;
   visibility: hidden !important;
   width: 0 !important;
@@ -14457,6 +14464,38 @@ html body.force-print-root .print-header.simple-kop .kop-main h2:after{
   opacity: 0 !important;
   border: none !important;
   pointer-events: none !important;
+}
+
+/* Hilangkan SEMUA pseudo-elements (::before, ::after) pada halaman dan kartu nomor meja */
+.desk16-page::before,
+.desk16-page::after,
+.desk-landscape-page::before,
+.desk-landscape-page::after,
+.desk16-grid::before,
+.desk16-grid::after,
+.desk16-card::before,
+.desk16-card::after,
+.desknum-card::before,
+.desknum-card::after,
+.desknum-card-16::before,
+.desknum-card-16::after,
+.desk-landscape-card::before,
+.desk-landscape-card::after {
+  display: none !important;
+  content: none !important;
+  border: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: none !important;
+  visibility: hidden !important;
+}
+
+/* Pastikan halaman nomor meja bersih tanpa border, outline, atau bayangan hijau di pojok atas maupun bawah */
+.desk16-page,
+.desk-landscape-page {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* 2. Semua halaman cetak: hilangkan pseudo-elements dan dekorasi header */
@@ -20072,10 +20111,10 @@ function deskNumbers(){
  </div>
 
  <!-- PILIH TINGKATAN CETAK -->
- <div style="background:#f4fbf7;border:1.5px solid #27ae60;border-radius:8px;padding:12px 16px;margin:12px 0 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+ <div style="background:#f8fafc;border:1.5px solid #d0d7de;border-radius:8px;padding:12px 16px;margin:12px 0 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
      <label for="deskFilterSelect" style="font-weight:800;color:#135200;font-size:14px">🎯 Pilih Tingkatan / Tampilan:</label>
-     <select id="deskFilterSelect" onchange="changeDeskFilter(this.value)" style="font-weight:700;padding:7px 12px;border:1.5px solid #27ae60;border-radius:6px;background:#fff;font-size:13.5px">
+     <select id="deskFilterSelect" onchange="changeDeskFilter(this.value)" style="font-weight:700;padding:7px 12px;border:1.5px solid #d0d7de;border-radius:6px;background:#fff;font-size:13.5px">
        <option value="all" ${currentDeskFilter==='all'?'selected':''}>🏛️ Semua Tingkatan (Kelas 7, 8, 9 &bull; 87 Lembar)</option>
        <option value="grade_7" ${currentDeskFilter==='grade_7'?'selected':''}>🟢 Tingkat Kelas 7 (250 Siswa &bull; 21 Lembar)</option>
        <option value="grade_8" ${currentDeskFilter==='grade_8'?'selected':''}>🔵 Tingkat Kelas 8 (364 Siswa &bull; 31 Lembar)</option>
@@ -23578,7 +23617,7 @@ function printDirectPosSet(key,x,y,persist=true){
 }
 
 function printDirectPageSelector(){
- return '.print-page,.participant-list-print-page,.seat-print-page,.schedule-print-page,.supervisor-print-page,.attendance-landscape-page,.card-landscape-page,.desk-landscape-page';
+ return '.print-page,.participant-list-print-page,.schedule-print-page,.supervisor-print-page,.attendance-landscape-page,.card-landscape-page';
 }
 
 function printDirectSafeKey(value){
@@ -26768,14 +26807,20 @@ checkLogin();
    if(_raw){
      let _list = JSON.parse(_raw);
      if(Array.isArray(_list)){
-       _list = _list.filter(a => !String(a.pageKey||'').toLowerCase().includes('seat') && !(Number(a.y) < 35 && Number(a.x) > 55));
+       _list = _list.filter(a => {
+        let key = String(a.pageKey||'').toLowerCase();
+        if(key.includes('seat') || key.includes('desk') || key.includes('meja') || key.includes('ruang')) return false;
+        if(Number(a.y) < 35 && Number(a.x) > 55) return false;
+        if(Number(a.y) > 50 && Number(a.x) > 50) return false;
+        return true;
+      });
        localStorage.setItem('administrasi_asesmen_manual_print_assets_v3', JSON.stringify(_list));
      }
    }
  }catch(_e){}
  const PAGE_SELECTOR=[
- '.print-page:not(.seat-print-page):not(.seat-no-kop-print)',
- '[class*="-print-page"]:not(.seat-print-page):not(.seat-no-kop-print)',
+ '.print-page:not(.seat-print-page):not(.seat-no-kop-print):not(.desk-landscape-page):not(.desk16-page)',
+ '[class*="-print-page"]:not(.seat-print-page):not(.seat-no-kop-print):not(.desk-landscape-page):not(.desk16-page)',
  '.participant-list-print-page',
  '.participant-exact-print-page',
  '.schedule-print-page',
@@ -26785,8 +26830,6 @@ checkLogin();
  '.supervisor-print-page',
  '.attendance-landscape-page',
  '.card-landscape-page',
- '.desk-landscape-page',
- '.desk16-page',
  '.room-capacity-print-page'
  ].join(',');
 
@@ -26831,7 +26874,7 @@ checkLogin();
  if(hasSystemPrint){
  found=Array.from(app.children).filter(el=>{
   if(!(el instanceof HTMLElement))return false;
-  if(el.matches('.actions,.no-print,.card,.print-choice-list,.print-signature-settings-card'))return false;
+  if(el.matches('.actions,.no-print,.card,.print-choice-list,.print-signature-settings-card,.desk-landscape-page,.desk16-page,.seat-print-page,.seat-no-kop-print'))return false;
   if(el.closest('.print-choice-list,.print-signature-settings-card'))return false;
   return !!el.querySelector('table,.print-title,.schedule-custom-title,.attendance-reference-title');
  });
@@ -26914,7 +26957,7 @@ checkLogin();
  readStore().forEach(asset=>{
  let page=findPage(asset.pageKey);
  if(!page)return;
- if(page.classList.contains('seat-print-page') || page.classList.contains('seat-no-kop-print') || page.closest('.seat-print-page') || page.closest('#seatOut')) return;
+ if(page.classList.contains('seat-print-page') || page.classList.contains('seat-no-kop-print') || page.classList.contains('desk-landscape-page') || page.classList.contains('desk16-page') || page.closest('.seat-print-page') || page.closest('#seatOut') || page.closest('.desk-landscape-page') || page.closest('.desk16-page')) return;
  let img=document.createElement('img');
  img.className='manual-paste-asset';
  img.dataset.manualPasteId=String(asset.id);
@@ -27401,10 +27444,26 @@ checkLogin();
   }
 
   function cleanGreenArtifactsFromAllPages(){
-    // 1. Khusus Denah Tempat Duduk: Denah sama sekali TIDAK MEMILIKI GAMBAR ATAU MANUAL ASSET.
-    // Hapus tuntas seluruh .manual-paste-asset atau gambar apa pun yang ada pada denah!
-    document.querySelectorAll('.seat-print-page .manual-paste-asset, .seat-no-kop-print .manual-paste-asset, #seatOut .manual-paste-asset, .seat-print-page img:not(.logo-kop-img)').forEach(function(el){
+    // 1. Khusus Denah Tempat Duduk & Nomor Meja Peserta: sama sekali TIDAK MEMILIKI GAMBAR ATAU MANUAL ASSET.
+    // Hapus tuntas seluruh .manual-paste-asset atau gambar apa pun yang ada pada denah dan nomor meja!
+    document.querySelectorAll('.seat-print-page .manual-paste-asset, .seat-no-kop-print .manual-paste-asset, #seatOut .manual-paste-asset, .seat-print-page img:not(.logo-kop-img), .desk16-page .manual-paste-asset, .desk-landscape-page .manual-paste-asset, [class*="desk"] .manual-paste-asset, [data-manual-paste-page-key*="desk"] .manual-paste-asset, .desk16-page img, .desk-landscape-page img, .desknum-card .manual-paste-asset').forEach(function(el){
       try { el.remove(); } catch(_){ el.style.setProperty('display', 'none', 'important'); }
+    });
+
+    // 1b. Bersihkan artefak garis atau kotak kehijauan pada halaman dan kartu nomor meja
+    document.querySelectorAll('.desk16-page, .desk-landscape-page, .desknum-grid, .desknum-card').forEach(function(dp){
+      dp.querySelectorAll('*').forEach(function(el){
+        if(el.classList && (el.classList.contains('desk16-line') || el.classList.contains('desk16-number') || el.classList.contains('desk16-name') || el.classList.contains('desk16-room') || el.classList.contains('desk16-divider') || el.classList.contains('exam') || el.classList.contains('school') || el.classList.contains('year') || el.classList.contains('participant') || el.classList.contains('name') || el.classList.contains('room'))) return;
+        var cs = getComputedStyle(el);
+        var bg = cs.backgroundColor || '';
+        var bt = cs.borderTopColor || '';
+        var bb = cs.borderBottomColor || '';
+        var bl = cs.borderLeftColor || '';
+        var br = cs.borderRightColor || '';
+        if(isGreenish(bg) || isGreenish(bt) || isGreenish(bb) || isGreenish(bl) || isGreenish(br)){
+          el.remove();
+        }
+      });
     });
 
     // 2. Seluruh halaman dokumen cetak/preview yang ada di DOM
