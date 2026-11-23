@@ -14565,6 +14565,112 @@ html body.force-print-root .print-header.simple-kop .kop-main h2:after{
 }
 </style>
 
+
+<style id="interactive-table-resizer-style">
+/* RESIZER GARIS KOLOM */
+.table-col-resizer {
+  position: absolute !important;
+  top: 0 !important;
+  right: -4px !important;
+  width: 8px !important;
+  height: 100% !important;
+  cursor: col-resize !important;
+  z-index: 100 !important;
+  user-select: none !important;
+  touch-action: none !important;
+  background: transparent !important;
+  transition: background-color 0.15s ease !important;
+}
+.table-col-resizer:hover, .table-col-resizer.is-active {
+  background-color: #2563eb !important;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.7) !important;
+}
+
+/* RESIZER GARIS BARIS */
+.table-row-resizer {
+  position: absolute !important;
+  left: 0 !important;
+  bottom: -3px !important;
+  width: 100% !important;
+  height: 6px !important;
+  cursor: row-resize !important;
+  z-index: 95 !important;
+  user-select: none !important;
+  touch-action: none !important;
+  background: transparent !important;
+  transition: background-color 0.15s ease !important;
+}
+.table-row-resizer:hover, .table-row-resizer.is-active {
+  background-color: #2563eb !important;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.7) !important;
+}
+
+/* FLOATING TOOLBAR PENGATUR GARIS TABEL */
+.table-resize-toolbar {
+  position: fixed !important;
+  top: 75px !important;
+  right: 20px !important;
+  width: min(360px, calc(100vw - 30px)) !important;
+  background: #ffffff !important;
+  border: 1.5px solid #2563eb !important;
+  border-radius: 10px !important;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.22) !important;
+  z-index: 99990 !important;
+  font-family: system-ui, -apple-system, sans-serif !important;
+  overflow: hidden !important;
+}
+.table-resize-toolbar-head {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
+  padding: 10px 14px !important;
+  border-bottom: 1px solid #bfdbfe !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  cursor: move !important;
+}
+.table-resize-toolbar-body {
+  padding: 12px 14px !important;
+}
+.table-resize-toolbar.is-minimized .table-resize-toolbar-body {
+  display: none !important;
+}
+
+/* LAUNCHER BUTTON */
+#tableResizeLauncher {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 20px !important;
+  background: #1e40af !important;
+  color: #ffffff !important;
+  padding: 8px 14px !important;
+  border-radius: 20px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important;
+  cursor: pointer !important;
+  z-index: 99980 !important;
+  border: 1.5px solid #ffffff !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+#tableResizeLauncher:hover {
+  background: #1d4ed8 !important;
+}
+
+/* SEMBUNYIKAN SAAT PRINT */
+@media print {
+  .table-col-resizer,
+  .table-row-resizer,
+  #tableResizeGuideline,
+  .table-resize-toolbar,
+  #tableResizeLauncher,
+  #tableResizeToast {
+    display: none !important;
+    visibility: hidden !important;
+  }
+}
+</style>
 </head>
 <body>
 <div id="loginScreen" style="display:none!important"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan sinkronisasi Komputer 1, 2, dan 3. Aplikasi ini dirancang dapat dibuka langsung tanpa login.</p></div><div style="font-size:12px;color:#d9eadf"> Database Cloud Supabase Sinkronisasi Multi-Komputer</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">PENGATURAN AKUN CLOUD (OPSIONAL)</div><h2>Masuk Tanpa Password</h2><div class="sub">Aplikasi saat ini telah disetel masuk langsung tanpa username & password agar praktis dan tidak membingungkan.</div>
@@ -14700,7 +14806,7 @@ db.school.signatureAdjust=db.school.signatureAdjust||{};
 });
 
 db.school.signatureCity=db.school.signatureCity||'Wangon';
-db.school.signatureDate=db.school.signatureDate||'';
+db.school.signatureDate=db.school.signatureDate||'2026-11-23';
 db.school.signatureTitle=db.school.signatureTitle||'Ketua Panitia';
 db.school.printMonth=db.school.printMonth||'';
 
@@ -15159,6 +15265,14 @@ function ensureMasterDatabaseInitialized(){
     }
     if(!db.school.committeeNip || !db.school.committeeNip.trim()){
       db.school.committeeNip = '198003162007102003';
+      isChanged = true;
+    }
+    if(!db.school.signatureCity || !db.school.signatureCity.trim()){
+      db.school.signatureCity = 'Wangon';
+      isChanged = true;
+    }
+    if(!db.school.signatureDate || !db.school.signatureDate.trim() || db.school.signatureDate === 'null'){
+      db.school.signatureDate = '2026-11-23';
       isChanged = true;
     }
     if(db.school.supervisorManualChairSignaturePage2){
@@ -17110,7 +17224,7 @@ function profile(){return `<div class="card"><h2>Identitas Madrasah & Kop Cetak<
 <div><label>Ketua Panitia</label><input id="committeeChair" value="${esc(getCommitteeChairName())}" placeholder="Nama Ketua Panitia"></div>
 <div><label>NIP Ketua Panitia</label><input id="committeeNip" value="${esc(getCommitteeChairNip())}" placeholder="198003162007102003"></div>
 <div><label>Nama Kota</label><input id="signatureCity" value="${esc(db.school.signatureCity||'Wangon')}" placeholder="Contoh: Wangon"></div>
-<div><label>Tanggal Tanda Tangan</label><input id="signatureDate" type="date" value="${esc(db.school.signatureDate||'')}"></div>
+<div><label>Tanggal Tanda Tangan</label><input id="signatureDate" type="date" value="${esc(db.school.signatureDate||'2026-11-23')}"></div>
 <div><label>Jabatan Penandatangan</label><input id="signatureTitle" value="${esc(db.school.signatureTitle||'Ketua Panitia')}" placeholder="Ketua Panitia"></div>
 
 <div><label>NIP</label><input id="schoolNip" value="${esc(db.school.nip)}"></div>
@@ -19498,6 +19612,8 @@ function printAllSeats(roomNo='all'){
 function participantList(){
  ensureParticipantListSynced();
  let total=db.rooms.reduce((a,r)=>a+(r.students||[]).length,0);
+ let chairSign=db.school.chairSignature||'';
+ let stamp=db.school.committeeStamp||'';
  return `<div class="card"><h2>5. Daftar Peserta Asesmen</h2>
  <div class="notice">
  Data pada halaman ini <b>terhubung langsung</b> dengan Pembagian Ruang Peserta.
@@ -19506,7 +19622,38 @@ function participantList(){
  Jika ingin kembali ke nomor otomatis per kelas, gunakan tombol <b>Reset Nomor Ruang</b>.
  </div>
  <div class="grid"><div class="stat">Total Peserta<b>${total}</b></div><div class="stat">Jumlah Ruang<b>${db.rooms.length}</b></div><div class="stat">Belum Terbagi<b>${Math.max(0,db.students.length-total)}</b></div></div>
- <div class="actions"><button onclick="printParticipantListAll()"> Cetak Semua Daftar Peserta</button><button class="secondary" onclick="exportPdfFromPrintMenu('participants','')"> PDF Daftar Peserta</button><button class="secondary" onclick="exportParticipantList()"> Export Excel</button></div>
+
+ <div class="card participant-signature-quickcard" style="background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:10px;margin-bottom:18px;padding:14px 18px;">
+   <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+     <div>
+       <div style="font-weight:700;font-size:15px;color:#1e293b;margin-bottom:4px;display:flex;align-items:center;gap:6px;">
+         <span>✍️ Tanda Tangan & Stempel Dokumen Cetak Daftar Peserta</span>
+       </div>
+       <div style="font-size:13px;color:#475569;display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
+         <span>TTD Ketua: ${chairSign?'<b style="color:#15803d">✓ Sudah Tersimpan</b>':'<b style="color:#b91c1c">✕ Belum Ada</b>'}</span>
+         <span>•</span>
+         <span>Stempel Panitia: ${stamp?'<b style="color:#15803d">✓ Sudah Tersimpan</b>':'<b style="color:#b91c1c">✕ Belum Ada</b>'}</span>
+         <span>•</span>
+         <span>Pejabat: <b>${esc(getCommitteeChairName())}</b> (NIP. ${esc(getCommitteeChairNip())})</span>
+       </div>
+     </div>
+     <div class="actions" style="margin:0;">
+       <button type="button" class="secondary" onclick="toggleParticipantSignaturePanel()">✍️ ${window.participantSignaturePanelOpen?'Tutup Pengaturan':'Atur / Tambah TTD & Stempel'}</button>
+     </div>
+   </div>
+   <div id="participantSignaturePanel" style="${window.participantSignaturePanelOpen?'margin-top:16px;padding-top:16px;border-top:1px dashed #cbd5e1;':'display:none;'}">
+     ${participantSignaturePanelBodyHtml('participantList')}
+   </div>
+ </div>
+
+ <div class="actions">
+   <button onclick="printParticipantListAll()"> Cetak Semua Daftar Peserta</button>
+   <button class="secondary" onclick="exportPdfFromPrintMenu('participants','')"> PDF Daftar Peserta</button>
+   <button class="secondary" onclick="exportParticipantList()"> Export Excel</button>
+   <button type="button" class="secondary" onclick="toggleParticipantSignaturePanel()">✍️ Atur TTD & Stempel</button>
+   <button type="button" class="secondary" onclick="openTableResizeToolbar()">📏 Atur Garis Tabel</button>
+ </div>
+ ${participantSignatureModalHtml('all')}
  ${db.rooms.length?db.rooms.map(r=>`<div class="card participant-room-edit-card">
  <div class="participant-room-edit-head">
  <h3>Daftar Peserta Ruang ${String(r.no).padStart(2,'0')} (${r.students.length} peserta)</h3>
@@ -19759,11 +19906,227 @@ function printParticipantListAll(roomNo='all'){
  p.replace('participant-list-print-page special-assessment-print-page',
   `participant-list-print-page special-assessment-print-page ${i<pages.length-1?'page-break':''}`)
  ).join('')+
- `<div class="actions no-print">
- <button onclick="systemPrint()"> Cetak ${roomNo==='all'?'Semua Daftar Peserta':'Ruang '+roomNo}</button>
- <button class="secondary" onclick="render('print')">Kembali ke Print</button>
- </div>`;
+ `<div class="actions no-print" style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+ <button onclick="systemPrint()">🖨️ Cetak ${roomNo==='all'?'Semua Daftar Peserta':'Ruang '+roomNo}</button>
+ <button type="button" class="secondary" onclick="openParticipantSignatureModal('${roomNo}')">✍️ Atur TTD & Stempel</button>
+ <button type="button" class="secondary" onclick="openTableResizeToolbar()">📏 Atur Garis Tabel</button>
+ <button class="secondary" onclick="render('participantList')">📋 Kembali ke Daftar Peserta</button>
+ <button class="secondary" onclick="render('print')">⬅️ Kembali ke Menu Print</button>
+ </div>
+ ${participantSignatureModalHtml(roomNo)}`;
  return true;
+}
+
+
+window.participantSignaturePanelOpen = false;
+
+function toggleParticipantSignaturePanel(){
+ window.participantSignaturePanelOpen = !window.participantSignaturePanelOpen;
+ let panel = document.getElementById('participantSignaturePanel');
+ if(panel){
+   panel.style.display = window.participantSignaturePanelOpen ? 'block' : 'none';
+ }else{
+   if(typeof render === 'function') render('participantList');
+ }
+}
+
+function openParticipantSignatureModal(roomNo='all'){
+ let modal = document.getElementById('participantSignatureModal');
+ if(modal){
+   modal.style.display = 'flex';
+ }
+}
+
+function closeParticipantSignatureModal(){
+ let modal = document.getElementById('participantSignatureModal');
+ if(modal){
+   modal.style.display = 'none';
+ }
+}
+
+function previewParticipantAsset(inputId, previewWrapId){
+ let input = document.getElementById(inputId);
+ let file = input?.files?.[0];
+ if(!file) return;
+ if(!/^image\//i.test(file.type||'')){
+   alert('File harus berupa gambar (PNG, JPG, WebP).');
+   input.value = '';
+   return;
+ }
+ let reader = new FileReader();
+ reader.onload = function(e){
+   let wrap = document.getElementById(previewWrapId);
+   if(wrap){
+     wrap.innerHTML = '<img src="' + e.target.result + '" style="max-height:60px;max-width:100%;object-fit:contain;" alt="Preview"><span style="display:block;font-size:11px;color:#15803d;margin-top:4px;font-weight:600;">✓ Gambar baru dipilih (klik Simpan untuk menerapkan)</span>';
+   }
+ };
+ reader.readAsDataURL(file);
+}
+
+function participantSignaturePanelBodyHtml(context='participantList', roomNo='all'){
+ let chairSign = db.school.chairSignature || '';
+ let stamp = db.school.committeeStamp || '';
+ let sa = signatureAdjustGet('chairSignature');
+ let ta = signatureAdjustGet('committeeStamp');
+ return `
+ <div class="notice" style="background:#eff6ff;border-color:#bfdbfe;color:#1e40af;margin-bottom:14px;">
+ Tanda tangan dan stempel yang disimpan di sini akan otomatis tampil pada <b>kolom tanda tangan di setiap lembar Daftar Peserta (Ruang 01 s.d. 29)</b> tepat di atas nama <b>${esc(getCommitteeChairName())}</b>.
+ </div>
+ <div class="print-signature-grid print-signature-grid-chair-only" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;">
+   
+   <!-- KARTU STEMPEL PANITIA -->
+   <div class="print-signature-card card" style="border:1px solid #e2e8f0;padding:14px;border-radius:8px;background:#ffffff;">
+     <h4 style="margin:0 0 10px 0;font-size:14px;color:#0f172a;font-weight:700;">Stempel Panitia</h4>
+     <div style="margin-bottom:10px;">
+       <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Pilih File Gambar Stempel (PNG/JPG):</label>
+       <input id="partCommitteeStampFile" type="file" accept="image/*" style="width:100%;font-size:12px;" onchange="previewParticipantAsset('partCommitteeStampFile','partCommitteeStampPreviewWrap')">
+     </div>
+     <div id="partCommitteeStampPreviewWrap" style="margin-bottom:12px;padding:8px;background:#f8fafc;border:1px dashed #cbd5e1;border-radius:6px;text-align:center;min-height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+       ${stamp?`<img src="${stamp}" style="max-height:60px;max-width:100%;object-fit:contain;" alt="Stempel Panitia"><span style="display:block;font-size:11px;color:#15803d;margin-top:4px;font-weight:600;">✓ Stempel sudah tersimpan</span>`:`<span style="font-size:12px;color:#64748b;">Belum ada stempel</span>`}
+     </div>
+     <div class="identity-position-editor print-signature-position-editor" style="background:#f1f5f9;padding:8px;border-radius:6px;font-size:12px;">
+       <div class="identity-position-title" style="font-weight:600;margin-bottom:6px;">Posisi Stempel:</div>
+       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+         <div><label style="font-size:10px;font-weight:600;">Geser X (mm)</label><input id="part_committeeStampPosX" type="number" step="1" value="${ta.x}" style="width:100%;padding:4px;font-size:12px;border:1px solid #cbd5e1;border-radius:4px;"></div>
+         <div><label style="font-size:10px;font-weight:600;">Geser Y (mm)</label><input id="part_committeeStampPosY" type="number" step="1" value="${ta.y}" style="width:100%;padding:4px;font-size:12px;border:1px solid #cbd5e1;border-radius:4px;"></div>
+         <div><label style="font-size:10px;font-weight:600;">Ukuran (mm)</label><input id="part_committeeStampSize" type="number" min="5" max="80" step="1" value="${ta.size}" style="width:100%;padding:4px;font-size:12px;border:1px solid #cbd5e1;border-radius:4px;"></div>
+       </div>
+     </div>
+     ${stamp?`<div style="margin-top:10px;"><button type="button" class="danger" style="padding:4px 8px;font-size:11px;width:100%;" onclick="clearParticipantSignatureItem('committeeStamp','${context}','${roomNo}')">🗑️ Hapus Stempel</button></div>`:''}
+   </div>
+
+   <!-- KARTU TANDA TANGAN KETUA PANITIA -->
+   <div class="print-signature-card card" style="border:1px solid #e2e8f0;padding:14px;border-radius:8px;background:#ffffff;">
+     <h4 style="margin:0 0 10px 0;font-size:14px;color:#0f172a;font-weight:700;">Tanda Tangan Ketua Panitia</h4>
+     <div style="margin-bottom:10px;">
+       <label style="font-size:12px;font-weight:600;display:block;margin-bottom:4px;">Pilih File Gambar TTD (PNG/JPG transparan):</label>
+       <input id="partChairSignatureFile" type="file" accept="image/*" style="width:100%;font-size:12px;" onchange="previewParticipantAsset('partChairSignatureFile','partChairSignaturePreviewWrap')">
+     </div>
+     <div id="partChairSignaturePreviewWrap" style="margin-bottom:12px;padding:8px;background:#f8fafc;border:1px dashed #cbd5e1;border-radius:6px;text-align:center;min-height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+       ${chairSign?`<img src="${chairSign}" style="max-height:60px;max-width:100%;object-fit:contain;" alt="TTD Ketua"><span style="display:block;font-size:11px;color:#15803d;margin-top:4px;font-weight:600;">✓ TTD sudah tersimpan</span>`:`<span style="font-size:12px;color:#64748b;">Belum ada tanda tangan</span>`}
+     </div>
+     <div class="identity-position-editor print-signature-position-editor" style="background:#f1f5f9;padding:8px;border-radius:6px;font-size:12px;">
+       <div class="identity-position-title" style="font-weight:600;margin-bottom:6px;">Posisi TTD:</div>
+       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+         <div><label style="font-size:10px;font-weight:600;">Geser X (mm)</label><input id="part_chairSignaturePosX" type="number" step="1" value="${sa.x}" style="width:100%;padding:4px;font-size:12px;border:1px solid #cbd5e1;border-radius:4px;"></div>
+         <div><label style="font-size:10px;font-weight:600;">Geser Y (mm)</label><input id="part_chairSignaturePosY" type="number" step="1" value="${sa.y}" style="width:100%;padding:4px;font-size:12px;border:1px solid #cbd5e1;border-radius:4px;"></div>
+         <div><label style="font-size:10px;font-weight:600;">Ukuran (mm)</label><input id="part_chairSignatureSize" type="number" min="5" max="80" step="1" value="${sa.size}" style="width:100%;padding:4px;font-size:12px;border:1px solid #cbd5e1;border-radius:4px;"></div>
+       </div>
+     </div>
+     ${chairSign?`<div style="margin-top:10px;"><button type="button" class="danger" style="padding:4px 8px;font-size:11px;width:100%;" onclick="clearParticipantSignatureItem('chairSignature','${context}','${roomNo}')">🗑️ Hapus Tanda Tangan</button></div>`:''}
+   </div>
+
+ </div>
+
+ <div class="actions" style="margin-top:16px;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
+   <button type="button" class="success" onclick="saveParticipantSignatureSettings(this, '${context}', '${roomNo}')">💾 Simpan Stempel & TTD</button>
+   <button type="button" class="secondary" onclick="resetParticipantSignaturePositions('${context}', '${roomNo}')">🔄 Reset Posisi Default</button>
+   ${context==='participantPrint'?`<button type="button" class="secondary" onclick="closeParticipantSignatureModal()">✕ Tutup</button>`:''}
+ </div>
+ `;
+}
+
+function participantSignatureModalHtml(roomNo='all'){
+ return `
+ <div id="participantSignatureModal" class="auto-room-modal-backdrop" style="display:none;" onclick="if(event.target===this)closeParticipantSignatureModal()">
+   <div class="auto-room-modal-dialog" style="max-width:750px;width:95vw;">
+     <div class="auto-room-modal-header" style="background:linear-gradient(135deg,#f0fdf4 0%,#e0f2fe 100%);border-bottom:1.5px solid #86efac;">
+       <div>
+         <h3 style="margin:0;color:#166534;font-size:16px;font-weight:700;">✍️ Atur Tanda Tangan & Stempel Daftar Peserta</h3>
+         <small style="color:#475569;">Stempel Panitia & Tanda Tangan Ketua Panitia (${esc(getCommitteeChairName())})</small>
+       </div>
+       <button type="button" class="secondary" style="padding:4px 10px;font-weight:bold;cursor:pointer;" onclick="closeParticipantSignatureModal()">✕</button>
+     </div>
+     <div class="auto-room-modal-body" style="padding:16px 20px;">
+       ${participantSignaturePanelBodyHtml('participantPrint', roomNo)}
+     </div>
+     <div class="auto-room-modal-footer" style="padding:10px 20px;">
+       <button type="button" class="secondary" onclick="closeParticipantSignatureModal()">Tutup</button>
+     </div>
+   </div>
+ </div>
+ `;
+}
+
+async function saveParticipantSignatureSettings(btn, context='participantList', roomNo='all'){
+ try{
+   if(btn){btn.disabled = true; btn.textContent = 'Menyimpan...';}
+
+   db.school.signatureAdjust = db.school.signatureAdjust || {};
+   let fields = ['committeeStamp', 'chairSignature'];
+   fields.forEach(field => {
+     let d = signatureAdjustDefaults(field);
+     let old = signatureAdjustGet(field);
+     let xEl = document.getElementById('part_' + field + 'PosX') || document.getElementById(field + 'PosX');
+     let yEl = document.getElementById('part_' + field + 'PosY') || document.getElementById(field + 'PosY');
+     let sEl = document.getElementById('part_' + field + 'Size') || document.getElementById(field + 'Size');
+     let numOr = (el, def) => { let n = Number(el?.value); return Number.isFinite(n) ? n : def; };
+     db.school.signatureAdjust[field] = {
+       x: numOr(xEl, old.x),
+       y: numOr(yEl, old.y),
+       size: Math.max(5, Math.min(80, numOr(sEl, d.size)))
+     };
+   });
+
+   let stampFileId = document.getElementById('partCommitteeStampFile') ? 'partCommitteeStampFile' : 'printCommitteeStampFile';
+   let signFileId = document.getElementById('partChairSignatureFile') ? 'partChairSignatureFile' : 'printChairSignatureFile';
+
+   let [stamp, sign] = await Promise.all([
+     readImageFileAsDataUrl(stampFileId, db.school.committeeStamp),
+     readImageFileAsDataUrl(signFileId, db.school.chairSignature)
+   ]);
+
+   db.school.committeeStamp = stamp;
+   db.school.chairSignature = sign;
+   save();
+
+   alert('Tanda Tangan Ketua Panitia dan Stempel Panitia berhasil disimpan dan diterapkan ke semua lembar Daftar Peserta!');
+
+   if(context === 'participantPrint'){
+     closeParticipantSignatureModal();
+     printParticipantListAll(roomNo || 'all');
+   } else if(context === 'participantList'){
+     render('participantList');
+   } else {
+     render('print');
+   }
+ }catch(err){
+   alert('Gagal menyimpan: ' + (err?.message || err));
+ }finally{
+   if(btn){btn.disabled = false; btn.textContent = '💾 Simpan Stempel & TTD';}
+ }
+}
+
+function clearParticipantSignatureItem(field, context='participantList', roomNo='all'){
+ if(!['chairSignature','committeeStamp'].includes(field)) return;
+ let label = field === 'chairSignature' ? 'Tanda Tangan Ketua Panitia' : 'Stempel Panitia';
+ if(!confirm('Hapus ' + label + '?')) return;
+ db.school[field] = '';
+ save();
+ if(context === 'participantPrint'){
+   closeParticipantSignatureModal();
+   printParticipantListAll(roomNo || 'all');
+ } else if(context === 'participantList'){
+   render('participantList');
+ } else {
+   render('print');
+ }
+}
+
+function resetParticipantSignaturePositions(context='participantList', roomNo='all'){
+ if(!confirm('Reset posisi dan ukuran stempel serta tanda tangan ke default?')) return;
+ db.school.signatureAdjust = db.school.signatureAdjust || {};
+ db.school.signatureAdjust.committeeStamp = {...signatureAdjustDefaults('committeeStamp')};
+ db.school.signatureAdjust.chairSignature = {...signatureAdjustDefaults('chairSignature')};
+ save();
+ if(context === 'participantPrint'){
+   closeParticipantSignatureModal();
+   printParticipantListAll(roomNo || 'all');
+ } else if(context === 'participantList'){
+   render('participantList');
+ } else {
+   render('print');
+ }
 }
 
 function exportParticipantList(){let rows=[];db.rooms.forEach(r=>r.students.forEach((st,i)=>rows.push({'No':i+1,'No Peserta':participantNo(r.no,i+1),'NIS':st.nis,'Nama':st.name,'L/P':st.gender,'Kelas':st.class,'Ruang':r.no})));if(!rows.length)return alert('Belum ada peserta hasil pembagian ruang.');let ws=XLSX.utils.json_to_sheet(rows),wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Daftar Peserta');XLSX.writeFile(wb,'Daftar_Peserta_Asesmen.xlsx')}
@@ -20456,7 +20819,7 @@ function getSchoolYear(){
 }
 function cardSignature(){
  let city=db.school.signatureCity||'Wangon';
- let date=formatTanggalIndonesia(db.school.signatureDate||'');
+ let date=formatTanggalIndonesia(db.school.signatureDate||'2026-11-23');
  let title=db.school.signatureTitle||'Ketua Panitia';
  let chair=getCommitteeChairName();
  let nip=getCommitteeChairNip();
@@ -23142,11 +23505,11 @@ function supervisorManualSignatureData(){
  db.school=db.school||{};
  let rec=db.school.supervisorManualChairSignaturePage2;
  if(!rec || typeof rec!=='object'){
- rec={data:'',cityDate:'Wangon, ....................',role:'Ketua Panitia',name:getCommitteeChairName(),x:84,y:64,w:42,font:14};
+ rec={data:'',cityDate:'Wangon, 23 Nopember 2026',role:'Ketua Panitia',name:getCommitteeChairName(),x:84,y:64,w:42,font:14};
  db.school.supervisorManualChairSignaturePage2=rec;
  }
  if(typeof rec.data!=='string')rec.data='';
- if(typeof rec.cityDate!=='string' || !rec.cityDate.trim())rec.cityDate='Wangon, ....................';
+ if(typeof rec.cityDate!=='string' || !rec.cityDate.trim())rec.cityDate='Wangon, 23 Nopember 2026';
  if(typeof rec.role!=='string' || !rec.role.trim())rec.role='Ketua Panitia';
  if(typeof rec.name!=='string' || !rec.name.trim() || rec.name==='........................................' || rec.name==='FITRIANTO PUJI P, S.Kom') rec.name=getCommitteeChairName();
  if(!Number.isFinite(Number(rec.x)))rec.x=84;
@@ -23437,7 +23800,7 @@ function attendanceSessionCount(){
 
 function attendanceChairSignature(){
  let city=db.school.signatureCity||'Wangon';
- let date=formatTanggalIndonesia(db.school.signatureDate||'');
+ let date=formatTanggalIndonesia(db.school.signatureDate||'2026-11-23');
  let chair=getCommitteeChairName();
  let nip=getCommitteeChairNip();
  return `<div class="attendance-chair-signature">
@@ -23833,10 +24196,10 @@ function setupPrintDirectEditorObserver(){
 setTimeout(setupPrintDirectEditorObserver,0);
 
 function formatTanggalIndonesia(iso){
- if(!iso)return '........ / ........ / ........';
+ if(!iso)return '23 Nopember 2026';
  let p=iso.split('-');
  if(p.length!==3)return esc(iso);
- const bulan=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+ const bulan=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','Nopember','Desember'];
  return `${Number(p[2])} ${bulan[Number(p[1])-1]} ${p[0]}`;
 }
 function signature(){
@@ -26809,9 +27172,9 @@ checkLogin();
      if(Array.isArray(_list)){
        _list = _list.filter(a => {
         let key = String(a.pageKey||'').toLowerCase();
-        if(key.includes('seat') || key.includes('desk') || key.includes('meja') || key.includes('ruang')) return false;
-        if(Number(a.y) < 35 && Number(a.x) > 55) return false;
-        if(Number(a.y) > 50 && Number(a.x) > 50) return false;
+        // Hanya bersihkan artefak garis hijau pada denah tempat duduk (seat) atau nomor meja (desk/meja)
+        // JANGAN hapus aset pada lembar daftar peserta (participant/ruang) atau area tanda tangan!
+        if((key.includes('seat') || key.includes('desk') || key.includes('meja')) && !key.includes('participant') && !key.includes('peserta')) return false;
         return true;
       });
        localStorage.setItem('administrasi_asesmen_manual_print_assets_v3', JSON.stringify(_list));
@@ -26998,8 +27361,9 @@ checkLogin();
   <div id="manualPasteSafeStatus" class="manual-paste-toolbar-status">Klik salah satu halaman siap print.</div>
   <div class="manual-paste-toolbar-actions">
   <button type="button" class="secondary" id="manualPasteChooseFile"> Tambah Gambar</button>
-  <button type="button" class="secondary" id="manualPasteSmaller">- Kecilkan</button>
+  <butt<button type="button" class="secondary" id="manualPasteSmaller">- Kecilkan</button>
   <button type="button" class="secondary" id="manualPasteLarger">+ Besarkan</button>
+  <button type="button" class="secondary" id="manualPasteApplyAll" title="Terapkan gambar yang dipilih ke semua ruang / halaman">📋 Terapkan ke Semua Lembar</button>
   <button type="button" class="danger" id="manualPasteDelete"> Hapus</button>
   <button type="button" class="secondary" id="manualPasteClearPage">Reset Hapus Halaman Ini</button>
   <input class="manual-paste-file-input" id="manualPasteFile" type="file" accept="image/*">
@@ -27020,6 +27384,35 @@ checkLogin();
  bar.querySelector('#manualPasteLarger').addEventListener('click',()=>resizeSelected(2));
  bar.querySelector('#manualPasteDelete').addEventListener('click',deleteSelected);
  bar.querySelector('#manualPasteClearPage').addEventListener('click',clearCurrentPage);
+ bar.querySelector('#manualPasteApplyAll')?.addEventListener('click',()=>{
+   if(!selectedAsset){
+     alert('Pilih / klik dahulu gambar tanda tangan atau stempel yang ingin diterapkan ke semua lembar.');
+     return;
+   }
+   let srcRec = assetRecord(selectedAsset.dataset.manualPasteId);
+   if(!srcRec) return;
+   let pages = getPages();
+   if(!pages.length) return;
+   let list = readStore();
+   let count = 0;
+   pages.forEach(p => {
+     let pk = p.dataset.manualPastePageKey;
+     if(!pk || pk === srcRec.pageKey) return;
+     let newId = 'mp_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+     list.push({
+       id: newId,
+       pageKey: pk,
+       data: srcRec.data,
+       x: srcRec.x,
+       y: srcRec.y,
+       w: srcRec.w
+     });
+     count++;
+   });
+   writeStore(list);
+   renderAssets();
+   alert('Gambar berhasil diterapkan ke ' + count + ' lembar halaman lainnya!');
+ });
 
  // Panel dibuat ringkas dan dapat dipindah agar tidak menutupi pekerjaan.
  bar.classList.add('manual-toolbar-minimized');
@@ -27558,4 +27951,479 @@ checkLogin();
 })();
 </script>
 
+
+<script id="interactive-table-resizer-script">
+(function(){
+'use strict';
+
+const TABLE_RESIZE_STORAGE_KEY = 'administrasi_table_custom_layout_v2';
+
+const DEFAULT_TABLE_RESIZE_STORE = {
+  participant: {
+    cols: [11, 56, 24, 78, 11, 19, 18], // No, NoPeserta, NIS, Nama, L/P, Kelas, Ket
+    rowPaddingY: 1.35,
+    borderWidth: '1px',
+    borderColor: '#000000'
+  },
+  attendance: {
+    cols: [10, 42, 18, 14, 14, 14, 14, 14],
+    rowPaddingY: 1.0,
+    borderWidth: '0.3mm',
+    borderColor: '#000000'
+  },
+  general: {
+    rowPaddingY: 1.2,
+    borderWidth: '1px',
+    borderColor: '#000000'
+  }
+};
+
+let currentTableResizeStore = null;
+
+function readTableResizeStore(){
+  if(currentTableResizeStore) return currentTableResizeStore;
+  try {
+    let raw = localStorage.getItem(TABLE_RESIZE_STORAGE_KEY);
+    if(raw) {
+      let parsed = JSON.parse(raw);
+      if(parsed && typeof parsed === 'object') {
+        currentTableResizeStore = Object.assign({}, DEFAULT_TABLE_RESIZE_STORE, parsed);
+        return currentTableResizeStore;
+      }
+    }
+  }catch(_e){}
+  if(typeof db !== 'undefined' && db && db.school && db.school.tableCustomLayout){
+    currentTableResizeStore = Object.assign({}, DEFAULT_TABLE_RESIZE_STORE, db.school.tableCustomLayout);
+    return currentTableResizeStore;
+  }
+  currentTableResizeStore = JSON.parse(JSON.stringify(DEFAULT_TABLE_RESIZE_STORE));
+  return currentTableResizeStore;
+}
+
+function writeTableResizeStore(store){
+  currentTableResizeStore = store;
+  try {
+    localStorage.setItem(TABLE_RESIZE_STORAGE_KEY, JSON.stringify(store));
+  }catch(_e){}
+  if(typeof db !== 'undefined' && db && db.school){
+    db.school.tableCustomLayout = store;
+    if(typeof save === 'function') save();
+  }
+}
+
+function generateTableResizeCss(store){
+  let css = [];
+  
+  if (store.participant && Array.isArray(store.participant.cols)) {
+    let p = store.participant;
+    let c = p.cols;
+    css.push(`
+/* OVERRIDE LEBAR KOLOM TABEL DAFTAR PESERTA */
+.participant-list-print-page.participant-exact-print-page .participant-exact-table col.participant-col-no,
+.participant-exact-table th:nth-child(1),
+.participant-exact-table td:nth-child(1) { width: ${c[0]}mm !important; min-width: ${c[0]}mm !important; max-width: ${c[0]}mm !important; }
+
+.participant-list-print-page.participant-exact-print-page .participant-exact-table col.participant-col-number,
+.participant-exact-table th:nth-child(2),
+.participant-exact-table td:nth-child(2) { width: ${c[1]}mm !important; min-width: ${c[1]}mm !important; max-width: ${c[1]}mm !important; }
+
+.participant-list-print-page.participant-exact-print-page .participant-exact-table col.participant-col-nis,
+.participant-exact-table th:nth-child(3),
+.participant-exact-table td:nth-child(3) { width: ${c[2]}mm !important; min-width: ${c[2]}mm !important; max-width: ${c[2]}mm !important; }
+
+.participant-list-print-page.participant-exact-print-page .participant-exact-table col.participant-col-name,
+.participant-exact-table th:nth-child(4),
+.participant-exact-table td:nth-child(4) { width: ${c[3]}mm !important; min-width: ${c[3]}mm !important; max-width: ${c[3]}mm !important; }
+
+.participant-list-print-page.participant-exact-print-page .participant-exact-table col.participant-col-gender,
+.participant-exact-table th:nth-child(5),
+.participant-exact-table td:nth-child(5) { width: ${c[4]}mm !important; min-width: ${c[4]}mm !important; max-width: ${c[4]}mm !important; }
+
+.participant-list-print-page.participant-exact-print-page .participant-exact-table col.participant-col-class,
+.participant-exact-table th:nth-child(6),
+.participant-exact-table td:nth-child(6) { width: ${c[5]}mm !important; min-width: ${c[5]}mm !important; max-width: ${c[5]}mm !important; }
+
+.participant-list-print-page.participant-exact-print-page .participant-exact-table col.participant-col-note,
+.participant-exact-table th:nth-child(7),
+.participant-exact-table td:nth-child(7) { width: ${c[6]}mm !important; min-width: ${c[6]}mm !important; max-width: ${c[6]}mm !important; }
+
+.participant-list-print-page.participant-exact-print-page .participant-exact-table td,
+.participant-list-print-page.participant-exact-print-page .participant-exact-table th {
+  padding-top: ${p.rowPaddingY || 1.35}mm !important;
+  padding-bottom: ${p.rowPaddingY || 1.35}mm !important;
+  border-width: ${p.borderWidth || '1px'} !important;
+  border-color: ${p.borderColor || '#000000'} !important;
+}
+`);
+  }
+
+  if (store.attendance) {
+    let a = store.attendance;
+    css.push(`
+/* OVERRIDE TINGGI BARIS TABEL DAFTAR HADIR */
+.attendance-reference-table th,
+.attendance-reference-table td {
+  padding-top: ${a.rowPaddingY || 1.0}mm !important;
+  padding-bottom: ${a.rowPaddingY || 1.0}mm !important;
+  border-width: ${a.borderWidth || '0.3mm'} !important;
+  border-color: ${a.borderColor || '#000000'} !important;
+}
+`);
+  }
+
+  return css.join('\n');
+}
+
+function applyCustomTableLayoutStyles(){
+  let styleEl = document.getElementById('custom-table-layout-overrides');
+  if(!styleEl){
+    styleEl = document.createElement('style');
+    styleEl.id = 'custom-table-layout-overrides';
+    document.head.appendChild(styleEl);
+  }
+  let store = readTableResizeStore();
+  styleEl.textContent = generateTableResizeCss(store);
+}
+
+function tableAdjustPadding(deltaMm){
+  let store = readTableResizeStore();
+  let current = store.participant.rowPaddingY || 1.35;
+  let newPad = Math.max(0.4, Math.min(5.0, Number((current + deltaMm).toFixed(2))));
+  store.participant.rowPaddingY = newPad;
+  if(store.attendance) store.attendance.rowPaddingY = Math.max(0.3, Math.min(4.0, Number(((store.attendance.rowPaddingY || 1.0) + deltaMm).toFixed(2))));
+  writeTableResizeStore(store);
+  applyCustomTableLayoutStyles();
+  showTableToast('Jarak baris disesuaikan: ' + newPad + ' mm');
+}
+
+function tableAdjustCol(colIdx, deltaMm){
+  let store = readTableResizeStore();
+  if(!store.participant || !Array.isArray(store.participant.cols)) return;
+  let current = store.participant.cols[colIdx] || 20;
+  let newW = Math.max(8, Math.min(180, current + deltaMm));
+  store.participant.cols[colIdx] = newW;
+  writeTableResizeStore(store);
+  applyCustomTableLayoutStyles();
+  showTableToast('Lebar kolom ' + (colIdx + 1) + ' disesuaikan: ' + newW + ' mm');
+}
+
+function tableSetBorder(borderW){
+  let store = readTableResizeStore();
+  store.participant.borderWidth = borderW;
+  if(store.attendance) store.attendance.borderWidth = borderW;
+  writeTableResizeStore(store);
+  applyCustomTableLayoutStyles();
+  showTableToast('Ketebalan garis tabel diubah: ' + borderW);
+}
+
+function resetTableResizeLayout(){
+  if(!confirm('Kembalikan semua lebar kolom dan tinggi baris tabel ke ukuran awal default?')) return;
+  currentTableResizeStore = JSON.parse(JSON.stringify(DEFAULT_TABLE_RESIZE_STORE));
+  writeTableResizeStore(currentTableResizeStore);
+  applyCustomTableLayoutStyles();
+  showTableToast('Ukuran tabel dikembalikan ke default bawaan!');
+}
+
+function showTableToast(msg){
+  let toast = document.getElementById('tableResizeToast');
+  if(!toast){
+    toast = document.createElement('div');
+    toast.id = 'tableResizeToast';
+    toast.className = 'no-print';
+    toast.style.cssText = 'position:fixed;bottom:70px;right:20px;background:#1e293b;color:#f8fafc;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;box-shadow:0 4px 12px rgba(0,0,0,0.3);z-index:999999;transition:opacity 0.2s;opacity:0;pointer-events:none;';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.opacity = '1';
+  clearTimeout(toast.__timer);
+  toast.__timer = setTimeout(()=>{ toast.style.opacity = '0'; }, 2200);
+}
+
+function ensureTableResizeGuideline(){
+  let line = document.getElementById('tableResizeGuideline');
+  if(!line){
+    line = document.createElement('div');
+    line.id = 'tableResizeGuideline';
+    line.className = 'no-print';
+    line.style.cssText = 'display:none;position:fixed;top:0;bottom:0;width:2px;background:#2563eb;z-index:9999999;pointer-events:none;box-shadow:0 0 6px rgba(37,99,235,0.8);';
+    document.body.appendChild(line);
+  }
+  return line;
+}
+
+function startColResize(ev, table, colIdx, th){
+  ev.preventDefault();
+  ev.stopPropagation();
+  let startX = ev.clientX;
+  let store = readTableResizeStore();
+  let isParticipant = table.classList.contains('participant-exact-table') || table.classList.contains('participant-special-table');
+  let currentWidth = 20;
+  if(isParticipant && store.participant && store.participant.cols && store.participant.cols[colIdx]){
+    currentWidth = store.participant.cols[colIdx];
+  } else {
+    currentWidth = Math.round(th.getBoundingClientRect().width * (25.4 / 96));
+  }
+
+  let guideline = ensureTableResizeGuideline();
+  guideline.style.display = 'block';
+  guideline.style.left = ev.clientX + 'px';
+
+  function onMove(e){
+    let deltaPx = e.clientX - startX;
+    let deltaMm = Math.round(deltaPx * (25.4 / 96));
+    let newW = Math.max(8, currentWidth + deltaMm);
+    guideline.style.left = e.clientX + 'px';
+    if(isParticipant){
+      store.participant.cols[colIdx] = newW;
+      applyCustomTableLayoutStyles();
+    }
+  }
+
+  function onUp(e){
+    window.removeEventListener('pointermove', onMove);
+    window.removeEventListener('pointerup', onUp);
+    guideline.style.display = 'none';
+    let deltaPx = e.clientX - startX;
+    let deltaMm = Math.round(deltaPx * (25.4 / 96));
+    let newW = Math.max(8, currentWidth + deltaMm);
+    if(isParticipant){
+      store.participant.cols[colIdx] = newW;
+      writeTableResizeStore(store);
+      applyCustomTableLayoutStyles();
+      showTableToast('Lebar kolom berhasil disesuaikan: ' + newW + ' mm');
+    }
+  }
+
+  window.addEventListener('pointermove', onMove);
+  window.addEventListener('pointerup', onUp);
+}
+
+function startRowResize(ev, table, rowIdx, tr){
+  ev.preventDefault();
+  ev.stopPropagation();
+  let startY = ev.clientY;
+  let store = readTableResizeStore();
+  let isParticipant = table.classList.contains('participant-exact-table') || table.classList.contains('participant-special-table');
+  let startPad = isParticipant ? (store.participant.rowPaddingY || 1.35) : (store.attendance.rowPaddingY || 1.0);
+
+  function onMove(e){
+    let deltaPx = e.clientY - startY;
+    let deltaMm = Number((deltaPx * (25.4 / 96)).toFixed(2));
+    let newPad = Math.max(0.3, Math.min(6.0, Number((startPad + deltaMm).toFixed(2))));
+    if(isParticipant){
+      store.participant.rowPaddingY = newPad;
+    } else {
+      store.attendance.rowPaddingY = newPad;
+    }
+    applyCustomTableLayoutStyles();
+  }
+
+  function onUp(e){
+    window.removeEventListener('pointermove', onMove);
+    window.removeEventListener('pointerup', onUp);
+    writeTableResizeStore(store);
+    showTableToast('Tinggi baris berhasil disesuaikan!');
+  }
+
+  window.addEventListener('pointermove', onMove);
+  window.addEventListener('pointerup', onUp);
+}
+
+function attachTableResizers(){
+  let app = document.getElementById('app');
+  if(!app) return;
+  let tables = app.querySelectorAll('.print-page table, .participant-exact-table, .attendance-reference-table, .schedule-fixed-table, .special-print-table');
+  if(!tables.length) return;
+
+  applyCustomTableLayoutStyles();
+  ensureTableResizeLauncher();
+
+  tables.forEach(table => {
+    let ths = table.querySelectorAll('thead th');
+    ths.forEach((th, idx) => {
+      if(idx === ths.length - 1) return;
+      if(th.querySelector('.table-col-resizer')) return;
+      th.style.position = 'relative';
+      let resizer = document.createElement('div');
+      resizer.className = 'table-col-resizer no-print';
+      resizer.dataset.colIdx = idx;
+      resizer.title = 'Geser garis kolom (klik & drag kiri/kanan)';
+      th.appendChild(resizer);
+      resizer.addEventListener('pointerdown', (e) => startColResize(e, table, idx, th));
+    });
+
+    let trs = table.querySelectorAll('tbody tr');
+    trs.forEach((tr, rIdx) => {
+      if(tr.querySelector('.table-row-resizer')) return;
+      tr.style.position = 'relative';
+      let resizer = document.createElement('div');
+      resizer.className = 'table-row-resizer no-print';
+      resizer.dataset.rowIdx = rIdx;
+      resizer.title = 'Geser garis baris (klik & drag atas/bawah)';
+      tr.appendChild(resizer);
+      resizer.addEventListener('pointerdown', (e) => startRowResize(e, table, rIdx, tr));
+    });
+  });
+}
+
+function openTableResizeToolbar(){
+  let bar = document.getElementById('tableResizeSafeToolbar');
+  if(!bar){
+    ensureTableResizeToolbar();
+    bar = document.getElementById('tableResizeSafeToolbar');
+  }
+  if(bar){
+    bar.style.display = 'block';
+    bar.classList.remove('is-minimized');
+    bar.classList.remove('is-user-hidden');
+  }
+  attachTableResizers();
+}
+
+function closeTableResizeToolbar(){
+  let bar = document.getElementById('tableResizeSafeToolbar');
+  if(bar){
+    bar.style.display = 'none';
+    bar.classList.add('is-user-hidden');
+  }
+}
+
+function toggleTableResizeToolbar(){
+  let bar = document.getElementById('tableResizeSafeToolbar');
+  if(!bar || bar.style.display === 'none' || bar.classList.contains('is-user-hidden')){
+    openTableResizeToolbar();
+  } else {
+    closeTableResizeToolbar();
+  }
+}
+
+function ensureTableResizeLauncher(){
+  let launcher = document.getElementById('tableResizeLauncher');
+  if(!launcher){
+    launcher = document.createElement('button');
+    launcher.type = 'button';
+    launcher.id = 'tableResizeLauncher';
+    launcher.className = 'no-print';
+    launcher.innerHTML = '📏 Atur Garis Tabel';
+    launcher.title = 'Buka panel geser garis kolom & baris tabel';
+    launcher.onclick = toggleTableResizeToolbar;
+    document.body.appendChild(launcher);
+  }
+  let app = document.getElementById('app');
+  let hasPrintTables = app && app.querySelector('.print-page table, .participant-exact-table, .attendance-reference-table, .schedule-fixed-table, .special-print-table');
+  launcher.style.display = hasPrintTables ? 'flex' : 'none';
+}
+
+function ensureTableResizeToolbar(){
+  let bar = document.getElementById('tableResizeSafeToolbar');
+  if(bar) return bar;
+
+  bar = document.createElement('div');
+  bar.id = 'tableResizeSafeToolbar';
+  bar.className = 'table-resize-toolbar no-print';
+  bar.innerHTML = `
+  <div class="table-resize-toolbar-head" id="tableResizeToolbarDragHandle">
+    <div style="font-weight:700;font-size:13px;display:flex;align-items:center;gap:6px;color:#1e3a8a;">
+      <span>📏 Geser Garis Kolom & Baris</span>
+    </div>
+    <div style="display:flex;gap:4px;">
+      <button type="button" id="tableResizeMinBtn" style="padding:2px 6px;font-size:11px;cursor:pointer;" title="Kecilkan / Buka Panel">[-]</button>
+      <button type="button" id="tableResizeCloseBtn" style="padding:2px 6px;font-size:11px;cursor:pointer;" title="Tutup Panel">✕</button>
+    </div>
+  </div>
+  <div class="table-resize-toolbar-body">
+    <div style="font-size:11.5px;color:#334155;margin-bottom:10px;line-height:1.45;background:#eff6ff;padding:8px 10px;border-radius:6px;border:1px solid #bfdbfe;">
+      💡 <b>Cara Geser Langsung:</b> Arahkan mouse ke <b>garis antar-kolom</b> atau <b>garis bawah baris</b> pada tabel, lalu <b>klik & geser (drag)</b> untuk menyesuaikan ukuran.
+    </div>
+    <div style="margin-bottom:10px;">
+      <div style="font-size:11px;font-weight:700;color:#1e293b;margin-bottom:5px;">Atur Jarak / Tinggi Baris:</div>
+      <div style="display:flex;gap:6px;">
+        <button type="button" class="secondary" id="tableRowCompactBtn" style="flex:1;padding:5px 8px;font-size:11px;">➖ Rapatkan</button>
+        <button type="button" class="secondary" id="tableRowRelaxBtn" style="flex:1;padding:5px 8px;font-size:11px;">➕ Longgarkan</button>
+      </div>
+    </div>
+    <div style="margin-bottom:10px;">
+      <div style="font-size:11px;font-weight:700;color:#1e293b;margin-bottom:5px;">Ketebalan Garis Tabel:</div>
+      <div style="display:flex;gap:6px;">
+        <button type="button" class="secondary" id="tableBorderSolidBtn" style="flex:1;padding:5px 8px;font-size:11px;">⬛ Garis Hitam (1.5px)</button>
+        <button type="button" class="secondary" id="tableBorderDefaultBtn" style="flex:1;padding:5px 8px;font-size:11px;">◽ Standar (1px)</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:6px;margin-top:12px;border-top:1px dashed #cbd5e1;padding-top:10px;">
+      <button type="button" class="danger" id="tableResizeResetBtn" style="padding:5px 10px;font-size:11px;">🔄 Reset Ukuran</button>
+      <button type="button" class="secondary" id="tableResizeSaveBtn" style="padding:5px 10px;font-size:11px;margin-left:auto;">✓ Selesai</button>
+    </div>
+  </div>`;
+
+  document.body.appendChild(bar);
+
+  bar.querySelector('#tableResizeMinBtn').onclick = () => bar.classList.toggle('is-minimized');
+  bar.querySelector('#tableResizeCloseBtn').onclick = closeTableResizeToolbar;
+  bar.querySelector('#tableRowCompactBtn').onclick = () => tableAdjustPadding(-0.25);
+  bar.querySelector('#tableRowRelaxBtn').onclick = () => tableAdjustPadding(0.25);
+  bar.querySelector('#tableBorderSolidBtn').onclick = () => tableSetBorder('1.5px');
+  bar.querySelector('#tableBorderDefaultBtn').onclick = () => tableSetBorder('1px');
+  bar.querySelector('#tableResizeResetBtn').onclick = resetTableResizeLayout;
+  bar.querySelector('#tableResizeSaveBtn').onclick = () => {
+    closeTableResizeToolbar();
+    showTableToast('Penataan garis tabel berhasil disimpan!');
+  };
+
+  // Drag handle for the floating panel
+  let handle = bar.querySelector('#tableResizeToolbarDragHandle');
+  let panelDrag = null;
+  handle.addEventListener('pointerdown', ev => {
+    if(ev.target.closest('button')) return;
+    ev.preventDefault();
+    let r = bar.getBoundingClientRect();
+    panelDrag = { startX: ev.clientX, startY: ev.clientY, left: r.left, top: r.top, w: r.width, h: r.height };
+    bar.style.left = r.left + 'px';
+    bar.style.top = r.top + 'px';
+    bar.style.right = 'auto';
+  });
+  window.addEventListener('pointermove', ev => {
+    if(!panelDrag) return;
+    let l = panelDrag.left + (ev.clientX - panelDrag.startX);
+    let t = panelDrag.top + (ev.clientY - panelDrag.startY);
+    l = Math.max(10, Math.min(window.innerWidth - panelDrag.w - 10, l));
+    t = Math.max(10, Math.min(window.innerHeight - panelDrag.h - 10, t));
+    bar.style.left = l + 'px';
+    bar.style.top = t + 'px';
+  });
+  window.addEventListener('pointerup', () => { panelDrag = null; });
+
+  return bar;
+}
+
+// Global functions for toolbar buttons
+window.openTableResizeToolbar = openTableResizeToolbar;
+window.closeTableResizeToolbar = closeTableResizeToolbar;
+window.toggleTableResizeToolbar = toggleTableResizeToolbar;
+window.attachTableResizers = attachTableResizers;
+window.readTableResizeStore = readTableResizeStore;
+window.writeTableResizeStore = writeTableResizeStore;
+window.generateTableResizeCss = generateTableResizeCss;
+window.applyCustomTableLayoutStyles = applyCustomTableLayoutStyles;
+window.tableAdjustPadding = tableAdjustPadding;
+window.tableAdjustCol = tableAdjustCol;
+window.tableSetBorder = tableSetBorder;
+window.resetTableResizeLayout = resetTableResizeLayout;
+
+// Observer to auto-attach resizers when new tables are rendered in #app
+let tableResizeObserver = null;
+function setupTableResizeObserver(){
+  let app = document.getElementById('app');
+  if(!app || tableResizeObserver) return;
+  let timer = null;
+  tableResizeObserver = new MutationObserver(() => {
+    clearTimeout(timer);
+    timer = setTimeout(attachTableResizers, 80);
+  });
+  tableResizeObserver.observe(app, { childList: true, subtree: true });
+  setTimeout(attachTableResizers, 100);
+}
+setTimeout(setupTableResizeObserver, 0);
+
+})();
+</script>
 </body></html>
