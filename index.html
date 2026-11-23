@@ -14671,6 +14671,17 @@ html body.force-print-root .print-header.simple-kop .kop-main h2:after{
   }
 }
 </style>
+
+<style id="participant-table-six-col-style">
+/* ATURAN BAKU TABEL DAFTAR PESERTA 6 KOLOM (TANPA NIS) */
+.participant-exact-table th:nth-child(1), .participant-exact-table td:nth-child(1) { text-align: center !important; }
+.participant-exact-table th:nth-child(2), .participant-exact-table td:nth-child(2) { text-align: center !important; }
+.participant-exact-table th:nth-child(3), .participant-exact-table td:nth-child(3), .participant-exact-table td.name-cell { text-align: left !important; white-space: nowrap !important; overflow: visible !important; }
+.participant-exact-table th:nth-child(4), .participant-exact-table td:nth-child(4) { text-align: center !important; }
+.participant-exact-table th:nth-child(5), .participant-exact-table td:nth-child(5) { text-align: center !important; }
+.participant-exact-table th:nth-child(6), .participant-exact-table td:nth-child(6), .participant-exact-table td.participant-note-cell { text-align: center !important; }
+.participant-col-nis, th.participant-col-nis, td.participant-col-nis { display: none !important; width: 0 !important; }
+</style>
 </head>
 <body>
 <div id="loginScreen" style="display:none!important"><div class="login-shell"><section class="login-brand"><div><span class="login-badge">ADMINISTRASI ASESMEN CLOUD</span><div class="gold-line"></div><h1>MTs MA'ARIF NU 1 WANGON</h1><p>Sistem administrasi asesmen dengan sinkronisasi Komputer 1, 2, dan 3. Aplikasi ini dirancang dapat dibuka langsung tanpa login.</p></div><div style="font-size:12px;color:#d9eadf"> Database Cloud Supabase Sinkronisasi Multi-Komputer</div></section><section class="login-panel"><div class="login-badge" style="background:#f8f1d8;color:#6b540e;border-color:#d7bd65;width:max-content">PENGATURAN AKUN CLOUD (OPSIONAL)</div><h2>Masuk Tanpa Password</h2><div class="sub">Aplikasi saat ini telah disetel masuk langsung tanpa username & password agar praktis dan tidak membingungkan.</div>
@@ -18087,7 +18098,6 @@ function students(){
         html += '</div>';
         html += '<div class="tablewrap"><table><thead><tr>';
         html += '<th style="width:70px">No Urut</th>';
-        html += '<th style="width:120px">NIS</th>';
         html += '<th>Nama Peserta Didik</th>';
         html += '<th style="width:70px;text-align:center">L/P</th>';
         html += '<th style="width:90px;text-align:center">Kelas</th>';
@@ -18097,7 +18107,6 @@ function students(){
           let searchKey = esc((s.order + ' ' + (s.nis || '') + ' ' + s.name + ' ' + s.gender + ' ' + s.class).toLowerCase());
           html += '<tr class="student-row" data-search="' + searchKey + '">';
           html += '<td>' + s.order + '</td>';
-          html += '<td>' + esc(s.nis || '-') + '</td>';
           html += '<td><b>' + esc(s.name) + '</b></td>';
           html += '<td style="text-align:center"><span class="badge" style="background:' + (s.gender==='L'?'#e6f7ff':'#fff0f6') + ';color:' + (s.gender==='L'?'#096dd9':'#c41d7f') + ';border:1px solid ' + (s.gender==='L'?'#91d5ff':'#ffadd2') + '">' + esc(s.gender) + '</span></td>';
           html += '<td style="text-align:center"><b>' + esc(s.class) + '</b></td>';
@@ -18883,8 +18892,8 @@ ${renderStudentRoomAuditPanel()}
  <h3>Ruang ${r.no} (${r.students.length}/${r.capacity})</h3>
  <div class="notice"><b>Komposisi Aktual:</b> ${composition(r)}</div>
  <div class="tablewrap"><table>
-  <thead><tr><th>No</th><th>No Peserta</th><th>NIS</th><th>Nama</th><th>L/P</th><th>Kelas</th></tr></thead>
-  <tbody>${r.students.map((s,i)=>`<tr><td>${i+1}</td><td>${participantNo(r.no,i+1)}</td><td>${esc(s.nis)}</td><td>${esc(s.name)}</td><td>${esc(s.gender)}</td><td>${esc(s.class)}</td></tr>`).join('')}</tbody>
+  <thead><tr><th>No</th><th>No Peserta</th><th>Nama</th><th>L/P</th><th>Kelas</th></tr></thead>
+  <tbody>${r.students.map((s,i)=>`<tr><td>${i+1}</td><td>${participantNo(r.no,i+1)}</td><td>${esc(s.name)}</td><td>${esc(s.gender)}</td><td>${esc(s.class)}</td></tr>`).join('')}</tbody>
  </table></div>
  </div>`).join('')}
  </div>
@@ -19662,7 +19671,7 @@ function participantList(){
  <button class="secondary" onclick="resetParticipantNumbersInRoom(${JSON.stringify(r.no)})">Reset Reset Nomor Ruang</button>
  </div>
  </div>
- <div class="tablewrap"><table class="participant-edit-table"><thead><tr><th>No</th><th>No Peserta - dapat diedit</th><th>NIS</th><th>Nama</th><th>L/P</th><th>Kelas</th></tr></thead><tbody>
+ <div class="tablewrap"><table class="participant-edit-table"><thead><tr><th>No</th><th>No Peserta - dapat diedit</th><th>Nama</th><th>L/P</th><th>Kelas</th></tr></thead><tbody>
  ${r.students.map((st,i)=>{
  let current=participantNo(r.no,i+1);
  let manual=!!getParticipantNumberOverride(r.no,st);
@@ -19675,7 +19684,7 @@ function participantList(){
   onkeydown="if(event.key==='Enter'){this.blur()}">
   ${manual?'<small>MANUAL</small>':'<small>OTOMATIS</small>'}
  </td>
- <td>${esc(st.nis)}</td><td>${esc(st.name)}</td><td>${esc(st.gender)}</td><td>${esc(st.class)}</td>
+ <td>${esc(st.name)}</td><td>${esc(st.gender)}</td><td>${esc(st.class)}</td>
  </tr>`;
  }).join('')}</tbody></table></div>
  </div>`).join(''):'<div class="notice">Belum ada pembagian ruang peserta. Silakan buka halaman 3. Pembagian Ruang Peserta terlebih dahulu.</div>'}
@@ -19765,23 +19774,11 @@ function participantMeasureTextMm(value,bold=false){
 function participantListColumnLayout(students){
  let rows=Array.isArray(students)?students:[];
  let names=rows.map(s=>String(s?.name||'').trim()).filter(Boolean);
- let nisValues=rows.map(s=>String(s?.nis||'').trim()).filter(Boolean);
  let classValues=rows.map(s=>String(s?.class||'').trim()).filter(Boolean);
  const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
 
- // Kolom kecil dibuat hemat agar ruang utama diberikan ke Nomor Peserta dan Nama.
  let no=11;
-
- // Lebar dihitung dari tulisan header 12pt, lalu diberi ruang padding ekstra
- // supaya garis kanan tidak menyentuh / menutup tulisan.
  let number=56;
-
- let widestNis=Math.max(
- participantMeasureTextMm('NIS',true),
- ...nisValues.map(v=>participantMeasureTextMm(v,false)),
- 0
- );
- let nis=clamp(widestNis+6,20,26);
 
  // Nama mengikuti lebar nama TERPANJANG pada ruang ini menggunakan ukuran 12pt sebenarnya.
  let widestName=Math.max(
@@ -19789,7 +19786,7 @@ function participantListColumnLayout(students){
  ...names.map(v=>participantMeasureTextMm(v,false)),
  0
  );
- let name=clamp(widestName+9,62,120);
+ let name=clamp(widestName+12,85,145);
 
  let gender=11;
 
@@ -19800,9 +19797,8 @@ function participantListColumnLayout(students){
  );
  let kelas=clamp(widestClass+6,17,22);
 
- // Kolom Keterangan boleh dipersempit terlebih dahulu bila tabel mendekati batas halaman.
  let note=18;
- let total=no+number+nis+name+gender+kelas+note;
+ let total=no+number+name+gender+kelas+note;
 
  if(total>249){
  let over=total-249;
@@ -19811,26 +19807,19 @@ function participantListColumnLayout(students){
  note-=cut; over-=cut;
 
  if(over>0){
- let reducibleNis=Math.max(0,nis-20);
- cut=Math.min(over,reducibleNis);
- nis-=cut; over-=cut;
- }
-
- if(over>0){
  let reducibleClass=Math.max(0,kelas-17);
  cut=Math.min(over,reducibleClass);
  kelas-=cut; over-=cut;
  }
 
- // Nama baru dikurangi sebagai pilihan terakhir, namun tetap dijaga cukup besar.
- if(over>0)name=Math.max(58,name-over);
- total=no+number+nis+name+gender+kelas+note;
+ if(over>0)name=Math.max(70,name-over);
+ total=no+number+name+gender+kelas+note;
  }
 
  return {
  no:Number(no.toFixed(1)),
  number:Number(number.toFixed(1)),
- nis:Number(nis.toFixed(1)),
+ nis:0,
  name:Number(name.toFixed(1)),
  gender:Number(gender.toFixed(1)),
  kelas:Number(kelas.toFixed(1)),
@@ -19872,26 +19861,24 @@ function participantListPrintPage(r,students,startIndex=0,pageIndex=0,totalPages
  <colgroup>
  <col class="participant-col-no" style="width:${col.no}mm!important">
  <col class="participant-col-number" style="width:${col.number}mm!important">
- <col class="participant-col-nis" style="width:${col.nis}mm!important">
  <col class="participant-col-name" style="width:${col.name}mm!important">
  <col class="participant-col-gender" style="width:${col.gender}mm!important">
  <col class="participant-col-class" style="width:${col.kelas}mm!important">
  <col class="participant-col-note" style="width:${col.note}mm!important">
  </colgroup>
  <thead><tr>
- <th>No</th><th>Nomor Peserta</th><th>NIS</th><th>Nama</th><th>L/P</th><th>Kelas</th><th>Ket.</th>
+ <th>No</th><th>Nomor Peserta</th><th>Nama</th><th>L/P</th><th>Kelas</th><th>Ket.</th>
  </tr></thead>
  <tbody>${students.map((st,i)=>`<tr>
  <td>${startIndex+i+1}</td>
  <td>${participantNo(r.no,startIndex+i+1)}</td>
- <td>${esc(st.nis)}</td>
  <td class="name-cell">${esc(st.name)}</td>
  <td>${esc(st.gender)}</td>
  <td>${esc(st.class)}</td>
  <td class="participant-note-cell"></td>
  </tr>`).join('')}</tbody>
  </table>
- ${isLast?`<div class="special-signature-wrap participant-exact-signature participant-dynamic-signature" style="width:${col.total}mm!important;max-width:${col.total}mm!important;">${signature()}</div>`:''}
+ ${isLast && signature() ? `<div class="special-signature-wrap participant-exact-signature participant-dynamic-signature" style="width:${col.total}mm!important;max-width:${col.total}mm!important;">${signature()}</div>` : ''}
  </div>`;
 }
 
@@ -20818,18 +20805,7 @@ function getSchoolYear(){
  return `${y} / ${y+1}`;
 }
 function cardSignature(){
- let city=db.school.signatureCity||'Wangon';
- let date=formatTanggalIndonesia(db.school.signatureDate||'2026-11-23');
- let title=db.school.signatureTitle||'Ketua Panitia';
- let chair=getCommitteeChairName();
- let nip=getCommitteeChairNip();
- return `<div class="signature-card"><div>
- <div>${esc(city)}, ${date}</div>
- <div>${esc(title)}</div>
- <div class="signature-visual-space card-signature-visual">${signatureAssetsHtml('chair')}</div>
- <div><b><u>${esc(chair)}</u></b></div>
- <div style="font-size:9.5px;margin-top:2px">NIP. ${esc(nip)}</div>
- </div></div>`;
+ return '';
 }
 function cardScheduleRows(){
  let rows=db.schedules||[];
@@ -23520,23 +23496,7 @@ function supervisorManualSignatureData(){
 }
 
 function supervisorManualSignatureHtml(){
- let rec=supervisorManualSignatureData();
- let x=Math.max(8,Math.min(94,Number(rec.x)||84));
- let y=Math.max(8,Math.min(90,Number(rec.y)||64));
- let w=Math.max(20,Math.min(100,Number(rec.w)||42));
- let font=Math.max(10,Math.min(22,Number(rec.font)||14));
- let signData=rec.data||db.school.chairSignature||'';
- let stampData=db.school.committeeStamp||'';
- let assets=(signData||stampData)?`<div class="supervisor-manual-assets">
- ${stampData?`<img class="supervisor-manual-stamp-img" src="${stampData}" alt="Stempel Panitia" draggable="false">`:''}
- ${signData?`<img class="supervisor-manual-signature-img" src="${signData}" alt="Tanda Tangan Ketua Panitia" draggable="false" style="-sup-manual-img-w:${w}%;">`:''}
- </div>`:'';
- return `<div class="supervisor-manual-signature-block" id="supervisorManualSignatureBlock" draggable="false" style="left:${x}%;top:${y}%;-sup-manual-font:${font}pt;">
- <div class="supervisor-manual-citydate supervisor-manual-editable-text" contenteditable="true" spellcheck="false" title="Klik lalu ketik Wangon/tanggal" onblur="saveSupervisorManualInlineText()">${esc(rec.cityDate||'Wangon, ....................')}</div>
- <div class="supervisor-manual-role supervisor-manual-editable-text" contenteditable="true" spellcheck="false" title="Klik lalu ketik jabatan" onblur="saveSupervisorManualInlineText()">${esc(rec.role||'Ketua Panitia')}</div>
- <div class="supervisor-manual-signature-space">${assets}</div>
- <div class="supervisor-manual-name supervisor-manual-editable-text" contenteditable="true" spellcheck="false" title="Klik lalu ketik nama Ketua Panitia" onblur="saveSupervisorManualInlineText()"><span style="text-decoration:underline;font-weight:700">${esc((rec.name && rec.name.trim() && rec.name!=='........................................' && rec.name!=='FITRIANTO PUJI P, S.Kom')?rec.name.trim():getCommitteeChairName())}</span></div>
- </div>`;
+ return '';
 }
 
 function supervisorManualSignatureToolbarHtml(){
@@ -23799,17 +23759,7 @@ function attendanceSessionCount(){
 }
 
 function attendanceChairSignature(){
- let city=db.school.signatureCity||'Wangon';
- let date=formatTanggalIndonesia(db.school.signatureDate||'2026-11-23');
- let chair=getCommitteeChairName();
- let nip=getCommitteeChairNip();
- return `<div class="attendance-chair-signature">
- <div>${esc(city)}, ${date}</div>
- <div>Ketua Panitia</div>
- <div class="attendance-chair-space signature-visual-space">${signatureAssetsHtml('chair')}</div>
- <div class="attendance-chair-name"><b><u>${esc(chair)}</u></b></div>
- <div>NIP. ${esc(nip)}</div>
- </div>`;
+ return '';
 }
 
 function attendanceShortParticipantName(name){
@@ -23861,7 +23811,7 @@ function attendanceParticipantPage(r,students,startIndex=0,pageIndex=0,totalPage
  ${Array.from({length:sessionCount},()=>'<td class="att-session"></td>').join('')}
  </tr>`).join('')}</tbody>
  </table>
- ${!firstSheet?`<div class="attendance-page2-signature-inline">${attendanceChairSignature()}</div>`:''}
+ ${!firstSheet && attendanceChairSignature() ? `<div class="attendance-page2-signature-inline">${attendanceChairSignature()}</div>` : ''}
  </div>`;
 }
 
@@ -24203,20 +24153,7 @@ function formatTanggalIndonesia(iso){
  return `${Number(p[2])} ${bulan[Number(p[1])-1]} ${p[0]}`;
 }
 function signature(){
- let city=db.school.signatureCity||'Wangon';
- let date=formatTanggalIndonesia(db.school.signatureDate||'');
- let title=db.school.signatureTitle||'Ketua Panitia';
- let chair=getCommitteeChairName();
- let nip=getCommitteeChairNip();
- return `<div style="display:flex;justify-content:flex-end;margin-top:32px;page-break-inside:avoid">
- <div style="width:310px;text-align:center;font-size:12px;line-height:1.5">
- <div>${esc(city)}, ${date}</div>
- <div>${esc(title)}</div>
- <div class="signature-visual-space">${signatureAssetsHtml('chair')}</div>
- <div><b><u>${esc(chair)}</u></b></div>
- <div>NIP. ${esc(nip)}</div>
- </div>
- </div>`;
+ return '';
 }
 function printRoomOptions(){
  let rooms=db.rooms.filter(r=>(r.students||[]).length);
@@ -25218,8 +25155,8 @@ function printStudentsByRoom(roomNo='all'){
  if(!rooms.length){alert('Belum ada pembagian peserta pada ruang yang dipilih.');return false;}
  document.getElementById('app').innerHTML=rooms.map((r,i,a)=>`<div class="print-page ${i<a.length-1?'page-break':''}">${printHeader()}
  <div class="print-title">DAFTAR SISWA TIAP RUANG<br>${esc(assessmentDisplay())}<br>RUANG ${String(r.no).padStart(2,'0')}</div>
- <table><thead><tr><th>No</th><th>No Peserta</th><th>NIS</th><th>Nama</th><th>L/P</th><th>Kelas</th></tr></thead><tbody>
- ${r.students.map((s,j)=>`<tr><td>${j+1}</td><td>${participantNo(r.no,j+1)}</td><td>${esc(s.nis)}</td><td>${esc(s.name)}</td><td>${esc(s.gender)}</td><td>${esc(s.class)}</td></tr>`).join('')}
+ <table><thead><tr><th>No</th><th>No Peserta</th><th>Nama</th><th>L/P</th><th>Kelas</th></tr></thead><tbody>
+ ${r.students.map((s,j)=>`<tr><td>${j+1}</td><td>${participantNo(r.no,j+1)}</td><td>${esc(s.name)}</td><td>${esc(s.gender)}</td><td>${esc(s.class)}</td></tr>`).join('')}
  </tbody></table>${signature()}</div>`).join('')+
  `<div class="actions no-print"><button onclick="systemPrint()"> Cetak</button><button class="secondary" onclick="render('print')">Kembali ke Print</button></div>`;
  return true;
@@ -27960,7 +27897,7 @@ const TABLE_RESIZE_STORAGE_KEY = 'administrasi_table_custom_layout_v2';
 
 const DEFAULT_TABLE_RESIZE_STORE = {
   participant: {
-    cols: [11, 56, 24, 78, 11, 19, 18], // No, NoPeserta, NIS, Nama, L/P, Kelas, Ket
+    cols: [11, 56, 102, 11, 19, 18], // No, NoPeserta, Nama, L/P, Kelas, Ket
     rowPaddingY: 1.35,
     borderWidth: '1px',
     borderColor: '#000000'
@@ -27987,6 +27924,9 @@ function readTableResizeStore(){
     if(raw) {
       let parsed = JSON.parse(raw);
       if(parsed && typeof parsed === 'object') {
+        if(parsed && parsed.participant && Array.isArray(parsed.participant.cols) && parsed.participant.cols.length !== 6){
+          parsed.participant.cols = [11, 56, 102, 11, 19, 18];
+        }
         currentTableResizeStore = Object.assign({}, DEFAULT_TABLE_RESIZE_STORE, parsed);
         return currentTableResizeStore;
       }
@@ -28021,31 +27961,29 @@ function generateTableResizeCss(store){
 /* OVERRIDE LEBAR KOLOM TABEL DAFTAR PESERTA */
 .participant-list-print-page.participant-exact-print-page .participant-exact-table col.participant-col-no,
 .participant-exact-table th:nth-child(1),
-.participant-exact-table td:nth-child(1) { width: ${c[0]}mm !important; min-width: ${c[0]}mm !important; max-width: ${c[0]}mm !important; }
+.participant-exact-table td:nth-child(1) { width: ${c[0]}mm !important; min-width: ${c[0]}mm !important; max-width: ${c[0]}mm !important; text-align: center !important; }
 
 .participant-list-print-page.participant-exact-print-page .participant-exact-table col.participant-col-number,
 .participant-exact-table th:nth-child(2),
-.participant-exact-table td:nth-child(2) { width: ${c[1]}mm !important; min-width: ${c[1]}mm !important; max-width: ${c[1]}mm !important; }
-
-.participant-list-print-page.participant-exact-print-page .participant-exact-table col.participant-col-nis,
-.participant-exact-table th:nth-child(3),
-.participant-exact-table td:nth-child(3) { width: ${c[2]}mm !important; min-width: ${c[2]}mm !important; max-width: ${c[2]}mm !important; }
+.participant-exact-table td:nth-child(2) { width: ${c[1]}mm !important; min-width: ${c[1]}mm !important; max-width: ${c[1]}mm !important; text-align: center !important; }
 
 .participant-list-print-page.participant-exact-print-page .participant-exact-table col.participant-col-name,
-.participant-exact-table th:nth-child(4),
-.participant-exact-table td:nth-child(4) { width: ${c[3]}mm !important; min-width: ${c[3]}mm !important; max-width: ${c[3]}mm !important; }
+.participant-exact-table th:nth-child(3),
+.participant-exact-table td:nth-child(3),
+.participant-exact-table td.name-cell { width: ${c[2]}mm !important; min-width: ${c[2]}mm !important; max-width: ${c[2]}mm !important; text-align: left !important; white-space: nowrap !important; overflow: visible !important; }
 
 .participant-list-print-page.participant-exact-print-page .participant-exact-table col.participant-col-gender,
-.participant-exact-table th:nth-child(5),
-.participant-exact-table td:nth-child(5) { width: ${c[4]}mm !important; min-width: ${c[4]}mm !important; max-width: ${c[4]}mm !important; }
+.participant-exact-table th:nth-child(4),
+.participant-exact-table td:nth-child(4) { width: ${c[3]}mm !important; min-width: ${c[3]}mm !important; max-width: ${c[3]}mm !important; text-align: center !important; }
 
 .participant-list-print-page.participant-exact-print-page .participant-exact-table col.participant-col-class,
-.participant-exact-table th:nth-child(6),
-.participant-exact-table td:nth-child(6) { width: ${c[5]}mm !important; min-width: ${c[5]}mm !important; max-width: ${c[5]}mm !important; }
+.participant-exact-table th:nth-child(5),
+.participant-exact-table td:nth-child(5) { width: ${c[4]}mm !important; min-width: ${c[4]}mm !important; max-width: ${c[4]}mm !important; text-align: center !important; }
 
 .participant-list-print-page.participant-exact-print-page .participant-exact-table col.participant-col-note,
-.participant-exact-table th:nth-child(7),
-.participant-exact-table td:nth-child(7) { width: ${c[6]}mm !important; min-width: ${c[6]}mm !important; max-width: ${c[6]}mm !important; }
+.participant-exact-table th:nth-child(6),
+.participant-exact-table td:nth-child(6),
+.participant-exact-table td.participant-note-cell { width: ${c[5]}mm !important; min-width: ${c[5]}mm !important; max-width: ${c[5]}mm !important; text-align: center !important; }
 
 .participant-list-print-page.participant-exact-print-page .participant-exact-table td,
 .participant-list-print-page.participant-exact-print-page .participant-exact-table th {
