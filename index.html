@@ -6746,6 +6746,11 @@ window.pdfjsLibBridge=pdfjsLib;
  color:#111!important;
  font-weight:900!important;
 }
+.desknum-card-16 .desk16-divider{
+ width:100%!important;
+ border-top:1.5px solid #000!important;
+ margin:4px 0 8px 0!important;
+}
 .desknum-card-16 .participant{
  font-size:26px!important;
  line-height:1.05!important;
@@ -6836,7 +6841,7 @@ window.pdfjsLibBridge=pdfjsLib;
 }
 .desk16-divider{
  width:100%;
- border-top:1.2px solid #000;
+ border-top:1.5px solid #000;
  margin:1.8mm 0 2.2mm;
 }
 .desk16-number{
@@ -6958,8 +6963,8 @@ window.pdfjsLibBridge=pdfjsLib;
 }
 .desk16-divider{
  width:100%!important;
- border-top:1.2px solid #000!important;
- margin:2mm 0 2.3mm!important;
+ border-top:1.5px solid #000!important;
+ margin:1.8mm 0 2.2mm!important;
 }
 .desk16-number{
  font-size:27pt!important;
@@ -19679,53 +19684,92 @@ function deskSelectedRoomNumbers(roomNo='all'){
 
 function deskStudentIdentityKey(student){
  if(!student)return '';
- if(student.id!==undefined && student.id!==null)return `id:${student.id}`;
  return `row:${String(student.nis||'')}|${String(student.name||'')}|${String(student.class||'')}`;
 }
 
-function deskAssignedEntries(){
- let entries=[];
- let seen=new Set();
- let rooms=[...(db.rooms||[])].sort((a,b)=>deskNumericRoomNo(a.no)-deskNumericRoomNo(b.no));
- rooms.forEach((r,roomIndex)=>{
- let roomNo=deskNumericRoomNo(r.no);
- (r.students||[]).forEach((student,studentIndex)=>{
- if(!student)return;
- let key=deskStudentIdentityKey(student);
- if(seen.has(key))return;
- seen.add(key);
- entries.push({student,roomNo,room:r,roomIndex,studentIndex});
+function deskAssignedStudentMap(){
+ let map=new Map();
+ (db.rooms||[]).forEach(r=>{
+  let roomNo=deskNumericRoomNo(r.no);
+  (r.students||[]).forEach((s,idx)=>{
+   if(!s)return;
+   let key=deskStudentIdentityKey(s);
+   if(!map.has(key)){
+    let cls=String(s.class||'').trim().toUpperCase();
+    let grade=(cls.match(/[789]/)||['7'])[0];
+    let pNo=participantNoForStudent(r,s);
+    map.set(key,{
+     student:s,
+     roomNo:roomNo,
+     roomName:r.roomName||r.location||('Ruang '+roomNo),
+     roomIndex:idx+1,
+     participantNo:pNo,
+     className:cls,
+     grade:grade
+    });
+   }
+  });
  });
- });
+ return map;
+}
 
- // Urutan utama mengikuti kelas lalu urutan siswa yang sudah ada di aplikasi.
- entries.sort((a,b)=>{
- let ca=String(a.student?.class||'').trim();
- let cb=String(b.student?.class||'').trim();
- let byClass=ca.localeCompare(cb,'id',{numeric:true,sensitivity:'base'});
- if(byClass)return byClass;
- let oa=Number(a.student?.order),ob=Number(b.student?.order);
- if(Number.isFinite(oa)&&Number.isFinite(ob)&&oa!==ob)return oa-ob;
- if(a.roomNo!==b.roomNo)return a.roomNo-b.roomNo;
- return a.studentIndex-b.studentIndex;
+function deskAllEntries(){
+ let map=deskAssignedStudentMap();
+ let list=[];
+ let seen=new Set();
+ map.forEach((item,key)=>{
+  seen.add(key);
+  list.push(item);
  });
- return entries;
+ (db.students||[]).forEach((s,idx)=>{
+  let key=deskStudentIdentityKey(s);
+  if(!seen.has(key)){
+   seen.add(key);
+   let cls=String(s.class||'').trim().toUpperCase();
+   let grade=(cls.match(/[789]/)||['7'])[0];
+   list.push({
+    student:s,
+    roomNo:'',
+    roomName:'Belum Terbagi',
+    roomIndex:idx+1,
+    participantNo:participantNoByStudent(s),
+    className:cls,
+    grade:grade
+   });
+  }
+ });
+ return list;
+}
+
+function sortDeskEntries(entries){
+ return [...entries].sort((a,b)=>{
+  let ga=Number(a.grade)||0, gb=Number(b.grade)||0;
+  if(ga!==gb)return ga-gb;
+  let ca=a.className.localeCompare(b.className,'id',{numeric:true,sensitivity:'base'});
+  if(ca!==0)return ca;
+  let pa=a.participantNo.localeCompare(b.participantNo,'id',{numeric:true,sensitivity:'base'});
+  if(pa!==0)return pa;
+  let oa=Number(a.student?.order), ob=Number(b.student?.order);
+  if(Number.isFinite(oa)&&Number.isFinite(ob)&&oa!==ob)return oa-ob;
+  return String(a.student?.name||'').localeCompare(String(b.student?.name||''));
+ });
+}
+
+function deskAssignedEntries(){
+ return sortDeskEntries(deskAllEntries());
 }
 
 function deskClassEntries(roomFilter='all'){
- let all=deskAssignedEntries();
- // Nomor urut dihitung PER KELAS/ROMBEL dari data siswa utama.
- // Setiap kelas selalu mulai .01 dan berakhir sesuai jumlah siswanya.
+ let all=sortDeskEntries(deskAllEntries());
  all.forEach(entry=>{
- let kelas=String(entry.student?.class||'').trim().toUpperCase()||'KELAS';
- entry.className=kelas;
- entry.classSerial=participantSerialInClass(entry.student);
+  let kelas=String(entry.student?.class||'').trim().toUpperCase()||'KELAS';
+  entry.className=kelas;
+  entry.classSerial=participantSerialInClass(entry.student);
  });
  if(roomFilter==='all'||roomFilter===''||roomFilter===undefined||roomFilter===null)return all;
  let target=deskNumericRoomNo(roomFilter);
  return all.filter(entry=>entry.roomNo===target);
 }
-
 
 function deskCardRoomLabel(item){
  let roomObj=deskRoomObject(item?.roomNo);
@@ -19736,39 +19780,76 @@ function deskCardRoomLabel(item){
 }
 
 function deskEntriesByRoom(roomFilter='all'){
- let target=(roomFilter==='all'||roomFilter===''||roomFilter===undefined||roomFilter===null)?'all':deskNumericRoomNo(roomFilter);
- let entries=[];
- (db.rooms||[]).forEach(room=>{
- let roomNo=deskNumericRoomNo(room.no);
- if(target!=='all' && roomNo!==target)return;
- (room.students||[]).forEach((student,index)=>{
- entries.push({
- student,
- roomNo,
- roomName:room.roomName||room.location||'',
- roomIndex:index+1,
- participantNo:participantNo(roomNo,index+1),
- className:String(student.class||'').trim().toUpperCase()
- });
- });
- });
- return entries;
+ let target=(roomFilter==='all'||roomFilter===''||roomFilter===undefined||roomFilter===null)?'all':String(roomFilter);
+ let all=deskAllEntries();
+ if(target==='all') return sortDeskEntries(all);
+ if(target==='grade_7'||target==='7') return sortDeskEntries(all.filter(e=>e.grade==='7'));
+ if(target==='grade_8'||target==='8') return sortDeskEntries(all.filter(e=>e.grade==='8'));
+ if(target==='grade_9'||target==='9') return sortDeskEntries(all.filter(e=>e.grade==='9'));
+ let rNum=deskNumericRoomNo(target);
+ return sortDeskEntries(all.filter(e=>e.roomNo===rNum));
 }
 
-function deskLayoutPages(roomFilter='all'){
- let all=deskEntriesByRoom(roomFilter);
+function deskLayoutPages(filter='all'){
  let perPage=16;
- let pages=[];
- for(let i=0;i<all.length;i+=perPage){
- let chunk=all.slice(i,i+perPage);
- let slots=Array.from({length:perPage},(_,slotIndex)=>chunk[slotIndex]||null);
- pages.push({
- pageNo:pages.length+1,
- totalPages:Math.ceil(all.length/perPage)||1,
- entries:chunk,
- slots
- });
+ let all=deskAllEntries();
+ let filterStr=String(filter??'all').trim().toLowerCase();
+
+ let isRoom=false;
+ let targetRoom=null;
+ if(/^ruang_?\d+$/i.test(filterStr)||(/^\d+$/.test(filterStr)&&Number(filterStr)<=29&&Number(filterStr)>=1&&filterStr!=='7'&&filterStr!=='8'&&filterStr!=='9')){
+  isRoom=true;
+  targetRoom=Number(filterStr.replace(/\D/g,''));
  }
+
+ if(isRoom){
+  let roomEntries=all.filter(e=>e.roomNo===targetRoom);
+  roomEntries=sortDeskEntries(roomEntries);
+  let pages=[];
+  for(let i=0;i<roomEntries.length;i+=perPage){
+   let chunk=roomEntries.slice(i,i+perPage);
+   let slots=Array.from({length:perPage},(_,slotIndex)=>chunk[slotIndex]||null);
+   pages.push({
+    pageNo:pages.length+1,
+    gradePageNo:Math.floor(i/perPage)+1,
+    gradeTotalPages:Math.ceil(roomEntries.length/perPage)||1,
+    gradeLabel:`Ruang ${String(targetRoom).padStart(2,'0')}`,
+    grade:`Ruang ${targetRoom}`,
+    entries:chunk,
+    slots
+   });
+  }
+  pages.forEach(p=>p.totalPages=pages.length);
+  return pages;
+ }
+
+ let grades=['7','8','9'];
+ if(filterStr==='grade_7'||filterStr==='7'||filterStr==='tingkat_7') grades=['7'];
+ else if(filterStr==='grade_8'||filterStr==='8'||filterStr==='tingkat_8') grades=['8'];
+ else if(filterStr==='grade_9'||filterStr==='9'||filterStr==='tingkat_9') grades=['9'];
+
+ let pages=[];
+ grades.forEach(g=>{
+  let gradeEntries=all.filter(e=>e.grade===g);
+  gradeEntries=sortDeskEntries(gradeEntries);
+  let gradePagesCount=Math.ceil(gradeEntries.length/perPage)||1;
+  for(let i=0;i<gradeEntries.length;i+=perPage){
+   let chunk=gradeEntries.slice(i,i+perPage);
+   let slots=Array.from({length:perPage},(_,slotIndex)=>chunk[slotIndex]||null);
+   pages.push({
+    pageNo:pages.length+1,
+    gradePageNo:Math.floor(i/perPage)+1,
+    gradeTotalPages:gradePagesCount,
+    grade:g,
+    gradeLabel:`Tingkat Kelas ${g}`,
+    entries:chunk,
+    slots
+   });
+  }
+ });
+
+ let total=pages.length;
+ pages.forEach(p=>p.totalPages=total);
  return pages;
 }
 
@@ -19825,15 +19906,53 @@ function deskClassParticipantNo(item){
  return participantNoByStudent(item.student);
 }
 
-function deskPageSummary(){
- let entries=deskEntriesByRoom('all');
- let pages=deskLayoutPages('all');
+let currentDeskFilter='all';
+
+function changeDeskFilter(val){
+ currentDeskFilter=val||'all';
+ render('deskNumbers');
+}
+
+function getDeskFilterValue(){
+ let el=document.getElementById('deskFilterSelect');
+ return el?el.value:(currentDeskFilter||'all');
+}
+
+function printDeskOptions(){
+ return `<option value="all">🏛️ Semua Tingkatan (Kelas 7, 8, 9 &bull; 65 Lembar)</option>
+<option value="grade_7">🟢 Tingkat Kelas 7 (Semua 7A - 7H &bull; 16 Lembar)</option>
+<option value="grade_8">🔵 Tingkat Kelas 8 (Semua 8A - 8J &bull; 23 Lembar)</option>
+<option value="grade_9">🟣 Tingkat Kelas 9 (Semua 9A - 9K &bull; 26 Lembar)</option>
+<optgroup label="Cetak Berdasarkan Ruang">
+` + (db.rooms||[]).filter(r=>(r.students||[]).length).map(r=>`<option value="${r.no}">Ruang ${String(r.no).padStart(2,'0')} (${r.students.length} Siswa)</option>`).join('') + `</optgroup>`;
+}
+
+function deskPageSummary(filter=currentDeskFilter){
+ let pages=deskLayoutPages(filter);
+ let totalCards=0;
+ pages.forEach(p=>totalCards+=p.slots.filter(Boolean).length);
+
+ let allEntries=deskAllEntries();
+ let k7Count=allEntries.filter(e=>e.grade==='7').length;
+ let k8Count=allEntries.filter(e=>e.grade==='8').length;
+ let k9Count=allEntries.filter(e=>e.grade==='9').length;
+
  let roomStats=(db.rooms||[]).filter(r=>(r.students||[]).length).map(r=>({
- roomNo:deskNumericRoomNo(r.no),
- roomName:String(r.roomName||r.location||'').trim(),
- count:(r.students||[]).length
+  roomNo:deskNumericRoomNo(r.no),
+  roomName:String(r.roomName||r.location||'').trim(),
+  count:(r.students||[]).length
  }));
- return {entries,pages,total:entries.length,roomStats};
+
+ return {
+  filter,
+  pages,
+  total:totalCards,
+  k7Count,
+  k8Count,
+  k9Count,
+  allCount:allEntries.length,
+  roomStats
+ };
 }
 
 function deskYear(){
@@ -19874,46 +19993,73 @@ function deskAssessmentTitleLines(){
 
 function deskNumbers(){
  let summary=deskPageSummary();
- let roomCards=(summary.roomStats||[]).map(r=>{
- let roomLabel=String(r.roomName||'').trim();
- return `<div class="stat">Ruang ${String(r.roomNo).padStart(2,'0')}<b>${r.count} peserta</b><small>${roomLabel?esc(roomLabel):'Lokasi belum diisi'}</small></div>`;
- }).join('');
 
  return `<div class="card"><h2>6. Nomor Meja Peserta</h2>
  <div class="notice">
- Layout nomor meja menggunakan kertas <b>29 cm x 33 cm orientasi landscape</b> dengan area cetak dimaksimalkan.
- Dalam satu halaman terdapat <b>16 kartu</b> dengan grid <b>4 kolom x 4 baris</b>. Isi kartu diambil otomatis dari data peserta hasil pembagian ruang.
- Urutan kartu mengikuti data peserta pada aplikasi dari <b>kiri ke kanan, atas ke bawah</b>.
- Nomor meja mengikuti <b>Nomor Peserta</b> pada aplikasi (termasuk jika sudah diedit manual), dengan format contoh <b>7A-01</b>.
- </div>
- <div class="grid">
- <div class="stat">Total Peserta<b>${summary.total}</b></div>
- <div class="stat">Total Lembar<b>${summary.pages.length}</b></div>
- <div class="stat">Kartu per Lembar<b>16</b></div>
- <div class="stat">Jumlah Ruang Terisi<b>${(summary.roomStats||[]).length}</b></div>
- </div>
- ${roomCards?`<div class="grid">${roomCards}</div>`:''}
- <div class="actions">
- <button onclick="printDeskNumbersAll('all')"> Cetak Semua Nomor Meja</button>
- <button class="secondary" onclick="exportPdfFromPrintMenu('desks','')"> PDF Nomor Meja</button>
- <button class="secondary" onclick="exportDeskNumbersDocx('all')"> Word (.docx)</button>
- <button class="secondary" onclick="exportDeskNumbers()"> Excel</button>
+ Nomor meja peserta dibuat <b>tiap tingkatan (Kelas 7, Kelas 8, dan Kelas 9) dikumpulkan jadi satu</b> untuk memudahkan cetak dan pemotongan.<br>
+ Setiap tingkatan dicetak pada lembar tersendiri dan tidak bercampur. Kertas cetak menggunakan <b>29 cm x 33 cm landscape</b>, <b>16 kartu per lembar (4 kolom x 4 baris)</b>.
  </div>
 
- ${summary.pages.slice(0,4).map(page=>`<div class="card">
- <h3>Lembar ${page.pageNo} dari ${page.totalPages}</h3>
+ <!-- PILIH TINGKATAN CETAK -->
+ <div style="background:#f4fbf7;border:1.5px solid #27ae60;border-radius:8px;padding:12px 16px;margin:12px 0 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+   <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+     <label for="deskFilterSelect" style="font-weight:800;color:#135200;font-size:14px">🎯 Pilih Tingkatan / Tampilan:</label>
+     <select id="deskFilterSelect" onchange="changeDeskFilter(this.value)" style="font-weight:700;padding:7px 12px;border:1.5px solid #27ae60;border-radius:6px;background:#fff;font-size:13.5px">
+       <option value="all" ${currentDeskFilter==='all'?'selected':''}>🏛️ Semua Tingkatan (Kelas 7, 8, 9 &bull; 65 Lembar)</option>
+       <option value="grade_7" ${currentDeskFilter==='grade_7'?'selected':''}>🟢 Tingkat Kelas 7 (250 Siswa &bull; 16 Lembar)</option>
+       <option value="grade_8" ${currentDeskFilter==='grade_8'?'selected':''}>🔵 Tingkat Kelas 8 (364 Siswa &bull; 23 Lembar)</option>
+       <option value="grade_9" ${currentDeskFilter==='grade_9'?'selected':''}>🟣 Tingkat Kelas 9 (409 Siswa &bull; 26 Lembar)</option>
+       <optgroup label="Cetak Berdasarkan Ruang">
+         ${(db.rooms||[]).filter(r=>(r.students||[]).length).map(r=>`<option value="${r.no}" ${String(currentDeskFilter)===String(r.no)?'selected':''}>Ruang ${String(r.no).padStart(2,'0')} (${r.students.length} Siswa)</option>`).join('')}
+       </optgroup>
+     </select>
+   </div>
+   <div style="display:flex;gap:6px;flex-wrap:wrap">
+     <button type="button" class="secondary" onclick="changeDeskFilter('grade_7')" style="padding:6px 10px;font-size:12px;font-weight:700;background:#f6ffed;border-color:#b7eb8f;color:#135200">Kelas 7</button>
+     <button type="button" class="secondary" onclick="changeDeskFilter('grade_8')" style="padding:6px 10px;font-size:12px;font-weight:700;background:#e6f7ff;border-color:#91d5ff;color:#003a8c">Kelas 8</button>
+     <button type="button" class="secondary" onclick="changeDeskFilter('grade_9')" style="padding:6px 10px;font-size:12px;font-weight:700;background:#f9f0ff;border-color:#d3adf7;color:#531dab">Kelas 9</button>
+     <button type="button" class="secondary" onclick="changeDeskFilter('all')" style="padding:6px 10px;font-size:12px;font-weight:700">Semua</button>
+   </div>
+ </div>
+
+ <div class="grid" style="grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:12px;margin-bottom:14px">
+   <div class="stat">Total Peserta Tampil<b>${summary.total}</b></div>
+   <div class="stat">Total Lembar<b>${summary.pages.length}</b></div>
+   <div class="stat">Tingkat Kelas 7<b>${summary.k7Count} siswa (16 lembar)</b></div>
+   <div class="stat">Tingkat Kelas 8<b>${summary.k8Count} siswa (23 lembar)</b></div>
+   <div class="stat">Tingkat Kelas 9<b>${summary.k9Count} siswa (26 lembar)</b></div>
+ </div>
+
+ <div class="actions">
+   <button onclick="printDeskNumbersAll(getDeskFilterValue())">🖨️ Cetak Nomor Meja Terpilih</button>
+   <button class="secondary" onclick="exportPdfFromPrintMenu('desks','deskFilterSelect')">📄 PDF Nomor Meja</button>
+   <button class="secondary" onclick="exportDeskNumbersDocx(getDeskFilterValue())">📝 Word (.docx)</button>
+   <button class="secondary" onclick="exportDeskNumbers(getDeskFilterValue())">📊 Excel</button>
+ </div>
+
+ <div class="actions" style="margin-top:-6px;margin-bottom:14px">
+   <span style="font-size:12px;font-weight:700;color:#555;align-self:center">⚡ Cetak Cepat:</span>
+   <button class="secondary" onclick="printDeskNumbersAll('grade_7')" style="font-size:12px;font-weight:700;background:#f6ffed;border-color:#b7eb8f;color:#135200">🖨️ Cetak Tingkat 7 (16 Lembar)</button>
+   <button class="secondary" onclick="printDeskNumbersAll('grade_8')" style="font-size:12px;font-weight:700;background:#e6f7ff;border-color:#91d5ff;color:#003a8c">🖨️ Cetak Tingkat 8 (23 Lembar)</button>
+   <button class="secondary" onclick="printDeskNumbersAll('grade_9')" style="font-size:12px;font-weight:700;background:#f9f0ff;border-color:#d3adf7;color:#531dab">🖨️ Cetak Tingkat 9 (26 Lembar)</button>
+   <button class="secondary" onclick="printDeskNumbersAll('all')" style="font-size:12px;font-weight:700">🖨️ Cetak Semua (65 Lembar)</button>
+ </div>
+
+ ${summary.pages.slice(0,6).map(page=>`<div class="card">
+ <h3>Lembar ${page.pageNo} dari ${page.totalPages} • ${page.gradeLabel} (${page.slots.filter(Boolean).length} Peserta)</h3>
  <div class="desknum-grid desknum-grid-16">
  ${page.entries.map(entry=>`<div class="desknum-card desknum-card-16">
  <div class="exam">${esc(deskCardHeaderTitle())}</div>
  <div class="school">MTs MA'ARIF NU 1 WANGON</div>
- <div class="year" style="font-size:9.5px;font-weight:700;color:#555;margin:-6px 0 8px 0;letter-spacing:.3px">Tahun Ajaran ${esc(deskYear())}</div>
+ <div class="year" style="font-size:9.5px;font-weight:700;color:#555;margin:-6px 0 6px 0;letter-spacing:.3px">Tahun Ajaran ${esc(deskYear())}</div>
+ <div class="desk16-divider"></div>
  <div class="participant">${esc(entry.participantNo)}</div>
  <div class="name">${esc(entry.student.name)}</div>
  <div class="room">${esc(deskCardRoomLabel(entry))}</div>
  </div>`).join('')}
  </div>
  </div>`).join('') || '<div class="notice">Belum ada peserta hasil pembagian ruang.</div>'}
- ${summary.pages.length>4?`<div class="notice">Pratinjau aplikasi menampilkan 4 lembar pertama. Cetak, PDF, dan Word tetap memproses seluruh ${summary.pages.length} lembar.</div>`:''}
+ ${summary.pages.length>6?`<div class="notice">Pratinjau aplikasi menampilkan 6 lembar pertama. Cetak, PDF, dan Word tetap memproses seluruh ${summary.pages.length} lembar.</div>`:''}
  </div>`;
 }
 
@@ -19939,7 +20085,7 @@ function printDeskNumbersAll(roomNo='all'){
  let pages=deskLayoutPages(roomNo);
  if(!pages.length){alert('Belum ada peserta hasil pembagian ruang untuk dicetak.');return false;}
 
- let htmlPages=pages.map(page=>`<div class="desk16-page" data-page="${page.pageNo}">
+ let htmlPages=pages.map(page=>`<div class="desk16-page desk-landscape-page" data-page="${page.pageNo}">
  <div class="desk16-grid">
  ${page.slots.map(deskPrintCard).join('')}
  </div>
@@ -19954,16 +20100,17 @@ function printDeskNumbersAll(roomNo='all'){
  return true;
 }
 
-function exportDeskNumbers(){
- let pages=deskLayoutPages('all');
+function exportDeskNumbers(filter=currentDeskFilter||'all'){
+ let pages=deskLayoutPages(filter);
  if(!pages.length)return alert('Belum ada peserta hasil pembagian ruang.');
  let rows=[];
  pages.forEach((page,pageIndex)=>{
  page.entries.forEach(entry=>rows.push({
+ 'Tingkat':entry.grade ? `Kelas ${entry.grade}` : (page.gradeLabel||''),
  'Lembar':pageIndex+1,
  'Nomor Meja':entry.participantNo,
- 'Nama Peserta':entry.student.name||'',
- 'Kelas':entry.className||'',
+ 'Nama Peserta':entry.student?.name||'',
+ 'Kelas':entry.className||entry.student?.class||'',
  'Ruang':deskCardRoomLabel(entry),
  'No Ruang':entry.roomNo,
  'Asesmen': assessmentDisplay() || 'ASESMEN'
@@ -19971,7 +20118,8 @@ function exportDeskNumbers(){
  });
  let ws=XLSX.utils.json_to_sheet(rows),wb=XLSX.utils.book_new();
  XLSX.utils.book_append_sheet(wb,ws,'Nomor Meja');
- XLSX.writeFile(wb,'Nomor_Meja_Peserta.xlsx');
+ let fileSuffix = filter==='all' ? 'Semua_Tingkat' : (String(filter).startsWith('grade_') ? `Tingkat_${String(filter).replace('grade_','')}` : `Ruang_${filter}`);
+ XLSX.writeFile(wb,`Nomor_Meja_Peserta_${fileSuffix}.xlsx`);
 }
 
 /* ===========================
@@ -19997,7 +20145,7 @@ function deskWordParagraph(text,sizeHalfPt,bold=true,before=0,after=0,bottomBord
  <w:pPr>
  <w:jc w:val="center"/>
  <w:spacing w:before="${before}" w:after="${after}" w:line="210" w:lineRule="auto"/>
- ${bottomBorder?'<w:pBdr><w:bottom w:val="single" w:sz="8" w:space="3" w:color="000000"/></w:pBdr>':''}
+ ${bottomBorder?'<w:pBdr><w:bottom w:val="single" w:sz="12" w:space="3" w:color="000000"/></w:pBdr>':''}
  </w:pPr>
  <w:r>
  <w:rPr>
@@ -23798,7 +23946,7 @@ function printPage(){
  ${printSingleRow('Daftar Pembagian Ruang Asesmen','Tabel Rekapitulasi Pembagian Ruang: Ruang, Kelas 7, Kelas 8, Kelas 9, Jumlah, Ruang Kelas, Jumlah Ruang, dengan jumlah total tiap kelas di bawah.','roomDistributionTable')}
  ${printChoiceRow('Denah','Kertas A4 portrait; nama kegiatan asesmen tampil otomatis di bawah judul.','pr_seats',printRoomOptions(),'seats')}
  ${printChoiceRow('Daftar Peserta','Portrait 29 x 33 cm; KOP mulai tepat 15mm dari tepi atas, hanya 1 garis KOP, jarak garis->judul 4mm dan judul->tabel 3mm, margin kanan 26mm.','pr_participants',printRoomOptions(),'participants')}
- ${printChoiceRow('Nomor Meja Peserta','33 x 29 cm landscape; 20 kartu (5 x 4) per lembar; nomor berlanjut selama kelas sama dan reset ke 001 pada lembar baru saat kelas berganti; tersedia PDF, Word, Excel dan CSV.','pr_desks',printRoomOptions(),'desks')}
+ ${printChoiceRow('Nomor Meja Peserta','33 x 29 cm landscape; 16 kartu per lembar; dibuat tiap tingkatan (Kelas 7, 8, 9) dikumpulkan jadi satu untuk memudahkan cetak; tersedia Cetak, PDF, Word, Excel dan CSV.','pr_desks',printDeskOptions(),'desks')}
  ${printChoiceRow('Kartu Peserta','33 x 29 cm landscape, 3 kartu per lembar.','pr_cards',printRoomOptions(),'cards')}
  ${printSingleRow('Jadwal Asesmen','Portrait 29 x 33 cm; judul mengikuti asesmen aktif, Hari/Tanggal dua baris, Mata Pelajaran dipersempit dan ditambah kolom Keterangan.','schedule')}
  ${printSingleRow('Jadwal Pengawas','Mencetak jadwal pengawas yang aktif.','supervisors')}
@@ -24083,20 +24231,20 @@ function buildPrintExcelWorkbook(type,value='all'){
  });
  }
  else if(type==='desks'){
- let pages=deskClassPages(value);
+ let pages=deskLayoutPages(value);
  if(!pages.length)throw new Error('Belum ada nomor meja peserta.');
  pages.forEach((page,pageIndex)=>{
- let rows=exportSchoolTitleRows('NOMOR MEJA PESERTA',`KELAS ${page.className} - LEMBAR ${page.classPage}`);
+ let rows=exportSchoolTitleRows('NOMOR MEJA PESERTA',`${page.gradeLabel || 'TINGKAT'} - LEMBAR ${page.pageNo}`);
  rows.push(['Slot','Nomor Peserta','Nama Peserta','Kelas','Ruang','Asesmen']);
  page.slots.forEach((item,i)=>rows.push([
  i+1,
- item.student?deskClassParticipantNo(item):'',
- item.student?.name||'',
- item.student?.class||'',
- item.roomNo||'',
+ item?.student?item.participantNo:'',
+ item?.student?.name||'',
+ item?.student?.class||'',
+ item?.roomNo?deskCardRoomLabel(item):'',
  assessmentDisplay()
  ]));
- exportAppendSheet(wb,used,`Meja ${page.className} ${page.classPage}`,rows,[7,18,36,12,10,40]);
+ exportAppendSheet(wb,used,`Lembar ${page.pageNo}`,rows,[7,18,36,12,14,40]);
  });
  }
  else if(type==='cards'){
@@ -24220,14 +24368,16 @@ function buildPrintCsvRows(type,value='all'){
  return rows;
  }
  if(type==='desks'){
- let pages=deskClassPages(value);
+ let pages=deskLayoutPages(value);
  if(!pages.length)throw new Error('Belum ada nomor meja peserta.');
- let rows=[['Lembar','Kelas','Slot','Nomor Peserta','Nama Peserta','Ruang','Asesmen']];
+ let rows=[['Lembar','Tingkat','Slot','Nomor Peserta','Nama Peserta','Kelas','Ruang','Asesmen']];
  pages.forEach((page,pageIndex)=>page.slots.forEach((item,i)=>rows.push([
- pageIndex+1,page.className,i+1,
- item.student?deskClassParticipantNo(item):'',
- item.student?.name||'',
- item.roomNo||'',assessmentDisplay()
+ page.pageNo,page.gradeLabel||'',i+1,
+ item?.student?item.participantNo:'',
+ item?.student?.name||'',
+ item?.student?.class||'',
+ item?.roomNo?deskCardRoomLabel(item):'',
+ assessmentDisplay()
  ])));
  return rows;
  }
