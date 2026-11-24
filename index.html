@@ -4599,24 +4599,23 @@ body.pdf-participant-special .participant-list-print-page .signature{
 .participant-special-table .participant-col-gender{width:13mm!important}
 .participant-special-table .participant-col-class{width:18mm!important}
 
-.participant-special-table th:nth-child(1),
+.participant-special-table th{
+ text-align:center!important;
+ white-space:nowrap!important;
+}
 .participant-special-table td:nth-child(1),
-.participant-special-table th:nth-child(2),
 .participant-special-table td:nth-child(2),
-.participant-special-table th:nth-child(3),
-.participant-special-table td:nth-child(3),
-.participant-special-table th:nth-child(5),
+.participant-special-table td:nth-child(4),
 .participant-special-table td:nth-child(5),
-.participant-special-table th:nth-child(6),
 .participant-special-table td:nth-child(6){
  text-align:center!important;
  white-space:nowrap!important;
 }
-.participant-special-table th:nth-child(4),
-.participant-special-table td:nth-child(4){
+.participant-special-table td:nth-child(3){
  text-align:left!important;
- white-space:normal!important;
- overflow-wrap:anywhere!important;
+ white-space:nowrap!important;
+ overflow:visible!important;
+ padding-left:2.5mm!important;
 }
 
 /* PEMBAGIAN RUANG PESERTA */
@@ -4968,18 +4967,18 @@ body.pdf-participant-special .participant-list-print-page.special-assessment-pri
 /* Alignment isi */
 .participant-list-print-page.participant-exact-print-page .participant-exact-table td:nth-child(1),
 .participant-list-print-page.participant-exact-print-page .participant-exact-table td:nth-child(2),
-.participant-list-print-page.participant-exact-print-page .participant-exact-table td:nth-child(3),
+.participant-list-print-page.participant-exact-print-page .participant-exact-table td:nth-child(4),
 .participant-list-print-page.participant-exact-print-page .participant-exact-table td:nth-child(5),
 .participant-list-print-page.participant-exact-print-page .participant-exact-table td:nth-child(6){
  text-align:center!important;
  white-space:nowrap!important;
 }
-.participant-list-print-page.participant-exact-print-page .participant-exact-table td:nth-child(4){
+.participant-list-print-page.participant-exact-print-page .participant-exact-table td:nth-child(3){
  text-align:left!important;
- white-space:normal!important;
- overflow-wrap:anywhere!important;
+ white-space:nowrap!important;
+ overflow:visible!important;
  word-break:normal!important;
- max-height:2.3em!important;
+ padding-left:2.5mm!important;
 }
 
 /* Jangan potong teks Nomor Peserta pada header */
@@ -14673,19 +14672,69 @@ html body.force-print-root .print-header.simple-kop .kop-main h2:after{
 </style>
 
 <style id="participant-table-six-col-style">
-/* ATURAN BAKU TABEL DAFTAR PESERTA 6 KOLOM (TANPA NIS) DENGAN KETERANGAN DITARIK LEBAR KE KANAN */
-.participant-exact-table th:nth-child(1), .participant-exact-table td:nth-child(1) { text-align: center !important; }
-.participant-exact-table th:nth-child(2), .participant-exact-table td:nth-child(2) { text-align: center !important; }
-.participant-exact-table th:nth-child(3), .participant-exact-table td:nth-child(3), .participant-exact-table td.name-cell { text-align: left !important; white-space: nowrap !important; overflow: visible !important; }
-.participant-exact-table th:nth-child(4), .participant-exact-table td:nth-child(4) { text-align: center !important; }
-.participant-exact-table th:nth-child(5), .participant-exact-table td:nth-child(5) { text-align: center !important; }
-.participant-exact-table th:nth-child(6), .participant-exact-table td:nth-child(6), .participant-exact-table td.participant-note-cell, .participant-exact-table col.participant-col-note {
+/* ATURAN BAKU TABEL DAFTAR PESERTA 6 KOLOM */
+
+/* 1. SELURUH JUDUL KOLOM HEADER (No, Nomor Peserta, Nama, L/P, Kelas, Keterangan) 100% POSISI CENTER */
+.participant-list-print-page thead th,
+.participant-list-print-page .participant-exact-table thead th,
+.participant-list-print-page.participant-exact-print-page .participant-exact-table thead th,
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table thead th,
+.participant-special-table thead th,
+.participant-exact-table thead th,
+.participant-exact-table th:nth-child(1),
+.participant-exact-table th:nth-child(2),
+.participant-exact-table th:nth-child(3),
+.participant-exact-table th:nth-child(4),
+.participant-exact-table th:nth-child(5),
+.participant-exact-table th:nth-child(6) {
   text-align: center !important;
-  min-width: 45mm !important;
+  vertical-align: middle !important;
+}
+
+/* 2. PENATAAN ALIGNMENT ISI DATA SISWA (TBODY) */
+.participant-exact-table tbody td:nth-child(1) { text-align: center !important; }
+.participant-exact-table tbody td:nth-child(2) { text-align: center !important; }
+
+/* TULISAN NAMA PESERTA PADA BARIS DATA SISWA TETAP RATA KIRI */
+.participant-list-print-page .participant-exact-table tbody td:nth-child(3),
+.participant-list-print-page .participant-exact-table tbody td.name-cell,
+.participant-list-print-page.participant-exact-print-page .participant-exact-table tbody td:nth-child(3),
+.participant-list-print-page.participant-exact-print-page .participant-exact-table tbody td.name-cell,
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table tbody td:nth-child(3),
+.participant-list-print-page.participant-dynamic-columns .participant-exact-table tbody td.name-cell,
+.participant-special-table tbody td:nth-child(3),
+.participant-special-table tbody td.name-cell,
+.participant-exact-table tbody td:nth-child(3),
+.participant-exact-table tbody td.name-cell,
+.participant-edit-table tbody td:nth-child(3),
+tbody td.name-cell {
+  text-align: left !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  padding-left: 2.5mm !important;
+  padding-right: 1.5mm !important;
+}
+
+.participant-exact-table tbody td:nth-child(4) { text-align: center !important; }
+.participant-exact-table tbody td:nth-child(5) { text-align: center !important; }
+
+/* 3. KOLOM KETERANGAN DIGESER GARISNYA KE SEBELAH KANAN SEDIKIT (35MM) AGAR TULISAN TIDAK TERTUTUPI */
+.participant-exact-table th:nth-child(6),
+.participant-exact-table tbody td:nth-child(6),
+.participant-exact-table td.participant-note-cell,
+.participant-exact-table col.participant-col-note {
+  text-align: center !important;
+  width: 35mm !important;
+  min-width: 35mm !important;
+  max-width: 40mm !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  padding-left: 1.5mm !important;
+  padding-right: 1.5mm !important;
 }
 .participant-col-nis, th.participant-col-nis, td.participant-col-nis { display: none !important; width: 0 !important; }
 
-/* PENATAAN TANDA TANGAN DAFTAR PESERTA: DI BAWAH TABEL SISWA SEBELAH KANAN BAWAH (TIDAK MENUTUPI TABEL) */
+/* 4. PENATAAN TANDA TANGAN DAFTAR PESERTA: DI BAWAH TABEL SISWA SEBELAH KANAN BAWAH */
 .participant-list-print-page .special-signature-wrap,
 .participant-list-print-page.participant-exact-print-page .participant-exact-signature,
 .participant-list-print-page.participant-dynamic-columns .participant-dynamic-signature {
@@ -14710,7 +14759,7 @@ html body.force-print-root .print-header.simple-kop .kop-main h2:after{
 
 .participant-list-print-page .special-signature-wrap > div,
 .participant-list-print-page .participant-exact-signature > div,
-.participant-list-print-page .participant-dynamic-columns .participant-dynamic-signature > div,
+.participant-list-print-page.participant-dynamic-columns .participant-dynamic-signature > div,
 .participant-list-print-page .print-signature-wrapper {
   display: flex !important;
   justify-content: flex-end !important;
@@ -14741,6 +14790,36 @@ html body.force-print-root .print-header.simple-kop .kop-main h2:after{
 }
 
 @media print {
+  /* JUDUL KOLOM HEADER 100% CENTER */
+  .participant-list-print-page thead th,
+  .participant-exact-table thead th,
+  .participant-exact-table th:nth-child(1),
+  .participant-exact-table th:nth-child(2),
+  .participant-exact-table th:nth-child(3),
+  .participant-exact-table th:nth-child(4),
+  .participant-exact-table th:nth-child(5),
+  .participant-exact-table th:nth-child(6) {
+    text-align: center !important;
+    vertical-align: middle !important;
+  }
+  /* NAMA PESERTA PADA DATA SISWA RATA KIRI */
+  .participant-list-print-page .participant-exact-table tbody td:nth-child(3),
+  .participant-list-print-page .participant-exact-table tbody td.name-cell {
+    text-align: left !important;
+    padding-left: 2.5mm !important;
+  }
+  /* KOLOM KETERANGAN 35MM */
+  .participant-exact-table th:nth-child(6),
+  .participant-exact-table tbody td:nth-child(6),
+  .participant-exact-table td.participant-note-cell,
+  .participant-exact-table col.participant-col-note {
+    width: 35mm !important;
+    min-width: 35mm !important;
+    max-width: 40mm !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+  }
   .participant-list-print-page .special-signature-wrap,
   .participant-list-print-page.participant-exact-print-page .participant-exact-signature,
   .participant-list-print-page.participant-dynamic-columns .participant-dynamic-signature {
@@ -14754,12 +14833,6 @@ html body.force-print-root .print-header.simple-kop .kop-main h2:after{
   .participant-list-print-page.participant-density-xhigh .participant-exact-signature,
   .participant-list-print-page.participant-density-xhigh .participant-dynamic-signature {
     margin-top: 6mm !important;
-  }
-  .participant-exact-table th:nth-child(6),
-  .participant-exact-table td:nth-child(6),
-  .participant-exact-table td.participant-note-cell,
-  .participant-exact-table col.participant-col-note {
-    min-width: 45mm !important;
   }
 }
 
@@ -14798,7 +14871,7 @@ html body.force-print-root .print-header.simple-kop .kop-main h2:after{
   font-weight: 700 !important;
 }
 
-/* TULISAN DAFTAR PESERTA 2X LEBIH BESAR (UNTUK TAMPILAN CETAK/PRINT YANG SANGAT JELAS) */
+/* TULISAN DAFTAR PESERTA 2X LEBIH BESAR */
 .participant-list-title-block,
 .participant-list-print-page.participant-dynamic-columns .participant-list-title-block {
   margin-top: 0 !important;
@@ -14848,6 +14921,88 @@ html body.force-print-root .print-header.simple-kop .kop-main h2:after{
     font-weight: 900 !important;
     line-height: 1.15 !important;
     letter-spacing: 0.8px !important;
+  }
+}
+
+
+/* PENATAAN TANDA TANGAN DENAH TEMPAT DUDUK PESERTA */
+.seat-print-page .seat-bottom-row {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-end !important;
+  width: 100% !important;
+  margin-top: 2.5mm !important;
+  gap: 8mm !important;
+  page-break-inside: avoid !important;
+  box-sizing: border-box !important;
+}
+
+.seat-print-page .seat-bottom-left {
+  flex: 1 !important;
+  min-width: 0 !important;
+  max-width: 215mm !important;
+}
+
+.seat-print-page .seat-bottom-left .seat-control {
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+.seat-print-page .seat-bottom-right {
+  width: 82mm !important;
+  min-width: 82mm !important;
+  max-width: 85mm !important;
+  margin-left: auto !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.seat-print-page .seat-signature-box {
+  width: 80mm !important;
+  text-align: center !important;
+  font-size: 11pt !important;
+  line-height: 1.4 !important;
+  color: #000 !important;
+  box-sizing: border-box !important;
+}
+
+.seat-print-page .seat-signature-box b,
+.seat-print-page .seat-signature-box u {
+  font-size: 11.5pt !important;
+  font-weight: 700 !important;
+}
+
+.seat-print-page .seat-signature-box .signature-visual-space {
+  height: 18mm !important;
+  min-height: 18mm !important;
+  position: relative !important;
+  overflow: visible !important;
+}
+
+@media print {
+  .seat-print-page .seat-bottom-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-end !important;
+    width: 100% !important;
+    margin-top: 2.5mm !important;
+    gap: 8mm !important;
+    page-break-inside: avoid !important;
+  }
+  .seat-print-page .seat-bottom-left {
+    flex: 1 !important;
+    max-width: 215mm !important;
+  }
+  .seat-print-page .seat-bottom-right {
+    width: 82mm !important;
+    min-width: 82mm !important;
+  }
+  .seat-print-page .seat-signature-box {
+    width: 80mm !important;
+    text-align: center !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
   }
 }
 </style>
@@ -19567,6 +19722,22 @@ function seatControlInfo(r){
  <tbody>${rows.map(x=>`<tr><td>${esc(x.cls)}</td><td>${esc(x.first)}</td><td>${esc(x.last)}</td><td>${x.count}</td></tr>`).join('')}</tbody></table>
  </div>`;
 }
+function seatSignatureHtml(){
+ let city = db.school.signatureCity || 'Wangon';
+ let date = '23 Nopember 2026';
+ let title = db.school.signatureTitle || 'Ketua Panitia';
+ let chair = getCommitteeChairName();
+ let nip = getCommitteeChairNip();
+
+ return `<div class="seat-signature-box">
+ <div>${esc(city)}, ${date}</div>
+ <div>${esc(title)}</div>
+ <div class="signature-visual-space" style="height:18mm;min-height:18mm;position:relative;">${signatureAssetsHtml('chair')}</div>
+ <div><b><u>${esc(chair)}</u></b></div>
+ <div>NIP. ${esc(nip)}</div>
+ </div>`;
+}
+
 function seatHtml(r){
  let layout=buildSeatColumns(r);
  let distinctClasses = [...new Set((r.students || []).map(s => s.class))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
@@ -19591,7 +19762,14 @@ function seatHtml(r){
  ${layout.columns.map(col=>`<div class="seat-column">${col.map(desk=>seatBoxHtml(r,desk)).join('')}</div>`).join('')}
  </div>
  </div>
- ${seatControlInfo(r)}
+ <div class="seat-bottom-row">
+  <div class="seat-bottom-left">
+    ${seatControlInfo(r)}
+  </div>
+  <div class="seat-bottom-right">
+    ${seatSignatureHtml()}
+  </div>
+ </div>
  </div>`;
 }
 function seatStudentOptions(r,selectedId){
@@ -19775,6 +19953,7 @@ function showSeat(no){
  `<div class="actions no-print" style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
  <button type="button" onclick="printAllSeats(${r.no})">🖨️ Cetak Denah Ruang ${String(r.no).padStart(2,'0')}</button>
  <button type="button" class="secondary" onclick="exportPdfFromPrintMenu('seats','${r.no}')">📄 Unduh PDF Ruang ${String(r.no).padStart(2,'0')}</button>
+ <button type="button" class="secondary" onclick="openParticipantSignatureModal('${r.no}')">✍️ Atur TTD & Stempel</button>
  <button type="button" class="secondary" onclick="showSeatEditor(${r.no})">✏️ Edit Manual Denah</button>
  ${manual?`<button type="button" class="danger" onclick="resetManualSeatPlan(${r.no})">🔄 Reset ke Denah Otomatis</button>`:''}
  </div>`;
@@ -19966,11 +20145,9 @@ function participantListColumnLayout(students){
  );
  let kelas=clamp(widestClass+6,17,22);
 
- // Kolom Keterangan ditarik lebar ke kanan (target lebar total tabel 248mm)
- let targetTotal=248;
- let usedWithoutNote=no+number+name+gender+kelas;
- let note=Math.max(45, Number((targetTotal-usedWithoutNote).toFixed(1)));
- let total=Number((usedWithoutNote+note).toFixed(1));
+ // Kolom Keterangan digeser garisnya ke kanan sedikit (35mm) agar tidak tertutupi
+ let note=35;
+ let total=Number((no+number+name+gender+kelas+note).toFixed(1));
 
  return {
  no:Number(no.toFixed(1)),
@@ -28092,7 +28269,7 @@ const TABLE_RESIZE_STORAGE_KEY = 'administrasi_table_custom_layout_v2';
 
 const DEFAULT_TABLE_RESIZE_STORE = {
   participant: {
-    cols: [11, 56, 95, 11, 19, 56], // No, NoPeserta, Nama, L/P, Kelas, Keterangan
+    cols: [11, 56, 95, 11, 19, 35], // No, NoPeserta, Nama, L/P, Kelas, Keterangan
     rowPaddingY: 1.35,
     borderWidth: '1px',
     borderColor: '#000000'
@@ -28119,8 +28296,8 @@ function readTableResizeStore(){
     if(raw) {
       let parsed = JSON.parse(raw);
       if(parsed && typeof parsed === 'object') {
-        if(parsed && parsed.participant && Array.isArray(parsed.participant.cols) && (parsed.participant.cols.length !== 6 || parsed.participant.cols[5] < 35)){
-          parsed.participant.cols = [11, 56, 95, 11, 19, 56];
+        if(parsed && parsed.participant && Array.isArray(parsed.participant.cols) && (parsed.participant.cols.length !== 6 || parsed.participant.cols[5] < 30 || parsed.participant.cols[5] > 45)){
+          parsed.participant.cols = [11, 56, 95, 11, 19, 35];
         }
         currentTableResizeStore = Object.assign({}, DEFAULT_TABLE_RESIZE_STORE, parsed);
         return currentTableResizeStore;
