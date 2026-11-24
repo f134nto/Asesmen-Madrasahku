@@ -14716,6 +14716,59 @@ html body.force-print-root .print-header.simple-kop .kop-main h2:after{
   font-size: 12.5px !important;
   font-weight: 700 !important;
 }
+
+/* TULISAN DAFTAR PESERTA 2X LEBIH BESAR (UNTUK TAMPILAN CETAK/PRINT YANG SANGAT JELAS) */
+.participant-list-title-block,
+.participant-list-print-page.participant-dynamic-columns .participant-list-title-block {
+  margin-top: 0 !important;
+  margin-bottom: 2.5mm !important;
+  padding-top: 0 !important;
+}
+
+.participant-list-title-main,
+.participant-list-print-page .participant-list-title-main,
+.participant-list-print-page.participant-dynamic-columns .participant-list-title-main {
+  font-size: 28pt !important;
+  font-weight: 900 !important;
+  line-height: 1.15 !important;
+  letter-spacing: 0.8px !important;
+  text-align: center !important;
+  margin: 0 0 1.2mm 0 !important;
+  text-transform: uppercase !important;
+}
+
+.participant-list-title-assessment,
+.participant-list-print-page .participant-list-title-assessment,
+.participant-list-print-page.participant-dynamic-columns .participant-list-title-assessment {
+  font-size: 15pt !important;
+  font-weight: 800 !important;
+  line-height: 1.15 !important;
+  text-align: center !important;
+  margin: 0 0 1mm 0 !important;
+  text-transform: uppercase !important;
+}
+
+.participant-list-title-room,
+.participant-list-print-page .participant-list-title-room,
+.participant-list-print-page.participant-dynamic-columns .participant-list-title-room {
+  font-size: 16.5pt !important;
+  font-weight: 900 !important;
+  line-height: 1.12 !important;
+  text-align: center !important;
+  margin: 0 !important;
+  text-transform: uppercase !important;
+}
+
+@media print {
+  .participant-list-title-main,
+  .participant-list-print-page .participant-list-title-main,
+  .participant-list-print-page.participant-dynamic-columns .participant-list-title-main {
+    font-size: 28pt !important;
+    font-weight: 900 !important;
+    line-height: 1.15 !important;
+    letter-spacing: 0.8px !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -19876,7 +19929,7 @@ function participantListKopHtml(widthMm){ return ""; }
 
 function participantListTitleHtml(widthMm,roomNo){
  return `<div class="participant-list-title-block" style="width:${widthMm}mm;max-width:${widthMm}mm;">
- <div class="participant-list-title-main">DAFTAR PESERTA</div>
+ <div class="participant-list-title-main" style="font-size:28pt!important;font-weight:900!important;letter-spacing:0.8px!important;line-height:1.15!important;">DAFTAR PESERTA</div>
  <div class="participant-list-title-assessment">${esc(assessmentDisplay())}</div>
  <div class="participant-list-title-room">RUANG ${String(roomNo).padStart(2,'0')}</div>
  </div>`;
