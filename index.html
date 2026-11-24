@@ -7289,15 +7289,15 @@ window.pdfjsLibBridge=pdfjsLib;
  text-align:center!important;
 }
 
-/* Tanda tangan Ketua Panitia pada halaman kedua Daftar Hadir Peserta */
+/* Tanda tangan Ketua Panitia pada halaman kedua Daftar Hadir Peserta (Nama 1 Baris) */
 .attendance-reference-layout .attendance-page2-signature-inline,
 #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline{
  display:flex!important;
  justify-content:flex-end!important;
  align-items:flex-start!important;
  width:100%!important;
- margin-top:5mm!important;
- padding-right:12mm!important;
+ margin-top:4mm!important;
+ padding-right:8mm!important;
  box-sizing:border-box!important;
  page-break-inside:avoid!important;
  break-inside:avoid!important;
@@ -7305,13 +7305,33 @@ window.pdfjsLibBridge=pdfjsLib;
 
 .attendance-reference-layout .attendance-page2-signature-inline .attendance-chair-signature,
 #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-signature{
- width:78mm!important;
- max-width:78mm!important;
+ width:96mm!important;
+ min-width:96mm!important;
+ max-width:105mm!important;
  text-align:center!important;
- font-size:13.5pt!important;
- line-height:1.25!important;
+ font-size:12.5pt!important;
+ line-height:1.22!important;
  page-break-inside:avoid!important;
  break-inside:avoid!important;
+}
+
+.attendance-reference-layout .attendance-page2-signature-inline .attendance-chair-signature > div,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-signature > div{
+ white-space:nowrap!important;
+ font-size:12pt!important;
+ line-height:1.22!important;
+}
+
+.attendance-reference-layout .attendance-page2-signature-inline .attendance-chair-name,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-name,
+.attendance-reference-layout .attendance-page2-signature-inline .attendance-chair-name b,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-name b,
+.attendance-reference-layout .attendance-page2-signature-inline .attendance-chair-name u,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-name u{
+ font-size:12.5pt!important;
+ white-space:nowrap!important;
+ display:inline-block!important;
+ line-height:1.22!important;
 }
 
 .attendance-reference-layout .attendance-page2-signature-inline .signature-visual-space,
@@ -12977,20 +12997,22 @@ body.print-direct-edit-active .print-direct-draggable{
  font-size:10.5pt!important;
 }
 
-/* LEMBAR 1: maksimal 20 peserta, huruf dan baris dibuat lebih besar. */
+/* LEMBAR 1: 20 peserta, baris atas bawah disempitkan agar cukup dicetak 1 lembar pas */
 .attendance-reference-layout.attendance-first-fixed-20 .attendance-reference-table tbody td,
 .attendance-reference-layout.attendance-first-fixed-20 .attendance-reference-table tbody td.att-session{
- height:9.2mm!important;
- min-height:9.2mm!important;
- max-height:9.2mm!important;
- padding:.9mm .85mm!important;
- font-size:11.3pt!important;
- line-height:1.08!important;
+ height:7.2mm!important;
+ min-height:7.2mm!important;
+ max-height:7.2mm!important;
+ padding:.30mm .65mm!important;
+ font-size:10.5pt!important;
+ line-height:1!important;
  vertical-align:middle!important;
 }
 .attendance-reference-layout.attendance-first-fixed-20 .attendance-reference-table tbody td.att-name{
- font-size:11.5pt!important;
+ font-size:10.5pt!important;
+ line-height:1!important;
  padding-left:1.5mm!important;
+ white-space:nowrap!important;
 }
 
 /* LEMBAR 2: semakin sedikit sisa peserta, semakin besar huruf/barisnya. */
@@ -13680,28 +13702,38 @@ body.print-direct-edit-active .print-direct-draggable{
  top:auto!important;
  bottom:auto!important;
  transform:none!important;
- width:78mm!important;
- max-width:78mm!important;
+ width:96mm!important;
+ min-width:96mm!important;
+ max-width:105mm!important;
  margin:0!important;
  padding:0!important;
  border:0!important;
  outline:0!important;
  background:transparent!important;
  text-align:center!important;
- font-size:15pt!important;
- line-height:1.18!important;
+ font-size:12.5pt!important;
+ line-height:1.22!important;
  page-break-inside:avoid!important;
  break-inside:avoid!important;
 }
 
-#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-signature > div,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-signature > div{
+ font-size:12pt!important;
+ line-height:1.22!important;
+ border:0!important;
+ outline:0!important;
+ white-space:nowrap!important;
+}
+
 #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-signature b,
 #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-signature u,
 #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-name{
- font-size:15pt!important;
- line-height:1.18!important;
+ font-size:12.5pt!important;
+ line-height:1.22!important;
  border:0!important;
  outline:0!important;
+ white-space:nowrap!important;
+ display:inline-block!important;
 }
 
 #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-space,
@@ -13796,6 +13828,23 @@ body.print-direct-edit-active .print-direct-draggable{
  break-inside:avoid!important;
  }
 
+ /* Lembar 1 saat cetak: 20 peserta tetap kompak pas 1 lembar */
+ .attendance-reference-layout.attendance-first-fixed-20 .attendance-reference-table tbody td,
+ .attendance-reference-layout.attendance-first-fixed-20 .attendance-reference-table tbody td.att-session{
+ height:7.2mm!important;
+ min-height:7.2mm!important;
+ max-height:7.2mm!important;
+ padding:.30mm .65mm!important;
+ font-size:10.5pt!important;
+ line-height:1!important;
+ }
+ .attendance-reference-layout.attendance-first-fixed-20 .attendance-reference-table tbody td.att-name{
+ font-size:10.5pt!important;
+ line-height:1!important;
+ padding-left:1.5mm!important;
+ white-space:nowrap!important;
+ }
+
  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-signature,
  #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-signature{
  position:static!important;
@@ -13804,24 +13853,32 @@ body.print-direct-edit-active .print-direct-draggable{
  top:auto!important;
  bottom:auto!important;
  transform:none!important;
- width:78mm!important;
- max-width:78mm!important;
+ width:96mm!important;
+ min-width:96mm!important;
+ max-width:105mm!important;
  margin:0!important;
  padding:0!important;
- font-size:15pt!important;
- line-height:1.18!important;
+ font-size:12.5pt!important;
+ line-height:1.22!important;
  }
 
  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-signature > div,
- #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-signature > div,
+ #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-signature > div{
+ font-size:12pt!important;
+ line-height:1.22!important;
+ white-space:nowrap!important;
+ }
+
  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-name,
  #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-name,
  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline b,
  #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline b,
  body.force-print-root #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline u,
  #app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline u{
- font-size:15pt!important;
- line-height:1.18!important;
+ font-size:12.5pt!important;
+ line-height:1.22!important;
+ white-space:nowrap!important;
+ display:inline-block!important;
  }
 }
 </style>
@@ -24860,12 +24917,12 @@ function attendanceSessionCount(){
 }
 
 function attendanceChairSignature(){
- return `<div class="attendance-chair-signature">
- <div>Wangon, 23 Nopember 2026</div>
- <div>Ketua Panitia</div>
+ return `<div class="attendance-chair-signature" style="width:96mm!important;min-width:96mm!important;max-width:105mm!important;text-align:center!important;">
+ <div class="attendance-chair-city-date" style="white-space:nowrap!important;font-size:12pt!important;">Wangon, 23 Nopember 2026</div>
+ <div class="attendance-chair-role" style="white-space:nowrap!important;font-size:12pt!important;">Ketua Panitia</div>
  <div class="signature-visual-space" style="height:18mm!important;min-height:18mm!important;">${signatureAssetsHtml('chair')}</div>
- <div class="attendance-chair-name"><b><u>${esc(getCommitteeChairName())}</u></b></div>
- <div class="attendance-chair-nip">NIP. ${esc(getCommitteeChairNip())}</div>
+ <div class="attendance-chair-name" style="white-space:nowrap!important;font-size:12.5pt!important;display:inline-block!important;"><b><u>${esc(getCommitteeChairName())}</u></b></div>
+ <div class="attendance-chair-nip" style="white-space:nowrap!important;font-size:11.5pt!important;">NIP. ${esc(getCommitteeChairNip())}</div>
  </div>`;
 }
 
