@@ -900,7 +900,7 @@ th{background:linear-gradient(180deg,#0f633f,#0b5435)!important;color:#fff!impor
 .seat-print-page .seat-supervisor{display:block!important;width:130mm!important;max-width:48%!important;margin:1mm auto 2.5mm!important;padding:2mm 5mm!important;border:1.6px solid #111!important;border-radius:4px!important;font-size:10.5pt!important;font-weight:800!important;letter-spacing:0.5px!important;text-align:center!important;background:#fafafa!important;box-sizing:border-box!important}
 .seat-print-page .seat-area-wrap{width:100%!important;max-width:none!important;margin:0 auto!important;overflow:visible!important}
 .seat-print-page .seat-layout{display:grid!important;grid-template-columns:repeat(4,1fr)!important;column-gap:5.5mm!important;row-gap:0!important;width:100%!important;max-width:none!important;margin:1.5mm auto 0!important;align-items:stretch!important}
-.seat-print-page .seat-column{display:grid!important;grid-template-rows:repeat(5,1fr)!important;row-gap:2mm!important;width:100%!important;min-width:0!important}
+.seat-print-page .seat-column{display:grid!important;grid-template-rows:repeat(5,1fr)!important;row-gap:var(--seat-row-gap, 4.8mm)!important;width:100%!important;min-width:0!important}
 .seat-print-page .seat-box{display:grid!important;grid-template-columns:1fr 1fr!important;column-gap:0!important;border:1.5px solid #111!important;border-radius:3.5px!important;min-height:19.5mm!important;height:19.5mm!important;padding:1.8mm 2.2mm!important;background:#fff!important;box-sizing:border-box!important;align-items:center!important}
 .seat-print-page .seat-cell{display:flex!important;flex-direction:column!important;justify-content:center!important;height:100%!important;overflow:hidden!important;box-sizing:border-box!important}
 .seat-print-page .seat-cell.left{text-align:left!important;border-right:1px dashed #999!important;padding-right:2.2mm!important}
@@ -7266,11 +7266,79 @@ window.pdfjsLibBridge=pdfjsLib;
  font-size:10pt!important;
 }
 .attendance-reference-table .att-day-group{
- font-size:9.5pt!important;
- line-height:1.08!important;
- font-weight:700!important;
- padding:1.1mm .4mm!important;
+ text-align:center!important;
+ vertical-align:middle!important;
+ padding:.6mm .25mm!important;
+ white-space:normal!important;
+}
+.attendance-reference-table .att-day-group .att-day-name{
+ display:block!important;
+ font-size:8.8pt!important;
+ font-weight:800!important;
+ line-height:1.1!important;
  white-space:nowrap!important;
+ text-align:center!important;
+}
+.attendance-reference-table .att-day-group .att-date-val{
+ display:block!important;
+ font-size:8.2pt!important;
+ font-weight:600!important;
+ line-height:1.1!important;
+ margin-top:.4mm!important;
+ white-space:nowrap!important;
+ text-align:center!important;
+}
+
+/* Tanda tangan Ketua Panitia pada halaman kedua Daftar Hadir Peserta */
+.attendance-reference-layout .attendance-page2-signature-inline,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline{
+ display:flex!important;
+ justify-content:flex-end!important;
+ align-items:flex-start!important;
+ width:100%!important;
+ margin-top:5mm!important;
+ padding-right:12mm!important;
+ box-sizing:border-box!important;
+ page-break-inside:avoid!important;
+ break-inside:avoid!important;
+}
+
+.attendance-reference-layout .attendance-page2-signature-inline .attendance-chair-signature,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .attendance-chair-signature{
+ width:78mm!important;
+ max-width:78mm!important;
+ text-align:center!important;
+ font-size:13.5pt!important;
+ line-height:1.25!important;
+ page-break-inside:avoid!important;
+ break-inside:avoid!important;
+}
+
+.attendance-reference-layout .attendance-page2-signature-inline .signature-visual-space,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .signature-visual-space{
+ height:18mm!important;
+ min-height:18mm!important;
+ display:block!important;
+ position:relative!important;
+ margin:1mm auto!important;
+}
+
+.attendance-reference-layout .attendance-page2-signature-inline .signature-assets,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .signature-assets,
+.attendance-reference-layout .attendance-page2-signature-inline .signature-hand-img,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .signature-hand-img{
+ display:block!important;
+ visibility:visible!important;
+ opacity:1!important;
+}
+
+.attendance-reference-layout .attendance-page2-signature-inline .signature-hand-img,
+#app .attendance-reference-layout.attendance-second-sheet .attendance-page2-signature-inline .signature-hand-img{
+ max-height:16mm!important;
+ max-width:42mm!important;
+ object-fit:contain!important;
+ -webkit-print-color-adjust:exact!important;
+ print-color-adjust:exact!important;
 }
 .attendance-reference-table .att-mapel-number{
  font-size:10.5pt!important;
@@ -9192,31 +9260,43 @@ window.pdfjsLibBridge=pdfjsLib;
  JADWAL PENGAWAS - BARIS LEBIH RAPAT
  ============================================================ */
 
-/* Baris mapel/kode pengawas dibuat lebih pendek dari sebelumnya */
+/* Baris mapel/kode pengawas dilebarkan ke bawah agar lebih lega dan tidak sempit */
 .supervisor-no-kop-page-one .supervisor-29-table tbody tr.supervisor-duty-row{
- height:7.4mm!important;
- min-height:7.4mm!important;
- max-height:7.4mm!important;
+ height:9.0mm!important;
+ min-height:9.0mm!important;
 }
 
-/* Padding kode pengawas diperkecil agar tinggi benar-benar rapat */
+/* Padding kode pengawas dan sel tabel dibuat lebih lega */
 .supervisor-no-kop-page-one .supervisor-29-table tr.supervisor-duty-row td{
- padding:.18mm .12mm!important;
- line-height:1!important;
+ padding:.85mm .25mm!important;
+ line-height:1.05!important;
 }
 .supervisor-no-kop-page-one .supervisor-29-table tr.supervisor-duty-row .room-col,
 .supervisor-no-kop-page-one .supervisor-29-table tr.supervisor-duty-row .supervisor-print-code{
- padding:.08mm .05mm!important;
- line-height:.98!important;
+ padding:.65mm .15mm!important;
+ line-height:1!important;
 }
 
 /* ============================================================
  PEMBIASAAN - LEBIH PENDEK + HIJAU MUDA TIPIS
  ============================================================ */
 .supervisor-no-kop-page-one .supervisor-29-table tbody tr.supervisor-habituation-row{
- height:5.2mm!important;
- min-height:5.2mm!important;
- max-height:5.2mm!important;
+ height:6.2mm!important;
+ min-height:6.2mm!important;
+}
+
+/* Garis pembatas antar hari ditebalkan sebagai pengingat batas tiap-tiap hari */
+.supervisor-29-table tr.supervisor-day-last-row td,
+.supervisor-no-kop-page-one .supervisor-29-table tr.supervisor-day-last-row td,
+.sup-matrix tr.supervisor-day-last-row td,
+.supervisor-merged-table tr.supervisor-day-last-row td,
+.supervisor-29-table td.schedule-no-cell,
+.supervisor-29-table td.schedule-day-cell,
+.supervisor-no-kop-page-one .supervisor-29-table td.schedule-no-cell,
+.supervisor-no-kop-page-one .supervisor-29-table td.schedule-day-cell,
+.sup-matrix td.schedule-no-cell,
+.sup-matrix td.schedule-day-cell{
+ border-bottom:2.2px solid #000!important;
 }
 
 .supervisor-no-kop-page-one .supervisor-29-table tr.supervisor-habituation-row td:not(.schedule-no-cell):not(.schedule-day-cell){
@@ -9295,15 +9375,26 @@ window.pdfjsLibBridge=pdfjsLib;
 
 @media print{
  .supervisor-no-kop-page-one .supervisor-29-table tbody tr.supervisor-duty-row{
- height:7.4mm!important;
- min-height:7.4mm!important;
- max-height:7.4mm!important;
+ height:9.0mm!important;
+ min-height:9.0mm!important;
  }
 
  .supervisor-no-kop-page-one .supervisor-29-table tbody tr.supervisor-habituation-row{
- height:5.2mm!important;
- min-height:5.2mm!important;
- max-height:5.2mm!important;
+ height:6.2mm!important;
+ min-height:6.2mm!important;
+ }
+
+ .supervisor-29-table tr.supervisor-day-last-row td,
+ .supervisor-no-kop-page-one .supervisor-29-table tr.supervisor-day-last-row td,
+ .sup-matrix tr.supervisor-day-last-row td,
+ .supervisor-merged-table tr.supervisor-day-last-row td,
+ .supervisor-29-table td.schedule-no-cell,
+ .supervisor-29-table td.schedule-day-cell,
+ .supervisor-no-kop-page-one .supervisor-29-table td.schedule-no-cell,
+ .supervisor-no-kop-page-one .supervisor-29-table td.schedule-day-cell,
+ .sup-matrix td.schedule-no-cell,
+ .sup-matrix td.schedule-day-cell{
+ border-bottom:2.2px solid #000!important;
  }
 
  .supervisor-no-kop-page-one .supervisor-29-table tr.supervisor-habituation-row td:not(.schedule-no-cell):not(.schedule-day-cell),
@@ -15090,6 +15181,19 @@ tbody td.name-cell {
   }
 }
 
+
+:root {
+  --seat-row-gap: 4.8mm;
+}
+.seat-print-page .seat-column {
+  row-gap: var(--seat-row-gap, 4.8mm) !important;
+}
+@media print {
+  .seat-print-page .seat-column {
+    row-gap: var(--seat-row-gap, 4.8mm) !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -19827,6 +19931,7 @@ function getSeatSignatureConfig(){
     posY: Number.isFinite(Number(c.posY)) ? Number(c.posY) : 0,
     width: Number.isFinite(Number(c.width)) ? Math.max(50, Math.min(130, Number(c.width))) : 80,
     spaceHeight: Number.isFinite(Number(c.spaceHeight)) ? Math.max(10, Math.min(40, Number(c.spaceHeight))) : 18,
+    rowGap: Number.isFinite(Number(c.rowGap)) ? Math.max(2, Math.min(7, Number(c.rowGap))) : 4.8,
     align: ['center','left','right'].includes(c.align) ? c.align : 'center',
     visible: c.visible !== false
   };
@@ -19906,6 +20011,12 @@ function resetSeatSignaturePosition(){
 
 function applySeatSignatureStyleLive(){
   let cfg = getSeatSignatureConfig();
+  let gapVal = (cfg.rowGap || 4.8) + 'mm';
+  document.documentElement.style.setProperty('--seat-row-gap', gapVal);
+  document.querySelectorAll('.seat-print-page .seat-column').forEach(function(col){
+    col.style.rowGap = gapVal;
+  });
+
   let boxes = document.querySelectorAll('.seat-signature-box');
   boxes.forEach(function(box){
     box.style.transform = 'translate(' + cfg.posX + 'mm, ' + cfg.posY + 'mm)';
@@ -19923,7 +20034,7 @@ function applySeatSignatureStyleLive(){
   if(label){
     let signX = (cfg.posX > 0 ? '+' : '') + cfg.posX;
     let signY = (cfg.posY > 0 ? '+' : '') + cfg.posY;
-    label.textContent = 'X: ' + signX + ' mm | Y: ' + signY + ' mm | Lebar: ' + cfg.width + ' mm';
+    label.textContent = 'X: ' + signX + ' mm | Y: ' + signY + ' mm | Lebar: ' + cfg.width + ' mm | Jarak Baris: ' + (cfg.rowGap || 4.8) + ' mm';
   }
 }
 
@@ -20040,7 +20151,7 @@ function openSeatSignatureEditorModal(roomNo){
             '<button type="button" class="secondary" onclick="modalNudgeSeatSigReset()" style="padding:3px 8px;font-size:11.5px;margin-left:auto;">🔄 Reset Posisi (0, 0)</button>' +
           '</div>' +
 
-          '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;">' +
+          '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;">' +
             '<div>' +
               '<label style="font-size:11.5px;font-weight:600;display:block;margin-bottom:3px;">Geser X (Kiri/Kanan mm)</label>' +
               '<input id="modalSeatSigPosX" type="number" step="0.5" value="' + cfg.posX + '" style="width:100%;padding:6px;font-size:12.5px;border:1.5px solid #cbd5e1;border-radius:6px;" oninput="applyModalSeatSigPreview()">' +
@@ -20060,6 +20171,11 @@ function openSeatSignatureEditorModal(roomNo){
               '<label style="font-size:11.5px;font-weight:600;display:block;margin-bottom:3px;">Tinggi Ruang TTD (mm)</label>' +
               '<input id="modalSeatSigSpaceHeight" type="number" min="10" max="40" step="1" value="' + cfg.spaceHeight + '" style="width:100%;padding:6px;font-size:12.5px;border:1.5px solid #cbd5e1;border-radius:6px;" oninput="applyModalSeatSigPreview()">' +
               '<small style="color:#64748b;font-size:10.5px;">Baku: 18 mm</small>' +
+            '</div>' +
+            '<div>' +
+              '<label style="font-size:11.5px;font-weight:600;display:block;margin-bottom:3px;color:#166534;">Jarak Baris Meja (mm)</label>' +
+              '<input id="modalSeatRowGap" type="number" min="2" max="7" step="0.2" value="' + (cfg.rowGap || 4.8) + '" style="width:100%;padding:6px;font-size:12.5px;border:1.5px solid #86efac;border-radius:6px;background:#f0fdf4;" oninput="applyModalSeatSigPreview()">' +
+              '<small style="color:#166534;font-size:10.5px;font-weight:600;">Baku: 4.8 mm (Renggang)</small>' +
             '</div>' +
           '</div>' +
 
@@ -20183,11 +20299,13 @@ function modalNudgeSeatSigReset(){
   let wInput = document.getElementById('modalSeatSigWidth');
   let hInput = document.getElementById('modalSeatSigSpaceHeight');
   let aInput = document.getElementById('modalSeatSigAlign');
+  let gapInput = document.getElementById('modalSeatRowGap');
   if(xInput) xInput.value = 0;
   if(yInput) yInput.value = 0;
   if(wInput) wInput.value = 80;
   if(hInput) hInput.value = 18;
   if(aInput) aInput.value = 'center';
+  if(gapInput) gapInput.value = 4.8;
   applyModalSeatSigPreview();
 }
 
@@ -20197,6 +20315,13 @@ function applyModalSeatSigPreview(){
   let w = Number(document.getElementById('modalSeatSigWidth')?.value) || 80;
   let h = Number(document.getElementById('modalSeatSigSpaceHeight')?.value) || 18;
   let a = document.getElementById('modalSeatSigAlign')?.value || 'center';
+  let rowGap = Number(document.getElementById('modalSeatRowGap')?.value) || 4.8;
+
+  let gapVal = rowGap + 'mm';
+  document.documentElement.style.setProperty('--seat-row-gap', gapVal);
+  document.querySelectorAll('.seat-print-page .seat-column').forEach(function(col){
+    col.style.rowGap = gapVal;
+  });
 
   let boxes = document.querySelectorAll('.seat-signature-box');
   boxes.forEach(function(box){
@@ -20213,7 +20338,7 @@ function applyModalSeatSigPreview(){
   if(label){
     let signX = (x > 0 ? '+' : '') + x;
     let signY = (y > 0 ? '+' : '') + y;
-    label.textContent = 'X: ' + signX + ' mm | Y: ' + signY + ' mm | Lebar: ' + w + ' mm';
+    label.textContent = 'X: ' + signX + ' mm | Y: ' + signY + ' mm | Lebar: ' + w + ' mm | Jarak Baris: ' + rowGap + ' mm';
   }
 }
 
@@ -20224,6 +20349,7 @@ function saveSeatSignatureEditorModal(){
   let h = Number(document.getElementById('modalSeatSigSpaceHeight')?.value) || 18;
   let a = document.getElementById('modalSeatSigAlign')?.value || 'center';
   let vis = document.getElementById('modalSeatSigVisible')?.checked !== false;
+  let rowGap = Number(document.getElementById('modalSeatRowGap')?.value) || 4.8;
 
   let city = document.getElementById('modalSeatSigCity')?.value?.trim() || 'Wangon';
   let date = document.getElementById('modalSeatSigDate')?.value?.trim() || '23 Nopember 2026';
@@ -20236,6 +20362,7 @@ function saveSeatSignatureEditorModal(){
     posY: y,
     width: w,
     spaceHeight: h,
+    rowGap: rowGap,
     align: a,
     visible: vis,
     city: city,
@@ -24245,7 +24372,9 @@ function supervisorMatrixBodyHtml(printMode=false){
  }
 
  let isHabituation=/\bpembiasaan\b/i.test(String(supScheduleValue(s,'subject')||''));
- return `<tr class="${isHabituation?'supervisor-habituation-row':'supervisor-duty-row'}">
+ let isLastRowOfDay=(ri===span-1);
+ let dayClass=isLastRowOfDay?' supervisor-day-last-row':'';
+ return `<tr class="${isHabituation?'supervisor-habituation-row':'supervisor-duty-row'}${dayClass}">
  ${ri===0?`<td class="schedule-no-cell fixed-no" rowspan="${span}">${gi+1}</td><td class="schedule-day-cell fixed-date supervisor-date-9pt" rowspan="${span}" style="font-size:9pt!important;text-align:center!important;">
   ${printMode
   ? supervisorPrintDateHtml(g.date)
@@ -24614,9 +24743,9 @@ function printSupervisorMatrix(){
  <div class="actions no-print"><button onclick="systemPrint()"> Cetak 3 Lembar</button><button class="secondary" onclick="render('supervisors')">Kembali</button></div>`;
 }
 
-function attendanceCompactDate(value){
+function attendanceHeaderDateInfo(value){
  let raw=String(value||'').replace(/\s+/g,' ').trim();
- if(!raw)return '';
+ if(!raw)return { day:'', date:'', label:'', html:'' };
 
  const months={
  januari:1,februari:2,maret:3,april:4,mei:5,juni:6,juli:7,agustus:8,september:9,oktober:10,november:11,desember:12,
@@ -24647,7 +24776,18 @@ function attendanceCompactDate(value){
  }
 
  let date=compactDate(datePart);
- return day && date ? `${day}, ${date}` : (day||date||raw);
+ let label=day && date ? `${day}, ${date}` : (day||date||raw);
+ let html='';
+ if(day && date){
+ html=`<span class="att-day-name">${esc(day)}</span><span class="att-date-val">${esc(date)}</span>`;
+ }else{
+ html=`<span class="att-day-name">${esc(label)}</span>`;
+ }
+ return { day, date, label, html };
+}
+
+function attendanceCompactDate(value){
+ return attendanceHeaderDateInfo(value).label;
 }
 
 function attendanceScheduleGroups(){
@@ -24669,9 +24809,13 @@ function attendanceScheduleGroups(){
    rows = [{ subject: '', time: '' }, { subject: '', time: '' }];
  }
 
+ let dInfo=attendanceHeaderDateInfo(g.date||'');
  return {
  date:g.date||'',
- label:attendanceCompactDate(g.date||''),
+ label:dInfo.label,
+ day:dInfo.day,
+ dateFormatted:dInfo.date,
+ headerHtml:dInfo.html,
  rows
  };
  }).filter(g=>g.rows.length);
@@ -24685,7 +24829,7 @@ function attendanceHeaderHtml(){
  <th class="att-no" rowspan="2">NO</th>
  <th class="att-name" rowspan="2">Nama Peserta</th>
  <th class="att-class" rowspan="2">Kelas</th>
- <th class="att-day-group" colspan="2">Hari / Tanggal</th>
+ <th class="att-day-group" colspan="2"><span class="att-day-name">Hari</span><span class="att-date-val">Tanggal</span></th>
  </tr>
  <tr>
  <th class="att-mapel-number">1</th>
@@ -24698,7 +24842,7 @@ function attendanceHeaderHtml(){
  <th class="att-no" rowspan="2">NO</th>
  <th class="att-name" rowspan="2">Nama Peserta</th>
  <th class="att-class" rowspan="2">Kelas</th>
- ${groups.map(g=>`<th class="att-day-group" colspan="${g.rows.length}">${esc(g.label)}</th>`).join('')}
+ ${groups.map(g=>`<th class="att-day-group" colspan="${g.rows.length}">${g.headerHtml || esc(g.label)}</th>`).join('')}
  </tr>`;
 
  let second=`<tr>${groups.map(g=>g.rows.map((s,i)=>
@@ -24716,7 +24860,13 @@ function attendanceSessionCount(){
 }
 
 function attendanceChairSignature(){
- return '';
+ return `<div class="attendance-chair-signature">
+ <div>Wangon, 23 Nopember 2026</div>
+ <div>Ketua Panitia</div>
+ <div class="signature-visual-space" style="height:18mm!important;min-height:18mm!important;">${signatureAssetsHtml('chair')}</div>
+ <div class="attendance-chair-name"><b><u>${esc(getCommitteeChairName())}</u></b></div>
+ <div class="attendance-chair-nip">NIP. ${esc(getCommitteeChairNip())}</div>
+ </div>`;
 }
 
 function attendanceShortParticipantName(name){
