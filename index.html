@@ -14673,14 +14673,95 @@ html body.force-print-root .print-header.simple-kop .kop-main h2:after{
 </style>
 
 <style id="participant-table-six-col-style">
-/* ATURAN BAKU TABEL DAFTAR PESERTA 6 KOLOM (TANPA NIS) */
+/* ATURAN BAKU TABEL DAFTAR PESERTA 6 KOLOM (TANPA NIS) DENGAN KETERANGAN DITARIK LEBAR KE KANAN */
 .participant-exact-table th:nth-child(1), .participant-exact-table td:nth-child(1) { text-align: center !important; }
 .participant-exact-table th:nth-child(2), .participant-exact-table td:nth-child(2) { text-align: center !important; }
 .participant-exact-table th:nth-child(3), .participant-exact-table td:nth-child(3), .participant-exact-table td.name-cell { text-align: left !important; white-space: nowrap !important; overflow: visible !important; }
 .participant-exact-table th:nth-child(4), .participant-exact-table td:nth-child(4) { text-align: center !important; }
 .participant-exact-table th:nth-child(5), .participant-exact-table td:nth-child(5) { text-align: center !important; }
-.participant-exact-table th:nth-child(6), .participant-exact-table td:nth-child(6), .participant-exact-table td.participant-note-cell { text-align: center !important; }
+.participant-exact-table th:nth-child(6), .participant-exact-table td:nth-child(6), .participant-exact-table td.participant-note-cell, .participant-exact-table col.participant-col-note {
+  text-align: center !important;
+  min-width: 45mm !important;
+}
 .participant-col-nis, th.participant-col-nis, td.participant-col-nis { display: none !important; width: 0 !important; }
+
+/* PENATAAN TANDA TANGAN DAFTAR PESERTA: DI BAWAH TABEL SISWA SEBELAH KANAN BAWAH (TIDAK MENUTUPI TABEL) */
+.participant-list-print-page .special-signature-wrap,
+.participant-list-print-page.participant-exact-print-page .participant-exact-signature,
+.participant-list-print-page.participant-dynamic-columns .participant-dynamic-signature {
+  width: 100% !important;
+  max-width: 255mm !important;
+  margin-top: 8mm !important;
+  margin-bottom: 0 !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: flex-start !important;
+  clear: both !important;
+  position: relative !important;
+  z-index: 10 !important;
+  page-break-inside: avoid !important;
+}
+
+.participant-list-print-page.participant-density-xhigh .special-signature-wrap,
+.participant-list-print-page.participant-density-xhigh .participant-exact-signature,
+.participant-list-print-page.participant-density-xhigh .participant-dynamic-signature {
+  margin-top: 6mm !important;
+}
+
+.participant-list-print-page .special-signature-wrap > div,
+.participant-list-print-page .participant-exact-signature > div,
+.participant-list-print-page .participant-dynamic-columns .participant-dynamic-signature > div,
+.participant-list-print-page .print-signature-wrapper {
+  display: flex !important;
+  justify-content: flex-end !important;
+  width: 100% !important;
+  margin-top: 0 !important;
+}
+
+.participant-list-print-page .print-signature-box,
+.participant-list-print-page .participant-exact-signature > div > div,
+.participant-list-print-page .participant-dynamic-columns .participant-dynamic-signature > div > div {
+  width: 78mm !important;
+  max-width: 78mm !important;
+  min-width: 70mm !important;
+  text-align: center !important;
+  font-size: 12pt !important;
+  line-height: 1.45 !important;
+  color: #000 !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+}
+
+.participant-list-print-page .print-signature-box b,
+.participant-list-print-page .print-signature-box u,
+.participant-list-print-page .participant-dynamic-columns .participant-dynamic-signature b,
+.participant-list-print-page .participant-dynamic-columns .participant-dynamic-signature u {
+  font-size: 12.5pt !important;
+  font-weight: 700 !important;
+}
+
+@media print {
+  .participant-list-print-page .special-signature-wrap,
+  .participant-list-print-page.participant-exact-print-page .participant-exact-signature,
+  .participant-list-print-page.participant-dynamic-columns .participant-dynamic-signature {
+    margin-top: 8mm !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    clear: both !important;
+    page-break-inside: avoid !important;
+  }
+  .participant-list-print-page.participant-density-xhigh .special-signature-wrap,
+  .participant-list-print-page.participant-density-xhigh .participant-exact-signature,
+  .participant-list-print-page.participant-density-xhigh .participant-dynamic-signature {
+    margin-top: 6mm !important;
+  }
+  .participant-exact-table th:nth-child(6),
+  .participant-exact-table td:nth-child(6),
+  .participant-exact-table td.participant-note-cell,
+  .participant-exact-table col.participant-col-note {
+    min-width: 45mm !important;
+  }
+}
 
 /* STYLING TANDA TANGAN JADWAL PENGAWAS & DAFTAR PESERTA */
 .supervisor-page-two-chair-signature {
@@ -19874,7 +19955,7 @@ function participantListColumnLayout(students){
  ...names.map(v=>participantMeasureTextMm(v,false)),
  0
  );
- let name=clamp(widestName+12,85,145);
+ let name=clamp(widestName+12,85,120);
 
  let gender=11;
 
@@ -19885,24 +19966,11 @@ function participantListColumnLayout(students){
  );
  let kelas=clamp(widestClass+6,17,22);
 
- let note=18;
- let total=no+number+name+gender+kelas+note;
-
- if(total>249){
- let over=total-249;
- let reducibleNote=Math.max(0,note-16);
- let cut=Math.min(over,reducibleNote);
- note-=cut; over-=cut;
-
- if(over>0){
- let reducibleClass=Math.max(0,kelas-17);
- cut=Math.min(over,reducibleClass);
- kelas-=cut; over-=cut;
- }
-
- if(over>0)name=Math.max(70,name-over);
- total=no+number+name+gender+kelas+note;
- }
+ // Kolom Keterangan ditarik lebar ke kanan (target lebar total tabel 248mm)
+ let targetTotal=248;
+ let usedWithoutNote=no+number+name+gender+kelas;
+ let note=Math.max(45, Number((targetTotal-usedWithoutNote).toFixed(1)));
+ let total=Number((usedWithoutNote+note).toFixed(1));
 
  return {
  no:Number(no.toFixed(1)),
@@ -19955,7 +20023,7 @@ function participantListPrintPage(r,students,startIndex=0,pageIndex=0,totalPages
  <col class="participant-col-note" style="width:${col.note}mm!important">
  </colgroup>
  <thead><tr>
- <th>No</th><th>Nomor Peserta</th><th>Nama</th><th>L/P</th><th>Kelas</th><th>Ket.</th>
+ <th>No</th><th>Nomor Peserta</th><th>Nama</th><th>L/P</th><th>Kelas</th><th>Keterangan</th>
  </tr></thead>
  <tbody>${students.map((st,i)=>`<tr>
  <td>${startIndex+i+1}</td>
@@ -28024,7 +28092,7 @@ const TABLE_RESIZE_STORAGE_KEY = 'administrasi_table_custom_layout_v2';
 
 const DEFAULT_TABLE_RESIZE_STORE = {
   participant: {
-    cols: [11, 56, 102, 11, 19, 18], // No, NoPeserta, Nama, L/P, Kelas, Ket
+    cols: [11, 56, 95, 11, 19, 56], // No, NoPeserta, Nama, L/P, Kelas, Keterangan
     rowPaddingY: 1.35,
     borderWidth: '1px',
     borderColor: '#000000'
@@ -28051,8 +28119,8 @@ function readTableResizeStore(){
     if(raw) {
       let parsed = JSON.parse(raw);
       if(parsed && typeof parsed === 'object') {
-        if(parsed && parsed.participant && Array.isArray(parsed.participant.cols) && parsed.participant.cols.length !== 6){
-          parsed.participant.cols = [11, 56, 102, 11, 19, 18];
+        if(parsed && parsed.participant && Array.isArray(parsed.participant.cols) && (parsed.participant.cols.length !== 6 || parsed.participant.cols[5] < 35)){
+          parsed.participant.cols = [11, 56, 95, 11, 19, 56];
         }
         currentTableResizeStore = Object.assign({}, DEFAULT_TABLE_RESIZE_STORE, parsed);
         return currentTableResizeStore;
