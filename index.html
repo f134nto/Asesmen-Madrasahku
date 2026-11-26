@@ -6336,9 +6336,70 @@ window.pdfjsLibBridge=pdfjsLib;
  padding:.2mm 0!important;
 }
 
+/* Header nomor ruang dan label kelas */
+.supervisor-no-kop-page-one .supervisor-29-table th.supervisor-print-code-head,
+.supervisor-29-table th.supervisor-print-code-head{
+ font-size:11.5pt!important;
+ line-height:1!important;
+ font-weight:900!important;
+ text-align:center!important;
+ padding:.15mm 0!important;
+ height:4.5mm!important;
+ min-height:4.5mm!important;
+ vertical-align:middle!important;
+}
+
+.supervisor-no-kop-page-one .supervisor-29-table th.supervisor-print-class-head,
+.supervisor-29-table th.supervisor-print-class-head,
+th.supervisor-print-class-head{
+ font-size:7.2pt!important;
+ line-height:1.05!important;
+ font-weight:900!important;
+ text-align:center!important;
+ padding:.15mm 0!important;
+ background:#0b6b46!important;
+ color:#ffffff!important;
+ white-space:nowrap!important;
+ -webkit-print-color-adjust:exact!important;
+ print-color-adjust:exact!important;
+ letter-spacing:0!important;
+ height:4.2mm!important;
+ min-height:4.2mm!important;
+ vertical-align:middle!important;
+}
+
+.supervisor-screen-class-th{
+ background:#0b6b46!important;
+ text-align:center!important;
+ padding:2px 1px!important;
+ vertical-align:middle!important;
+}
+
+.supervisor-screen-room-class-input{
+ width:96%;
+ max-width:32px;
+ font-size:7pt;
+ font-weight:900;
+ text-align:center;
+ padding:1px 0;
+ margin:0 auto;
+ border:1px solid #7eb898;
+ border-radius:2px;
+ background:#f3faf5;
+ color:#074e32;
+ box-sizing:border-box;
+ text-transform:uppercase;
+}
+
+.supervisor-screen-room-class-input:focus{
+ background:#fff;
+ border-color:#0b6b46;
+ outline:1px solid #0b6b46;
+}
+
 /* Header umum tetap terbaca dan proporsional */
 .supervisor-no-kop-page-one .supervisor-29-table th{
- min-height:7mm!important;
+ min-height:4.5mm!important;
 }
 
 @media print{
@@ -16332,6 +16393,7 @@ db.savedAssessmentSchedule=db.savedAssessmentSchedule||null;
 db.savedSupervisorSchedule=db.savedSupervisorSchedule||null;
 (db.schedules||[]).forEach(s=>{if(s.allocation===undefined)s.allocation='';s.subject=cleanScheduleSubject(s.subject);});
 db.supervisorScheduleOverrides=db.supervisorScheduleOverrides||{};
+db.supervisorRoomClasses=db.supervisorRoomClasses||{};
 db.supervisorTitle=db.supervisorTitle||'';
 
 function systemPrint(){
@@ -23386,6 +23448,7 @@ function supervisors(){
  while(db.supervisorReserveNames.length<4)db.supervisorReserveNames.push('');
  db.supervisorPriorityGap=[1,2].includes(Number(db.supervisorPriorityGap))?Number(db.supervisorPriorityGap):2;
  db.supervisorScheduleOverrides=db.supervisorScheduleOverrides||{};
+ db.supervisorRoomClasses=db.supervisorRoomClasses||{};
 
  let rooms=db.rooms||[], schedules=db.schedules||[];
 
@@ -23398,6 +23461,7 @@ function supervisors(){
  <div class="schedule-toolbar">
  <div class="left-actions">
  <button class="success" onclick="saveSupervisorScheduleSnapshot()"> Simpan Jadwal Pengawas</button>
+ <button class="secondary" onclick="openSupervisorRoomClassesModal()" style="font-weight:700;">🏷️ Atur Kelas Ruang 01–29</button>
  <button class="danger" onclick="resetSupervisorSchedule()">Reset Reset Jadwal Pengawas</button>
  <button class="secondary" onclick="restoreSupervisorScheduleSnapshot()"> Pulihkan Simpanan</button>
  </div>
@@ -23478,6 +23542,7 @@ function supervisors(){
  <div class="actions">
  <button class="success" onclick="autoAssignSupervisors()"> Buat Jadwal Pengawas Otomatis & Seimbang</button>
  <span class="manual-edit-badge"> Edit Manual Aktif pada setiap kolom ruang</span>
+ <button class="secondary" onclick="openSupervisorRoomClassesModal()" style="font-weight:700;">🏷️ Atur Kelas Ruang 01–29</button>
  <button class="secondary" onclick="syncFlatSupervisors();alert('Perubahan jadwal tersimpan.')"> Simpan Perubahan</button>
  <button onclick="printSupervisorMatrix()"> Cetak Jadwal + Kontrol (3 Lembar)</button>
  </div>
@@ -23820,7 +23885,8 @@ function saveSupervisorScheduleSnapshot(){
  supervisorReserveNames:JSON.parse(JSON.stringify(ensureSupervisorReserveNames())),
  supervisorPriorityGap:Number(db.supervisorPriorityGap)||2,
  supervisorTitle:db.supervisorTitle||'',
- supervisorScheduleOverrides:JSON.parse(JSON.stringify(db.supervisorScheduleOverrides||{}))
+ supervisorScheduleOverrides:JSON.parse(JSON.stringify(db.supervisorScheduleOverrides||{})),
+ supervisorRoomClasses:JSON.parse(JSON.stringify(db.supervisorRoomClasses||{}))
  };
  save();alert('Jadwal Pengawas berhasil disimpan.');render('supervisors');
 }
@@ -23844,6 +23910,7 @@ function restoreSupervisorScheduleSnapshot(){
  db.supervisorPriorityGap=[1,2].includes(Number(s.supervisorPriorityGap))?Number(s.supervisorPriorityGap):2;
  db.supervisorTitle=s.supervisorTitle||'';
  db.supervisorScheduleOverrides=JSON.parse(JSON.stringify(s.supervisorScheduleOverrides||{}));
+ if(s.supervisorRoomClasses)db.supervisorRoomClasses=JSON.parse(JSON.stringify(s.supervisorRoomClasses));
  sanitizeSupervisorAssignments();
  syncFlatSupervisors();save();render('supervisors');
 }
@@ -24299,6 +24366,131 @@ function groupedSupervisorSchedules(){
  return groups;
 }
 
+const DEFAULT_SUPERVISOR_ROOM_CLASSES = {
+ 1: '7A', 2: '8A', 3: '9A', 4: '9B', 5: '7B',
+ 6: '7C', 7: '7D', 8: '7E', 9: '7F', 10: '7G',
+ 11: '7H', 12: '8B', 13: '8C', 14: '8D', 15: '8E',
+ 16: '8F', 17: '8G', 18: '8H', 19: '8I', 20: '8J',
+ 21: '9C', 22: '9D', 23: '9E', 24: '9F', 25: '9G',
+ 26: '9H', 27: '9I', 28: '9J', 29: '9K'
+};
+
+function getSupervisorRoomClass(roomNo){
+ let no = Number(roomNo);
+ if(!Number.isFinite(no)) return '';
+ let stored = (db.supervisorRoomClasses && db.supervisorRoomClasses[no]) ||
+              (db.school && db.school.supervisorRoomClasses && db.school.supervisorRoomClasses[no]);
+ if(stored !== undefined && stored !== null && String(stored).trim() !== ''){
+   return String(stored).trim().toUpperCase();
+ }
+ return DEFAULT_SUPERVISOR_ROOM_CLASSES[no] || '';
+}
+
+function saveSupervisorRoomClass(roomNo, value){
+ let no = Number(roomNo);
+ if(!Number.isFinite(no) || no < 1 || no > 29) return;
+ let val = String(value || '').trim().toUpperCase();
+ db.supervisorRoomClasses = db.supervisorRoomClasses || {};
+ db.school = db.school || {};
+ db.school.supervisorRoomClasses = db.school.supervisorRoomClasses || {};
+ db.supervisorRoomClasses[no] = val;
+ db.school.supervisorRoomClasses[no] = val;
+ save();
+
+ let inputs = document.querySelectorAll('.sup-room-class-input-' + no);
+ inputs.forEach(inp => { if(inp !== document.activeElement && inp.value !== val) inp.value = val; });
+ let labels = document.querySelectorAll('.sup-room-class-text-' + no);
+ labels.forEach(lbl => { lbl.textContent = val; });
+}
+
+function openSupervisorRoomClassesModal(){
+ let old = document.getElementById('supervisorRoomClassesModal');
+ if(old) old.remove();
+
+ let roomsHtml = Array.from({length:29}, (_,i)=>i+1).map(no => {
+   let cls = getSupervisorRoomClass(no);
+   let padNo = String(no).padStart(2,'0');
+   return '<div style="display:flex;align-items:center;justify-content:space-between;padding:5px 9px;background:#f8faf9;border:1px solid #d4e2d8;border-radius:6px;gap:8px;">' +
+     '<span style="font-weight:900;color:#0b6b46;font-size:10.5pt;min-width:65px;">Ruang ' + padNo + '</span>' +
+     '<span style="color:#666;font-weight:700;">=</span>' +
+     '<input type="text" id="modalSupRoomClass_' + no + '" value="' + esc(cls) + '" maxlength="10" ' +
+       'style="width:75px;font-size:10.5pt;font-weight:900;text-align:center;padding:3px 6px;border:1.5px solid #0b6b46;border-radius:4px;background:#fff;color:#0b6b46;text-transform:uppercase;" ' +
+       'placeholder="Kelas" oninput="this.value=this.value.toUpperCase()">' +
+   '</div>';
+ }).join('');
+
+ let modal = document.createElement('div');
+ modal.id = 'supervisorRoomClassesModal';
+ modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:99999;display:flex;align-items:center;justify-content:center;padding:15px;box-sizing:border-box;backdrop-filter:blur(2px);';
+ modal.innerHTML = 
+   '<div style="background:#fff;border-radius:12px;max-width:860px;width:100%;max-height:92vh;display:flex;flex-direction:column;box-shadow:0 12px 36px rgba(0,0,0,0.35);overflow:hidden;">' +
+     '<div style="background:#0b6b46;color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;">' +
+       '<h3 style="margin:0;font-size:13pt;font-weight:900;color:#fff;display:flex;align-items:center;gap:8px;">' +
+         '🏷️ Pengaturan Label Kelas Ruang 01–29' +
+       '</h3>' +
+       '<button onclick="closeSupervisorRoomClassesModal()" style="background:transparent;border:none;color:#fff;font-size:22pt;cursor:pointer;line-height:1;padding:0 5px;">&times;</button>' +
+     '</div>' +
+     '<div style="padding:16px 20px;overflow-y:auto;flex:1;">' +
+       '<div class="notice" style="margin-bottom:14px;font-size:9.5pt;line-height:1.45;">' +
+         'Label kelas ini ditampilkan tepat di bawah nomor ruang <b>01 s.d. 29</b> pada tabel <b>Jadwal Pengawas</b> (baik di layar kerja maupun saat dicetak/PDF).<br>' +
+         'Anda dapat mengubah nama kelas untuk setiap nomor ruang jika terdapat penyesuaian ruangan asesmen di madrasah.' +
+       '</div>' +
+       '<div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(155px, 1fr));gap:8px;">' +
+         roomsHtml +
+       '</div>' +
+     '</div>' +
+     '<div style="background:#f1f5f3;border-top:1px solid #d4e2d8;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">' +
+       '<button type="button" class="danger" onclick="resetSupervisorRoomClassesFromModal()" style="font-weight:700;">🔄 Reset ke Default Panitia</button>' +
+       '<div style="display:flex;gap:8px;">' +
+         '<button type="button" class="secondary" onclick="closeSupervisorRoomClassesModal()">Batal</button>' +
+         '<button type="button" class="success" onclick="saveAllSupervisorRoomClassesFromModal()" style="font-weight:900;padding:6px 18px;">💾 Simpan & Terapkan</button>' +
+       '</div>' +
+     '</div>' +
+   '</div>';
+ document.body.appendChild(modal);
+}
+
+function closeSupervisorRoomClassesModal(){
+ let m = document.getElementById('supervisorRoomClassesModal');
+ if(m) m.remove();
+}
+
+function saveAllSupervisorRoomClassesFromModal(){
+ for(let no=1; no<=29; no++){
+   let inp = document.getElementById('modalSupRoomClass_' + no);
+   if(inp){
+     let val = inp.value.trim().toUpperCase();
+     db.supervisorRoomClasses = db.supervisorRoomClasses || {};
+     db.school = db.school || {};
+     db.school.supervisorRoomClasses = db.school.supervisorRoomClasses || {};
+     db.supervisorRoomClasses[no] = val;
+     db.school.supervisorRoomClasses[no] = val;
+   }
+ }
+ save();
+ closeSupervisorRoomClassesModal();
+ render('supervisors');
+ alert('Label kelas Ruang 01–29 berhasil disimpan dan diperbarui.');
+}
+
+function resetSupervisorRoomClassesFromModal(){
+ if(confirm('Kembalikan label kelas Ruang 01–29 ke pengaturan default panitia (01=7A, 02=8A, ..., 29=9K)?')){
+   for(let no=1; no<=29; no++){
+     let defVal = DEFAULT_SUPERVISOR_ROOM_CLASSES[no] || '';
+     let inp = document.getElementById('modalSupRoomClass_' + no);
+     if(inp) inp.value = defVal;
+     db.supervisorRoomClasses = db.supervisorRoomClasses || {};
+     db.school = db.school || {};
+     db.school.supervisorRoomClasses = db.school.supervisorRoomClasses || {};
+     db.supervisorRoomClasses[no] = defVal;
+     db.school.supervisorRoomClasses[no] = defVal;
+   }
+   save();
+   closeSupervisorRoomClassesModal();
+   render('supervisors');
+ }
+}
+
 function supervisorPrintRoomNumbers(){
  return Array.from({length:29},(_,i)=>i+1);
 }
@@ -24473,14 +24665,15 @@ function supervisorMatrixTable(printMode=false){
  </colgroup>
  <thead>
   <tr>
-  <th class="fixed-no" rowspan="2">NO</th>
-  <th class="fixed-date" rowspan="2">HARI / TANGGAL</th>
-  <th class="fixed-time" rowspan="2">WAKTU</th>
-  <th class="fixed-allocation" rowspan="2">ALOKASI</th>
-  <th class="fixed-subject supervisor-mapel-head-10pt" rowspan="2" style="font-size:10pt!important;text-align:center!important;">MAPEL</th>
+  <th class="fixed-no" rowspan="3">NO</th>
+  <th class="fixed-date" rowspan="3">HARI / TANGGAL</th>
+  <th class="fixed-time" rowspan="3">WAKTU</th>
+  <th class="fixed-allocation" rowspan="3">ALOKASI</th>
+  <th class="fixed-subject supervisor-mapel-head-10pt" rowspan="3" style="font-size:10pt!important;text-align:center!important;">MAPEL</th>
   <th class="supervisor-room-group" colspan="29">R U A N G</th>
   </tr>
   <tr>${printRooms.map(no=>`<th class="room-col supervisor-print-code-head">${String(no).padStart(2,'0')}</th>`).join('')}</tr>
+  <tr>${printRooms.map(no=>`<th class="room-col supervisor-print-class-head sup-room-class-text-${no}">${esc(getSupervisorRoomClass(no))}</th>`).join('')}</tr>
  </thead>
  <tbody>${supervisorMatrixBodyHtml(true)}</tbody>
  </table>
@@ -24489,14 +24682,27 @@ function supervisorMatrixTable(printMode=false){
 
  return `<div class="sup-matrix-wrap"><table class="sup-matrix supervisor-merged-table">
  <thead><tr>
- <th class="fixed-no" rowspan="2">NO</th>
- <th class="fixed-date" rowspan="2">HARI / TANGGAL</th>
- <th class="fixed-time" rowspan="2">WAKTU</th>
- <th class="fixed-allocation" rowspan="2">ALOKASI</th>
- <th class="fixed-subject supervisor-mapel-head-10pt" rowspan="2" style="font-size:10pt!important;text-align:center!important;">MAPEL</th>
+ <th class="fixed-no" rowspan="3">NO</th>
+ <th class="fixed-date" rowspan="3">HARI / TANGGAL</th>
+ <th class="fixed-time" rowspan="3">WAKTU</th>
+ <th class="fixed-allocation" rowspan="3">ALOKASI</th>
+ <th class="fixed-subject supervisor-mapel-head-10pt" rowspan="3" style="font-size:10pt!important;text-align:center!important;">MAPEL</th>
  <th colspan="${Math.max(rooms.length,1)}">R U A N G</th>
  </tr>
- <tr>${rooms.map(r=>`<th class="room-col">${roomLabel(r)}</th>`).join('')||'<th>-</th>'}</tr></thead>
+ <tr>${rooms.map(r=>`<th class="room-col">${roomLabel(r)}</th>`).join('')||'<th>-</th>'}</tr>
+ <tr>${rooms.map(r=>{
+   let no=normalizeSupervisorPrintRoomNo(r.no);
+   let cls=getSupervisorRoomClass(no);
+   return `<th class="room-col supervisor-screen-class-th" style="padding:2px 1px!important;background:#0b6b46!important;text-align:center!important;vertical-align:middle!important;">
+     <input type="text" class="sup-room-class-input-${no} supervisor-screen-room-class-input"
+       value="${esc(cls)}"
+       onchange="saveSupervisorRoomClass(${no},this.value)"
+       title="Edit kelas Ruang ${String(no).padStart(2,'0')} (otomatis tersimpan)"
+       maxlength="10"
+       style="width:96%;max-width:32px;font-size:7pt;font-weight:900;text-align:center;padding:1px 0;margin:0 auto;border:1px solid #7eb898;border-radius:2px;background:#f3faf5;color:#074e32;box-sizing:border-box;text-transform:uppercase;">
+   </th>`;
+ }).join('')||'<th>-</th>'}</tr>
+ </thead>
  <tbody>${supervisorMatrixBodyHtml(false)}</tbody>
  </table></div>`;
 }
